@@ -104,51 +104,17 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                type: array
                 title: CryptoEstablishmentBase
-                # items:
-                #   description: This is the basic information of an establishment that we show only in the map. If more information is required, you can use the /api/establishments/{establishmentId} endpoint.
-                #   additionalProperties: false
-                #   required:
-                #     - uuid
-                #     - name
-                #     - geo_location
-                #     - category
-                #     - currencies
-                #   properties:
-                #     uuid:
-                #       type: string
-                #     name:
-                #       type: string
-                #     category:
-                #       type: string
-                #     currencies:
-                #       type: array
-                #       items:
-                #         type: string
-                #     geo_location:
-                #       type: object
-                #       additionalProperties: false
-                #       required:
-                #         - lat
-                #         - lng
-                #       properties:
-                #         lat:
-                #           type: number
-                #         lng:
-                #           type: number
-
-                # Work around for the return object not being an array of objects
-                # { "0": { name, uuid, geo_location, category, currencies }, "1": { name, uuid, geo_location, category, currencies } }...
-                additionalProperties:
-                  type: object
+                items:
+                  description: This is the basic information of an establishment that we show only in the map. If more information is required, you can use the /api/establishments/{establishmentId} endpoint.
                   additionalProperties: false
                   required:
                     - uuid
                     - name
                     - geo_location
                     - category
-                    - currencies
+                    - providers_id
                   properties:
                     uuid:
                       type: string
@@ -156,21 +122,12 @@ paths:
                       type: string
                     category:
                       type: string
-                    currencies:
+                    providers_id:
                       type: array
                       items:
-                        type: string
+                        type: number
                     geo_location:
-                      type: object
-                      additionalProperties: false
-                      required:
-                        - lat
-                        - lng
-                      properties:
-                        lat:
-                          type: number
-                        lng:
-                          type: number
+                        $ref: '#/components/schemas/GeoLocation'
   /api/establishments/{uuid}:
     get:
       tags:
@@ -183,7 +140,7 @@ paths:
           schema:
             type: string
           required: true
-          description: Place id from Google Maps
+          description: UUID of the Establishment
       responses:
         "200":
           description: OK
@@ -192,33 +149,30 @@ paths:
               schema:
                 type: object
                 title: CryptoEstablishment
-                additionalProperties: false
                 required:
                   - uuid
                   - gmaps_place_id
+                  - gmaps_types
                   - name
                   - category
-                  - gmaps_type
-                  - gmaps_url
                   - address
                   - rating
                   - geo_location
-                  - currencies
+                  - providers
                 properties:
                   uuid:
                     type: string
                     format: uuid
                   gmaps_place_id:
                     type: string
+                  gmaps_types:
+                    type: array
+                    items:
+                      type: string
                   name:
                     type: string
                   category:
                     type: string
-                  gmaps_type:
-                    type: string
-                  gmaps_url:
-                    type: string
-                    format: url
                   photo_reference:
                     type: string
                   address:
@@ -226,23 +180,26 @@ paths:
                   rating:
                     type: number
                   geo_location:
-                    type: object
-                    additionalProperties: false
-                    required:
-                      - lat
-                      - lng
-                    properties:
-                      lat:
-                        type: number
-                      lng:
-                        type: number
-                  currencies:
+                    $ref: '#/components/schemas/GeoLocation'
+                  providers:
                     type: array
                     items:
-                      type: string
-                      description: Symbol of the crypto
-        "201":
-          description: Create
+                      type: object
+                      required:
+                        - id
+                        - buy
+                        - sell
+                      properties:
+                        id:
+                          type: integer
+                        buy:
+                          type: array
+                          items:
+                            type: string
+                        sell:
+                          type: array
+                          items:
+                            type: string
         "404":
           description: Not Found
   /api/establishments/categories:
@@ -305,6 +262,59 @@ paths:
                       example: "NIM"
         "201":
           description: Create
+        "404":
+          description: Not Found
+  /api/providers:
+    get:
+      tags:
+        - establishments
+      summary: Get all providers
+      operationId: getProviders
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - id
+                    - name
+                    - message_en
+                    - message_es
+                    - message_de
+                    - logo
+                    - style
+                    - cta
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    message_en:
+                      type: string
+                    message_es:
+                      type: string
+                    message_de:
+                      type: string
+                    logo:
+                      type: string
+                    style:
+                      type: object
+                      properties:
+                        opacity:
+                          type: number
+                        background:
+                          type: string
+                    cta:
+                      type: object
+                      properties:
+                        href:
+                          type: string
+                        text:
+                          type: string
         "404":
           description: Not Found
   /api/establishments/issues/categories:
@@ -418,3 +428,16 @@ paths:
           description: Place already exists
         "400":
           description: Bad Request
+components:
+  schemas:
+    GeoLocation:
+      type: object
+      additionalProperties: false
+      required:
+        - lat
+        - lng
+      properties:
+        lat:
+          type: number
+        lng:
+          type: number

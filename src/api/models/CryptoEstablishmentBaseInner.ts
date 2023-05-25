@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { CryptoEstablishmentBaseInnerGeoLocation } from './CryptoEstablishmentBaseInnerGeoLocation';
+import type { GeoLocation } from './GeoLocation';
 import {
-    CryptoEstablishmentBaseInnerGeoLocationFromJSON,
-    CryptoEstablishmentBaseInnerGeoLocationFromJSONTyped,
-    CryptoEstablishmentBaseInnerGeoLocationToJSON,
-} from './CryptoEstablishmentBaseInnerGeoLocation';
+    GeoLocationFromJSON,
+    GeoLocationFromJSONTyped,
+    GeoLocationToJSON,
+} from './GeoLocation';
 
 /**
  * This is the basic information of an establishment that we show only in the map. If more information is required, you can use the /api/establishments/{establishmentId} endpoint.
@@ -46,16 +46,16 @@ export interface CryptoEstablishmentBaseInner {
     category: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<number>}
      * @memberof CryptoEstablishmentBaseInner
      */
-    currencies: Array<string>;
+    providersId: Array<number>;
     /**
      * 
-     * @type {CryptoEstablishmentBaseInnerGeoLocation}
+     * @type {GeoLocation}
      * @memberof CryptoEstablishmentBaseInner
      */
-    geo_location: CryptoEstablishmentBaseInnerGeoLocation;
+    geoLocation: GeoLocation;
 }
 
 /**
@@ -66,8 +66,8 @@ export function instanceOfCryptoEstablishmentBaseInner(value: object): boolean {
     isInstance = isInstance && "uuid" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "category" in value;
-    isInstance = isInstance && "currencies" in value;
-    isInstance = isInstance && "geo_location" in value;
+    isInstance = isInstance && "providersId" in value;
+    isInstance = isInstance && "geoLocation" in value;
 
     return isInstance;
 }
@@ -85,8 +85,8 @@ export function CryptoEstablishmentBaseInnerFromJSONTyped(json: any, ignoreDiscr
         'uuid': json['uuid'],
         'name': json['name'],
         'category': json['category'],
-        'currencies': json['currencies'],
-        'geo_location': CryptoEstablishmentBaseInnerGeoLocationFromJSON(json['geo_location']),
+        'providersId': json['providers_id'],
+        'geoLocation': GeoLocationFromJSON(json['geo_location']),
     };
 }
 
@@ -102,8 +102,8 @@ export function CryptoEstablishmentBaseInnerToJSON(value?: CryptoEstablishmentBa
         'uuid': value.uuid,
         'name': value.name,
         'category': value.category,
-        'currencies': value.currencies,
-        'geo_location': CryptoEstablishmentBaseInnerGeoLocationToJSON(value.geo_location),
+        'providers_id': value.providersId,
+        'geo_location': GeoLocationToJSON(value.geoLocation),
     };
 }
 

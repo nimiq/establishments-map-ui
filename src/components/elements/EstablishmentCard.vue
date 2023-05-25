@@ -8,10 +8,11 @@ import EstablishmentPlaceholder from "@/components/illustrations/establishment-p
 
 import type { CurrencyInner } from "@/api"
 import { useBreakpoints } from "@/composables/useBreakpoints"
-import { useApi, type BaseEstablishment, type Establishment } from "@/stores/api"
+import { useApi } from "@/stores/api"
 import { useApp } from "@/stores/app"
 import { computed, onMounted, ref } from "vue"
 import { RouterLink } from "vue-router"
+import type { BaseEstablishment, Establishment } from "@/stores/establishments"
 
 const card$ = ref<(BaseEstablishment | Establishment) & { $el: HTMLElement } | null>(null)
 
@@ -41,8 +42,8 @@ onMounted(() => {
   observer.observe(card$.value.$el)
 })
 
-const showBluecode = computed(() => props.establishment.currencies.map(c => c.symbol).includes('bluecode'))
-const showAtm = computed(() => props.establishment.currencies.map(c => c.symbol).includes('atm'))
+// const showBluecode = computed(() => props.establishment.currencies.map(c => c.symbol).includes('bluecode'))
+// const showAtm = computed(() => props.establishment.currencies.map(c => c.symbol).includes('atm'))
 
 function leaveOutSpecialCurrency(currencies: CurrencyInner[]) {
   return currencies.filter((c) => !specialCurrency(c.symbol))
@@ -75,7 +76,7 @@ function onClick() {
 <template>
   <template v-if="hasAllInfo">
     <RouterLink :to="`/establishment/${establishment.uuid}`" @click="onClick" class="children:px-6" ref="card$">
-      <img v-if="establishment.photoUrl" :src="establishment.photoUrl" :alt="`Image of ${establishment.name}`"
+      <img v-if="establishment.hasAllInfo" :src="establishment.photoUrl" :alt="`Image of ${establishment.name}`"
         class="h-36 object-cover w-full !px-1.5 rounded-sm" loading="lazy" />
 
       <div v-else class="
@@ -97,31 +98,33 @@ function onClick() {
       </h2>
 
       <p class="mt-2 flex items-center text-sm">
-        <span class="text-space/60 capitalize">{{
+        <!-- <span class="text-space/60 capitalize">{{
           establishment.gmapsType
-        }}</span>
-        <template v-if="establishment.rating">
+        }}</span> -->
+        <span class="text-space/60 capitalize">Gmaps Type</span>
+        <template v-if="establishment.hasAllInfo">
           <StarIcon class="ml-2 text-gold" style="width: 13px; height: 13px" />
           <span class="ml-1 font-bold">{{ establishment.rating }}</span>
         </template>
       </p>
 
-      <p class="text-space/60 text-sm">
-        {{ establishment.address }}
+      <p class="text-space/60 text-sm" :class="{ pulse: hasAllInfo }">
+        <!-- TODO check this behaviour -->
+        {{ establishment.hasAllInfo ? establishment.address : '' }}
       </p>
     </RouterLink>
 
     <ul class="flex gap-x-1 mt-4 pb-6 px-6">
-      <li v-for="{ symbol } in leaveOutSpecialCurrency(
+      <!-- <li v-for="{ symbol } in leaveOutSpecialCurrency(
         establishment.currencies
       )" :key="symbol" class="w-6 h-6 rounded-full">
         <CryptoIcon :crypto="symbol.toLowerCase()" />
-      </li>
+      </li> -->
 
-      <div v-if="establishment.currencies.filter(c => c.symbol !== 'atm').length > 0
-        && (showBluecode || showAtm)" class="w-px h-6 bg-space/20 mx-3" />
+      <!-- <div v-if="establishment.currencies.filter(c => c.symbol !== 'atm').length > 0
+        && (showBluecode || showAtm)" class="w-px h-6 bg-space/20 mx-3" /> -->
 
-      <li v-if="showBluecode">
+      <!-- <li v-if="showBluecode">
         <Popover cta-href="https://bluecode.com/de-de/" :container="container">
           <template #trigger>
             <CryptoIcon crypto="bluecode" class="w-[14px] h-[22px]" />
@@ -133,9 +136,9 @@ function onClick() {
           <template #cta> {{ $t('Learn more') }} </template>
           ets
         </Popover>
-      </li>
+      </li> -->
 
-      <li v-if="showAtm">
+      <!-- <li v-if="showAtm">
         <Popover :container="container">
           <template #trigger>
             <CryptoIcon class="w-6 h-5" crypto="atm" />
@@ -143,13 +146,13 @@ function onClick() {
           <template #title> {{ $t('Crypto_ATM') }}</template>
           <template #description>{{ $t('A_Crypto_ATM_is_a_machine_that_allows_customers') }}</template>
         </Popover>
-      </li>
+      </li> -->
     </ul>
 
     <hr class="bg-space/20 h-0.5" />
 
     <div class="px-6 flex gap-x-2 mt-4 flex-1 items-end">
-      <a :href="establishment.gmapsUrl" target="_blank" class="
+      <a v-if="establishment.hasAllInfo" :href="establishment.gmapsUrl" target="_blank" class="
           z-1
           flex-1
           bg-ocean

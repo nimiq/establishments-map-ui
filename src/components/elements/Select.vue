@@ -12,9 +12,9 @@
 					:class="{ 'text-space': usePlaceholder, 'text-space/60': !usePlaceholder, }">
 					<span class="block truncate">
 						{{
-								usePlaceholder
-									? geOptionById(selected as unknown as string | number)?.label
-									: placeholder
+							usePlaceholder
+							? geOptionById(selected as unknown as string | number)?.label
+							: placeholder
 						}}
 					</span>
 					<span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 mr-2">
@@ -31,7 +31,7 @@
 							<li
 								class="relative select-none py-2 pl-3 pr-2 text-white flex gap-x-2 items-center cursor-pointer transition-colors"
 								:class="{ 'bg-white/10': active }">
-								<slot name="option" v-bind="option">{{ option.label }}</slot>
+								<slot name="option" v-bind="option">{{ option[labelKey] || '' }}</slot>
 								<div class="w-5 h-5 rounded-full ml-auto" :class="{
 									'bg-white': selected,
 									'border border-white/10': !selected,
@@ -76,6 +76,7 @@ import {
 export type SelectOption = {
 	id: string | number
 	label: string
+	[key: string]: unknown
 }
 
 const props = defineProps({
@@ -102,6 +103,10 @@ const props = defineProps({
 	label: {
 		type: String,
 		default: "Select an option",
+	},
+	labelKey: {
+		type: String,
+		default: "label",
 	},
 	replacePlaceholder: {
 		type: Boolean,

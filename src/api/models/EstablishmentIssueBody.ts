@@ -24,13 +24,13 @@ export interface EstablishmentIssueBody {
      * @type {number}
      * @memberof EstablishmentIssueBody
      */
-    issue_category_id: number;
+    issueCategoryId: number;
     /**
      * 
      * @type {string}
      * @memberof EstablishmentIssueBody
      */
-    establishment_uuid: string;
+    establishmentUuid: string;
     /**
      * 
      * @type {string}
@@ -50,8 +50,8 @@ export interface EstablishmentIssueBody {
  */
 export function instanceOfEstablishmentIssueBody(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "issue_category_id" in value;
-    isInstance = isInstance && "establishment_uuid" in value;
+    isInstance = isInstance && "issueCategoryId" in value;
+    isInstance = isInstance && "establishmentUuid" in value;
     isInstance = isInstance && "token" in value;
     isInstance = isInstance && "description" in value;
 
@@ -68,8 +68,8 @@ export function EstablishmentIssueBodyFromJSONTyped(json: any, ignoreDiscriminat
     }
     return {
         
-        'issue_category_id': json['issue_category_id'],
-        'establishment_uuid': json['establishment_uuid'],
+        'issueCategoryId': json['issue_category_id'],
+        'establishmentUuid': json['establishment_uuid'],
         'token': json['token'],
         'description': json['description'],
     };
@@ -84,8 +84,8 @@ export function EstablishmentIssueBodyToJSON(value?: EstablishmentIssueBody | nu
     }
     return {
         
-        'issue_category_id': value.issue_category_id,
-        'establishment_uuid': value.establishment_uuid,
+        'issue_category_id': value.issueCategoryId,
+        'establishment_uuid': value.establishmentUuid,
         'token': value.token,
         'description': value.description,
     };

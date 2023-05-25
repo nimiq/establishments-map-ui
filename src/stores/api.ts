@@ -1,10 +1,11 @@
-import { Configuration, EstablishmentsApi, type CryptoEstablishment as CryptoEstablishmentApi, type /** CryptoEstablishmentBaseInner */CryptoEstablishmentBase as CryptoEstablishmentBaseApi, type CurrencyInner as Currency, type PostCandidateRequest as CandidateRequest, type PostEstablishmentIssueRequest as EstablishmentIssueRequest, type SearchEstablishmentsRequest } from "@/api";
+import { Configuration, EstablishmentsApi, type PostCandidateRequest as CandidateRequest, type CryptoEstablishment as CryptoEstablishmentApi, type CryptoEstablishmentBaseInner as CryptoEstablishmentBaseApi, type CurrencyInner as Currency, type PostEstablishmentIssueRequest as EstablishmentIssueRequest, type SearchEstablishmentsRequest } from "@/api";
 import { SuggestionType, type Suggestion } from "@/composables/useAutocomplete";
 import { defineStore, storeToRefs } from "pinia";
-import { computed, onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useEstablishments } from "./establishments";
+import { useEstablishments, type BaseEstablishment, type Establishment } from "./establishments";
 import { useMap } from "./map";
+import type { GetProviders200Response as Provider } from "@/api/models/GetProviders200Response";
 
 const basePath: string = import.meta.env.VITE_URL_API_URL
 const googleMapsKey: string = import.meta.env.VITE_GOOGLE_MAP_KEY
@@ -12,7 +13,6 @@ const googleMapsKey: string = import.meta.env.VITE_GOOGLE_MAP_KEY
 export const establishmentsApi = new EstablishmentsApi(new Configuration({
   basePath
 }))
-
 
 // FIXME This should be removed 
 interface Category {
@@ -26,28 +26,6 @@ interface CategoriesIssue {
   label: string;
 }
 
-export type BaseEstablishment = Pick<CryptoEstablishmentApi, "uuid" | "name" | "category"> & {
-  geoLocation: CryptoEstablishmentApi["geo_location"];
-  hasAllInfo: false;
-  gmapsUrl: undefined;
-  gmapsPlaceId: undefined;
-  gmapsType: undefined;
-  photoUrl: undefined;
-  currencies: Currency[];
-  rating: undefined;
-  address: undefined;
-}
-
-export type Establishment = Pick<BaseEstablishment, "uuid" | "name" | "category" | "geoLocation" | "currencies"> & {
-  hasAllInfo: true;
-  gmapsUrl: CryptoEstablishmentApi["gmaps_url"];
-  gmapsPlaceId: CryptoEstablishmentApi["gmaps_place_id"];
-  geoLocation: CryptoEstablishmentApi["geo_location"];
-  gmapsType: CryptoEstablishmentApi["gmaps_type"];
-  photoUrl?: string;
-  rating: CryptoEstablishmentApi["rating"];
-  address: CryptoEstablishmentApi["address"];
-}
 
 export const useApi = defineStore("api", () => {
 
@@ -55,8 +33,9 @@ export const useApi = defineStore("api", () => {
 
   // Items that are loaded only once at the beginning
   const categoriesIssue = ref<CategoriesIssue[]>([])
-  const categories = ref<Category[]>([])
-  const currencies = ref<Currency[]>([])
+  const categories = new Map<string, Category>();
+  const currencies = new Map<string, Currency>();
+  const providers = new Map<number, Provider>();
 
   const route = useRoute()
   const router = useRouter()
@@ -76,37 +55,47 @@ export const useApi = defineStore("api", () => {
   const { boundingBox, surroundingBoundingBox } = storeToRefs(mapStore)
 
   // Converts crypto location model from the API to the model used in the app
-  function parseBaseEstablishment({ uuid, name, category, geo_location: geoLocation, currencies: establishmentCurrencySymbols }: CryptoEstablishmentBaseApi): BaseEstablishment {
-    const establishmentCurrencies = currencies.value.filter(c => establishmentCurrencySymbols?.includes(c.symbol))
+  function parseBaseEstablishment({ uuid, name, category, geoLocation, providersId }: CryptoEstablishmentBaseApi): BaseEstablishment {
     const parsedEstablishment: BaseEstablishment = {
-      uuid, name, category, geoLocation, hasAllInfo: false,
-      address: undefined, gmapsPlaceId: undefined, gmapsType: undefined, gmapsUrl: undefined, photoUrl: undefined, rating: undefined,
-      currencies: establishmentCurrencies,
+      uuid: uuid.trim(),
+      name: name.trim(),
+      category: category.trim(),
+      geoLocation,
+      providers: providersId.map((id) => providers.get(id)).filter(Boolean),
+      hasAllInfo: false,
     }
     return parsedEstablishment
   }
 
   function parseEstablishment({
-    uuid, address, category, currencies: establishmentCurrencySymbols, gmaps_place_id, gmaps_type, gmaps_url, geo_location, name, photo_reference, rating
+    uuid, address, providers: providersWithCrypto, category, gmapsPlaceId, geoLocation, name, photoReference, rating, gmapsTypes
   }: CryptoEstablishmentApi): Establishment {
-    const photoUrl = photo_reference
-      ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=540&photo_reference=${photo_reference}&key=${googleMapsKey}`
+    const photoUrl = photoReference
+      ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=540&photo_reference=${photoReference}&key=${googleMapsKey}`
       : undefined
-    const establishmentCurrencies = currencies.value.filter(c => establishmentCurrencySymbols?.includes(c.symbol))
+
+    const establishmentProviders = providersWithCrypto.map(p => {
+      // both, buy and sell are disjoint sets of currencies
+      const both = p.buy.filter((c) => p.sell.includes(c)).map((c) => currencies.get(c.trim())!).filter(Boolean) as Currency[]
+      const buy = p.buy.filter((c) => !p.sell.includes(c)).map((c) => currencies.get(c.trim())!).filter(Boolean) as Currency[]
+      const sell = p.sell.filter((c) => !p.buy.includes(c)).map((c) => currencies.get(c.trim())!).filter(Boolean) as Currency[]
+      const establishmentProvider: Establishment["providers"][number] = { ...p, both, buy, sell }
+      return establishmentProvider
+    })
 
     const parsedEstablishment: Establishment = {
       hasAllInfo: true,
       address: address.trim(),
       category: category.trim(),
-      currencies: establishmentCurrencies,
-      gmapsPlaceId: gmaps_place_id.trim(),
-      gmapsType: capitalize(gmaps_type.replace(/_/g, ' ')),
-      gmapsUrl: gmaps_url.trim(),
-      geoLocation: geo_location,
+      gmapsPlaceId: gmapsPlaceId.trim(),
+      gmapsTypes,
+      gmapsUrl: `https://maps.google.com/?cid=${gmapsPlaceId.trim()}`,
+      geoLocation,
       uuid: uuid.trim(),
       name: name.trim(),
       photoUrl: photoUrl?.trim(),
       rating: rating,
+      providers: establishmentProviders
     }
     return parsedEstablishment
   }
@@ -121,10 +110,9 @@ export const useApi = defineStore("api", () => {
       filterCurrency: selectedCurrencies.value || undefined,
     }
 
-    console.log('🔍 Searching in the API: ', body)
-
-    // const response: CryptoEstablishmentBaseApi[] = await establishmentsApi.searchEstablishments(body).catch((e) => e)
     const unformatedResponse: { [key: string]: CryptoEstablishmentBaseApi }[] = await establishmentsApi.searchEstablishments(body).catch((e) => e)
+    console.log('🔍 Got establishments from API: ', unformatedResponse)
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore The API is returning an object with the index as key, but it should return an array
     const response = Object.values(unformatedResponse) as CryptoEstablishmentBaseApi[]
@@ -134,7 +122,6 @@ export const useApi = defineStore("api", () => {
       // alert('The api is not available'); // TODO Handle error
       return;
     }
-
     response
       .map(parseBaseEstablishment)
       .sort((a, b) => b.geoLocation.lat - a.geoLocation.lat)
@@ -151,7 +138,7 @@ export const useApi = defineStore("api", () => {
     establishment.hasAllInfo = true
     establishments.value.set(uuid, establishment)
 
-    return parseEstablishment(rawEstablishment) || undefined
+    return establishment
   }
 
   function setEstablishment(establishment: Establishment) {
@@ -162,8 +149,6 @@ export const useApi = defineStore("api", () => {
 
     establishments.value.set(establishment.uuid, establishment)
   }
-
-  const capitalize = (s: string) => s.replace(/(?:^|\s)\S/g, (a) => a.toUpperCase())
 
   async function fetchIssueCategories() {
     const res: CategoriesIssue[] = await establishmentsApi.getIssueCategories().catch((e) => e)
@@ -187,10 +172,9 @@ export const useApi = defineStore("api", () => {
       // TODO Handle error
       return;
     }
-    categories.value = res.map(({ label }) => ({
-      id: label,
-      label
-    }))
+    res.forEach((category) => {
+      categories.set(category.id, { id: category.id, label: category.label })
+    })
   }
 
   async function fetchCurrencies() {
@@ -205,7 +189,7 @@ export const useApi = defineStore("api", () => {
     const showFirst = ['NIM', 'BTC']
     const showLast = ['bluecode', 'atm']
 
-    currencies.value = res.sort((a, b) => {
+    const sortedCurrencies = res.sort((a, b) => {
       const aIndex = showFirst.indexOf(a.symbol)
       const bIndex = showFirst.indexOf(b.symbol)
       const aLastIndex = showLast.indexOf(a.symbol)
@@ -218,6 +202,23 @@ export const useApi = defineStore("api", () => {
       if (aLastIndex > -1) return 1
       if (bLastIndex > -1) return -1
       return 0
+    })
+
+    sortedCurrencies.forEach((currency) => {
+      currencies.set(currency.symbol, currency)
+    })
+  }
+
+  async function fetchProviders() {
+    const res: Provider[] = await establishmentsApi.getProviders().catch((e) => e)
+    console.log('🔍 Fetched providers from the API', res)
+    if (res instanceof Error) {
+      console.error(res);
+      // TODO Handle error
+      return;
+    }
+    res.forEach((provider) => {
+      providers.set(provider.id, provider)
     })
   }
 
@@ -245,24 +246,7 @@ export const useApi = defineStore("api", () => {
     fetchCategories()
     fetchIssueCategories()
     fetchCurrencies()
-  })
-
-  const currenciesOptions = computed(() => {
-    return currencies.value.map((currency) => {
-      return {
-        id: currency.symbol,
-        label: currency.name,
-      }
-    })
-  })
-
-  const categoriesOptions = computed(() => {
-    return categories.value.map((category) => {
-      return {
-        id: category.id,
-        label: category.label,
-      }
-    })
+    fetchProviders()
   })
 
   const suggestions = ref<Suggestion[]>([])
@@ -306,11 +290,6 @@ export const useApi = defineStore("api", () => {
     setEstablishment,
     reportEstablishment,
     addCandidate,
-
-    // For the select component
-    currenciesOptions,
-    categoriesOptions, // FIXME This one should be removed
-
     autocomplete,
     suggestions
   }

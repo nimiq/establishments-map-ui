@@ -19,12 +19,13 @@ import type {
   CategoriesIssueInner,
   CategoryInner,
   CryptoEstablishment,
-  CryptoEstablishmentBase,
+  CryptoEstablishmentBaseInner,
   CurrencyInner,
   EstablishmentCandidateBody,
   EstablishmentCandidateResponse,
   EstablishmentIssueBody,
   EstablishmentIssueResponse,
+  GetProviders200ResponseInner,
 } from '../models';
 import {
     AutocompleteApiFromJSON,
@@ -35,8 +36,8 @@ import {
     CategoryInnerToJSON,
     CryptoEstablishmentFromJSON,
     CryptoEstablishmentToJSON,
-    CryptoEstablishmentBaseFromJSON,
-    CryptoEstablishmentBaseToJSON,
+    CryptoEstablishmentBaseInnerFromJSON,
+    CryptoEstablishmentBaseInnerToJSON,
     CurrencyInnerFromJSON,
     CurrencyInnerToJSON,
     EstablishmentCandidateBodyFromJSON,
@@ -47,6 +48,8 @@ import {
     EstablishmentIssueBodyToJSON,
     EstablishmentIssueResponseFromJSON,
     EstablishmentIssueResponseToJSON,
+    GetProviders200ResponseInnerFromJSON,
+    GetProviders200ResponseInnerToJSON,
 } from '../models';
 
 export interface AutocompleteRequest {
@@ -219,6 +222,32 @@ export class EstablishmentsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get all providers
+     */
+    async getProvidersRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GetProviders200ResponseInner>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/providers`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GetProviders200ResponseInnerFromJSON));
+    }
+
+    /**
+     * Get all providers
+     */
+    async getProviders(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GetProviders200ResponseInner>> {
+        const response = await this.getProvidersRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Create a new candidate for a establishment
      */
     async postCandidateRaw(requestParameters: PostCandidateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EstablishmentCandidateResponse>> {
@@ -279,7 +308,7 @@ export class EstablishmentsApi extends runtime.BaseAPI {
     /**
      * Search for establishments
      */
-    async searchEstablishmentsRaw(requestParameters: SearchEstablishmentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: CryptoEstablishmentBase; }>> {
+    async searchEstablishmentsRaw(requestParameters: SearchEstablishmentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<CryptoEstablishmentBaseInner>>> {
         const queryParameters: any = {};
 
         if (requestParameters.filterCurrency) {
@@ -303,13 +332,13 @@ export class EstablishmentsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => runtime.mapValues(jsonValue, CryptoEstablishmentBaseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(CryptoEstablishmentBaseInnerFromJSON));
     }
 
     /**
      * Search for establishments
      */
-    async searchEstablishments(requestParameters: SearchEstablishmentsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: CryptoEstablishmentBase; }> {
+    async searchEstablishments(requestParameters: SearchEstablishmentsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<CryptoEstablishmentBaseInner>> {
         const response = await this.searchEstablishmentsRaw(requestParameters, initOverrides);
         return await response.value();
     }

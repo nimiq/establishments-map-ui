@@ -2,8 +2,8 @@
 import Select, { type SelectOption } from "@/components/elements/Select.vue"
 import TextAreaInput from "@/components/elements/TextAreaInput.vue"
 import FormContainer from "@/components/forms/FormContainer.vue"
-import { useApi, type Establishment } from "@/stores/api"
-import { useEstablishments } from "@/stores/establishments"
+import { useApi } from "@/stores/api"
+import { useEstablishments, type Establishment } from "@/stores/establishments"
 import { storeToRefs } from "pinia"
 import { computed, onMounted, ref } from "vue"
 import { useRoute } from "vue-router"
@@ -37,8 +37,8 @@ async function onSubmit(token: string) {
 	if (!selectedIssue.value?.id || !establishment.value) return
 	return await apiStore.reportEstablishment({
 		token,
-		issue_category_id: selectedIssue.value.id as number,
-		establishment_uuid: establishment.value.uuid as string,
+		issueCategoryId: selectedIssue.value.id as number,
+		establishmentUuid: establishment.value.uuid as string,
 		description: issueDescription.value,
 	})
 }
@@ -55,8 +55,7 @@ async function onSubmit(token: string) {
 
 		<template #form>
 			<Select :label="$t('Select_issue')" :options="categoriesIssue.map(({ id, label }) => ({ id, label: $t(label) }))"
-				v-model:selected-single="selectedIssue" :multiple="false" :placeholder="$t('Select_issue')"
-				replace-placeholder />
+				v-model:selected-single="selectedIssue" :multiple="false" :placeholder="$t('Select_issue')" replace-placeholder />
 
 			<TextAreaInput :placeholder="$t('Write_your_problem_here')" class="mt-6" :label="$t('Describe_the_issue')"
 				v-model="issueDescription" />

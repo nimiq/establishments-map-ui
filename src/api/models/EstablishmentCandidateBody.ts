@@ -24,7 +24,7 @@ export interface EstablishmentCandidateBody {
      * @type {string}
      * @memberof EstablishmentCandidateBody
      */
-    gmaps_place_id: string;
+    gmapsPlaceId: string;
     /**
      * 
      * @type {string}
@@ -50,7 +50,7 @@ export interface EstablishmentCandidateBody {
  */
 export function instanceOfEstablishmentCandidateBody(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "gmaps_place_id" in value;
+    isInstance = isInstance && "gmapsPlaceId" in value;
     isInstance = isInstance && "token" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "currencies" in value;
@@ -68,7 +68,7 @@ export function EstablishmentCandidateBodyFromJSONTyped(json: any, ignoreDiscrim
     }
     return {
         
-        'gmaps_place_id': json['gmaps_place_id'],
+        'gmapsPlaceId': json['gmaps_place_id'],
         'token': json['token'],
         'name': json['name'],
         'currencies': json['currencies'],
@@ -84,7 +84,7 @@ export function EstablishmentCandidateBodyToJSON(value?: EstablishmentCandidateB
     }
     return {
         
-        'gmaps_place_id': value.gmaps_place_id,
+        'gmaps_place_id': value.gmapsPlaceId,
         'token': value.token,
         'name': value.name,
         'currencies': value.currencies,

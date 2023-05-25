@@ -1,31 +1,26 @@
-import type { CryptoEstablishment as CryptoEstablishmentApi, CurrencyInner as Currency } from "@/api";
+import type { CurrencyInner as Currency, CryptoEstablishment, CryptoEstablishmentBaseInner as CryptoEstablishmentBaseApi, GetProviders200Response as Provider, GetProviders200Response } from "@/api";
 import { defineStore, storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import { useApi } from "./api";
 import { useMap, type BoundingBox } from "./map";
 
 
-export type BaseEstablishment = Pick<CryptoEstablishmentApi, "uuid" | "name" | "category"> & {
-  geoLocation: CryptoEstablishmentApi["geo_location"];
+export type ProviderEstablishment = Provider & {
+  buy: Map<string, Currency>;
+  sell: Map<string, Currency>;
+  both: Map<string, Currency>;
+};
+
+export type BaseEstablishment = Omit<CryptoEstablishmentBaseApi, "providersId"> & {
   hasAllInfo: false;
-  gmapsUrl: undefined;
-  gmapsPlaceId: undefined;
-  gmapsType: undefined;
-  photoUrl: undefined;
-  currencies: Currency[];
-  rating: undefined;
-  address: undefined;
+  providers: GetProviders200Response[]; // TODO check whether is necessary or it belongs to type Establishment
 }
 
-export type Establishment = Pick<BaseEstablishment, "uuid" | "name" | "category" | "geoLocation" | "currencies"> & {
+export type Establishment = Omit<BaseEstablishment, "hasAllInfo" | "providers"> & Omit<CryptoEstablishment, "photoReference" | "enabled" | "providers"> & {
   hasAllInfo: true;
-  gmapsUrl: CryptoEstablishmentApi["gmaps_url"];
-  gmapsPlaceId: CryptoEstablishmentApi["gmaps_place_id"];
-  geoLocation: CryptoEstablishmentApi["geo_location"];
-  gmapsType: CryptoEstablishmentApi["gmaps_type"];
   photoUrl?: string;
-  rating: CryptoEstablishmentApi["rating"];
-  address: CryptoEstablishmentApi["address"];
+  gmapsUrl: string;
+  providers: ProviderEstablishment[];
 }
 
 export const useEstablishments = defineStore("establishments", () => {
@@ -53,8 +48,8 @@ export const useEstablishments = defineStore("establishments", () => {
   *    given the id. Once the info is loaded, we update the establishments map with the new info.
   *         {
   *           "12345": { name: "Max's shoes", category: 'shop', id: 12345, geoLocation: { lat: 10, lng: 20 }, hasAllInfo: false } },
-  *           "98765": { name: "Market shop", category: 'shop', id: 98765, geoLocation: { lat: 30, lng: 15 }, hasAllInfo: true, gmapsUrl, photoUrl, currencies, rating...} },
-  *           "55555": { name: "Coffee tico", category: 'rest', id: 55555, geoLocation: { lat: 30, lng: 15 }, hasAllInfo: true, gmapsUrl, photoUrl, currencies, rating... } },
+  *           "98765": { name: "Market shop", category: 'shop', id: 98765, geoLocation: { lat: 30, lng: 15 }, hasAllInfo: true, gmapsUrl, photoUrl, providers, rating...} },
+  *           "55555": { name: "Coffee tico", category: 'rest', id: 55555, geoLocation: { lat: 30, lng: 15 }, hasAllInfo: true, gmapsUrl, photoUrl, providers, rating... } },
   *         }
   * 6. Once the info is loaded, we no longer will fetch the info for the establishment, because we already have it.
   * 
@@ -73,7 +68,7 @@ export const useEstablishments = defineStore("establishments", () => {
     const insideBoundingBox = lat <= northEast.lat && lat >= southWest.lat && lng <= northEast.lng && lng >= southWest.lng
     const ignoreCurrencies = apiStore.selectedCurrencies.length === 0
     const ignoreCategores = apiStore.selectedCategories.length === 0
-    const filteredByCurrencies = ignoreCurrencies || establishment.currencies.some(c => apiStore.selectedCurrencies.includes(c.symbol))
+    const filteredByCurrencies = ignoreCurrencies || establishment.providers.some(p => apiStore.selectedCurrencies.some(c => p.buy.has(c) || p.sell.has(c) || p.both.has(c)))
     const filteredByCategories = ignoreCategores || apiStore.selectedCategories.includes(establishment.category)
     return insideBoundingBox && filteredByCurrencies && filteredByCategories
   }

@@ -1,13 +1,24 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["env.d.ts", "src/**/*"],
+  "include": [
+    "env.d.ts",
+    "src/**/*"
+  ],
   "compilerOptions": {
+    "lib": [
+      "DOM",
+      "ES2017"
+    ],
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
-    "types": ["grecaptcha"],
+    "types": [
+      "grecaptcha"
+    ],
   },
   "references": [
     {

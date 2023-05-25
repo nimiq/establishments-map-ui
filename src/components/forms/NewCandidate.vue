@@ -9,7 +9,7 @@ import SearchBox from "../elements/SearchBox.vue"
 import Select from "../elements/Select.vue"
 
 const apiStore = useApi()
-const { currenciesOptions } = storeToRefs(apiStore)
+const { currencies } = storeToRefs(apiStore)
 
 const { autocomplete, suggestions, status } = useAutocomplete({ searchFor: [SuggestionType.GOOGLE_ESTABLISHMENT] })
 
@@ -22,7 +22,7 @@ async function onSubmit(token: string) {
 	return await apiStore.addCandidate({
 		token,
 		currencies: selectedCurrencies.value,
-		gmaps_place_id: selectedPlace.value?.id as string || "",
+		gmapsPlaceId: selectedPlace.value?.id as string || "",
 		name: selectedPlace.value?.label || "",
 	})
 }
@@ -41,16 +41,16 @@ async function onSubmit(token: string) {
 				@selected="(selectedPlace = $event)" :allow-clean="false" />
 
 			<Select class="mt-6" :label="$t('Select_Cryptocurrency')" input-id="cryptocurrency-input"
-				:options="currenciesOptions" v-model="selectedCurrencies" :placeholder="$t('Select_Cryptocurrency')">
-				<template #option="{ id, label }">
+				:options="Object.values(currencies)" v-model="selectedCurrencies" :placeholder="$t('Select_Cryptocurrency')">
+				<template #option="{ id, name }">
 					<CryptoIcon class="w-6 h-6" :crypto="(id as string)" />
 					<span>
 						<span class="font-bold">{{ (id as string).toUpperCase() }}</span>
-						{{ label }}
+						{{ name }}
 					</span>
 				</template>
 				<template #after-options> {{ $t('More_cryptocurrencies_supported_in_the_future') }} </template>
-				<template #selected-option="{ label }">{{ label }} </template>
+				<template #selected-option="{ name }">{{ name }} </template>
 			</Select>
 		</template>
 		<template #button-label>{{ $t('Submit_Establishment') }}</template>

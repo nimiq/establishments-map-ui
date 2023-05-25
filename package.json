@@ -8,7 +8,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.ts --ignore-pattern dist/ --ignore-pattern '*.config.js'",
-    "api:generate": "yarn openapi-generator-cli generate -g typescript-fetch -i openapi.yaml -o ./src --additional-properties=typescriptThreePlus=true,legacyDiscriminatorBehavior=false,modelPropertyNaming='original',enumPropertyNaming='original' -o ./src/api/ && yarn build"
+    "api:generate": "yarn openapi-generator-cli generate -g typescript-fetch -i openapi.yaml -o ./src --additional-properties=typescriptThreePlus=true,legacyDiscriminatorBehavior=false,modelPropertyNaming='camelCase',enumPropertyNaming='original' -o ./src/api/ && yarn build"
   },
   "dependencies": {
     "@fontsource/mulish": "^4.5.7",

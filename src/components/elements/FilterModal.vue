@@ -1,4 +1,4 @@
-f<script setup lang="ts">
+<script setup lang="ts">
 import Button from "@/components/elements/Button.vue"
 import CategoryIcon from "@/components/elements/CategoryIcon.vue"
 import CryptoIcon from "@/components/elements/CryptoIcon.vue"
@@ -16,7 +16,7 @@ const isOpen = ref(false)
 const { smallScreen } = useBreakpoints()
 
 const apiStore = useApi()
-const { currenciesOptions, categoriesOptions, selectedCategories, selectedCurrencies } =
+const { currencies, categories, selectedCategories, selectedCurrencies } =
 	storeToRefs(apiStore)
 
 const unappliedSelectedCategories = ref<string[]>([])
@@ -89,7 +89,7 @@ function specialCurrency(id: string | number) {
 							</DialogTitle>
 							<hr class="w-full bg-space/10 h-px my-8" />
 
-							<Select placeholder="Select cryptocurrencies" :options="currenciesOptions"
+							<Select placeholder="Select cryptocurrencies" :options="Object.values(currencies)" label-key="name"
 								v-model="unappliedSelectedCurrencies" class="px-6 md:px-10">
 								<template #label>
 									<h3 class="uppercase text-sm text-space/40 tracking-wider font-semibold mb-6 md:mb-8">
@@ -112,8 +112,8 @@ function specialCurrency(id: string | number) {
 								<template #after-options> More cryptocurrencies supported in the future </template>
 								<template #selected-option="{ label }"> {{ label }} </template>
 							</Select>
-							<Select :options="categoriesOptions.map(({ id, label }) => ({ id, label: $t(label) }))"
-								v-model="unappliedSelectedCategories" placeholder="Select category" class="mt-9 px-6 md:px-10">
+							<Select :options="Object.values(categories)" v-model="unappliedSelectedCategories"
+								placeholder="Select category" class="mt-9 px-6 md:px-10">
 								<template #label>
 									<h3 class="uppercase text-sm text-space/40 tracking-wider font-semibold mb-6 md:mb-8">
 										{{ $t('Categories') }}
@@ -124,7 +124,7 @@ function specialCurrency(id: string | number) {
 									{{ label }}
 								</template>
 								<template #selected-option="{ label }">
-									{{ $t(label) }}
+									<template v-if="label">{{ $t(label) }}</template>
 								</template>
 							</Select>
 							<hr class="w-full bg-space/10 h-px my-8" />

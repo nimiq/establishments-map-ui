@@ -16,27 +16,27 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface CryptoEstablishmentBaseInnerGeoLocation
+ * @interface GeoLocation
  */
-export interface CryptoEstablishmentBaseInnerGeoLocation {
+export interface GeoLocation {
     /**
      * 
      * @type {number}
-     * @memberof CryptoEstablishmentBaseInnerGeoLocation
+     * @memberof GeoLocation
      */
     lat: number;
     /**
      * 
      * @type {number}
-     * @memberof CryptoEstablishmentBaseInnerGeoLocation
+     * @memberof GeoLocation
      */
     lng: number;
 }
 
 /**
- * Check if a given object implements the CryptoEstablishmentBaseInnerGeoLocation interface.
+ * Check if a given object implements the GeoLocation interface.
  */
-export function instanceOfCryptoEstablishmentBaseInnerGeoLocation(value: object): boolean {
+export function instanceOfGeoLocation(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "lat" in value;
     isInstance = isInstance && "lng" in value;
@@ -44,11 +44,11 @@ export function instanceOfCryptoEstablishmentBaseInnerGeoLocation(value: object)
     return isInstance;
 }
 
-export function CryptoEstablishmentBaseInnerGeoLocationFromJSON(json: any): CryptoEstablishmentBaseInnerGeoLocation {
-    return CryptoEstablishmentBaseInnerGeoLocationFromJSONTyped(json, false);
+export function GeoLocationFromJSON(json: any): GeoLocation {
+    return GeoLocationFromJSONTyped(json, false);
 }
 
-export function CryptoEstablishmentBaseInnerGeoLocationFromJSONTyped(json: any, ignoreDiscriminator: boolean): CryptoEstablishmentBaseInnerGeoLocation {
+export function GeoLocationFromJSONTyped(json: any, ignoreDiscriminator: boolean): GeoLocation {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -59,7 +59,7 @@ export function CryptoEstablishmentBaseInnerGeoLocationFromJSONTyped(json: any, 
     };
 }
 
-export function CryptoEstablishmentBaseInnerGeoLocationToJSON(value?: CryptoEstablishmentBaseInnerGeoLocation | null): any {
+export function GeoLocationToJSON(value?: GeoLocation | null): any {
     if (value === undefined) {
         return undefined;
     }
