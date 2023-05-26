@@ -1,7 +1,7 @@
 import { Configuration, EstablishmentsApi, type PostCandidateRequest as CandidateRequest, type CryptoEstablishment as CryptoEstablishmentApi, type CryptoEstablishmentBaseInner as CryptoEstablishmentBaseApi, type CurrencyInner as Currency, type PostEstablishmentIssueRequest as EstablishmentIssueRequest, type SearchEstablishmentsRequest } from "@/api";
 import { SuggestionType, type Suggestion } from "@/composables/useAutocomplete";
 import { defineStore, storeToRefs } from "pinia";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, type Ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useEstablishments, type BaseEstablishment, type Establishment } from "./establishments";
 import { useMap } from "./map";
@@ -33,16 +33,18 @@ export const useApi = defineStore("api", () => {
 
   // Items that are loaded only once at the beginning
   const categoriesIssue = ref<CategoriesIssue[]>([])
-  const categories = new Map<string, Category>();
-  const currencies = new Map<string, Currency>();
-  const providers = new Map<number, Provider>();
+  const categories = ref(new Map<string, Category>());
+  const currencies = ref(new Map<string, Currency>());
+  const providers = ref(new Map<number, Provider>());
 
   const route = useRoute()
   const router = useRouter()
 
   // Filters
-  const selectedCurrencies = ref(pathParamToStringList('currencies'))
-  const selectedCategories = ref(pathParamToStringList('categories'))
+  const selectedCurrencies: Ref<Currency[]> = ref([])
+  watch(currencies, () => selectedCurrencies.value = extractFromMap(currencies.value, pathParamToStringList('currencies')))
+  const selectedCategories: Ref<Category[]> = ref([])
+  watch(categories, () => selectedCategories.value = extractFromMap(categories.value, pathParamToStringList('categories')))
 
   function pathParamToStringList(param: 'currencies' | 'categories') {
     const values = route.query[param] as string
@@ -50,6 +52,20 @@ export const useApi = defineStore("api", () => {
     if (typeof values === 'string') return [values]
     return values
   }
+
+  function extractFromMap<T>(map: Map<string, T>, list: string[]): T[] {
+    return list.map(item => map.get(item)!).filter(Boolean)
+  }
+
+  watch([selectedCategories, selectedCurrencies], async ([newCategories, newCurrencies]) => {
+    router.push({
+      query: {
+        categories: newCategories.map(c => c.label),
+        currencies: newCurrencies.map(c => c.symbol),
+      }
+    })
+    await search()
+  })
 
   const mapStore = useMap()
   const { boundingBox, surroundingBoundingBox } = storeToRefs(mapStore)
@@ -61,7 +77,7 @@ export const useApi = defineStore("api", () => {
       name: name.trim(),
       category: category.trim(),
       geoLocation,
-      providers: providersId.map((id) => providers.get(id)).filter(Boolean),
+      providers: providersId.map((id) => providers.value.get(id)).filter(Boolean),
       hasAllInfo: false,
     }
     return parsedEstablishment
@@ -76,9 +92,9 @@ export const useApi = defineStore("api", () => {
 
     const establishmentProviders = providersWithCrypto.map(p => {
       // both, buy and sell are disjoint sets of currencies
-      const both = p.buy.filter((c) => p.sell.includes(c)).map((c) => currencies.get(c.trim())!).filter(Boolean) as Currency[]
-      const buy = p.buy.filter((c) => !p.sell.includes(c)).map((c) => currencies.get(c.trim())!).filter(Boolean) as Currency[]
-      const sell = p.sell.filter((c) => !p.buy.includes(c)).map((c) => currencies.get(c.trim())!).filter(Boolean) as Currency[]
+      const both = p.buy.filter((c) => p.sell.includes(c)).map((c) => currencies.value.get(c.trim())!).filter(Boolean) as Currency[]
+      const buy = p.buy.filter((c) => !p.sell.includes(c)).map((c) => currencies.value.get(c.trim())!).filter(Boolean) as Currency[]
+      const sell = p.sell.filter((c) => !p.buy.includes(c)).map((c) => currencies.value.get(c.trim())!).filter(Boolean) as Currency[]
       const establishmentProvider: Establishment["providers"][number] = { ...p, both, buy, sell }
       return establishmentProvider
     })
@@ -106,8 +122,8 @@ export const useApi = defineStore("api", () => {
 
     const body: SearchEstablishmentsRequest = {
       filterBoundingBox: boundingBoxStr,
-      filterEstablishmentCategoryLabel: selectedCategories.value || undefined,
-      filterCurrency: selectedCurrencies.value || undefined,
+      filterEstablishmentCategoryLabel: selectedCategories.value.map(c => c.label) || undefined,
+      filterCurrency: selectedCurrencies.value.map(c => c.symbol) || undefined,
     }
 
     const unformatedResponse: { [key: string]: CryptoEstablishmentBaseApi }[] = await establishmentsApi.searchEstablishments(body).catch((e) => e)
@@ -125,8 +141,8 @@ export const useApi = defineStore("api", () => {
     response
       .map(parseBaseEstablishment)
       .sort((a, b) => b.geoLocation.lat - a.geoLocation.lat)
-      .filter((e) => !establishments.value.has(e.uuid)) // ignore already loaded establishments
-      .forEach((establishment) => establishments.value.set(establishment.uuid, establishment))
+      .filter((e) => !establishments?.value.has(e.uuid)) // ignore already loaded establishments
+      .forEach((establishment) => establishments?.value.set(establishment.uuid, establishment))
   }
 
   async function getEstablishmentByUuid(uuid: string) {
@@ -173,7 +189,7 @@ export const useApi = defineStore("api", () => {
       return;
     }
     res.forEach((category) => {
-      categories.set(category.id, { id: category.id, label: category.label })
+      categories.value.set(category.id, { id: category.id, label: category.label })
     })
   }
 
@@ -205,7 +221,7 @@ export const useApi = defineStore("api", () => {
     })
 
     sortedCurrencies.forEach((currency) => {
-      currencies.set(currency.symbol, currency)
+      currencies.value.set(currency.symbol, currency)
     })
   }
 
@@ -218,19 +234,9 @@ export const useApi = defineStore("api", () => {
       return;
     }
     res.forEach((provider) => {
-      providers.set(provider.id, provider)
+      providers.value.set(provider.id, provider)
     })
   }
-
-  watch([selectedCategories, selectedCurrencies], async ([newCategories, newCurrencies]) => {
-    router.push({
-      query: {
-        categories: newCategories,
-        currencies: newCurrencies,
-      }
-    })
-    await search()
-  })
 
   watch([boundingBox], async () => await search())
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ArrowLinkIcon from "@/components/icons/icon-arrow-link.vue"
+import ArrowLinkIcon from "@/components/icons/icon-arrow-link.vue";
 
 import { Tooltip } from "@nimiq/vue3-components";
 import { useSlots } from "vue";
@@ -34,23 +34,22 @@ const hasSlot = (name: string) => {
 			<slot name="trigger" />
 		</template>
 
-		<div class="w-scren sm:px-0 overflow-hidden absolute top-8" :class="{ 'left-2': !customTop }">
+		<div class="absolute w-screen overflow-hidden sm:px-0 top-8" :class="{ 'left-2': !customTop }" data-tooltip>
 			<svg v-if="customTop" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 10"
-				class="text-space relative w-max h-3 left-2">
+				class="relative h-3 text-space w-max left-2">
 				<path fill="currentColor"
 					d="M12.63 1.83 8.27 8.25A4 4 0 0 1 4.97 10h17.8a4 4 0 0 1-3.3-1.75L15.1 1.83a1.5 1.5 0 0 0-2.48 0z" />
 			</svg>
-			<div class="shadow ring-1 ring-space/30 children:px-4 py-3 bg-gradient-space rounded-sm space-y-2">
-				<p
-					class="uppercase text-white opacity-70 text-[10px] font-bold border-fog rounded-full tracking-wider pt-1 pl-1">
+			<div class="py-3 space-y-2 rounded-sm shadow ring-1 ring-space/30 children:px-4 bg-gradient-space">
+				<p class="uppercase text-white opacity-70 text-[10px] font-bold border-fog rounded-full tracking-wider pt-1 pl-1">
 					<slot name="subline" v-if="hasSlot('subline')" />
 				</p>
 
-				<h3 class="text-white font-bold text-lg" v-if="hasSlot('title')">
+				<h3 class="text-lg font-bold text-white" v-if="hasSlot('title')">
 					<slot name="title" />
 				</h3>
 
-				<p class="text-white/60 text-sm" v-if="hasSlot('description')">
+				<p class="text-sm text-white/60" v-if="hasSlot('description')">
 					<slot name="description" />
 				</p>
 				<a class="text-sky font-bold text-sm group flex items-center gap-x-1.5 w-max" v-if="hasSlot('cta') && ctaHref"

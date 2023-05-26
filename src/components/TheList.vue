@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import Button from "@/components/elements/Button.vue"
 import EstablishmentCard from "@/components/elements/EstablishmentCard.vue"
-import ChevronLeftIcon from "@/components/icons/icon-arrow-small-left.vue"
-import ListIcon from "@/components/icons/icon-list.vue"
 import NoEstablishments from "@/components/illustrations/no-establishments.vue"
 import { useBreakpoints } from "@/composables/useBreakpoints"
 import { useApp } from "@/stores/app"
@@ -40,17 +38,15 @@ function slideTo(index: number, behavior: "smooth" | "auto" = "smooth") {
 
 <template>
 	<div
-		class="xl:flex xl:gap-6 absolute max-xl:transition-all xl:transition-transform-width max-xl:bottom-0 max-xl:bg-white max-xl:shadow max-xl:w-screen max-xl:overflow-y-auto"
+		class="max-xl:absolute max-xl:transition-all xl:transition-transform-width max-xl:bottom-0 max-xl:bg-white max-xl:shadow max-xl:w-screen max-xl:overflow-y-auto"
 		:class="{
-			'xl:-translate-x-96 max-xl:top-full': !listIsShown,
 			'h-full lg:h-[calc(100vh-80px)]': !listIsEmpty,
-			'lg:h-[calc(100vh-80px)]': listIsEmpty,
 		}">
 		<div v-if="!listIsEmpty" id="list"
-			class="xl:flex xl:flex-col xl:w-96 p-6 columns-2xs gap-6 space-y-6 snap-y snap-mandatory scroll-py-6 bg-white xl:shadow xl:overflow-y-auto scroll-space z-2 relative max-xl:pb-16">
+			class="relative gap-6 p-6 space-y-6 bg-white xl:flex xl:flex-col xl:w-96 columns-2xs scroll-py-6 xl:overflow-y-auto scroll-space z-2 max-xl:pb-16">
 			<ul ref="scroller$" class="space-y-6">
 				<li v-for="establishment in establishmentsInView" :key="establishment.uuid"
-					class="list-item-wrap xl:snap-start shadow-lg border pt-1.5 pb-6 rounded-lg flex flex-col break-inside-avoid-column transition-[box-shadow]"
+					class="list-item-wrap shadow-lg border pt-1.5 pb-6 rounded-lg flex flex-col break-inside-avoid-column transition-[box-shadow]"
 					:class="{ 'ring ring-ocean': establishment.uuid === selectedEstablishmentUuid }"
 					:data-establishment-id="establishment.uuid">
 					<EstablishmentCard :establishment="establishment" />
@@ -58,7 +54,7 @@ function slideTo(index: number, behavior: "smooth" | "auto" = "smooth") {
 
 				<template v-if="shouldShowNearby">
 					<li v-for="establishment in nearEstablishmentsNotInView" :key="establishment.uuid"
-						class="list-item-wrap xl:snap-start shadow-lg border pt-1.5 pb-6 rounded-lg flex flex-col break-inside-avoid-column transition-[box-shadow]"
+						class="list-item-wrap shadow-lg border pt-1.5 pb-6 rounded-lg flex flex-col break-inside-avoid-column transition-[box-shadow]"
 						:class="{ 'ring ring-ocean': establishment.uuid === selectedEstablishmentUuid }"
 						:data-establishment-id="establishment.uuid">
 						<EstablishmentCard :establishment="establishment" />
@@ -82,35 +78,15 @@ function slideTo(index: number, behavior: "smooth" | "auto" = "smooth") {
 		</div>
 
 		<div v-else
-			class="grid place-content-center p-6 w-screen xl:w-96 bg-white items-center gap-6 max-xl:py-20 xl:shadow xl:h-main">
-			<NoEstablishments class="text-space w-20 justify-self-center" />
-			<p class="text-space text-center text-base xl:text-xl">{{ $t('Oops_no_businesses_around_here') }}</p>
+			class="grid items-center w-screen gap-6 p-6 bg-white place-content-center xl:w-96 max-xl:py-20 xl:shadow xl:h-main">
+			<NoEstablishments class="w-20 text-space justify-self-center" />
+			<p class="text-base text-center text-space xl:text-xl">{{ $t('Oops_no_businesses_around_here') }}</p>
 		</div>
 
-		<transition enter-active-class="duration-200 ease-out" enter-from-class="opacity-0 translate-y-12"
-			enter-to-class="opacity-100 translate-y-0" leave-active-class="duration-100 ease-in"
-			leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-12">
-			<div class="self-end" v-if="xlScreen || !listIsShown">
-				<Button bgColor="white" class="max-xl:fixed bottom-0 mb-5 max-xl:left-5 shadow z-1" size="md"
-					@click="appStore.toggleList()">
-					<template #icon>
-						<component :is="listIsShown ? ChevronLeftIcon : ListIcon" class="text-space h-4" :class="{
-							'w-4.5': listIsShown,
-							'w-4': !listIsShown,
-						}" />
-					</template>
-
-					<template #text v-if="!smallScreen">
-						{{ listIsShown? $t("Hide_list"): $t("Show_list") }}
-					</template>
-				</Button>
-			</div>
-		</transition>
-
-		<transition enter-active-class="duration-200 ease-out" enter-from-class="opacity-0 translate-y-12"
-			enter-to-class="opacity-100 translate-y-0" leave-active-class="duration-100 ease-in"
-			leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-12">
-			<div v-if="!xlScreen && listIsShown" class="w-full flex justify-center fixed bottom-5 z-10">
+		<transition enter-active-class="duration-200 ease-out" enter-from-class="translate-y-12 opacity-0"
+			enter-to-class="translate-y-0 opacity-100" leave-active-class="duration-100 ease-in"
+			leave-from-class="translate-y-0 opacity-100" leave-to-class="translate-y-12 opacity-0">
+			<div v-if="!xlScreen && listIsShown" class="fixed z-10 flex justify-center w-full bottom-5">
 				<Button bg-color="ocean" class="shadow" @click="appStore.hideList">
 					<template #text>{{ $t('Back_to_the_Map') }}</template>
 				</Button>

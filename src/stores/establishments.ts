@@ -56,7 +56,7 @@ export const useEstablishments = defineStore("establishments", () => {
   * Then we computed the establishments that are currently in the viewport (given the bounding box) and we display them 
   * in the map.
   */
-  const establishments = ref(new Map<string, BaseEstablishment | Establishment>([]))
+  const establishments = ref(new Map<string, BaseEstablishment | Establishment>())
 
   const apiStore = useApi()
 
