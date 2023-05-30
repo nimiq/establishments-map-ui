@@ -18,7 +18,7 @@ import { computed } from "vue"
 const googleStore = useGoogle()
 
 const apiStore = useApi()
-const { selectedCategories, selectedCurrencies } = storeToRefs(apiStore)
+const { selectedFilters } = storeToRefs(apiStore)
 
 const appStore = useApp()
 const { listIsShown } = storeToRefs(appStore)
@@ -41,10 +41,10 @@ function onSelect(suggestion?: Suggestion) {
 	} else if (suggestion.type === SuggestionType.API) {
 		switch (suggestion.apiSuggestion) {
 			case 'category':
-				selectedCategories.value = [suggestion.id]
+				selectedFilters.value.categories = [{ id: suggestion.id as unknown as number, label: suggestion.label }]
 				break
 			case 'currency':
-				selectedCurrencies.value = [suggestion.id]
+				selectedFilters.value.currencies = [{ name: suggestion.label, symbol: suggestion.id }]
 				break
 			case 'establishment':
 				appStore.goToEstablishment(suggestion.id, { behaviourList: 'show' })
@@ -60,7 +60,8 @@ function onSelect(suggestion?: Suggestion) {
 		'xl:h-[calc(112px+208px)]': listIsShown && listIsEmpty,
 		'xl:h-[calc(100vh-104px)]': listIsShown && !listIsEmpty,
 	}">
-		<header class="relative z-10 w-full p-10 py-6 pl-4 pr-6 bg-white xl:p-4">
+		<header class="relative z-10 w-full p-10 py-6 pl-4 pr-6 bg-white xl:p-4 transition-[border]"
+			:class="{ 'xl:border-b-xs xl:border-b-space/10': listIsShown }">
 			<div class="flex items-center gap-x-2">
 				<Popover cta-href="https://nimiq.com" :custom-top="true" class="xl:!fixed [&_[data-tooltip]]:max-w-xs">
 					<template #trigger>
@@ -97,7 +98,7 @@ function onSelect(suggestion?: Suggestion) {
 				'-rotate-90': !listIsShown,
 			}" />
 		</template>
-		<template #text>
+		<template #label>
 			{{ listIsShown ? $t("Hide_list") : $t("Show_list") }}
 		</template>
 	</Button>

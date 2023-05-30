@@ -13,7 +13,7 @@ const { currencies } = storeToRefs(apiStore)
 
 const { autocomplete, suggestions, status } = useAutocomplete({ searchFor: [SuggestionType.GOOGLE_ESTABLISHMENT] })
 
-const selectedCurrencies = ref<string[]>([])
+const selectedCurrencies = ref([])
 const selectedPlace = ref<Suggestion>()
 
 const disabled = computed(() => selectedCurrencies.value.length === 0 || !selectedPlace.value)

@@ -63,22 +63,22 @@ const hasSlot = (name: string) => {
 			<template #icon>
 				<ArrowLeftIcon class="" />
 			</template>
-			<template #text>
+			<template #label>
 				{{ $t('Back_to_the_Map') }}
 			</template>
 		</Button>
 	</header>
 	<div
 		class="flex flex-col h-full justify-center md:text-center w-[clamp(284px,768px,calc(100vw-3rem))] mx-auto min-h-[calc(100vh-80px)] max-md:justify-start py-8 md:py-24">
-		<transition mode="out-in" enter-active-class="transition duration-500 lg:duration-100 ease-out" :enter-from-class="`opacity-0 ${state === FormState.Initial ? '-translate-x-12' : 'translate-x-12'
-		}`" enter-to-class="translate-x-0 opacity-100" leave-active-class="transition duration-300 ease-in"
+		<transition mode="out-in" enter-active-class="transition duration-500 ease-out lg:duration-100" :enter-from-class="`opacity-0 ${state === FormState.Initial ? '-translate-x-12' : 'translate-x-12'
+			}`" enter-to-class="translate-x-0 opacity-100" leave-active-class="transition duration-300 ease-in"
 			leave-from-class="translate-x-0 opacity-100" :leave-to-class="`opacity-0 ${state === FormState.Initial ? 'translate-x-12' : '-translate-x-12'
-			}`">
+				}`">
 			<main v-if="[FormState.Initial, FormState.Loading].includes(state)">
 				<h1 class="font-bold text-4xl lg:text-5xl text-space leading-[1.2]" v-if="hasSlot('title')">
 					<slot name="title" />
 				</h1>
-				<p class="text-space/60 font-semibold mt-6 lg:mt-8" v-if="hasSlot('description')">
+				<p class="mt-6 font-semibold text-space/60 lg:mt-8" v-if="hasSlot('description')">
 					<slot name="description" />
 				</p>
 
@@ -88,12 +88,12 @@ const hasSlot = (name: string) => {
 					<ArrowLinkIcon class="w-2.5 h-2.5 group-hover:left-0.5 group-hover:-top-0.5 transition-all duration-300" />
 				</div>
 
-				<form class="mt-14 lg:mt-16 text-left" @submit.prevent="onSubmit" v-if="hasSlot('form')">
+				<form class="text-left mt-14 lg:mt-16" @submit.prevent="onSubmit" v-if="hasSlot('form')">
 					<slot name="form" />
 
 					<Button bgColor="ocean" type="submit" class="mx-auto mt-10" size="lg" :loading="state === FormState.Loading"
 						:disabled="disabled">
-						<template #text>
+						<template #label>
 							<slot name="button-label">{{ $t('Send') }}</slot>
 						</template>
 					</Button>
@@ -104,11 +104,11 @@ const hasSlot = (name: string) => {
 				<h1 class="font-bold text-4xl lg:text-5xl text-space leading-[1.2]" v-if="hasSlot('success-title')">
 					<slot name="success-title" />
 				</h1>
-				<p class="text-space/60 font-semibold mt-6 lg:mt-8" v-if="hasSlot('success-description')">
+				<p class="mt-6 font-semibold text-space/60 lg:mt-8" v-if="hasSlot('success-description')">
 					<slot name="success-description" />
 				</p>
 				<Button bgColor="ocean" class="mx-auto mt-10" size="lg" href="/" v-if="hasSlot('success-button-label')">
-					<template #text>
+					<template #label>
 						<slot name="success-button-label">{{ $t('Back_to_the_Map') }}</slot>
 					</template>
 				</Button>
@@ -118,12 +118,12 @@ const hasSlot = (name: string) => {
 				<h1 class="font-bold text-4xl lg:text-5xl text-space leading-[1.2]" v-if="hasSlot('error-title')">
 					<slot name="error-title" />
 				</h1>
-				<p class="text-space/60 font-semibold mt-6 lg:mt-8" v-if="hasSlot('error-description')">
+				<p class="mt-6 font-semibold text-space/60 lg:mt-8" v-if="hasSlot('error-description')">
 					<slot name="error-description" />
 				</p>
 				<Button bgColor="ocean" class="mx-auto mt-10" size="lg" @click="state = FormState.Initial"
 					v-if="hasSlot('error-button-label')">
-					<template #text>
+					<template #label>
 						<slot name="error-button-label">{{ $t('Try_again') }}</slot>
 					</template>
 				</Button>

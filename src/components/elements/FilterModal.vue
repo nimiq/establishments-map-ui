@@ -13,26 +13,24 @@ import { computed, onMounted, ref } from "vue"
 const isOpen = ref(false)
 
 const apiStore = useApi()
-const { currencies, categories, selectedCategories, selectedCurrencies } =
-	storeToRefs(apiStore)
+const { currencies, categories, selectedFilters } = storeToRefs(apiStore)
 
-const unappliedSelectedCategories = ref<SelectOption[]>([])
-const unappliedSelectedCurrencies = ref<SelectOption[]>([])
+const unappliedFiltersCategories = ref<typeof selectedFilters.value.categories>([])
+const unappliedFiltersCurrencies = ref<typeof selectedFilters.value.currencies>([])
 
 onMounted(() => {
-	unappliedSelectedCategories.value = selectedCategories.value || []
-	unappliedSelectedCurrencies.value = selectedCurrencies.value || []
+	unappliedFiltersCategories.value = [...selectedFilters.value.categories]
+	unappliedFiltersCurrencies.value = [...selectedFilters.value.currencies]
 })
 
 const nFilters = computed(() => {
-	return selectedCategories.value.length + selectedCurrencies.value.length
+	return selectedFilters.value.categories.length + selectedFilters.value.currencies.length
 })
 
 function clearFilters() {
-	unappliedSelectedCategories.value = []
-	unappliedSelectedCurrencies.value = []
-	selectedCategories.value = []
-	selectedCurrencies.value = []
+	unappliedFiltersCategories.value = []
+	unappliedFiltersCurrencies.value = []
+	selectedFilters.value = { categories: [], currencies: [] }
 }
 
 function closeModal({ shouldClearFilters }: { shouldClearFilters: boolean }) {
@@ -47,8 +45,10 @@ function openModal() {
 }
 
 function applyFilters() {
-	selectedCategories.value = [...unappliedSelectedCategories.value] as typeof selectedCategories.value
-	selectedCurrencies.value = [...unappliedSelectedCurrencies.value] as typeof selectedCurrencies.value
+	selectedFilters.value = {
+		categories: unappliedFiltersCategories.value,
+		currencies: unappliedFiltersCurrencies.value
+	}
 	closeModal({ shouldClearFilters: false })
 }
 
@@ -62,7 +62,7 @@ function specialCurrency(id: string | number) {
 		<template #icon>
 			<FilterIcon class="text-space w-4.5 h-4.5" />
 		</template>
-		<template #badge v-if="nFilters > 0"> {{ nFilters }} </template>
+		<template #badge v-if="nFilters > 0">{{ nFilters }} </template>
 	</Button>
 	<TransitionRoot appear :show="isOpen" as="template">
 		<Dialog as="div" @close="closeModal({ shouldClearFilters: false })" class="relative z-20">
@@ -87,7 +87,7 @@ function specialCurrency(id: string | number) {
 							<hr class="w-full h-px my-8 bg-space/10" />
 
 							<Select placeholder="Select cryptocurrencies" :options="[...currencies.values()]" label-key="symbol"
-								v-model="unappliedSelectedCurrencies" class="px-6 md:px-10">
+								v-model="unappliedFiltersCategories" class="px-6 md:px-10">
 								<template #label>
 									<h3 class="mb-6 text-sm font-semibold tracking-wider uppercase text-space/40 md:mb-8">
 										{{ $t('Cryptocurrencies') }}
@@ -105,7 +105,7 @@ function specialCurrency(id: string | number) {
 								<template #after-options> More cryptocurrencies supported in the future </template>
 								<template #selected-option="{ symbol }"> {{ symbol }} </template>
 							</Select>
-							<Select :options="[...categories.values()]" v-model="unappliedSelectedCategories"
+							<Select :options="[...categories.values()]" v-model="unappliedFiltersCurrencies"
 								placeholder="Select category" class="px-6 mt-9 md:px-10">
 								<template #label>
 									<h3 class="mb-6 text-sm font-semibold tracking-wider uppercase text-space/40 md:mb-8">
@@ -123,10 +123,10 @@ function specialCurrency(id: string | number) {
 							<hr class="w-full h-px my-8 bg-space/10" />
 							<div class="flex justify-between px-6 md:px-10">
 								<Button bg-color="grey" @click="closeModal({ shouldClearFilters: true })">
-									<template #text> {{ $t('Clear') }} </template>
+									<template #label> {{ $t('Clear') }} </template>
 								</Button>
 								<Button bg-color="sky" @click="applyFilters" gradient>
-									<template #text> {{ $t('Apply_filters') }} </template>
+									<template #label> {{ $t('Apply_filters') }} </template>
 								</Button>
 							</div>
 						</DialogPanel>

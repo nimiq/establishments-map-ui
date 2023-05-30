@@ -1,36 +1,18 @@
-import { Configuration, EstablishmentsApi, type PostCandidateRequest as CandidateRequest, type CryptoEstablishment as CryptoEstablishmentApi, type CryptoEstablishmentBaseInner as CryptoEstablishmentBaseApi, type CurrencyInner as Currency, type PostEstablishmentIssueRequest as EstablishmentIssueRequest, type SearchEstablishmentsRequest } from "@/api";
+import { Configuration, EstablishmentsApi, type PostCandidateRequest as CandidateRequest, type CategoriesIssueInner as CategoriesIssue, type CategoryInner as Category, type CryptoEstablishment as CryptoEstablishmentApi, type CryptoEstablishmentBaseInner as CryptoEstablishmentBaseApi, type CurrencyInner as Currency, type PostEstablishmentIssueRequest as EstablishmentIssueRequest, type SearchEstablishmentsRequest } from "@/api";
+import type { GetProviders200Response as Provider } from "@/api/models/GetProviders200Response";
 import { SuggestionType, type Suggestion } from "@/composables/useAutocomplete";
 import { defineStore, storeToRefs } from "pinia";
 import { onMounted, ref, watch, type Ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useEstablishments, type BaseEstablishment, type Establishment } from "./establishments";
 import { useMap } from "./map";
-import type { GetProviders200Response as Provider } from "@/api/models/GetProviders200Response";
 
 const basePath: string = import.meta.env.VITE_URL_API_URL
 const googleMapsKey: string = import.meta.env.VITE_GOOGLE_MAP_KEY
 
-export const establishmentsApi = new EstablishmentsApi(new Configuration({
-  basePath
-}))
-
-// FIXME This should be removed 
-interface Category {
-  id: string;
-  label: string;
-}
-
-// FIXME This should be removed 
-interface CategoriesIssue {
-  id: string;
-  label: string;
-}
-
+export const establishmentsApi = new EstablishmentsApi(new Configuration({ basePath }))
 
 export const useApi = defineStore("api", () => {
-
-  const { establishments } = storeToRefs(useEstablishments())
-
   // Items that are loaded only once at the beginning
   const categoriesIssue = ref<CategoriesIssue[]>([])
   const categories = ref(new Map<string, Category>());
@@ -41,23 +23,9 @@ export const useApi = defineStore("api", () => {
   const router = useRouter()
 
   // Filters
-  const selectedCurrencies: Ref<Currency[]> = ref([])
-  watch(currencies, () => selectedCurrencies.value = extractFromMap(currencies.value, pathParamToStringList('currencies')))
-  const selectedCategories: Ref<Category[]> = ref([])
-  watch(categories, () => selectedCategories.value = extractFromMap(categories.value, pathParamToStringList('categories')))
+  const selectedFilters: Ref<{ currencies: Currency[], categories: Category[] }> = ref({ currencies: [], categories: [] })
 
-  function pathParamToStringList(param: 'currencies' | 'categories') {
-    const values = route.query[param] as string
-    if (!values) return []
-    if (typeof values === 'string') return [values]
-    return values
-  }
-
-  function extractFromMap<T>(map: Map<string, T>, list: string[]): T[] {
-    return list.map(item => map.get(item)!).filter(Boolean)
-  }
-
-  watch([selectedCategories, selectedCurrencies], async ([newCategories, newCurrencies]) => {
+  watch(selectedFilters, async ({ categories: newCategories, currencies: newCurrencies }) => {
     router.push({
       query: {
         categories: newCategories.map(c => c.label),
@@ -77,7 +45,7 @@ export const useApi = defineStore("api", () => {
       name: name.trim(),
       category: category.trim(),
       geoLocation,
-      providers: providersId.map((id) => providers.value.get(id)).filter(Boolean),
+      providers: providersId.map((id) => providers.value.get(id)).filter(Boolean) as Provider[],
       hasAllInfo: false,
     }
     return parsedEstablishment
@@ -90,14 +58,16 @@ export const useApi = defineStore("api", () => {
       ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=540&photo_reference=${photoReference}&key=${googleMapsKey}`
       : undefined
 
+
     const establishmentProviders = providersWithCrypto.map(p => {
-      // both, buy and sell are disjoint sets of currencies
-      const both = p.buy.filter((c) => p.sell.includes(c)).map((c) => currencies.value.get(c.trim())!).filter(Boolean) as Currency[]
-      const buy = p.buy.filter((c) => !p.sell.includes(c)).map((c) => currencies.value.get(c.trim())!).filter(Boolean) as Currency[]
-      const sell = p.sell.filter((c) => !p.buy.includes(c)).map((c) => currencies.value.get(c.trim())!).filter(Boolean) as Currency[]
-      const establishmentProvider: Establishment["providers"][number] = { ...p, both, buy, sell }
+      const provider = providers.value.get(p.id)
+      if (!provider) {
+        console.error(`Provider ${p.id} not found in providers map`)
+        return
+      }
+      const establishmentProvider: Establishment["providers"][number] = { ...provider, buy: p.buy || [], sell: p.sell || [] }
       return establishmentProvider
-    })
+    }).filter(Boolean) as Establishment["providers"]
 
     const parsedEstablishment: Establishment = {
       hasAllInfo: true,
@@ -117,13 +87,15 @@ export const useApi = defineStore("api", () => {
   }
 
   async function search() {
+    const { establishments } = storeToRefs(useEstablishments())
+
     const { northEast, southWest } = surroundingBoundingBox.value
     const boundingBoxStr = `${southWest.lng},${southWest.lat},${northEast.lng},${northEast.lat}`
 
     const body: SearchEstablishmentsRequest = {
       filterBoundingBox: boundingBoxStr,
-      filterEstablishmentCategoryLabel: selectedCategories.value.map(c => c.label) || undefined,
-      filterCurrency: selectedCurrencies.value.map(c => c.symbol) || undefined,
+      filterEstablishmentCategoryLabel: selectedFilters.value.categories.map(c => c.label) || undefined,
+      filterCurrency: selectedFilters.value.currencies.map(c => c.symbol) || undefined,
     }
 
     const unformatedResponse: { [key: string]: CryptoEstablishmentBaseApi }[] = await establishmentsApi.searchEstablishments(body).catch((e) => e)
@@ -147,6 +119,8 @@ export const useApi = defineStore("api", () => {
 
   async function getEstablishmentByUuid(uuid: string) {
     if (!uuid) return
+    const { establishments } = storeToRefs(useEstablishments())
+
     const rawEstablishment = await establishmentsApi.getEstablishmentByUuid({ uuid }).catch((e) => e)
     const establishment = parseEstablishment(rawEstablishment) || undefined
     console.log(`🔍 Got establishment with uuid ${uuid} from API: `, establishment)
@@ -158,6 +132,8 @@ export const useApi = defineStore("api", () => {
   }
 
   function setEstablishment(establishment: Establishment) {
+    const { establishments } = storeToRefs(useEstablishments())
+
     // check that the establishment is not already in the map
     if (establishments.value.get(establishment.uuid)?.hasAllInfo) {
       return
@@ -189,7 +165,7 @@ export const useApi = defineStore("api", () => {
       return;
     }
     res.forEach((category) => {
-      categories.value.set(category.id, { id: category.id, label: category.label })
+      categories.value.set(category.label, { id: category.id, label: category.label })
     })
   }
 
@@ -203,7 +179,7 @@ export const useApi = defineStore("api", () => {
     }
 
     const showFirst = ['NIM', 'BTC']
-    const showLast = ['bluecode', 'atm']
+    const showLast = ['atm']
 
     const sortedCurrencies = res.sort((a, b) => {
       const aIndex = showFirst.indexOf(a.symbol)
@@ -238,6 +214,18 @@ export const useApi = defineStore("api", () => {
     })
   }
 
+  function pathParamToStringList(param: 'currencies' | 'categories') {
+    const values = route.query[param] as string
+
+    if (!values) return []
+    if (typeof values === 'string') return [values]
+    return values
+  }
+
+  function extractFromMap<T>(map: Map<string, T>, list: string[]): T[] {
+    return list.map(item => map.get(item)!).filter(Boolean)
+  }
+
   watch([boundingBox], async () => await search())
 
   async function reportEstablishment(establishmentIssueBody: EstablishmentIssueRequest["establishmentIssueBody"]) {
@@ -248,11 +236,19 @@ export const useApi = defineStore("api", () => {
     await establishmentsApi.postCandidate({ establishmentCandidateBody })
   }
 
-  onMounted(() => {
-    fetchCategories()
+  onMounted(async () => {
     fetchIssueCategories()
-    fetchCurrencies()
     fetchProviders()
+
+    await Promise.all([
+      fetchCategories(),
+      fetchCurrencies()
+    ])
+
+    selectedFilters.value = {
+      currencies: extractFromMap(currencies.value, pathParamToStringList('currencies')),
+      categories: extractFromMap(categories.value, pathParamToStringList('categories'))
+    };
   })
 
   const suggestions = ref<Suggestion[]>([])
@@ -290,8 +286,7 @@ export const useApi = defineStore("api", () => {
     currencies,
     categoriesIssue,
     fetchIssueCategories,
-    selectedCurrencies,
-    selectedCategories,
+    selectedFilters,
     getEstablishmentByUuid,
     setEstablishment,
     reportEstablishment,

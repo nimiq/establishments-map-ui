@@ -36,10 +36,10 @@ import TheMapInstance from "@/components/TheMapInstance.vue"
 				</Button>
 			</template>
 		</TheMapInstance>
-		<Button class="absolute bottom-5 md:bottom-6 right-5 md:right-6 shadow" bgColor="white" href="/establishment/add"
+		<Button class="absolute shadow bottom-5 md:bottom-6 right-5 md:right-6" bgColor="white" href="/establishment/add"
 			size="md" text-color="ocean" draggable="false" :aria-label="$t('Add_establishment')"
 			:title="$t('Add_establishment')">
-			<template #text> {{ $t('Add_establishment') }} </template>
+			<template #label> {{ $t('Add_establishment') }} </template>
 		</Button>
 	</main>
 </template>

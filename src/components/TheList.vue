@@ -3,12 +3,14 @@ import Button from "@/components/elements/Button.vue"
 import EstablishmentCard from "@/components/elements/EstablishmentCard.vue"
 import NoEstablishments from "@/components/illustrations/no-establishments.vue"
 import { useBreakpoints } from "@/composables/useBreakpoints"
+import { useApi } from "@/stores/api"
 import { useApp } from "@/stores/app"
 import { useEstablishments } from "@/stores/establishments"
 import { storeToRefs } from "pinia"
 import { computed, ref, watch } from "vue"
+import { RecycleScroller } from 'vue-virtual-scroller'
 
-const { smallScreen, xlScreen } = useBreakpoints()
+const { xlScreen } = useBreakpoints()
 
 const scroller$ = ref<HTMLDivElement>()
 
@@ -34,33 +36,44 @@ function slideTo(index: number, behavior: "smooth" | "auto" = "smooth") {
 	const li = scroller$.value.children[index] as HTMLLIElement
 	li.scrollIntoView({ inline: "center", block: "center", behavior })
 }
+
+const sizes = { atm: 185, default: 336 } as const;
+const items = computed(() => {
+	const items = establishmentsInView.value.concat(shouldShowNearby ? nearEstablishmentsNotInView.value : [])
+	return items.map((item) => {
+		const isAtm = item.hasAllInfo && item.providers.some((p) => p.sell.size > 0)
+		const type = isAtm ? "atm" : "default"
+		const size = sizes[type]
+		return { ...item, type, size }
+	})
+})
+
+const { getEstablishmentByUuid } = useApi()
+
+function updateList(startIndex: number, endIndex: number, visibleStartIndex: number, visibleEndIndex: number) {
+	for (let i = visibleStartIndex; i <= visibleEndIndex; i++) {
+		const establishment = items.value[i]
+		if (!establishment.hasAllInfo) {
+			getEstablishmentByUuid(establishment.uuid)
+		}
+	}
+}
 </script>
 
 <template>
 	<div
-		class="max-xl:absolute max-xl:transition-all xl:transition-transform-width max-xl:bottom-0 max-xl:bg-white max-xl:shadow max-xl:w-screen max-xl:overflow-y-auto"
+		class="bg-white max-xl:absolute max-xl:transition-all xl:transition-transform-width max-xl:bottom-0 max-xl:bg-white max-xl:shadow max-xl:w-screen max-xl:overflow-y-auto"
 		:class="{
-			'h-full lg:h-[calc(100vh-80px)]': !listIsEmpty,
+			'h-full xl:h-[calc(100%-112px)]': !listIsEmpty,
 		}">
-		<div v-if="!listIsEmpty" id="list"
-			class="relative gap-6 p-6 space-y-6 bg-white xl:flex xl:flex-col xl:w-96 columns-2xs scroll-py-6 xl:overflow-y-auto scroll-space z-2 max-xl:pb-16">
-			<ul ref="scroller$" class="space-y-6">
-				<li v-for="establishment in establishmentsInView" :key="establishment.uuid"
-					class="list-item-wrap shadow-lg border pt-1.5 pb-6 rounded-lg flex flex-col break-inside-avoid-column transition-[box-shadow]"
-					:class="{ 'ring ring-ocean': establishment.uuid === selectedEstablishmentUuid }"
-					:data-establishment-id="establishment.uuid">
+		<div v-if="!listIsEmpty" :class="{ 'xl:!overflow-hidden': !listIsShown }"
+			class="relative gap-6 p-6 space-y-6 bg-space/[0.04] xl:flex xl:flex-col xl:w-96 columns-2xs scroll-py-6 xl:overflow-y-auto scroll-space z-2 max-xl:pb-16 xl:h-full">
+			<RecycleScroller :items="items" class="h-full" key-field="uuid" list-tag="ul" item-tag="li" emit-update
+				@update="updateList">
+				<template v-slot="{ item: establishment }">
 					<EstablishmentCard :establishment="establishment" />
-				</li>
-
-				<template v-if="shouldShowNearby">
-					<li v-for="establishment in nearEstablishmentsNotInView" :key="establishment.uuid"
-						class="list-item-wrap shadow-lg border pt-1.5 pb-6 rounded-lg flex flex-col break-inside-avoid-column transition-[box-shadow]"
-						:class="{ 'ring ring-ocean': establishment.uuid === selectedEstablishmentUuid }"
-						:data-establishment-id="establishment.uuid">
-						<EstablishmentCard :establishment="establishment" />
-					</li>
 				</template>
-			</ul>
+			</RecycleScroller>
 
 			<Button bgColor="grey" class="!mt-9" size="md" @click="establishmentsStore.showNearby"
 				v-if="!shouldShowNearby && nearEstablishmentsNotInView.length > 0">
@@ -70,7 +83,7 @@ function slideTo(index: number, behavior: "smooth" | "auto" = "smooth") {
 					</svg>
 				</template>
 
-				<template #text>
+				<template #label>
 					{{ $t("Show_more_establishments") }}
 				</template>
 			</Button>
@@ -88,7 +101,7 @@ function slideTo(index: number, behavior: "smooth" | "auto" = "smooth") {
 			leave-from-class="translate-y-0 opacity-100" leave-to-class="translate-y-12 opacity-0">
 			<div v-if="!xlScreen && listIsShown" class="fixed z-10 flex justify-center w-full bottom-5">
 				<Button bg-color="ocean" class="shadow" @click="appStore.hideList">
-					<template #text>{{ $t('Back_to_the_Map') }}</template>
+					<template #label>{{ $t('Back_to_the_Map') }}</template>
 				</Button>
 			</div>
 		</transition>

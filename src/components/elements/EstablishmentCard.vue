@@ -1,247 +1,70 @@
 <script setup lang="ts">
-import CryptoIcon from "@/components/elements/CryptoIcon.vue"
-import Popover from "@/components/elements/Popover.vue"
-import FlagIcon from "@/components/icons/icon-flag.vue"
-import ShareIcon from "@/components/icons/icon-share.vue"
-import StarIcon from "@/components/icons/icon-star.vue"
-import EstablishmentPlaceholder from "@/components/illustrations/establishment-placeholder.vue"
+import Button from '@/components/elements/Button.vue';
+import CryptoList from "@/components/elements/CryptoList.vue";
+import FlagIcon from "@/components/icons/icon-flag.vue";
+import IconGmapsPin from '@/components/icons/icon-gmaps-pin.vue';
+import StarFilledIcon from "@/components/icons/icon-star-filled.vue";
+import StarIcon from "@/components/icons/icon-star.vue";
+import type { Establishment } from '@/stores/establishments';
+import { computed } from 'vue';
 
-import type { CurrencyInner } from "@/api"
-import { useBreakpoints } from "@/composables/useBreakpoints"
-import { useApi } from "@/stores/api"
-import { useApp } from "@/stores/app"
-import { computed, onMounted, ref } from "vue"
-import { RouterLink } from "vue-router"
-import type { BaseEstablishment, Establishment } from "@/stores/establishments"
-
-const card$ = ref<(BaseEstablishment | Establishment) & { $el: HTMLElement } | null>(null)
 
 const props = defineProps<{
-  establishment: Establishment | BaseEstablishment
+  establishment: Establishment
 }>()
 
-const hasAllInfo = computed(() => props.establishment.hasAllInfo)
-
-const { getEstablishmentByUuid, setEstablishment } = useApi()
-
-// make an observer
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(async (entry) => {
-    if (entry.isIntersecting && !hasAllInfo.value) {
-      const establishment = await getEstablishmentByUuid(props.establishment.uuid)
-      if (!establishment) return
-      setEstablishment(establishment)
-    }
-  })
+const gmapsCategory = computed(() => {
+  return props.establishment.gmapsTypes.length > 0 ? props.establishment.gmapsTypes[0] : props.establishment.category
 })
 
-const container = ref<HTMLElement>();
-onMounted(() => {
-  container.value = document.querySelector('#list') as HTMLElement
-  if (!card$.value) return
-  observer.observe(card$.value.$el)
-})
-
-// const showBluecode = computed(() => props.establishment.currencies.map(c => c.symbol).includes('bluecode'))
-// const showAtm = computed(() => props.establishment.currencies.map(c => c.symbol).includes('atm'))
-
-function leaveOutSpecialCurrency(currencies: CurrencyInner[]) {
-  return currencies.filter((c) => !specialCurrency(c.symbol))
-}
-
-function specialCurrency(id: string | number) {
-  return ["bluecode", "atm"].includes(id as string)
-}
-
-const canShare = computed(() => {
-  return "share" in navigator
-})
-
-function shareEstablishment(establishment: BaseEstablishment | Establishment) {
-  navigator.share({
-    title: `${establishment.name} | Crypto Map by Nimiq`,
-    text: `Check out ${establishment.name} on Crypto Map by Nimiq!`,
-    url: `${window.location.origin}/establishment/${establishment.uuid}`
-  })
-}
-
-const { smaller } = useBreakpoints()
-function onClick() {
-  const isSmall = smaller('xl')
-  if (!isSmall.value) return
-  useApp().hideList()
-}
+/**
+ * For now we only support in the UI establishments that have only a provider
+ */
+const provider = computed(() => props.establishment.providers.length ? props.establishment.providers[0] : undefined)
+const isDefaultProvider = computed(() => provider.value?.name === 'DEFAULT')
 </script>
 
 <template>
-  <template v-if="hasAllInfo">
-    <RouterLink :to="`/establishment/${establishment.uuid}`" @click="onClick" class="children:px-6" ref="card$">
-      <img v-if="establishment.hasAllInfo" :src="establishment.photoUrl" :alt="`Image of ${establishment.name}`"
-        class="h-36 object-cover w-full !px-1.5 rounded-sm" loading="lazy" />
+  <div class="bg-white rounded-lg shadow-lg">
 
-      <div v-else class="
-          w-full
-          h-36
-          flex flex-col
-          bg-space/[0.06]
-          items-center
-          justify-center
-          text-space
-          gap-4
-        ">
-        <EstablishmentPlaceholder class="h-12 w-12" />
-        <h4 class="font-bold text-lg">{{ $t("No_photo_available") }}</h4>
-      </div>
-
-      <h2 class="mt-5 text-space text-lg font-bold flex-1">
-        {{ establishment.name }}
-      </h2>
-
-      <p class="mt-2 flex items-center text-sm">
-        <!-- <span class="text-space/60 capitalize">{{
-          establishment.gmapsType
-        }}</span> -->
-        <span class="text-space/60 capitalize">Gmaps Type</span>
-        <template v-if="establishment.hasAllInfo">
-          <StarIcon class="ml-2 text-gold" style="width: 13px; height: 13px" />
-          <span class="ml-1 font-bold">{{ establishment.rating }}</span>
+    <div class="grid grid-cols-1 grid-rows-1 p-1.5 pb-0">
+      <img :src="props.establishment.photoUrl" class="w-full aspect-[1.77] rounded-md" :alt="props.establishment.name"
+        loading="lazy">
+      <Button :href="props.establishment.gmapsUrl" bg-color="white" class="absolute top-3.5 right-3.5">
+        <template #label>
+          <IconGmapsPin />
         </template>
-      </p>
-
-      <p class="text-space/60 text-sm" :class="{ pulse: hasAllInfo }">
-        <!-- TODO check this behaviour -->
-        {{ establishment.hasAllInfo ? establishment.address : '' }}
-      </p>
-    </RouterLink>
-
-    <ul class="flex gap-x-1 mt-4 pb-6 px-6">
-      <!-- <li v-for="{ symbol } in leaveOutSpecialCurrency(
-        establishment.currencies
-      )" :key="symbol" class="w-6 h-6 rounded-full">
-        <CryptoIcon :crypto="symbol.toLowerCase()" />
-      </li> -->
-
-      <!-- <div v-if="establishment.currencies.filter(c => c.symbol !== 'atm').length > 0
-        && (showBluecode || showAtm)" class="w-px h-6 bg-space/20 mx-3" /> -->
-
-      <!-- <li v-if="showBluecode">
-        <Popover cta-href="https://bluecode.com/de-de/" :container="container">
-          <template #trigger>
-            <CryptoIcon crypto="bluecode" class="w-[14px] h-[22px]" />
-          </template>
-          <template #subline> {{ $t('Coming_soon') }}</template>
-          <template #title> {{ $t('Nimiq_for_Bluecode') }} </template>
-          <template #description> {{ $t('A_mobile_app_for_paying_with_NIM_at_Bluecode_acceptance_locations') }}
-          </template>
-          <template #cta> {{ $t('Learn more') }} </template>
-          ets
-        </Popover>
-      </li> -->
-
-      <!-- <li v-if="showAtm">
-        <Popover :container="container">
-          <template #trigger>
-            <CryptoIcon class="w-6 h-5" crypto="atm" />
-          </template>
-          <template #title> {{ $t('Crypto_ATM') }}</template>
-          <template #description>{{ $t('A_Crypto_ATM_is_a_machine_that_allows_customers') }}</template>
-        </Popover>
-      </li> -->
-    </ul>
-
-    <hr class="bg-space/20 h-0.5" />
-
-    <div class="px-6 flex gap-x-2 mt-4 flex-1 items-end">
-      <a v-if="establishment.hasAllInfo" :href="establishment.gmapsUrl" target="_blank" class="
-          z-1
-          flex-1
-          bg-ocean
-          hover:bg-ocean/90
-          focus-visible:bg-ocean/90
-          transition-colors
-          shadow
-          rounded-full
-          py-[5px]
-          h-max
-          text-white
-          font-bold
-          text-center
-        ">
-        Google Maps
-      </a>
-
-      <RouterLink :to="`/establishment/${establishment.uuid}/report`" class="
-          z-1
-          bg-cherry
-          hover:bg-cherry/80
-          focus-visible:bg-cherry/80
-          transition-colors
-          shadow
-          rounded-full
-          text-center
-          w-[35px]
-          py-[7.5px]
-          h-max
-        ">
-        <FlagIcon class="text-white mx-auto" />
-      </RouterLink>
-
-      <button v-if="canShare" @click="shareEstablishment(establishment)" class="
-          z-1
-          bg-space/[0.07]
-          hover:bg-space/10
-          focus-visible:bg-space/10
-          transition-colors
-          rounded-full
-          text-center
-          w-[35px]
-          py-[7.5px]
-          h-max
-        ">
-        <ShareIcon class="text-space mx-auto" />
-      </button>
+      </Button>
     </div>
-  </template>
-  <template v-else>
-    <RouterLink :to="`/establishment/${establishment.uuid}`" class="children:px-6" ref="card$">
-      <div class="
-          h-36
-          w-[calc(100%-12px)]
-          rounded-sm
-          bg-space/[0.06]
-          animate-pulse
-          !mx-1.5
-        " />
 
-      <h2 class="mt-5 text-space text-lg font-bold flex-1">
-        {{ establishment.name }}
-      </h2>
-
-      <div class="h-5 flex gap-x-2 mt-2">
-        <div class="w-20 bg-space/[0.06] animate-pulse rounded-sm"></div>
-        <div class="w-8 bg-space/[0.06] animate-pulse rounded-sm"></div>
+    <div class="px-6 pt-5">
+      <div class="grid justify-between grid-cols-[1fr,auto] gap-x-2 mb-6">
+        <h2 class="text-base font-bold leading-[1.3]">{{ establishment.name }}</h2>
+        <Button :href="`/establishment/${establishment.uuid}/report`" bg-color="white" hide-icon
+          class="!w-7 !h-7 ring-1 ring-space/10 row-span-2">
+          <template #label>
+            <FlagIcon class="mx-auto text-space w-3.5" />
+          </template>
+        </Button>
+        <div v-if="props.establishment.hasAllInfo" class="flex gap-x-1.5 items-baseline mt-1 grid-cols-1">
+          <span class="text-xs font-semibold capitalize text-space/60">{{ gmapsCategory }}</span>
+          <div class="flex gap-x-0.5">
+            <template v-for="i in 5" :key="i">
+              <component class="w-3 h-3" :is="i <= props.establishment.rating ? StarFilledIcon : StarIcon" />
+            </template>
+          </div>
+        </div>
+        <p class="text-xs leading-[1.5] text-space/60 grid-cols-1 col-span-2">
+          {{ establishment.address }}
+        </p>
       </div>
 
-      <div class="h-5 flex gap-x-2 mt-1">
-        <div class="w-10 bg-space/[0.06] animate-pulse rounded-sm"></div>
-        <div class="w-6 bg-space/[0.06] animate-pulse rounded-sm"></div>
-        <div class="w-12 bg-space/[0.06] animate-pulse rounded-sm"></div>
-        <div class="w-20 bg-space/[0.06] animate-pulse rounded-sm"></div>
+      <div :class="{ 'pb-6': isDefaultProvider }" class="flex gap-x-3">
+        <CryptoList v-if="provider" :cryptos="provider.buy" :label="provider.sell?.length > 0 ? $t('Buy') : undefined"
+          :max="provider.sell?.length > 0 ? 3 : 6" />
+        <CryptoList v-if="provider && provider.sell?.length > 0" :cryptos="provider.sell" :label="$t('Sell')" :max="3" />
       </div>
-
-      <div class="flex gap-x-1 mt-4 pb-6">
-        <div class="w-6 h-6 rounded-full bg-space/[0.06] animate-pulse"></div>
-        <div class="w-6 h-6 rounded-full bg-space/[0.06] animate-pulse"></div>
-        <div class="w-6 h-6 rounded-full bg-space/[0.06] animate-pulse"></div>
-        <div class="w-6 h-6 rounded-full bg-space/[0.06] animate-pulse"></div>
-      </div>
-    </RouterLink>
-
-    <hr class="bg-space/20 h-0.5" />
-
-    <div class="px-6 flex gap-x-2 mt-4 flex-1 items-end">
-      <div class="flex-1 h-[35px] rounded-full bg-space/[0.06] animate-pulse"></div>
-      <div class="w-[35px] h-[35px] rounded-full bg-space/[0.06] animate-pulse"></div>
     </div>
-  </template>
+  </div>
+  <!-- class="shadow-lg border pt-1.5 pb-6 rounded-lg flex flex-col break-inside-avoid-column transition-[box-shadow]" -->
 </template>

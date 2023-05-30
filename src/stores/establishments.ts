@@ -1,4 +1,4 @@
-import type { CurrencyInner as Currency, CryptoEstablishment, CryptoEstablishmentBaseInner as CryptoEstablishmentBaseApi, GetProviders200Response as Provider, GetProviders200Response } from "@/api";
+import type { CryptoEstablishment, CryptoEstablishmentBaseInner as CryptoEstablishmentBaseApi, CurrencyInner as Currency, GetProviders200ResponseInner as Provider } from "@/api";
 import { defineStore, storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import { useApi } from "./api";
@@ -6,14 +6,13 @@ import { useMap, type BoundingBox } from "./map";
 
 
 export type ProviderEstablishment = Provider & {
-  buy: Map<string, Currency>;
-  sell: Map<string, Currency>;
-  both: Map<string, Currency>;
+  buy: string[];
+  sell: string[];
 };
 
 export type BaseEstablishment = Omit<CryptoEstablishmentBaseApi, "providersId"> & {
   hasAllInfo: false;
-  providers: GetProviders200Response[]; // TODO check whether is necessary or it belongs to type Establishment
+  providers: Provider[]; // TODO check whether is necessary or it belongs to type Establishment
 }
 
 export type Establishment = Omit<BaseEstablishment, "hasAllInfo" | "providers"> & Omit<CryptoEstablishment, "photoReference" | "enabled" | "providers"> & {
@@ -66,10 +65,11 @@ export const useEstablishments = defineStore("establishments", () => {
   function includeEstablishment(establishment: BaseEstablishment | Establishment, { northEast, southWest }: BoundingBox) {
     const { lat, lng } = establishment.geoLocation
     const insideBoundingBox = lat <= northEast.lat && lat >= southWest.lat && lng <= northEast.lng && lng >= southWest.lng
-    const ignoreCurrencies = apiStore.selectedCurrencies.length === 0
-    const ignoreCategores = apiStore.selectedCategories.length === 0
-    const filteredByCurrencies = ignoreCurrencies || establishment.providers.some(p => apiStore.selectedCurrencies.some(c => p.buy.has(c) || p.sell.has(c) || p.both.has(c)))
-    const filteredByCategories = ignoreCategores || apiStore.selectedCategories.includes(establishment.category)
+    const ignoreCurrencies = apiStore.selectedFilters.currencies.length === 0
+    const ignoreCategores = apiStore.selectedFilters.categories.length === 0
+    // const filteredByCurrencies = ignoreCurrencies || (establishment.providers as ProviderEstablishment[]).some(p => apiStore.selectedFilters.currencies.some(c => p.buy.has(c) || p.sell.has(c) || p.both.has(c)))
+    const filteredByCurrencies = true // TODO
+    const filteredByCategories = ignoreCategores || apiStore.selectedFilters.categories.map(c => c.label).includes(establishment.category)
     return insideBoundingBox && filteredByCurrencies && filteredByCategories
   }
 
