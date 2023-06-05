@@ -11,6 +11,10 @@ import { useRoute } from "vue-router"
 const apiStore = useApi()
 const { categoriesIssue } = storeToRefs(apiStore)
 
+if (!categoriesIssue.value) {
+	apiStore.fetchIssueCategories()
+}
+
 const establishmentsStore = useEstablishments()
 const { establishments } = storeToRefs(establishmentsStore)
 

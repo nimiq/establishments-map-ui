@@ -85,7 +85,7 @@ export const useMap = defineStore("map", () => {
     if (mapZoom) zoom.value = mapZoom
   }
 
-  const setBoundingBoxDebouncer = useDebounceFn(setBoundingBox, 100)
+  const setBoundingBoxDebouncer = useDebounceFn(setBoundingBox, 130)
 
   const route = useRoute()
   const router = useRouter()

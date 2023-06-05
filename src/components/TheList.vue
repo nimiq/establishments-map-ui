@@ -7,57 +7,51 @@ import { useApi } from "@/stores/api"
 import { useApp } from "@/stores/app"
 import { useEstablishments } from "@/stores/establishments"
 import { storeToRefs } from "pinia"
-import { computed, ref, watch } from "vue"
-import { RecycleScroller } from 'vue-virtual-scroller'
+import { computed, nextTick, ref, watch } from "vue"
+// import { RecycleScroller } from 'vue-virtual-scroller' TODO
 
 const { xlScreen } = useBreakpoints()
 
-const scroller$ = ref<HTMLDivElement>()
-
 const appStore = useApp()
-const { listIsShown, selectedEstablishmentUuid } = storeToRefs(appStore)
+const { listIsShown } = storeToRefs(appStore)
 
 const establishmentsStore = useEstablishments()
 const { establishmentsInView, nearEstablishmentsNotInView, shouldShowNearby } = storeToRefs(establishmentsStore)
 
 const listIsEmpty = computed(() => establishmentsInView.value.length === 0)
 
-watch(selectedEstablishmentUuid, (id) => {
-	if (!id || !scroller$.value) return
-	const item = scroller$.value.querySelector(`[data-establishment-id="${id}"]`)
-	const index = item ? Array.from(scroller$.value.children).indexOf(item) : 0
-	slideTo(index, listIsShown.value ? "smooth" : "auto")
-})
-
-function slideTo(index: number, behavior: "smooth" | "auto" = "smooth") {
-	if (!scroller$.value) return
-	if (!listIsShown) appStore.showList()
-	listIsShown.value = true
-	const li = scroller$.value.children[index] as HTMLLIElement
-	li.scrollIntoView({ inline: "center", block: "center", behavior })
-}
-
-const sizes = { atm: 185, default: 336 } as const;
 const items = computed(() => {
 	const items = establishmentsInView.value.concat(shouldShowNearby ? nearEstablishmentsNotInView.value : [])
 	return items.map((item) => {
-		const isAtm = item.hasAllInfo && item.providers.some((p) => p.sell.size > 0)
+		const isAtm = item.hasAllInfo && item.providers.some((p) => p.sell.length > 0)
 		const type = isAtm ? "atm" : "default"
-		const size = sizes[type]
-		return { ...item, type, size }
+		// const size = sizes[type]
+		return { ...item, type }
 	})
 })
 
 const { getEstablishmentByUuid } = useApi()
+const scroller$ = ref<HTMLUListElement>()
 
-function updateList(startIndex: number, endIndex: number, visibleStartIndex: number, visibleEndIndex: number) {
-	for (let i = visibleStartIndex; i <= visibleEndIndex; i++) {
-		const establishment = items.value[i]
-		if (!establishment.hasAllInfo) {
-			getEstablishmentByUuid(establishment.uuid)
+// create observer. every time a new item inside scroller is in the viewport, we need to load its information by getEstablishmentByUuid
+const observer = new IntersectionObserver((entries) => {
+	entries.forEach((entry) => {
+		if (entry.isIntersecting) {
+			const uuid = entry.target.getAttribute("data-uuid")
+			if (uuid) {
+				getEstablishmentByUuid(uuid)
+			}
 		}
-	}
-}
+	})
+})
+
+watch([listIsShown, listIsEmpty], async () => {
+	await nextTick()
+	if (!scroller$.value) return
+	scroller$.value.querySelectorAll("[data-uuid]").forEach((item) => {
+		observer.observe(item)
+	})
+})
 </script>
 
 <template>
@@ -68,12 +62,17 @@ function updateList(startIndex: number, endIndex: number, visibleStartIndex: num
 		}">
 		<div v-if="!listIsEmpty" :class="{ 'xl:!overflow-hidden': !listIsShown }"
 			class="relative gap-6 p-6 space-y-6 bg-space/[0.04] xl:flex xl:flex-col xl:w-96 columns-2xs scroll-py-6 xl:overflow-y-auto scroll-space z-2 max-xl:pb-16 xl:h-full">
-			<RecycleScroller :items="items" class="h-full" key-field="uuid" list-tag="ul" item-tag="li" emit-update
+			<!-- <RecycleScroller :items="items" class="h-full" key-field="uuid" list-tag="ul" item-tag="li" emit-update
 				@update="updateList">
 				<template v-slot="{ item: establishment }">
 					<EstablishmentCard :establishment="establishment" />
 				</template>
-			</RecycleScroller>
+			</RecycleScroller> -->
+			<ul class="space-y-5" ref="scroller$">
+				<li v-for="item in items" :key="item.uuid">
+					<EstablishmentCard :establishment="item" :data-uuid="item.uuid" />
+				</li>
+			</ul>
 
 			<Button bgColor="grey" class="!mt-9" size="md" @click="establishmentsStore.showNearby"
 				v-if="!shouldShowNearby && nearEstablishmentsNotInView.length > 0">

@@ -90,6 +90,7 @@ export const useApi = defineStore("api", () => {
     const { establishments } = storeToRefs(useEstablishments())
 
     const { northEast, southWest } = surroundingBoundingBox.value
+    console.log(`https://www.google.com/maps/@${northEast.lat},${northEast.lng},17z`)
     const boundingBoxStr = `${southWest.lng},${southWest.lat},${northEast.lng},${northEast.lat}`
 
     const body: SearchEstablishmentsRequest = {
@@ -98,18 +99,19 @@ export const useApi = defineStore("api", () => {
       filterCurrency: selectedFilters.value.currencies.map(c => c.symbol) || undefined,
     }
 
-    const unformatedResponse: { [key: string]: CryptoEstablishmentBaseApi }[] = await establishmentsApi.searchEstablishments(body).catch((e) => e)
-    console.log('🔍 Got establishments from API: ', unformatedResponse)
+    const unformattedResponse: { [key: string]: CryptoEstablishmentBaseApi }[] = await establishmentsApi.searchEstablishments(body).catch((e) => e)
+    console.log('🔍 Got establishments from API: ', unformattedResponse)
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore The API is returning an object with the index as key, but it should return an array
-    const response = Object.values(unformatedResponse) as CryptoEstablishmentBaseApi[]
+    const response = Object.values(unformattedResponse) as CryptoEstablishmentBaseApi[]
 
     if (response instanceof Error) {
       console.error(response);
       // alert('The api is not available'); // TODO Handle error
       return;
     }
+
     response
       .map(parseBaseEstablishment)
       .sort((a, b) => b.geoLocation.lat - a.geoLocation.lat)
@@ -237,10 +239,8 @@ export const useApi = defineStore("api", () => {
   }
 
   onMounted(async () => {
-    fetchIssueCategories()
-    fetchProviders()
-
     await Promise.all([
+      fetchProviders(),
       fetchCategories(),
       fetchCurrencies()
     ])

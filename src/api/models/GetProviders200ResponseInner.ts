@@ -32,6 +32,8 @@ import {
  * @interface GetProviders200ResponseInner
  */
 export interface GetProviders200ResponseInner {
+buy: any;
+[x: string]: any;
     /**
      * 
      * @type {number}

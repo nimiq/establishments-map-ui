@@ -20,11 +20,11 @@
 			'relative': hasSlot('badge'),
 			'flex-row-reverse': props.layout === 'label-icon',
 		}">
-		<span v-if="!props.hideIcon && hasSlot('icon')" :class="{
+		<span v-if="!props.hideIcon && (hasSlot('icon') || getComponent() === 'a')" :class="{
 			'text-white/60': ['space', 'sky', 'ocean'].includes(props.bgColor),
 			'text-space/60': ['white', 'transparent', 'grey'].includes(props.bgColor),
 			'text-opacity-40': isDisabled,
-		}">
+		}" data-icon>
 			<slot name="icon">
 				<template v-if="getComponent() === 'a'">
 					<!-- TODO This only supports external links for now -->
@@ -73,6 +73,9 @@ import { computed, defineAsyncComponent, useSlots } from "vue"
 
 const CircleSpinner = defineAsyncComponent(
 	() => import("@/components/icons/icon-circle-spinner.vue")
+)
+const ArrowLinkIcon = defineAsyncComponent(
+	() => import("@/components/icons/icon-arrow-link.vue")
 )
 
 const props = defineProps({
