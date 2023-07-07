@@ -56,7 +56,9 @@ async function fetchDb<T>(query: string): Promise<T | undefined> {
   const response = await fetch(url, {
     method: 'GET',
     headers: {
-      'apikey': databaseToken
+      'apikey': databaseToken,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
     }
   }).catch(error => {
     return `Error fetching database: ${error}`
