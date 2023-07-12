@@ -7,7 +7,10 @@
     "preview": "vite preview --port 4173",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
-    "lint": "eslint . --ext .vue,.js,.ts --ignore-pattern dist/ --ignore-pattern '*.config.js'"
+    "lint": "eslint . --ext .vue,.js,.ts --ignore-pattern dist/ --ignore-pattern '*.config.js'",
+    "story:dev": "histoire dev",
+    "story:build": "histoire build",
+    "story:preview": "histoire preview"
   },
   "dependencies": {
     "@fontsource/mulish": "^4.5.7",
@@ -25,6 +28,7 @@
     "vue3-google-map": "^0.15.0"
   },
   "devDependencies": {
+    "@histoire/plugin-vue": "^0.16.1",
     "@types/google.maps": "^3.50.5",
     "@types/grecaptcha": "^3.0.4",
     "@types/node": "^16.11.45",
@@ -36,6 +40,7 @@
     "eslint": "^8.5.0",
     "eslint-plugin-vue": "^9.0.0",
     "google-maps": "^4.3.3",
+    "histoire": "^0.16.2",
     "postcss": "^8.4.16",
     "tailwindcss": "^3.2",
     "tailwindcss-nimiq-theme": "^0.2.2",
