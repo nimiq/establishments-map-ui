@@ -20,6 +20,7 @@
     "@nimiq/vue3-components": "github:nimiq/vue3-components#build/full",
     "@vueuse/components": "^10.2.1",
     "@vueuse/core": "^10.2.1",
+    "@vueuse/math": "^10.2.1",
     "@vueuse/router": "^10.2.1",
     "pinia": "^2.0.16",
     "vue": "^3.2.37",

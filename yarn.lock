@@ -778,6 +778,14 @@
     "@vueuse/shared" "10.2.1"
     vue-demi ">=0.14.5"
 
+"@vueuse/math@^10.2.1":
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/math/-/math-10.2.1.tgz#fb4e62492e69cb5d8bb42ee4d7d594d59927edc9"
+  integrity sha512-5mOoPhezfgcRhBT0E2FXPEjCbrLWG9hjhGlg574yWYmwhcLKLtN993CsL3AucD8ULCmWZJJ/J03K4fLyPyaEzw==
+  dependencies:
+    "@vueuse/shared" "10.2.1"
+    vue-demi ">=0.14.5"
+
 "@vueuse/metadata@10.2.1":
   version "10.2.1"
   resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-10.2.1.tgz#0865066def62ed97629c417ec79678d508d22934"
