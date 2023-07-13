@@ -30,3 +30,5 @@ icons_optimized
 *.sln
 *.sw?
 .yarn
+
+.histoire
