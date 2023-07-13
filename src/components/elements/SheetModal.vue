@@ -5,8 +5,6 @@ import { computed, ref, watch } from 'vue';
 
 const VELOCITY_THRESHOLD = 0.1;
 const HEIGHT_MULTIPLIER = 0.8;
-
-
 const props = defineProps({
   initialHeight: {
     type: Number,

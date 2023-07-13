@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import BottomSheetModal from "./BottomSheetModal.vue";
+import SheetModal from "./SheetModal.vue";
 
 const progress = ref(0)
 
@@ -20,9 +20,9 @@ const style = computed(() => {
 <template>
   <Story title="Modal Sheet">
     <div class="relative flex items-end w-screen h-screen bg-space/20">
-      <BottomSheetModal class="absolute text-center bg-white rounded-lg shadow sheet-transition" :style="style"
+      <SheetModal class="absolute text-center bg-white rounded-lg shadow sheet-transition" :style="style"
         :initial-height="171" :max-height="371" @progress="progress = $event">
-      </BottomSheetModal>
+      </SheetModal>
     </div>
   </Story>
 </template>
