@@ -10,4 +10,5 @@ export default defineConfig({
   vite: {
     base: process.env.HISTOIRE_BASE || "/",
   },
+  routerMode: 'hash',
 })
