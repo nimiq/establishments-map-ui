@@ -6,7 +6,6 @@ export default defineConfig({
     HstVue(),
   ],
   setupFile: '/src/histoire-setup.ts',
-  viteIgnorePlugins: ['pluginRewriteAll'],
   vite: {
     base: process.env.HISTOIRE_BASE || "/",
   },
