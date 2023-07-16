@@ -44,6 +44,21 @@ export type Establishment = Omit<BaseEstablishment, "hasAllInfo"> & {
   hasAllInfo: true;
 }
 
+export type NewEstablishment = {
+  name: string,
+  address: string,
+  category: string,
+  gmapsType: string,
+  lat: number,
+  lng: number,
+  provider: string,
+  buy: string[],
+  sell: string[],
+  rating?: number,
+  url?: string,
+  image?: string
+}
+
 const databaseUrl = import.meta.env.VITE_DATABASE_URL
 const databaseToken = import.meta.env.VITE_DATABASE_KEY
 

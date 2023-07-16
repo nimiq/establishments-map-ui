@@ -45,7 +45,7 @@ const n = computed(() => {
 			:class="{ 'text-white/60': props.theme === 'dark', 'text-space/60': props.theme === 'light' }">{{
 				props.label }}</span>
 		<ul class="flex items-center w-max gap-x-2"
-			:class="{ 'bg-white rounded-full ring-1 ring-space/10 p-1 ': layout === 'pill' }">
+			:class="{ 'bg-white rounded-full ring-1 ring-space/10 p-1': layout === 'pill' }">
 			<li v-for="c in  cryptosToDisplay " :key="c">
 				<CryptoIcon :crypto="c" :size="layout === 'dots' ? 'lg' : 'md'" :mono="layout === 'dots'"
 					:bg="layout === 'dots' ? 'white/15' : 'transparent'" />
