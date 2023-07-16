@@ -57,10 +57,10 @@ function onEnd(event: PointerEvent) {
   container.value!.releasePointerCapture(event.pointerId)
 
   animateShortly()
-  const isTouch = event.pointerType === "touch"
   const timeDelta = event.timeStamp - initialTime
 
-  const isClick = isTouch
+  // Touch events seems to be faster than mouse events
+  const isClick = event.pointerType === "touch"
     ? timeDelta < 100
     : timeDelta < 250
 
@@ -82,11 +82,6 @@ function close() {
 function open() {
   emit('update:progress', 1)
 }
-
-defineExpose({
-  open,
-  close,
-})
 
 function animateShortly() {
   container.value?.style.setProperty('--duration', '0.2s')
