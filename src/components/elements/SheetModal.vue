@@ -14,6 +14,14 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  initialBorderRadius: {
+    type: Number,
+    default: 0,
+  },
+  initialGapToScreen: {
+    type: Number,
+    default: 20,
+  },
 })
 
 const emit = defineEmits({
@@ -84,14 +92,34 @@ function animateShortly() {
   container.value?.style.setProperty('--duration', '0.2s')
   setTimeout(() => container.value?.style.removeProperty('--duration'), 100)
 }
+
+const style = ref()
+function onCardDrag(progress: number) {
+  const radius = (1 - progress) * props.initialBorderRadius
+
+  style.value = {
+    height: `${props.initialHeight + dif * progress}px`,
+    marginBottom: `${(1 - progress) * props.initialGapToScreen}px`,
+    borderBottomRightRadius: `${radius}px`,
+    borderBottomLeftRadius: `${radius}px`,
+    width: `${window.innerWidth - (1 - progress) * 40}px`,
+  }
+}
+watch(() => props.progress, onCardDrag, { immediate: true })
 </script>
 
 <template>
-  <article ref="container" class="absolute h-full touch-none" @pointerdown.prevent="onStart" @pointermove.prevent="onMove"
-    @pointerup.prevent="onEnd">
+  <article ref="container" class="absolute h-full touch-none sheet-transition" @pointerdown.prevent="onStart"
+    @pointermove.prevent="onMove" @pointerup.prevent="onEnd" :style="style">
     <div class="pt-2 pb-5 cursor-grab">
       <hr class="w-32 h-1 mx-auto border-0 rounded-full bg-black/20">
     </div>
     <slot />
   </article>
 </template>
+
+<style>
+.sheet-transition {
+  transition: margin-bottom var(--duration), margin-left var(--duration), width var(--duration), border-bottom-right-radius var(--duration), border-bottom-left-radius var(--duration), height var(--duration);
+}
+</style>

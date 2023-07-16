@@ -2,58 +2,51 @@
 import BasicEstablishmentInfo from "@/components/elements/BasicEstablishmentInfo.vue";
 import CryptoList from "@/components/elements/CryptoList.vue";
 import SheetModal from "@/components/elements/SheetModal.vue";
-import { inject, ref, watch, type PropType } from 'vue';
-import { MOBILE_LIST_PROVIDER_KEY, type MobileListProvider } from "./MobileList.vue";
 import type { NewEstablishment } from "@/database";
+import type { PropType } from 'vue';
 
 defineProps({
   e: {
     type: Object as PropType<NewEstablishment>,
     required: true,
+  },
+  progress: {
+    type: Number,
+    required: true,
+  },
+  initialHeight: {
+    type: Number,
+    required: true,
+  },
+  maxHeight: {
+    type: Number,
+    required: true,
+  },
+  initialBorderRadius: {
+    type: Number,
+    default: 0,
+  },
+  initialGapToScreen: {
+    type: Number,
+    default: 20
   }
 })
 
-const sheetModal = ref<typeof SheetModal>()
-
-const INITIAL_GAP_TO_SCREEN = 20/*px*/ // The gap to the screen
-const INITIAL_BORDER_RADIUS = 8/*px*/
-
-const INITIAL_HEIGHT = 162
-const MAX_INITIAL_HEIGHT = 371
-
-const dif = MAX_INITIAL_HEIGHT - INITIAL_HEIGHT
-
-const style = ref()
-const { progress, updateProgress } = inject<MobileListProvider>(MOBILE_LIST_PROVIDER_KEY)!
-
-function onDrag(progress: number) {
-  const radius = (1 - progress) * INITIAL_BORDER_RADIUS
-
-  style.value = {
-    height: `${INITIAL_HEIGHT + dif * progress}px`,
-    marginBottom: `${(1 - progress) * INITIAL_GAP_TO_SCREEN}px`,
-    borderBottomRightRadius: `${radius}px`,
-    borderBottomLeftRadius: `${radius}px`,
-    width: `${window.innerWidth - (1 - progress) * 40}px`,
-  }
-}
-
-watch(progress, onDrag, { immediate: true })
+defineEmits({
+  'update:progress': (_: number) => true,
+})
 </script>
 
 <template>
-  <SheetModal ref="sheetModal" :initial-height="INITIAL_HEIGHT" :max-height="MAX_INITIAL_HEIGHT" :style="style"
-    class="relative w-full px-6 pb-5 bg-white rounded-t-lg sheet-transition" :progress="progress"
-    @update:progress="updateProgress">
+  <SheetModal ref="sheetModal" :initial-height="initialHeight" :max-height="maxHeight"
+    class="relative w-full px-6 pb-5 bg-white rounded-t-lg" :progress="progress"
+    @update:progress="$emit('update:progress', $event)" :initial-border-radius="initialBorderRadius"
+    :initial-gap-to-screen="initialGapToScreen">
     <BasicEstablishmentInfo :name="e.name" :address="e.address" :gmaps-type="e.gmapsType" :rating="e.rating"
       :url="e.url" />
     <CryptoList :cryptos="e.buy" theme="dark" layout="pill" class="mt-5" />
   </SheetModal>
 </template>
 
-<style>
-.sheet-transition {
-  transition: margin-bottom var(--duration), margin-left var(--duration), width var(--duration), border-bottom-right-radius var(--duration), border-bottom-left-radius var(--duration), height var(--duration);
-}
-</style>
+
 

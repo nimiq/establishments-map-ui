@@ -10,7 +10,13 @@ export type MobileListProvider = {
 <script setup lang="ts">
 import MobileEstablishmentCard from "@/components/elements/MobileEstablishmentCard.vue";
 import type { NewEstablishment } from '@/database';
-import { provide, readonly, ref, type PropType, type Ref } from "vue";
+import { ref, type PropType, type Ref } from "vue";
+
+const INITIAL_GAP_TO_SCREEN = 20/*px*/ // The gap between the cards to the screen
+const INITIAL_BORDER_RADIUS = 8/*px*/
+
+const INITIAL_HEIGHT = 162
+const MAX_HEIGHT = 371
 
 defineProps({
   establishments: {
@@ -19,19 +25,20 @@ defineProps({
   },
 })
 
-const progress = ref(0) // 0 to 1
-const updateProgress = (newProgress: number) => progress.value = newProgress;
-updateProgress(0)
-provide<MobileListProvider>(MOBILE_LIST_PROVIDER_KEY, { progress: readonly(progress), updateProgress })
+// We have only one progress across all elements. If any of the element moves, all of them move.
+// Value is between 0 and 1
+const progress = ref(0)
 </script>
 
 <template>
   <ul
     class="flex items-end w-full overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-x-3 scroll-mx-[var(--spacing)]"
-    :style="`--spacing: ${(1 - progress) * 20}px`">
+    :style="`--spacing: ${(1 - progress) * INITIAL_GAP_TO_SCREEN}px`">
     <li v-for="(establishment, i) in establishments" :key="i"
       class="relative shrink-0 snap-center first:pl-[var(--spacing)] last:pr-[var(--spacing)]">
-      <MobileEstablishmentCard :e="establishment" />
+      <MobileEstablishmentCard :e="establishment" :initial-height="INITIAL_HEIGHT" :max-height="MAX_HEIGHT"
+        :initial-border-radius="INITIAL_BORDER_RADIUS" :initial-gap-to-screen="INITIAL_GAP_TO_SCREEN" :progress="progress"
+        @update:progress="progress = $event" />
     </li>
   </ul>
 </template>
