@@ -42,14 +42,12 @@ const establishments: NewEstablishment[] = [{
   image: "https://shorturl.at/zOQST",
   provider: "DEFAULT"
 }]
-
-console.log({ establishments })
 </script>
 
 <template>
   <Story title="Mobile List">
     <Variant title="Default">
-      <div class="relative h-screen bg-fog">
+      <div class="relative h-screen">
         <img src="@/assets-dev/stories/map-new-york-square.png" alt="" class="object-cover h-full">
         <div class="absolute bottom-0 w-full">
           <MobileList :establishments="establishments" class="relative" />
