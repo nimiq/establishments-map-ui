@@ -4,10 +4,8 @@ import CategoryIcon from "@/components/elements/CategoryIcon.vue"
 import { useApp } from "@/stores/app"
 import { useEstablishments } from "@/stores/establishments"
 import { useMap, type BoundingBox } from "@/stores/map"
-import { useTiles } from "@/stores/tiles"
 import { Cluster, SuperClusterAlgorithm } from "@googlemaps/markerclusterer"
 import { storeToRefs } from "pinia"
-import { onMounted, watch } from "vue"
 import { CustomMarker, GoogleMap, MarkerCluster } from "vue3-google-map"
 
 
@@ -56,63 +54,6 @@ function selectEstablishment(uuid: string) {
 	selectedEstablishmentUuid.value = uuid
 	appStore.showList()
 }
-
-function drawBox({ northEast, southWest }: BoundingBox, opacity = 0) {
-	if (!map$.value?.map) return
-	const rectangle = new google.maps.Rectangle({
-		strokeColor: "#FF0000",  // Line color
-		strokeOpacity: 0.8,  // Line opacity
-		strokeWeight: 1,  // Line weight
-		fillColor: "#FF0000",  // Background color
-		fillOpacity: opacity,  // Background opacity
-		map: map$.value?.map,
-		bounds: {
-			north: northEast.lat,
-			south: southWest.lat,
-			east: northEast.lng,
-			west: southWest.lng,
-		},
-	});
-}
-
-// const { boundingBox } = storeToRefs(useMap())
-// watch(boundingBox, () => {
-// 	const tiles = useTiles().getTilesToFetch(boundingBox.value, zoom.value)
-// 	tiles.forEach(tile => {
-// 		drawBox(tile.box)
-// 	});
-// })
-let drawed = false
-const { ROWS, COLS } = useTiles()
-function draw() {
-	if (drawed) return
-	drawed = true
-	for (let row = 0; row < ROWS; row++) {
-		for (let col = 0; col < COLS; col++) {
-			console.log(`Drawing tile ${row} ${col}`)
-			const tile = useTiles().tileToBoundingBox({ row, col })
-			// drawBox(tile)
-		}
-	}
-}
-
-watch(boundingBox, () => {
-	const { neTile, swTile } = useTiles().boundingBoxToTiles(boundingBox.value)
-	console.log(neTile, swTile, drawed)
-	if (drawed) return
-	drawed = true
-	const [minRow, maxRow] = [Math.min(neTile.row, swTile.row), Math.max(neTile.row, swTile.row)]
-	const [minCol, maxCol] = [Math.min(neTile.col, swTile.col), Math.max(neTile.col, swTile.col)]
-	for (let row = minRow; row <= maxRow; row++) {
-		console.log(`Drawing row ${row}`)
-		for (let col = minCol; col <= maxCol; col++) {
-			console.log(`Drawing tile ${row} ${col}`)
-			const tile = useTiles().tileToBoundingBox({ row, col })
-			// drawBox(tile, 0.05)
-		}
-	}
-})
-
 </script>
 
 <template>
