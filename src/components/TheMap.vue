@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Button from "@/components/elements/Button.vue"
+import Button from "@/components/atoms/Button.vue"
 import EstablishmentIcon from "@/components/icons/icon-establishment.vue"
 import MinusIcon from "@/components/icons/icon-minus.vue"
 import PlusIcon from "@/components/icons/icon-plus.vue"

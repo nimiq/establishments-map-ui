@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ProviderName, type NewEstablishment } from "@/database";
-import NewEstablishmentCard from "./NewEstablishmentCard.vue";
+import EstablishmentCard from "./EstablishmentCard.vue";
 import { computed, ref } from "vue";
 
 const progressState = ref<"expanded" | "not-expanded" | "loop" | "custom">("expanded")
@@ -90,8 +90,7 @@ const establishments: NewEstablishment[] = [{
 </script>
 
 <template>
-  <Story title="Establishment card" :layout="{ type: 'grid', width: '300px' }" icon="carbon:sim-card"
-    icon-color="rgba(255,255,255,0.8)">
+  <Story title="Establishment card" :layout="{ type: 'grid', width: '300px' }">
     <template #controls>
       <div class="flex flex-col px-4 py-4 gap-x-2">
         <label for="expanded" class="select-none">Progress State</label>
@@ -110,7 +109,7 @@ const establishments: NewEstablishment[] = [{
     </template>
 
     <Variant v-for="(e, i) in establishments" :title="e.provider" :key="i" class="flex items-end h-full">
-      <NewEstablishmentCard :establishment="e" :progress="progressState === 'custom' ? customProgress : progress"
+      <EstablishmentCard :establishment="e" :progress="progressState === 'custom' ? customProgress : progress"
         class="relative" />
     </Variant>
 

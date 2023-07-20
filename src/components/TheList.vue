@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Button from "@/components/elements/Button.vue"
-import EstablishmentCard from "@/components/elements/EstablishmentCard.vue"
+import Button from "@/components/atoms/Button.vue"
+import EstablishmentCard from "@/components/atoms/EstablishmentCard.vue"
 import NoEstablishments from "@/components/illustrations/no-establishments.vue"
 import { useBreakpoints } from "@/composables/useBreakpoints"
 import { useApi } from "@/stores/api"

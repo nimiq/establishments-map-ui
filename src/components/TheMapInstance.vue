@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import googleMapStyles from "@/assets/google-map-styles"
-import CategoryIcon from "@/components/elements/CategoryIcon.vue"
+import CategoryIcon from "@/components/atoms/CategoryIcon.vue"
 import { useApp } from "@/stores/app"
 import { useEstablishments } from "@/stores/establishments"
 import { useMap, type BoundingBox } from "@/stores/map"

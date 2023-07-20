@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import CryptoIcon from "@/components/elements/CryptoIcon.vue"
+import CryptoIcon from "@/components/atoms/CryptoIcon.vue"
 import FormContainer from "@/components/forms/FormContainer.vue"
 import type { Currency } from "@/database"
 import { useApi } from "@/stores/api"
 import { useAutocomplete, type Suggestion } from "@/stores/autocomplete"
 import { storeToRefs } from "pinia"
 import { computed, ref } from "vue"
-import SearchBox from "../elements/SearchBox.vue"
-import Select from "../elements/Select.vue"
+import SearchBox from "../atoms/SearchBox.vue"
+import Select from "../atoms/Select.vue"
 
 const apiStore = useApi()
 const { currencies } = storeToRefs(apiStore)

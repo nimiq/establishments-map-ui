@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Select, { type SelectOption } from "@/components/elements/Select.vue"
-import TextAreaInput from "@/components/elements/TextAreaInput.vue"
+import Select, { type SelectOption } from "@/components/atoms/Select.vue"
+import TextAreaInput from "@/components/atoms/TextAreaInput.vue"
 import FormContainer from "@/components/forms/FormContainer.vue"
 import type { Establishment } from "@/database"
 import { useApi } from "@/stores/api"

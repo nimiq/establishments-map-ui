@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Button from "@/components/elements/Button.vue"
+import Button from "@/components/atoms/Button.vue"
 import ArrowLinkIcon from "@/components/icons/icon-arrow-link.vue"
 import ArrowLeftIcon from "@/components/icons/icon-arrow-left.vue"
 import { useCaptcha } from "@/composables/useCaptcha"

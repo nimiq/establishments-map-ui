@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Theme, type ProviderAssets } from "@/assets-dev/provider-assets";
-import Popover from '@/components/elements/Popover.vue';
+import Popover from '@/components/atoms/Popover.vue';
 import InfoIcon from '@/components/icons/icon-info.vue';
 import { computed } from "vue";
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Button from "@/components/elements/Button.vue"
-import CategoryIcon from "@/components/elements/CategoryIcon.vue"
-import CryptoIcon from "@/components/elements/CryptoIcon.vue"
-import Select from "@/components/elements/Select.vue"
+import Button from "@/components/atoms/Button.vue"
+import CategoryIcon from "@/components/atoms/CategoryIcon.vue"
+import CryptoIcon from "@/components/atoms/CryptoIcon.vue"
+import Select from "@/components/atoms/Select.vue"
 import CrossIcon from "@/components/icons/icon-cross.vue"
 import FilterIcon from "@/components/icons/icon-filter.vue"
 import type { Category, Currency } from "@/database"

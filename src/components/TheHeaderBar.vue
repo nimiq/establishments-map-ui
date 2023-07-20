@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import TheList from "@/components/TheList.vue"
-import Button from "@/components/elements/Button.vue"
-import FilterModal from "@/components/elements/FilterModal.vue"
-import Popover from "@/components/elements/Popover.vue"
-import SearchBox from "@/components/elements/SearchBox.vue"
+import Button from "@/components/atoms/Button.vue"
+import FilterModal from "@/components/atoms/FilterModal.vue"
+import Popover from "@/components/atoms/Popover.vue"
+import SearchBox from "@/components/atoms/SearchBox.vue"
 import ChevronLeftIcon from "@/components/icons/icon-arrow-small-left.vue"
 import { useApp } from "@/stores/app"
 import { SuggestionType, useAutocomplete, type Suggestion } from "@/stores/autocomplete"
