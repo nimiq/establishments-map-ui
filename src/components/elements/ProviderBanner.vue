@@ -21,7 +21,7 @@ const isDarkTheme = computed(() =>
 </script>
 
 <template>
-	<footer class="relative flex items-center" :style="`height: ${assets.label ? '56px' : '36px'};">
+	<footer class="relative flex items-center" :style="`height: ${assets.label ? '56px' : '36px'};`">
 
 		<div v-if="assets.label" class="z-20 flex items-center pt-1.5 pl-6 pr-4 text-xs gap-x-1.5">
 			<p v-html="assets.label" :class="{
@@ -46,12 +46,3 @@ const isDarkTheme = computed(() =>
 
 	</footer>
 </template>
-
-<!-- /* Ellipse 383 */
-
-position: absolute;
-width: 36px;
-height: 36px;
-
-background: #FFFFFF;
-; -->
