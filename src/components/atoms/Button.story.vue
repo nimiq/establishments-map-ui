@@ -3,7 +3,7 @@ import Button from "./Button.vue";
 </script>
 
 <template>
-  <Story title="Button">
+  <Story title="Button" :layout="{ type: 'grid', width: '400px' }">
     <Variant title="default">
       <Button bgColor="space" size="md">
         <template #icon>

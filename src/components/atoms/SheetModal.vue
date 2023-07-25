@@ -33,9 +33,11 @@ const dif = props.maxHeight - props.initialHeight
 let initialY = 0
 let initialTime = 0
 let isOpen = false
+const dragging = ref(false)
 const container = ref<HTMLElement | null>(null)
 
 function onStart(event: PointerEvent) {
+  dragging.value = true
   initialTime = event.timeStamp
   initialY = event.clientY
   isOpen = props.progress === 1
@@ -43,6 +45,7 @@ function onStart(event: PointerEvent) {
 }
 
 function onMove(event: PointerEvent) {
+  if (!dragging.value) return
   const yDelta = (initialY - event.clientY)
   const startingPoint = isOpen ? yDelta + dif : yDelta
   const newProgress = Math.max(0, Math.min(startingPoint / dif, 1))
@@ -50,15 +53,13 @@ function onMove(event: PointerEvent) {
 }
 
 function onEnd(event: PointerEvent) {
+  dragging.value = false
   container.value!.releasePointerCapture(event.pointerId)
 
   animateShortly()
   const timeDelta = event.timeStamp - initialTime
 
-  // Touch events seems to be faster than mouse events
-  const isClick = event.pointerType === "touch"
-    ? timeDelta < 100
-    : timeDelta < 250
+  const isClick = timeDelta < 500
 
   if (isClick && !isOpen) {
     open()
@@ -103,11 +104,11 @@ watch(() => props.progress, onCardDrag, { immediate: true })
   <article ref="container" class="absolute h-full touch-none sheet-transition will-change-auto"
     @pointerdown.prevent="onStart" @pointermove.prevent="onMove" @pointerup.prevent="onEnd" :style="style">
     <slot name="dragger">
-      <div class="pt-2 pb-5 cursor-grab">
-        <hr class="w-32 h-1 mx-auto border-0 rounded-full bg-black/20">
+      <div class="relative">
+        <hr
+          class="absolute inset-x-0 z-10 w-32 h-1 mx-auto mt-2 ml-auto border-0 rounded-full bg-black/20 mix-blend-difference">
       </div>
     </slot>
-
     <slot />
   </article>
 </template>
