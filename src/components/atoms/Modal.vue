@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import CrossIcon from "@/components/icons/icon-cross.vue"
-import { Dialog, DialogPanel, DialogTitle, DialogOverlay, TransitionChild, TransitionRoot, DialogDescription } from "@headlessui/vue"
-import { ref, useSlots } from "vue"
+import CrossIcon from "@/components/icons/icon-cross.vue";
+import { Dialog, DialogDescription, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from "@headlessui/vue";
+import { ref, useSlots } from "vue";
 
 const isOpen = ref(false)
 

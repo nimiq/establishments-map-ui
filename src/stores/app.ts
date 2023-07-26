@@ -1,42 +1,38 @@
-import type { Category, Currency } from '@/database';
+import { categories, currencies, type Category, type Currency, } from '@/database';
 import { useRouteQuery } from '@vueuse/router';
-import { defineStore, storeToRefs } from "pinia";
+import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { useApi } from "./api";
+import { useLocations } from '@/stores/locations';
 import { useMap } from "./map";
 
 export const useApp = defineStore("app", () => {
-  const apiStore = useApi();
-  const { categories, currencies } = storeToRefs(apiStore);
-
   const listIsShown = ref(false);
   const toggleList = () => listIsShown.value = !listIsShown.value;
   const showList = () => listIsShown.value = true;
   const hideList = () => listIsShown.value = false;
 
-  const mapGestureBehaviour = ref(useRouteQuery('gestureBehaviour') || 'greedy');
-
-  const selectedEstablishmentUuid = useRouteQuery('e')
-  const selectedCategoriesQuery = useRouteQuery('categories')
+  // TODO Do we need to store this in the store?
+  const selectedLocationUuid = useRouteQuery('e')
+  const selectedCategoriesQuery = useRouteQuery<Category | Category[]>('categories')
   const selectedCategories = computed(() => {
     const c = selectedCategoriesQuery.value
     if (!c) return []
     const categoriesArray = Array.isArray(c) ? c : [c]
-    return (categoriesArray.map((currency: string) => categories.value?.get(currency)).filter(Boolean) || []) as Category[];
+    return categoriesArray.filter((category) => categories.includes(category));
   })
-  const selectedCurrenciesQuery = useRouteQuery('currencies')
+  const selectedCurrenciesQuery = useRouteQuery<Currency | Currency[]>('currencies')
   const selectedCurrencies = computed(() => {
     const c = selectedCurrenciesQuery.value
     if (!c) return []
     const currenciesArray = Array.isArray(c) ? c : [c]
-    return (currenciesArray.map((currency: string) => currencies.value?.get(currency)).filter(Boolean) || []) as Currency[];
+    return currenciesArray.filter((currency) => currencies.includes(currency));
   })
 
-  function setSelectedCurrencies(currencies: string[]) {
+  function setSelectedCurrencies(currencies: Currency[]) {
     selectedCurrenciesQuery.value = currencies
   }
 
-  function setSelectedCategories(categories: string[]) {
+  function setSelectedCategories(categories: Category[]) {
     selectedCategoriesQuery.value = categories
   }
 
@@ -45,13 +41,13 @@ export const useApp = defineStore("app", () => {
 
   const { setCenter, setZoom } = useMap();
 
-  async function goToEstablishment(uuid: string, options?: { behaviourList?: 'show' | 'hide' }) {
-    const establishment = await useApi().getEstablishmentByUuid(uuid).catch(/** Handle error(?) */)
-    if (!establishment) return false
+  async function goToLocation(uuid: string, options?: { behaviourList?: 'show' | 'hide' }) {
+    const location = useLocations().Locations.get(uuid)
+    if (!location) return false
 
-    setCenter({ lng: establishment.lng, lat: establishment.lat })
+    setCenter({ lng: location.lng, lat: location.lat })
     setZoom(19)
-    selectedEstablishmentUuid.value = uuid
+    selectedLocationUuid.value = uuid
     if (options?.behaviourList === 'show') showList()
     if (options?.behaviourList === 'hide') hideList()
     computeBoundingBox({ updateRoute: false })
@@ -63,11 +59,10 @@ export const useApp = defineStore("app", () => {
     toggleList,
     showList,
     hideList,
-    selectedEstablishmentUuid,
-    goToEstablishment,
+    selectedLocationUuid,
+    goToLocation,
     selectedCategories,
     selectedCurrencies,
-    mapGestureBehaviour,
     setSelectedCurrencies,
     setSelectedCategories,
   }

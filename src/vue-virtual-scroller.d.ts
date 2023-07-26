@@ -1,7 +1,7 @@
 // Type definitions for vue-virtual-scroller
 // Project: https://github.com/Akryum/vue-virtual-scroller/
 declare module 'vue-virtual-scroller' {
-  import Vue, { ComponentOptions, PluginObject } from 'vue';
+  import Vue, { PluginObject } from 'vue';
 
   interface PluginOptions {
     installComponents?: boolean;

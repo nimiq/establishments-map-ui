@@ -70,9 +70,7 @@ import {
 	ListboxOptions,
 } from "@headlessui/vue"
 
-export type SelectOption = {
-	[key: string]: unknown
-}
+export type SelectOption = string;
 
 const props = defineProps({
 	modelValue: {

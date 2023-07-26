@@ -1,48 +1,34 @@
 import type { Suggestion } from "./stores/autocomplete";
 import type { BoundingBox } from "./stores/map";
 
-export type Provider = {
-  id: number;
-  name: string;
-};
-
-export type ProviderWithCurrencies = Provider & {
-  buy: string[];
-  sell: string[];
-};
-
-export type Currency = {
-  name: string;
-  symbol: string;
+export enum Currency {
+  NIM = 'NIM',
+  BTC = 'BTC',
+  USDC_POLYGON = 'USDC_POLYGON',
+  ETH = 'ETH',
+  LTC = 'LTC',
+  LBTC = 'LBTC',
+  XLM = 'XLM',
+  XRP = 'XRP',
+  DASH = 'DASH',
 }
+export const currencies = Object.values(Currency);
 
-export type Category = {
-  id: number;
-  label: string;
+export enum Category {
+  CarsBikes = 'cars_bikes',
+  Cash = 'cash',
+  ComputerElectronics = 'computer_electronics',
+  Entertainment = 'entertainment',
+  FoodDrinks = 'food_drinks',
+  HealthBeauty = 'health_beauty',
+  HotelLodging = 'hotel_lodging',
+  LeisureActivities = 'leisure_activities',
+  Miscellaneous = 'miscellaneous',
+  RestaurantBar = 'restaurant_bar',
+  Shop = 'shop',
+  SportsFitness = 'sports_fitness',
 }
-
-export type BaseEstablishment = {
-  uuid: string;
-  name: string;
-  lat: number;
-  lng: number;
-  providers: ProviderWithCurrencies[];
-  category: string;
-  gmapsTypes: Array<string>;
-  hasAllInfo: boolean;
-}
-
-export type Establishment = Omit<BaseEstablishment, "hasAllInfo"> & {
-  photo?: string;
-  url?: string;
-  gmapsPlaceId: string;
-  category: string;
-  address: string;
-  rating: number;
-  instagram: string;
-  facebook: string;
-  hasAllInfo: true;
-}
+export const categories = Object.values(Category);
 
 export enum ProviderName {
   Default = 'Default',
@@ -54,28 +40,32 @@ export enum ProviderName {
   Edenia = "Edenia",
 }
 
+export enum LocationType {
+  Atm = 'atm',
+  Shop = 'shop',
+}
+
 export type Location = {
   uuid: string,
   name: string,
   address: string,
-  category: string,
-  gmapsType: string,
+  category: Category,
+  gmaps_type: string,
   lat: number,
   lng: number,
   provider: ProviderName,
-  buy: string[],
-  sell: string[],
+  cryptos_accepted: Currency[],
+  cryptos_available: Currency[],
+  type: LocationType,
   rating?: number,
-  url?: string,
-  image?: string
+  photo?: string,
+  instagram?: string,
+  gmaps?: string,
+  facebook?: string,
 }
 
 const databaseUrl = import.meta.env.VITE_DATABASE_URL
 const databaseToken = import.meta.env.VITE_DATABASE_KEY
-
-const providers: Provider[] = [];
-const currencies: Currency[] = [];
-const categories: Category[] = [];
 
 async function fetchDb<T>(query: string): Promise<T | undefined> {
   const url = `${databaseUrl}/${query}`;
@@ -104,65 +94,25 @@ async function fetchDb<T>(query: string): Promise<T | undefined> {
   return data;
 }
 
-export async function getProviders() {
-  if (providers.length === 0) {
-    providers.push(...await fetchDb<Provider[]>("providers?select=id,name") ?? []);
-  }
-  return providers;
-}
+export async function getLocations({ northEast, southWest }: BoundingBox): Promise<Location[]> {
+  const query = `rpc/get_Locations?swlng=${southWest.lng}&nelng=${northEast.lng}&swlat=${southWest.lat}&nelat=${northEast.lat}`;
+  const data = await fetchDb<Location[]>(query) ?? [];
 
-export async function getCurrencies() {
-  if (currencies.length === 0) {
-    currencies.push(...await fetchDb<Currency[]>("currencies?select=name,symbol") ?? []);
-  }
-  return currencies;
-}
-
-export async function getCategories() {
-  if (categories.length === 0) {
-    categories.push(...await fetchDb<Category[]>("establishment_categories?select=id,label") ?? []);
-  }
-  return categories;
-}
-
-export async function getEstablishments({ northEast, southWest }: BoundingBox): Promise<BaseEstablishment[]> {
-  const query = `rpc/get_establishments?swlng=${southWest.lng}&nelng=${northEast.lng}&swlat=${southWest.lat}&nelat=${northEast.lat}`;
-  type EstablishmentDb = Omit<BaseEstablishment, "providers" | "category"> & { providers: ProviderWithCurrencies[], categoryId: number };
-  const data = await fetchDb<EstablishmentDb[]>(query) ?? [];
-
-  const providers = await getProviders();
-  const categories = await getCategories();
-
-  // Mapping the data to the desired structure
-  const establishments = data.map(establishment => {
-    const mappedProviders = establishment.providers?.map(providerInfo => {
-      const provider = providers.find(p => p.id === providerInfo.id);
-      return { ...providerInfo, ...provider };
-    });
-
-    const category = categories.find(c => c.id === establishment.categoryId)?.label || 'miscellaneous';
-
-    return {
-      uuid: establishment.uuid,
-      name: establishment.name,
-      lat: establishment.lat,
-      lng: establishment.lng,
-      providers: mappedProviders,
-      category,
-      hasAllInfo: false
-    };
+  const providerNames = Object.values(ProviderName);
+  data.forEach(location => {
+    if (!providerNames.includes(location.provider)) {
+      console.warn(`Unknown provider: ${location.provider}`);
+      location.provider = ProviderName.Default;
+    }
   });
 
-  return establishments;
+  data.forEach(location => {
+    const type = location.cryptos_available.length > 0 || location.category === Category.Cash
+    location.type = type ? LocationType.Atm : LocationType.Shop
+  });
+
+  return data;
 }
-
-
-export async function fetchEstablishment(uuid: string): Promise<Establishment | undefined> {
-  const query = `rpc/get_establishment_by_uuid?establishment_uuid=${uuid}`;
-  const establishment = await fetchDb<Establishment>(query);
-  return establishment;
-}
-
 export async function queryResults(userQuery: string) {
   const query = `rpc/query_search?query=${userQuery}`;
   const suggestions = await fetchDb<Suggestion[]>(query);

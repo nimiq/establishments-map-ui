@@ -25,7 +25,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-  'update:progress': (_: number) => true,
+  'update:progress': (progress: number) => true,
 })
 
 const dif = props.maxHeight - props.initialHeight

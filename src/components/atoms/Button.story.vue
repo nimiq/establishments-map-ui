@@ -13,7 +13,7 @@ import Button from "./Button.vue";
         </template>
 
         <template #label>
-          Show more establishments
+          Show more Locations
         </template>
       </Button>
     </Variant>

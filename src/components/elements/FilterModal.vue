@@ -6,7 +6,7 @@ import Select from "@/components/atoms/Select.vue"
 import CrossIcon from "@/components/icons/icon-cross.vue"
 import FilterIcon from "@/components/icons/icon-filter.vue"
 import type { Category, Currency } from "@/database"
-import { useApi } from "@/stores/api"
+import { categories, currencies } from "@/database"
 import { useApp } from "@/stores/app"
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from "@headlessui/vue"
 import { storeToRefs } from "pinia"
@@ -14,8 +14,6 @@ import { computed, ref, watchEffect } from "vue"
 
 const isOpen = ref(false)
 
-const apiStore = useApi()
-const { currencies, categories, loading } = storeToRefs(apiStore)
 const appStore = useApp()
 const { selectedCategories, selectedCurrencies } = storeToRefs(appStore)
 
@@ -54,16 +52,20 @@ function openModal() {
 }
 
 function applyFilters() {
-	appStore.setSelectedCategories(unappliedFiltersCategories.value.map(c => c.label))
-	appStore.setSelectedCurrencies(unappliedFiltersCurrencies.value.map(c => c.symbol))
+	appStore.setSelectedCategories(unappliedFiltersCategories.value)
+	appStore.setSelectedCurrencies(unappliedFiltersCurrencies.value)
 	closeModal({ shouldClearFilters: false })
 }
 </script>
 
 <template>
-	<Button @click="openModal" bgColor="grey" size="md" :disabled="loading">
+	<div>
+	<Button @click="openModal" bgColor="white" size="md">
 		<template #icon>
 			<FilterIcon class="text-space w-4.5 h-4.5" />
+		</template>
+		<template #label>
+			Filters
 		</template>
 		<template #badge v-if="nFilters > 0">{{ nFilters }} </template>
 	</Button>
@@ -89,7 +91,7 @@ function applyFilters() {
 							</DialogTitle>
 							<hr class="w-full h-px my-8 bg-space/10" />
 
-							<Select :placeholder="$t('Select_Cryptocurrency')" :options="[...currencies?.values()]" label-key="symbol"
+							<Select :placeholder="$t('Select_Cryptocurrency')" :options="currencies" label-key="symbol"
 								v-model="unappliedFiltersCurrencies" class="px-6 md:px-10">
 								<template #label>
 									<h3 class="mb-6 text-sm font-semibold tracking-wider uppercase text-space/40 md:mb-8">
@@ -135,4 +137,5 @@ function applyFilters() {
 			</div>
 		</Dialog>
 	</TransitionRoot>
+	</div>
 </template>

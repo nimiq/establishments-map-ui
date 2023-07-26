@@ -1,32 +1,32 @@
-import { queryResults as queryResultsDb } from "@/database";
+import { Category, Currency, queryResults as queryResultsDb } from "@/database";
 import { defineStore, storeToRefs } from "pinia";
 import { ref } from "vue";
 import { useMap } from "./map";
 
 export enum SuggestionType {
-  ESTABLISHMENT = "establishment",
+  ESTABLISHMENT = "location",
   CATEGORY = "category",
   CURRENCY = "currency",
-  GOOGLE_ESTABLISHMENT = "googleEstablishment",
+  GOOGLE_ESTABLISHMENT = "googleLocation",
   GOOGLE_REGIONS = "regions",
 }
 
 export type Suggestion = {
   label: string,
-
-  // values for id
-  // regions -> google place id
-  // apiEstablishment -> Establishment UUID
-  // currency -> currency symbol
-  // category -> category label
-  id: string,
 } & ({
+  id: string // Google Place ID
   type: SuggestionType.GOOGLE_ESTABLISHMENT | SuggestionType.GOOGLE_REGIONS,
   matchedSubstrings: google.maps.places.AutocompletePrediction["matched_substrings"]
+} | ({ matchedSubstrings: undefined } & {
+  id: Category,
+  type: SuggestionType.CATEGORY,
 } | {
-  type: SuggestionType.ESTABLISHMENT | SuggestionType.CATEGORY | SuggestionType.CURRENCY,
-  matchedSubstrings: undefined
-})
+  id: Currency,
+  type: SuggestionType.CURRENCY,
+} | {
+  id: string, // Location UUID
+  type: SuggestionType.ESTABLISHMENT,
+}))
 
 export enum AutocompleteStatus {
   INITIAL = "initial",
@@ -36,7 +36,7 @@ export enum AutocompleteStatus {
 }
 
 type SearchFor = {
-  searchForEstablishment?: boolean,
+  searchForLocation?: boolean,
   searchForRegions?: boolean,
 }
 
@@ -57,7 +57,7 @@ export const useAutocomplete = defineStore("autocomplete", () => {
     if (!autocompleteService.value) autocompleteService.value = new google.maps.places.AutocompleteService()
   }
 
-  async function autocompleteGoogle(query: string, { searchForEstablishment, searchForRegions }: SearchFor) {
+  async function autocompleteGoogle(query: string, { searchForLocation, searchForRegions }: SearchFor) {
     init();
     await autocompleteService.value?.getPlacePredictions({
       input: query,
@@ -65,7 +65,7 @@ export const useAutocomplete = defineStore("autocomplete", () => {
       location: mapReady.value && map.value ? map.value.getCenter() : undefined,
       bounds: mapReady.value && map.value ? map.value.getBounds() : undefined,
       types: [
-        searchForEstablishment ? "establishment" : "",
+        searchForLocation ? "location" : "",
         searchForRegions ? "(regions)" : "",
       ].filter(Boolean),
     }, (predictions, status) => {
@@ -88,7 +88,7 @@ export const useAutocomplete = defineStore("autocomplete", () => {
     }
 
     dbSuggestions.value = await queryResultsDb(query)
-    autocompleteGoogle(query, { searchForEstablishment: true })
+    autocompleteGoogle(query, { searchForLocation: true })
   }
 
   return {

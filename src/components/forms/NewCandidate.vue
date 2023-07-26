@@ -38,7 +38,7 @@ async function onSubmit(captcha: string) {
 }
 
 function autocompleteGoogle(query: string) {
-	return autocompleteStore.autocompleteGoogle(query, { searchForEstablishment: true })
+	return autocompleteStore.autocompleteGoogle(query, { searchForLocation: true })
 }
 </script>
 
@@ -67,10 +67,10 @@ function autocompleteGoogle(query: string) {
 				<template #selected-option="{ name }">{{ name }} </template>
 			</Select>
 		</template>
-		<template #button-label>{{ $t('Submit_Establishment') }}</template>
+		<template #button-label>{{ $t('Submit_Location') }}</template>
 
 		<!-- Success -->
-		<template #success-title>{{ $t('Thank_you_for_submitting_a_new_establishment_to_the_Crypto_Map') }}</template>
+		<template #success-title>{{ $t('Thank_you_for_submitting_a_new_location_to_the_Crypto_Map') }}</template>
 		<template #success-description>{{ $t('This_may_take_a_few_days_to_process') }}</template>
 		<template #success-button-label>{{ $t('Back_to_the_Map') }}</template>
 

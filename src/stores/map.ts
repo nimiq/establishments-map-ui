@@ -1,6 +1,6 @@
 import { useBreakpoints } from "@/composables/useBreakpoints";
 import type { IpLocation } from "@/composables/useGeoIp";
-import { useDebounceFn } from "@vueuse/core";
+import { useDebounceFn, useGeolocation } from "@vueuse/core";
 import { defineStore } from "pinia";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -46,7 +46,7 @@ export const useMap = defineStore("map", () => {
     southWest: { lat: 0, lng: 0 },
     northEast: { lat: 0, lng: 0 },
   });
-  // See more info in establishments store
+  // See more info in Locations store
   // the more zoom in, the bigger the radius we want to search, but not so much
   const scaleFactor = computed(() => zoom.value / 2);
   const surroundingBoundingBox = computed(() => {
@@ -92,7 +92,7 @@ export const useMap = defineStore("map", () => {
 
   watch(route, async function () {
     if (!route.params.uuid) return
-    useApp().goToEstablishment(route.params.uuid as string, { behaviourList: smaller('xl').value ? 'hide' : 'show' })
+    useApp().goToLocation(route.params.uuid as string, { behaviourList: smaller('xl').value ? 'hide' : 'show' })
   })
 
   function computeBoundingBox({ updateRoute } = { updateRoute: true }) {
@@ -106,21 +106,16 @@ export const useMap = defineStore("map", () => {
 
     setBoundingBoxDebouncer({ southWest: { lat: swLat(), lng: swLng() }, northEast: { lat: neLat(), lng: neLng() } })
 
-    // useEstablishments().hideNearby()
+    // useLocations().hideNearby()
 
     if (updateRoute) {
       router.push({ name: "coords", params: { ...center.value, zoom: zoom.value }, query: { ...route.query } })
     }
   }
 
-  function navigateToUserLocation() {
-    if (!navigator.geolocation) return
-
-    navigator.geolocation.getCurrentPosition(({ coords }) => {
-      setCenter({ lat: coords.latitude, lng: coords.longitude })
-      setZoom(13)
-    })
-  }
+  const { resume: geolocateUser, coords: userCoords, isSupported: userLocationIsSupported } = useGeolocation({
+    immediate: false,
+  })
 
   function fitBounds(bounds: google.maps.LatLngBounds) {
     if (!map.value) return;
@@ -147,7 +142,7 @@ export const useMap = defineStore("map", () => {
       setZoom(Number(zoomLevel))
       return
     } else if (uuid) {
-      const mapMoved = await useApp().goToEstablishment(uuid, { behaviourList: 'show' })
+      const mapMoved = await useApp().goToLocation(uuid, { behaviourList: 'show' })
       if (mapMoved) {
         return
       }
@@ -176,6 +171,9 @@ export const useMap = defineStore("map", () => {
     computeBoundingBox,
     fitBounds,
     goToPlaceId,
-    navigateToUserLocation
+    
+    userLocationIsSupported,
+    geolocateUser,
+    userCoords,
   }
 });
