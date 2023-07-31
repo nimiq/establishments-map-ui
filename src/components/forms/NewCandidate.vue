@@ -44,18 +44,18 @@ function autocompleteGoogle(query: string) {
 
 <template>
 	<FormContainer :disabled="disabled" :on-submit="onSubmit">
-		<template #title>{{ $t('Add_a_place_to_the_Crypto_Map') }}</template>
-		<template #description>{{ $t('You_can_add_any_place_that_has_a_Google_Business_Profile') }}</template>
+		<template #title>{{ $t('Add a location to the Crypto Map') }}</template>
+		<template #description>{{ $t('You can add any location that has a Google Business Profile.') }}</template>
 		<template #link>
-			<a href="https://www.google.com/business/" target="_blank">{{ $t('Create_Google_Business_profile') }}</a>
+			<a href="https://www.google.com/business/" target="_blank">{{ $t('Create Google Business profile') }}</a>
 		</template>
 		<template #form>
-			<SearchBox :autocomplete="autocompleteGoogle" :suggestions="googleSuggestions" :label="$t('Find_place')"
-				:placeholder="$t('Type_the_name')" combobox-options-classes="w-[calc(100%+4px)] -left-0.5 top-unset"
+			<SearchBox :autocomplete="autocompleteGoogle" :suggestions="googleSuggestions" :label="$t('Find location')"
+				:placeholder="$t('Type the name of the location')" combobox-options-classes="w-[calc(100%+4px)] -left-0.5 top-unset"
 				bg-combobox="space" input-id="search-input" @selected="(selectedPlace = $event)" :allow-clean="false" />
 
-			<Select class="mt-6" :label="$t('Select_Cryptocurrency')" input-id="cryptocurrency-input"
-				:options="currenciesOptions" v-model="selectedCurrencies" :placeholder="$t('Select_Cryptocurrency')">
+			<Select class="mt-6" :label="$t('Select Cryptocurrency')" input-id="cryptocurrency-input"
+				:options="currenciesOptions" v-model="selectedCurrencies" :placeholder="$t('Select Cryptocurrency')">
 				<template #option="{ symbol, name }">
 					<CryptoIcon :crypto="symbol" size="sm" bg="white" />
 					<span>
@@ -63,20 +63,20 @@ function autocompleteGoogle(query: string) {
 						{{ name }}
 					</span>
 				</template>
-				<template #after-options> {{ $t('More_cryptocurrencies_supported_in_the_future') }} </template>
+				<template #after-options> {{ $t('More cryptocurrencies supported in the future') }} </template>
 				<template #selected-option="{ name }">{{ name }} </template>
 			</Select>
 		</template>
-		<template #button-label>{{ $t('Submit_Location') }}</template>
+		<template #button-label>{{ $t('Submit Location') }}</template>
 
 		<!-- Success -->
-		<template #success-title>{{ $t('Thank_you_for_submitting_a_new_location_to_the_Crypto_Map') }}</template>
-		<template #success-description>{{ $t('This_may_take_a_few_days_to_process') }}</template>
-		<template #success-button-label>{{ $t('Back_to_the_Map') }}</template>
+		<template #success-title>{{ $t('Thank you for submitting a new location to the Crypto Map!') }}</template>
+		<template #success-description>{{ $t('This may take a few days to process. Keep an eye out for changes to the location in the Crypto Map.') }}</template>
+		<template #success-button-label>{{ $t('Back to the Map') }}</template>
 
 		<!-- Error -->
-		<template #error-title>{{ $t('Something_went_wrong') }}</template>
-		<template #error-description>{{ $t('There_has_been_a_problem_on_our_side') }}</template>
-		<template #error-button-label>{{ $t('Try_again') }}</template>
+		<template #error-title>{{ $t('Something went wrong') }}</template>
+		<template #error-description>{{ $t('There has been a problem on our side.') }}</template>
+		<template #error-button-label>{{ $t('Try again') }}</template>
 	</FormContainer>
 </template>

@@ -51,7 +51,7 @@ async function onSubmit(captcha: string) {
 
 <template>
 	<FormContainer :disabled="disabled" :on-submit="onSubmit">
-		<template #title>{{ $t("Report_an_issue_with_an_location") }}</template>
+		<template #title>{{ $t('Report an issue with a location') }}</template>
 		<template #description v-if="location">
 			<RouterLink class="text-sky" :to="`/location/${location?.uuid}`">{{ location?.name }}</RouterLink>
 			<span v-if="location?.address">, {{ location?.address }}</span>
@@ -59,8 +59,8 @@ async function onSubmit(captcha: string) {
 		</template>
 
 		<template #form>
-			<Select :multiple="false" :label="$t('Select_issue')" :options="issueCategories"
-				v-model:selected-single="selectedIssue" :placeholder="$t('Select_issue')" replace-placeholder>
+			<Select :multiple="false" :label="$t('Select issue')" :options="issueCategories"
+				v-model:selected-single="selectedIssue" :placeholder="$t('Select issue')" replace-placeholder>
 				<template #option="{ issue }">
 					<template v-if="issue === 'location_gone'">{{ $t('location_gone') }}</template>
 					<template v-if="issue === 'missing_currency'">{{ $t('missing_currency') }}</template>
@@ -77,19 +77,19 @@ async function onSubmit(captcha: string) {
 				</template>
 			</Select>
 
-			<TextAreaInput :placeholder="$t('Write_your_problem_here')" class="mt-6" :label="$t('Describe_the_issue')"
+			<TextAreaInput :placeholder="$t('Write your problem here')" class="mt-6" :label="$t('Describe the issue')"
 				v-model="issueDescription" />
 		</template>
-		<template #button-label>{{ $t('Report_Location') }}</template>
+		<template #button-label>{{ $t('Report Location') }}</template>
 
 		<!-- Success -->
-		<template #success-title>{{ $t('Thank_you_for_reporting_this_issue') }}</template>
-		<template #success-description>{{ $t('This_may_take_a_few_days_to_process') }}</template>
-		<template #success-button-label>{{ $t('Back_to_the_Map') }}</template>
+		<template #success-title>{{ $t('Thank you for reporting this issue') }}</template>
+		<template #success-description>{{ $t('This may take a few days to process. Keep an eye out for changes to the location in the Crypto Map.') }}</template>
+		<template #success-button-label>{{ $t('Back to the Map') }}</template>
 
 		<!-- Error -->
-		<template #error-title>{{ $t('Something_went_wrong') }}</template>
-		<template #error-description>{{ $t('There_has_been_a_problem_on_our_side') }}</template>
-		<template #error-button-label>{{ $t('Try_again') }}</template>
+		<template #error-title>{{ $t('Something went wrong') }}</template>
+		<template #error-description>{{ $t('There has been a problem on our side.') }}</template>
+		<template #error-button-label>{{ $t('Try again') }}</template>
 	</FormContainer>
 </template>

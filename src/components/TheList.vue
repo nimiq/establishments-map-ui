@@ -50,7 +50,7 @@ const scroller$ = ref<HTMLUListElement>()
 				</template>
 
 				<template #label>
-					{{ $t("Show_more_Locations") }}
+					{{ $t('Show more Locations') }}
 				</template>
 			</Button> -->
 
@@ -59,7 +59,7 @@ const scroller$ = ref<HTMLUListElement>()
 		<div v-else
 			class="grid items-center w-screen gap-6 p-6 bg-white place-content-center md:w-[322px] max-md:py-20 md:shadow md:h-main">
 			<NoLocations class="w-20 text-space justify-self-center" />
-			<p class="text-base text-center text-space md:text-xl">{{ $t('Oops_no_businesses_around_here') }}</p>
+			<p class="text-base text-center text-space md:text-xl">{{ $t('Oops, no Locations around here') }}</p>
 		</div>
 
 		<transition enter-active-class="duration-200 ease-out" enter-from-class="translate-y-12 opacity-0"
@@ -67,7 +67,7 @@ const scroller$ = ref<HTMLUListElement>()
 			leave-from-class="translate-y-0 opacity-100" leave-to-class="translate-y-12 opacity-0">
 			<div v-if="!xlScreen && listIsShown" class="fixed z-10 flex justify-center w-full bottom-5">
 				<Button bg-color="ocean" class="shadow" @click="appStore.hideList">
-					<template #label>{{ $t('Back_to_the_Map') }}</template>
+					<template #label>{{ $t('Back to the Map') }}</template>
 				</Button>
 			</div>
 		</transition>

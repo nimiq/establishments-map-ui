@@ -91,7 +91,7 @@ function applyFilters() {
 							</DialogTitle>
 							<hr class="w-full h-px my-8 bg-space/10" />
 
-							<Select :placeholder="$t('Select_Cryptocurrency')" :options="currencies" label-key="symbol"
+							<Select :placeholder="$t('Select Cryptocurrency')" :options="currencies" label-key="symbol"
 								v-model="unappliedFiltersCurrencies" class="px-6 md:px-10">
 								<template #label>
 									<h3 class="mb-6 text-sm font-semibold tracking-wider uppercase text-space/40 md:mb-8">
@@ -104,11 +104,11 @@ function applyFilters() {
 										<span><b>{{ symbol }}</b>, {{ $t(name) }}</span>
 									</div>
 								</template>
-								<template #after-options> {{ $t('More_cryptocurrencies_supported_in_the_future') }}</template>
+								<template #after-options> {{ $t('More cryptocurrencies supported in the future') }}</template>
 								<template #selected-option="{ symbol }"> {{ symbol }} </template>
 							</Select>
 							<Select :options="[...categories.values()]" v-model="unappliedFiltersCategories"
-								:placeholder="$t('Select_Category')" class="px-6 mt-9 md:px-10">
+								:placeholder="$t('Select category')" class="px-6 mt-9 md:px-10">
 								<template #label>
 									<h3 class="mb-6 text-sm font-semibold tracking-wider uppercase text-space/40 md:mb-8">
 										{{ $t('Categories') }}
@@ -128,7 +128,7 @@ function applyFilters() {
 									<template #label> {{ $t('Clear') }} </template>
 								</Button>
 								<Button bg-color="sky" @click="applyFilters" gradient>
-									<template #label> {{ $t('Apply_filters') }} </template>
+									<template #label> {{ $t('Apply filters') }} </template>
 								</Button>
 							</div>
 						</DialogPanel>

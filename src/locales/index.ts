@@ -1,6 +1,6 @@
-import * as en from './en.json';
-import * as de from './de.json';
-import * as es from './es.json';
+import en from './en.json';
+import de from './de.json';
+import es from './es.json';
 
 export const messages = {
   en,

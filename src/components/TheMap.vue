@@ -46,9 +46,9 @@ const props = defineProps({
 			</template>
 		</TheMapInstance>
 		<Button class="absolute shadow bottom-5 md:bottom-6 right-5 md:right-6" bgColor="white" href="/location/add"
-			size="md" text-color="ocean" draggable="false" :aria-label="$t('Add_location')"
-			:title="$t('Add_location')">
-			<template #label> {{ $t('Add_location') }} </template>
+			size="md" text-color="ocean" draggable="false" :aria-label="$t('Add location')"
+			:title="$t('Add location')">
+			<template #label> {{ $t('Add location') }} </template>
 		</Button>
 	</main>
 </template>

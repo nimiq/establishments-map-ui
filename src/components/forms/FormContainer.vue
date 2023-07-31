@@ -69,7 +69,7 @@ const hasSlot = (name: string) => {
 				<ArrowLeftIcon class="" />
 			</template>
 			<template #label>
-				{{ $t('Back_to_the_Map') }}
+				{{ $t('Back to the Map') }}
 			</template>
 		</Button>
 	</header>
@@ -114,7 +114,7 @@ const hasSlot = (name: string) => {
 				</p>
 				<Button bgColor="ocean" class="mx-auto mt-10" size="lg" href="/" v-if="hasSlot('success-button-label')">
 					<template #label>
-						<slot name="success-button-label">{{ $t('Back_to_the_Map') }}</slot>
+						<slot name="success-button-label">{{ $t('Back to the Map') }}</slot>
 					</template>
 				</Button>
 			</main>
@@ -129,7 +129,7 @@ const hasSlot = (name: string) => {
 				<Button bgColor="ocean" class="mx-auto mt-10" size="lg" @click="state = FormState.Initial"
 					v-if="hasSlot('error-button-label')">
 					<template #label>
-						<slot name="error-button-label">{{ $t('Try_again') }}</slot>
+						<slot name="error-button-label">{{ $t('Try again') }}</slot>
 					</template>
 				</Button>
 			</main>

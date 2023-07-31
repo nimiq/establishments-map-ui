@@ -65,11 +65,11 @@ function onSelect(suggestion?: Suggestion) {
 		<img src="@/assets/logo.svg" alt="Crypto Map logo" class="h-[22px]">
 		<SearchBox :autocomplete="querySearch" :suggestions="suggestions" class="flex-1" rounded-full
 			combobox-options-classes="w-[322px] mt-12 left-[-48px] max-h-[220px] rounded-t-0" size="sm"
-			@open="searchBoxOpen" :placeholder="$t('Search_Map')" @selected="onSelect" data-search-box />
+			@open="searchBoxOpen" :placeholder="$t('Search Map')" @selected="onSelect" data-search-box />
 		<CryptoMapModal />
 		<!-- TODO -->
 		<!-- <p class="pt-4 text-xs text-space/60" v-if="xl">
-			{{ $t('Enter_country_city_or_zip_code') }}
+			{{ $t('Enter country, city or zip code to discover locations that accept Bitcoin, Nimiq and other crypto-currencies.') }}
 		</p> -->
 	</header>
 	<slot />

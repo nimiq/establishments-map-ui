@@ -47,13 +47,13 @@
 						'text-white/80': bgCombobox === 'space',
 					}" v-if="AutocompleteStatus.WITH_RESULTS !== status">
 						<span v-if="status === AutocompleteStatus.LOADING">
-							{{ $t('Loading') }}
+							{{ $t('Loading...') }}
 						</span>
 						<span v-else-if="status === AutocompleteStatus.INITIAL">
-							{{ $t('Start_Typing') }}
+							{{ $t('Start typing...') }}
 						</span>
 						<span v-else-if="status === AutocompleteStatus.NO_RESULTS && query !== ''">
-							{{ $t('Nothing_found') }}
+							{{ $t('Nothing found.') }}
 						</span>
 					</div>
 
