@@ -101,7 +101,7 @@ function applyFilters() {
 								<template #option="{ symbol, name }">
 									<div class="flex items-center gap-x-2">
 										<CryptoIcon :crypto="symbol" size="sm" bg="white" />
-										<span><b>{{ symbol }}</b>, {{ $t(name) }}</span>
+										<span><b>{{ symbol }}</b>, {{ name }}</span>
 									</div>
 								</template>
 								<template #after-options> {{ $t('More cryptocurrencies supported in the future') }}</template>
@@ -116,10 +116,12 @@ function applyFilters() {
 								</template>
 								<template #option="{ label }">
 									<CategoryIcon class="w-6 h-6" :category="label" />
+									<!-- Note: the translations for categories are defined in api-constants-*.json -->
 									{{ $t(label) }}
 								</template>
 								<template #selected-option="{ label }">
-									<template v-if="label">{{ $t(label as string) }}</template>
+									<!-- Note: the translations for categories are defined in api-constants-*.json -->
+									<template v-if="label">{{ $t(label) }}</template>
 								</template>
 							</Select>
 							<hr class="w-full h-px my-8 bg-space/10" />

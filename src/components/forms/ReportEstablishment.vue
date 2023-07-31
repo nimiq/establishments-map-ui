@@ -55,26 +55,16 @@ async function onSubmit(captcha: string) {
 		<template #description v-if="location">
 			<RouterLink class="text-sky" :to="`/location/${location?.uuid}`">{{ location?.name }}</RouterLink>
 			<span v-if="location?.address">, {{ location?.address }}</span>
+			<!-- Note: the translations for categories are defined in api-constants-*.json -->
 			<span v-if="location?.category">&nbsp;&nbsp;·&nbsp;&nbsp;{{ $t(location?.category) }}</span>
 		</template>
 
 		<template #form>
 			<Select :multiple="false" :label="$t('Select issue')" :options="issueCategories"
 				v-model:selected-single="selectedIssue" :placeholder="$t('Select issue')" replace-placeholder>
-				<template #option="{ issue }">
-					<template v-if="issue === 'location_gone'">{{ $t('location_gone') }}</template>
-					<template v-if="issue === 'missing_currency'">{{ $t('missing_currency') }}</template>
-					<template v-if="issue === 'missing_not_accepted'">{{ $t('missing_not_accepted') }}</template>
-					<template v-if="issue === 'no_crypto'">{{ $t('no_crypto') }}</template>
-					<template v-if="issue === 'other'">{{ $t('other') }}</template>
-				</template>
-				<template #selected="{ issue }">
-					<template v-if="issue === 'location_gone'">{{ $t('location_gone') }}</template>
-					<template v-if="issue === 'missing_currency'">{{ $t('missing_currency') }}</template>
-					<template v-if="issue === 'missing_not_accepted'">{{ $t('missing_not_accepted') }}</template>
-					<template v-if="issue === 'no_crypto'">{{ $t('no_crypto') }}</template>
-					<template v-if="issue === 'other'">{{ $t('other') }}</template>
-				</template>
+				<!-- Note: the translations for issues are defined in api-constants-*.json -->
+				<template #option="{ issue }">{{ $t(issue) }}</template>
+				<template #selected="{ issue }">{{ $t(issue) }}</template>
 			</Select>
 
 			<TextAreaInput :placeholder="$t('Write your problem here')" class="mt-6" :label="$t('Describe the issue')"
