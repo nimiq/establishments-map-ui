@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import CryptoIcon from "@/components/atoms/CryptoIcon.vue"
 import FormContainer from "@/components/forms/FormContainer.vue"
-import type { Currency } from "@/database"
-import { useApi } from "@/stores/api"
+import { currencies, type Currency } from "@/database"
 import { useAutocomplete, type Suggestion } from "@/stores/autocomplete"
 import { storeToRefs } from "pinia"
 import { computed, ref } from "vue"
 import SearchBox from "../atoms/SearchBox.vue"
 import Select from "../atoms/Select.vue"
-
-const apiStore = useApi()
-const { currencies } = storeToRefs(apiStore)
-const currenciesOptions = computed(() => [...currencies.value.values()])
 
 const autocompleteStore = useAutocomplete()
 const { googleSuggestions } = storeToRefs(autocompleteStore)
@@ -26,7 +21,7 @@ async function onSubmit(captcha: string) {
 	const body = {
 		name: selectedPlace.value.label,
 		gmapsPlaceId: selectedPlace.value.id,
-		currencies: selectedCurrencies.value.map((c) => c.symbol),
+		currencies: selectedCurrencies.value,
 		captcha,
 		dev: import.meta.env.DEV
 	}
@@ -55,16 +50,13 @@ function autocompleteGoogle(query: string) {
 				bg-combobox="space" input-id="search-input" @selected="(selectedPlace = $event)" :allow-clean="false" />
 
 			<Select class="mt-6" :label="$t('Select Cryptocurrency')" input-id="cryptocurrency-input"
-				:options="currenciesOptions" v-model="selectedCurrencies" :placeholder="$t('Select Cryptocurrency')">
-				<template #option="{ symbol, name }">
-					<CryptoIcon :crypto="symbol" size="sm" bg="white" />
-					<span>
-						<span class="font-bold">{{ symbol.toUpperCase() }}</span>
-						{{ name }}
-					</span>
+				:options="currencies" v-model="selectedCurrencies" :placeholder="$t('Select Cryptocurrency')">
+				<template #option="{ option: currency }">
+					<CryptoIcon :crypto="currency" size="sm" bg="white" />
+					<span>{{ currency }}</span>
 				</template>
 				<template #after-options> {{ $t('More cryptocurrencies supported in the future') }} </template>
-				<template #selected-option="{ name }">{{ name }} </template>
+				<template #selected-option="{ option: currency }">{{ currency }} </template>
 			</Select>
 		</template>
 		<template #button-label>{{ $t('Submit Location') }}</template>

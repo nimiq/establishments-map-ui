@@ -91,37 +91,37 @@ function applyFilters() {
 							</DialogTitle>
 							<hr class="w-full h-px my-8 bg-space/10" />
 
-							<Select :placeholder="$t('Select Cryptocurrency')" :options="currencies" label-key="symbol"
+							<Select :placeholder="$t('Select Cryptocurrency')" :options="currencies"
 								v-model="unappliedFiltersCurrencies" class="px-6 md:px-10">
 								<template #label>
 									<h3 class="mb-6 text-sm font-semibold tracking-wider uppercase text-space/40 md:mb-8">
 										{{ $t('Cryptocurrencies') }}
 									</h3>
 								</template>
-								<template #option="{ symbol, name }">
+								<template #option="{ option: currency }">
 									<div class="flex items-center gap-x-2">
-										<CryptoIcon :crypto="symbol" size="sm" bg="white" />
-										<span><b>{{ symbol }}</b>, {{ name }}</span>
+										<CryptoIcon :crypto="currency" size="sm" bg="white" />
+										<b>{{ currency }}</b>
 									</div>
 								</template>
 								<template #after-options> {{ $t('More cryptocurrencies supported in the future') }}</template>
-								<template #selected-option="{ symbol }"> {{ symbol }} </template>
+								<template #selected-option="{ option: currency }"> {{ currency }} </template>
 							</Select>
-							<Select :options="[...categories.values()]" v-model="unappliedFiltersCategories"
+							<Select :options="categories" v-model="unappliedFiltersCategories"
 								:placeholder="$t('Select category')" class="px-6 mt-9 md:px-10">
 								<template #label>
 									<h3 class="mb-6 text-sm font-semibold tracking-wider uppercase text-space/40 md:mb-8">
 										{{ $t('Categories') }}
 									</h3>
 								</template>
-								<template #option="{ label }">
-									<CategoryIcon class="w-6 h-6" :category="label" />
+								<template #option="{ option: category }">
+									<CategoryIcon class="w-6 h-6" :category="category" />
 									<!-- Note: the translations for categories are defined in api-constants-*.json -->
-									{{ $t(label) }}
+									{{ $t(category) }}
 								</template>
-								<template #selected-option="{ label }">
+								<template #selected-option="{ option: category }">
 									<!-- Note: the translations for categories are defined in api-constants-*.json -->
-									<template v-if="label">{{ $t(label) }}</template>
+									<template v-if="category">{{ $t(category) }}</template>
 								</template>
 							</Select>
 							<hr class="w-full h-px my-8 bg-space/10" />

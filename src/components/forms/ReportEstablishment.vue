@@ -11,9 +11,7 @@ import { useRoute } from "vue-router"
 
 const apiStore = useApi();
 
-const issueCategories = [
-	{ issue: 'location_gone' }, { issue: 'missing_currency' }, { issue: 'missing_not_accepted' }, { issue: 'no_crypto' }, { issue: 'other' }
-]
+const issueCategories = ['location_gone', 'missing_currency', 'missing_not_accepted', 'no_crypto', 'other']
 
 const locationsStore = useLocations()
 const { Locations } = storeToRefs(locationsStore)
@@ -63,8 +61,8 @@ async function onSubmit(captcha: string) {
 			<Select :multiple="false" :label="$t('Select issue')" :options="issueCategories"
 				v-model:selected-single="selectedIssue" :placeholder="$t('Select issue')" replace-placeholder>
 				<!-- Note: the translations for issues are defined in api-constants-*.json -->
-				<template #option="{ issue }">{{ $t(issue) }}</template>
-				<template #selected="{ issue }">{{ $t(issue) }}</template>
+				<template #option="{ option: issue }">{{ $t(issue) }}</template>
+				<template #selected="{ option: issue }">{{ $t(issue) }}</template>
 			</Select>
 
 			<TextAreaInput :placeholder="$t('Write your problem here')" class="mt-6" :label="$t('Describe the issue')"

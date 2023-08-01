@@ -11,7 +11,8 @@
 					class="relative w-full ring-[1.5px] ring-space/[0.15] cursor-pointer rounded-sm bg-white py-2 pl-4 pr-[3.25rem] text-left outline-none focus-visible:ring-sky/30 focus-visible:text-sky/60"
 					:class="usePlaceholder ? 'text-space' : 'text-space/60'">
 					<span class="block truncate">
-						<slot v-if="usePlaceholder" name="selected" v-bind="selected as unknown as SelectOption" />
+						<slot v-if="usePlaceholder" name="selected"
+							v-bind="typeof selected[0] === 'object' ? selected[0] : { option: selected[0] }" />
 						<template v-else>{{ placeholder }}</template>
 					</span>
 					<span class="absolute inset-y-0 right-0 flex items-center pr-2 mr-2 pointer-events-none">
@@ -28,7 +29,7 @@
 							<li
 								class="relative flex items-center py-2 pl-3 pr-2 text-white transition-colors cursor-pointer select-none gap-x-2"
 								:class="{ 'bg-white/10': active }">
-								<slot name="option" v-bind="option" />
+								<slot name="option" v-bind="typeof option === 'object' ? option : { option }" />
 								<div class="w-5 h-5 ml-auto rounded-full" :class="{
 									'bg-white': selected,
 									'border border-white/10': !selected,
@@ -48,7 +49,8 @@
 			<li v-for="(selectedOption, i) in selected" :key="i"
 				class="w-max bg-space/[0.07] rounded-sm px-2 pt-1.5 pb-1 text-sm text-space flex gap-x-2.5 items-center">
 				<span>
-					<slot name="selected-option" v-bind="selectedOption" />
+					<slot name="selected-option"
+						v-bind="typeof selectedOption === 'object' ? selectedOption : { option: selectedOption }" />
 				</span>
 				<CrossIcon @click="removeSelected(selectedOption)" class="w-4 h-5 cursor-pointer text-space" />
 			</li>
