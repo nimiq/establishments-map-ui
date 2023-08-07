@@ -1,43 +1,43 @@
 # 
 # Translators:
-# Daniel, 2023
+# Uğur Sefa Karcı, 2023
 # 
 msgid ""
 msgstr ""
-"Last-Translator: Daniel, 2023\n"
-"Language-Team: German (https://app.transifex.com/nimiq-foundation/teams/110181/de/)\n"
+"Last-Translator: Uğur Sefa Karcı, 2023\n"
+"Language-Team: Turkish (https://app.transifex.com/nimiq-foundation/teams/110181/tr/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Language: de\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: tr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/assets-dev/provider-assets.ts:49
 msgid "{provider} app required"
-msgstr "{provider}-App benötigt"
+msgstr ""
 
 #: src/assets-dev/provider-assets.ts:92
 msgid "{provider} available"
-msgstr "{provider} verfügbar"
+msgstr ""
 
 #: src/assets-dev/provider-assets.ts:77
 msgid "{provider} required"
-msgstr "{provider} benötigt"
+msgstr ""
 
 #: src/components/forms/NewCandidate.vue:3
 msgid "Add a location to the Crypto Map"
-msgstr "Füge ein Geschäft zur Crypto Map hinzu"
+msgstr ""
 
 #: src/components/elements/CryptoMapModal.vue:25
 msgid "Add Crypto location"
-msgstr "Kryptoakzeptanzstelle hinzufügen"
+msgstr ""
 
 #: src/components/TheMap.vue:32 src/components/TheMap.vue:33
 #: src/components/TheMap.vue:34
 msgid "Add location"
-msgstr "Geschäft hinzufügen"
+msgstr "Lokasyon ekle"
 
 #: src/components/elements/FilterModal.vue:69
 msgid "Apply filters"
-msgstr "Filter anwenden"
+msgstr "Filtreleri uygula"
 
 #: src/components/forms/FormContainer.vue:54
 #: src/components/forms/FormContainer.vue:9
@@ -45,7 +45,7 @@ msgstr "Filter anwenden"
 #: src/components/forms/ReportEstablishment.vue:25
 #: src/components/TheList.vue:47
 msgid "Back to the Map"
-msgstr "Zurück zur Karte"
+msgstr "Haritaya Geri Dön"
 
 #: src/components/elements/Card.vue:22
 msgid "Buy"
@@ -65,27 +65,27 @@ msgstr ""
 
 #: src/database.ts:36
 msgid "Cars & Bikes"
-msgstr "Autos & Fahrräder"
+msgstr "Arabalar ve Bisikletler"
 
 #: src/database.ts:37
 msgid "Cash"
-msgstr "Bargeld"
+msgstr "Nakit para"
 
 #: src/components/elements/FilterModal.vue:52
 msgid "Categories"
-msgstr "Kategorien"
+msgstr "Kategoriler"
 
 #: src/components/elements/FilterModal.vue:66
 msgid "Clear"
-msgstr "Löschen"
+msgstr "Temizle"
 
 #: src/database.ts:38
 msgid "Computer & Electronics"
-msgstr "Computer & Elektronik"
+msgstr "Bilgisayar ve Elektronik"
 
 #: src/components/forms/NewCandidate.vue:6
 msgid "Create Google Business profile"
-msgstr "Google Business-Profil erstellen"
+msgstr "Google İşletme profili oluşturun"
 
 #: src/components/elements/CryptoMapModal.vue:16
 msgid "Crypto Map"
@@ -98,15 +98,15 @@ msgstr ""
 
 #: src/components/elements/FilterModal.vue:36
 msgid "Cryptocurrencies"
-msgstr "Kryptowährungen"
+msgstr "Kripto Para Birimleri"
 
 #: src/components/forms/ReportEstablishment.vue:26
 msgid "Currency missing"
-msgstr "Währung fehlt"
+msgstr "Para birimi eksik"
 
 #: src/components/forms/ReportEstablishment.vue:27
 msgid "Currency not accepted"
-msgstr "Währung wird nicht akzeptiert"
+msgstr "Para birimi kabul edilmiyor"
 
 #: src/components/atoms/TextAreaInput.vue:24
 #: src/components/atoms/TextAreaInput.vue:28
@@ -115,83 +115,81 @@ msgstr ""
 
 #: src/components/forms/ReportEstablishment.vue:17
 msgid "Describe the issue"
-msgstr "Problembeschreibung"
+msgstr "Sorunu açıkla"
 
 #: src/database.ts:39
 msgid "Entertainment"
-msgstr "Unterhaltung"
+msgstr "Eğlence"
 
 #: src/components/elements/FilterModal.vue:28
 #: src/components/elements/FilterModal.vue:7
 msgid "Filters"
-msgstr "Filter"
+msgstr "Filtreler"
 
 #: src/components/forms/NewCandidate.vue:9
 msgid "Find location"
-msgstr "Geschäft finden"
+msgstr "Konum bulun"
 
 #: src/database.ts:40
 msgid "Food & Drinks"
-msgstr "Essen & Getränke"
+msgstr "Yiyecek ve İçecekler"
 
 #: src/assets-dev/provider-assets.ts:52
 msgid ""
 "GoCrypto is a global payment network that enables merchants to accept crypto"
 " payments."
 msgstr ""
-"GoCrypto ist ein globales Zahlungsnetzwerk, das es Händlern ermöglicht, "
-"Krypto-Zahlungen zu akzeptieren."
+"GoCrypto, tüccarların kripto ödemelerini kabul etmelerini sağlayan küresel "
+"bir ödeme ağıdır."
 
 #: src/database.ts:41
 msgid "Health & Beauty"
-msgstr "Gesundheit & Beauty"
+msgstr "Sağlık ve Güzellik"
 
 #: src/database.ts:42
 msgid "Hotel & Lodging"
-msgstr "Hotel & Unterkunft"
+msgstr "Otel ve Konaklama"
 
 #: src/assets-dev/provider-assets.ts:66
 msgid "Kurant ATM is a blockchain-based ATM network and platform."
-msgstr ""
-"Kurant ATM ist ein Blockchain-basiertes Geldautomatennetzwerk und eine "
-"Plattform."
+msgstr "Kurant ATM, blok zinciri tabanlı bir ATM ağı ve platformudur."
 
 #: src/database.ts:43
 msgid "Leisure Activities"
-msgstr "Freizeitaktivitäten"
+msgstr "Boş Zaman Etkinlikleri"
 
 #: src/components/atoms/SearchBox.vue:50
 msgid "Loading..."
-msgstr "Laden..."
+msgstr "Yükleniyor..."
 
 #: src/components/forms/ReportEstablishment.vue:25
 msgid "Location gone"
-msgstr "Geschäft existiert nicht mehr"
+msgstr "Konum gitmiş"
 
 #: src/database.ts:44
 msgid "Miscellaneous"
-msgstr "Sonstiges"
+msgstr "Çeşitli Ürünler"
 
 #: src/components/elements/FilterModal.vue:45
 #: src/components/forms/NewCandidate.vue:19
 msgid "More cryptocurrencies supported in the future"
-msgstr "Künftig werden weitere Kryptowährungen unterstützt"
+msgstr "Gelecekte daha fazla kripto para birimi desteklenecek"
 
 #: src/components/forms/ReportEstablishment.vue:28
 msgid "No crypto"
-msgstr "Keine Kryptowährung akzeptiert"
+msgstr "Kripto yok"
 
 #: src/components/atoms/SearchBox.vue:56
 msgid "Nothing found."
-msgstr "Nichts gefunden."
+msgstr "Hiçbir şey bulunamadı."
 
 #: src/components/TheList.vue:39
 msgid "Oops, no Locations around here"
-msgstr "Ups, keine Geschäfte in der Nähe"
+msgstr "Oops, buralarda lokasyon yok"
 
 #: src/components/forms/ReportEstablishment.vue:31 src/database.ts:50
 msgid "Other"
-msgstr "Andere"
+msgstr "Diğer"
 
 #: src/assets-dev/provider-assets.ts:63
 msgid "Register with {provider}"
@@ -199,19 +197,19 @@ msgstr ""
 
 #: src/components/forms/ReportEstablishment.vue:3
 msgid "Report an issue with a location"
-msgstr "Ein Problem zu einem Eintrag melden"
+msgstr ""
 
 #: src/components/forms/ReportEstablishment.vue:20
 msgid "Report Location"
-msgstr "Eintrag melden"
+msgstr "Lokasyonu raporla"
 
 #: src/database.ts:45
 msgid "Restaurant & Bar"
-msgstr "Restaurant & Bar"
+msgstr "Restoran ve Bar"
 
 #: src/components/elements/InteractionBar.vue:6
 msgid "Search Map"
-msgstr "Map durchsuchen"
+msgstr "Harita üzerinde ara"
 
 #: src/components/atoms/Select.vue:101 src/components/atoms/Select.vue:97
 msgid "Select an option"
@@ -219,18 +217,18 @@ msgstr ""
 
 #: src/components/elements/FilterModal.vue:49
 msgid "Select category"
-msgstr "Kategorie auswählen"
+msgstr "Kategori seçin"
 
 #: src/components/elements/FilterModal.vue:32
 #: src/components/forms/NewCandidate.vue:13
 #: src/components/forms/NewCandidate.vue:14
 msgid "Select Cryptocurrency"
-msgstr "Kryptowährung auswählen"
+msgstr "Kripto Para Birimi Seçin"
 
 #: src/components/forms/ReportEstablishment.vue:11
 #: src/components/forms/ReportEstablishment.vue:12
 msgid "Select issue"
-msgstr "Was ist das Problem?"
+msgstr "Sorun seç"
 
 #: src/components/elements/Card.vue:24
 msgid "Sell"
@@ -242,15 +240,15 @@ msgstr ""
 
 #: src/components/forms/FormContainer.vue:39
 msgid "Send"
-msgstr "Senden"
+msgstr "Gönder"
 
 #: src/database.ts:46
 msgid "Shop"
-msgstr "Geschäft"
+msgstr "Mağaza"
 
 #: src/components/atoms/Button.story.vue:11
 msgid "Show more Locations"
-msgstr "Weitere Geschäfte anzeigen"
+msgstr "Daha fazla lokasyon göster"
 
 #: src/components/elements/Controls.vue:4 src/components/TheMap.vue:6
 msgid "Show your location"
@@ -259,32 +257,32 @@ msgstr ""
 #: src/components/forms/NewCandidate.vue:31
 #: src/components/forms/ReportEstablishment.vue:28
 msgid "Something went wrong"
-msgstr "Etwas ist schief gelaufen"
+msgstr "Bir şeyler ters gitti"
 
 #: src/database.ts:47
 msgid "Sports & Fitness"
-msgstr "Sport & Fitness"
+msgstr "Spor ve Fitness"
 
 #: src/components/atoms/SearchBox.vue:53
 msgid "Start typing..."
-msgstr "Eingabe beginnen..."
+msgstr "Yazmaya başlayın..."
 
 #: src/components/forms/NewCandidate.vue:23
 msgid "Submit Location"
-msgstr "Eintrag einreichen"
+msgstr "Konum Gönder"
 
 #: src/components/forms/ReportEstablishment.vue:23
 msgid "Thank you for reporting this issue"
-msgstr "Danke für deinen Problembericht"
+msgstr "Sorunu raporladığınız için teşekkürler"
 
 #: src/components/forms/NewCandidate.vue:26
 msgid "Thank you for submitting a new location to the Crypto Map!"
-msgstr "Vielen Dank! Dein Eintrag ist bei uns eingegangen."
+msgstr "Kripto Haritasına yeni bir konum gönderdiğiniz için teşekkür ederiz!"
 
 #: src/components/forms/NewCandidate.vue:32
 #: src/components/forms/ReportEstablishment.vue:29
 msgid "There has been a problem on our side."
-msgstr "Auf unserer Seite ist ein Problem aufgetreten."
+msgstr "Bizim tarafımızda bir sorun var."
 
 #: src/components/elements/CryptoMapModal.vue:20
 msgid ""
@@ -298,28 +296,26 @@ msgid ""
 "This may take a few days to process. Keep an eye out for changes to the "
 "location in the Crypto Map."
 msgstr ""
-"Es kann ein paar Tage dauern, bis wir deine Anfrage bearbeitet haben. Bitte "
-"schaue später wieder vorbei, um deinen Eintrag auf der Crypto Map zu finden."
+"Bu işlem birkaç gün sürebilir. Kripto Haritasındaki konum değişiklikleri "
+"için gözünüzü dört açın."
 
 #: src/components/forms/FormContainer.vue:69
 #: src/components/forms/NewCandidate.vue:33
 #: src/components/forms/ReportEstablishment.vue:30
 msgid "Try again"
-msgstr "Erneut versuchen"
+msgstr "Tekrar deneyin"
 
 #: src/components/forms/NewCandidate.vue:10
 msgid "Type the name of the location"
-msgstr "Gib den Namen des Geschäfts ein"
+msgstr "Konumun adını yazın"
 
 #: src/components/forms/ReportEstablishment.vue:17
 msgid "Write your problem here"
-msgstr "Beschreibe dein Problem hier"
+msgstr "Problemini buraya yaz"
 
 #: src/components/forms/NewCandidate.vue:4
 msgid "You can add any location that has a Google Business Profile."
-msgstr ""
-"Du kannst jede Einrichtung hinzufügen, die über ein Google Business-Profil "
-"verfügt."
+msgstr "Google İşletme Profili olan herhangi bir konumu ekleyebilirsiniz."
 
 #: src/components/TheMap.vue:15
 msgid "Zoom in"

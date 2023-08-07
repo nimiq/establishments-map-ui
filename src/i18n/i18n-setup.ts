@@ -3,7 +3,7 @@ import { Cookie } from '@nimiq/utils'
 // import { setLanguage as setVueComponentsLanguage } from '@nimiq/vue3-components'
 
 const DEFAULT_LANGUAGE = 'en'
-export const SUPPORTED_LANGUAGES = ['de', 'en', 'es']
+export const SUPPORTED_LANGUAGES = ['de', 'en', 'es', 'fr', 'nl', 'tr', 'uk']
 const loadedLanguages: string[] = []
 
 export const i18nRegistration = createI18n({
