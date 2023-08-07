@@ -70,7 +70,7 @@
 							<span class="block truncate" :class="{
 								'text-space': bgCombobox === 'white',
 								'text-white': bgCombobox === 'space',
-							}" v-html="makeBold(suggestion.label, suggestion.matchedSubstrings)">
+							}" v-html="sanitizeAndHighlightMatches(suggestion.label, suggestion.matchedSubstrings)">
 							</span>
 							<span v-if="selected" class="absolute inset-y-0 left-0 flex items-center pl-3" :class="{
 								'text-white':
@@ -178,12 +178,31 @@ function hasSlot(slotName: "label") {
 	return slots[slotName] !== undefined
 }
 
-function makeBold(str: string, matches: Suggestion["matchedSubstrings"]) {
-	matches?.forEach((match) => {
-		const bolded = str.slice(match.offset, match.offset + match.length)
-		str = str.replace(bolded, `<b>${bolded}</b>`)
-	})
-	return str
+function sanitizeAndHighlightMatches(str: string, matches: Suggestion["matchedSubstrings"]) {
+	// Split into unicode chars because match positions in google.maps.places.AutocompletePrediction["matched_substrings"]
+	// are based on unicode chars, as opposed to surrogate pairs of Javascript strings for Unicode chars on astral planes
+	// (see https://mathiasbynens.be/notes/javascript-unicode)
+	const parts = [...str];
+
+	// Sanitize potential html in input string to mitigate risk of XSS because the result will be fed to v-html. Note that
+	// this manipulation does not change indices/positions of our string parts (initial unicode characters).
+	for (let i = 0; i < parts.length; ++i) {
+		if (parts[i] === '<') {
+			parts[i] = '&lt;'
+		} else if (parts[i] === '>') {
+			parts[i] = '&gt;'
+		}
+	}
+
+	// Make matches bold. Note that our manipulations do not change indices/positions of our string parts (initial unicode
+	// characters), thus we don't have to adapt match offsets of subsequent matches. Additionally, matches are probably
+	// not overlapping, but it would also not hurt.
+	for (const match of matches || []) {
+		parts[match.offset] = `<b>${parts[match.offset]}`
+		parts[match.offset + match.length - 1] = `${parts[match.offset + match.length - 1]}</b>`
+	}
+
+	parts.join('');
 }
 
 function clearInput() {
