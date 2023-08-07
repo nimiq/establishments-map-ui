@@ -46,7 +46,7 @@ export const providersAssets: Record<ProviderName, ProviderAssets> = {
     theme: Theme.BottomBannerLight,
     bg: '#F0BF4C',
     get label() {
-      return i18n.t('<b>GoCrypto app</b> required')
+      return i18n.t('{provider} app required')
     },
     get tooltip() {
       return i18n.t('GoCrypto is a global payment network that enables merchants to accept crypto payments.')
@@ -60,7 +60,7 @@ export const providersAssets: Record<ProviderName, ProviderAssets> = {
     theme: Theme.FullCardDark,
     bg: '#A92E19',
     get label() {
-      return i18n.t('Register with <b>Kurant</b>')
+      return i18n.t('Register with {provider}')
     },
     get tooltip() {
       return i18n.t('Kurant ATM is a blockchain-based ATM network and platform.')
@@ -74,7 +74,7 @@ export const providersAssets: Record<ProviderName, ProviderAssets> = {
     bg: '#004899',
     theme: Theme.BottomBannerDark,
     get label() {
-      return i18n.t('<b>Bluecode</b> required')
+      return i18n.t('{provider} required')
     },
     get tooltip() {
       // return i18n.t('TODO')
@@ -89,7 +89,7 @@ export const providersAssets: Record<ProviderName, ProviderAssets> = {
     bg: '#5C6CFF',
     theme: Theme.BottomBannerDark,
     get label() {
-      return i18n.t('<b>Cryptopayment Link</b> available')
+      return i18n.t('{provider} available')
     },
     get tooltip() {
       // return i18n.t('TODO')
@@ -104,7 +104,7 @@ export const providersAssets: Record<ProviderName, ProviderAssets> = {
     bg: '#00B2B0',
     theme: Theme.FullCardDark,
     get label() {
-      return i18n.t('By <b>Edenia</b>')
+      return i18n.t('By {provider}')
     },
     get tooltip() {
       // return i18n.t('TODO')

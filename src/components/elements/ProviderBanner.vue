@@ -24,10 +24,13 @@ const isDarkTheme = computed(() =>
 	<footer class="relative flex items-center" :style="`height: ${assets.label ? '56px' : '36px'};`">
 
 		<div v-if="assets.label" class="z-20 flex items-center pt-1.5 pl-6 pr-4 text-xs gap-x-1.5">
-			<p v-html="assets.label" :class="{
+			<i18n-t :keypath="assets.label" tag="p" :class="{
 				'text-white/60 [&>b]:text-white': isDarkTheme,
 				'text-space/60 [&>b]:text-space': !isDarkTheme,
-			}" />
+			}">
+				<!-- The name in the label can optionally be written bold by including a {provider} placeholder -->
+				<template #provider><b>{{ assets.name }}</b></template>
+			</i18n-t>
 			<Popover preferred-position="top">
 				<template #trigger>
 					<InfoIcon :class="{

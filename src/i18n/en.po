@@ -2,16 +2,16 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: src/assets-dev/provider-assets.ts:77
-msgid "<b>Bluecode</b> required"
+#: src/assets-dev/provider-assets.ts:49
+msgid "{provider} app required"
 msgstr ""
 
 #: src/assets-dev/provider-assets.ts:92
-msgid "<b>Cryptopayment Link</b> available"
+msgid "{provider} available"
 msgstr ""
 
-#: src/assets-dev/provider-assets.ts:49
-msgid "<b>GoCrypto app</b> required"
+#: src/assets-dev/provider-assets.ts:77
+msgid "{provider} required"
 msgstr ""
 
 #: src/components/forms/NewCandidate.vue:3
@@ -53,7 +53,7 @@ msgid "Buy crypto only*"
 msgstr ""
 
 #: src/assets-dev/provider-assets.ts:107
-msgid "By <b>Edenia</b>"
+msgid "By {provider}"
 msgstr ""
 
 #: src/database.ts:36
@@ -182,7 +182,7 @@ msgid "Other"
 msgstr ""
 
 #: src/assets-dev/provider-assets.ts:63
-msgid "Register with <b>Kurant</b>"
+msgid "Register with {provider}"
 msgstr ""
 
 #: src/components/forms/ReportEstablishment.vue:3
