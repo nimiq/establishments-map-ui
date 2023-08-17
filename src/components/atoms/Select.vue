@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="Option">
 import {
   Listbox,
   ListboxButton,
@@ -12,15 +12,13 @@ import CheckIcon from '@/components/icons/icon-check.vue'
 import CrossIcon from '@/components/icons/icon-cross.vue'
 import { i18n } from '@/i18n/i18n-setup'
 
-export type SelectOption = string
-
 const props = defineProps({
   modelValue: {
-    type: Array as () => SelectOption[],
+    type: Array as () => Option[],
     default: () => [],
   },
   selectedSingle: {
-    type: Object as () => SelectOption,
+    type: Object as () => Option,
     default: -1,
   },
   multiple: {
@@ -46,22 +44,22 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-  'update:modelValue': (value: SelectOption[]) => value,
-  'update:selectedSingle': (value: SelectOption) => value,
+  'update:modelValue': (value: Option[]) => value,
+  'update:selectedSingle': (value: Option) => value,
 })
 
-const selected = ref<SelectOption[]>(props.modelValue)
+const selected = ref<Option[]>(props.modelValue)
 
 const usePlaceholder = computed(() => props.replacePlaceholder && !!selected.value && (Array.isArray(selected.value) ? selected.value.length > 0 : Object.keys(selected.value).length > 0))
 
 watch(selected, (value) => {
   if (props.multiple)
-    emit('update:modelValue', value)
+    emit('update:modelValue', value as Option[])
   else
-    emit('update:selectedSingle', value as unknown as SelectOption)
+    emit('update:selectedSingle', value as Option)
 })
 
-function removeSelected(option: SelectOption) {
+function removeSelected(option: Option) {
   selected.value = selected.value.filter(o => o !== option)
 }
 
@@ -132,16 +130,13 @@ function hasSlot(slotName: 'selected-option' | 'after-options' | 'label') {
     </Listbox>
     <ul v-if="hasSlot('selected-option')" class="flex flex-wrap gap-2 mt-2">
       <li
-        v-for="(optionIsSelected, i) in selected" :key="i"
+        v-for="(option, i) in selected" :key="i"
         class="w-max bg-space/[0.07] rounded-sm px-2 pt-1.5 pb-1 text-sm text-space flex gap-x-2.5 items-center"
       >
         <span>
-          <slot
-            name="selected-option"
-            v-bind="typeof optionIsSelected === 'object' ? optionIsSelected : { option: optionIsSelected }"
-          />
+          <slot name="selected-option" v-bind="{ option }" />
         </span>
-        <CrossIcon class="w-4 h-5 cursor-pointer text-space" @click="removeSelected(optionIsSelected)" />
+        <CrossIcon class="w-4 h-5 cursor-pointer text-space" @click="selected = selected.filter(o => o !== option)" />
       </li>
     </ul>
   </div>
