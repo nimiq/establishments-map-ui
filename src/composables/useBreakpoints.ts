@@ -1,6 +1,6 @@
 import { useBreakpoints as _useBreakpoints } from '@vueuse/core'
 import { computed } from 'vue'
-import { screens } from "tailwindcss-nimiq-theme"
+import { screens } from 'tailwindcss-nimiq-theme'
 
 export function useBreakpoints() {
   const useBreakpoints = _useBreakpoints(screens)

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import InteractionBar from "./InteractionBar.vue";
+import InteractionBar from './InteractionBar.vue'
 </script>
 
 <template>

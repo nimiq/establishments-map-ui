@@ -1,6 +1,6 @@
-import type { Suggestion } from "./stores/autocomplete";
-import type { BoundingBox } from "./stores/map";
-import { i18n } from "./i18n/i18n-setup";
+import type { Suggestion } from './stores/autocomplete'
+import type { BoundingBox } from './stores/map'
+import { i18n } from './i18n/i18n-setup'
 
 export enum Currency {
   NIM = 'NIM',
@@ -13,7 +13,7 @@ export enum Currency {
   XRP = 'XRP',
   DASH = 'DASH',
 }
-export const currencies = Object.values(Currency);
+export const currencies = Object.values(Currency)
 
 export enum Category {
   CarsBikes = 'cars_bikes',
@@ -29,7 +29,7 @@ export enum Category {
   Shop = 'shop',
   SportsFitness = 'sports_fitness',
 }
-export const categories = Object.values(Category);
+export const categories = Object.values(Category)
 
 export function translateCategory(category: Category) {
   switch (category) {
@@ -66,40 +66,41 @@ export enum LocationType {
   Shop = 'shop',
 }
 
-export type Location = {
-  uuid: string,
-  name: string,
-  address: string,
-  category: Category,
-  gmaps_type: string,
-  lat: number,
-  lng: number,
-  provider: ProviderName,
-  cryptos_accepted: Currency[],
-  cryptos_available: Currency[],
-  type: LocationType,
-  rating?: number,
-  photo?: string,
-  instagram?: string,
-  gmaps?: string,
-  facebook?: string,
+export interface Location {
+  uuid: string
+  name: string
+  address: string
+  category: Category
+  gmaps_type: string
+  lat: number
+  lng: number
+  provider: ProviderName
+  cryptos_accepted: Currency[]
+  cryptos_available: Currency[]
+  type: LocationType
+  rating?: number
+  photo?: string
+  instagram?: string
+  url?: string
+  gmaps?: string
+  facebook?: string
 }
 
 const databaseUrl = import.meta.env.VITE_DATABASE_URL
 const databaseToken = import.meta.env.VITE_DATABASE_KEY
 
 async function fetchDb<T>(query: string): Promise<T | undefined> {
-  const url = `${databaseUrl}/${query}`;
+  const url = `${databaseUrl}/${query}`
   const response = await fetch(url, {
     method: 'GET',
     headers: {
       'apikey': databaseToken,
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    }
-  }).catch(error => {
+      'Accept': 'application/json',
+    },
+  }).catch((error) => {
     return `Error fetching database: ${error}`
-  });
+  })
 
   if (typeof response === 'string') {
     console.error(response)
@@ -111,35 +112,44 @@ async function fetchDb<T>(query: string): Promise<T | undefined> {
     return undefined
   }
 
-  const data: T = await response.json();
-  return data;
+  const data: T = await response.json()
+  return data
+}
+
+function parseLocation(location: Location) {
+  const providerNames = Object.values(ProviderName)
+
+  if (!providerNames.includes(location.provider)) {
+    console.warn(`Unknown provider: ${location.provider}`)
+    location.provider = ProviderName.Default
+  }
+
+  const type = location.cryptos_available.length > 0 || location.category === Category.Cash
+  location.type = type ? LocationType.Atm : LocationType.Shop
+
+  location.url = location.gmaps || location.instagram || location.facebook
+
+  return location
 }
 
 export async function getLocations({ northEast, southWest }: BoundingBox): Promise<Location[]> {
-  const query = `rpc/get_Locations?swlng=${southWest.lng}&nelng=${northEast.lng}&swlat=${southWest.lat}&nelat=${northEast.lat}`;
-  const data = await fetchDb<Location[]>(query) ?? [];
-
-  const providerNames = Object.values(ProviderName);
-  data.forEach(location => {
-    if (!providerNames.includes(location.provider)) {
-      console.warn(`Unknown provider: ${location.provider}`);
-      location.provider = ProviderName.Default;
-    }
-  });
-
-  data.forEach(location => {
-    const type = location.cryptos_available.length > 0 || location.category === Category.Cash
-    location.type = type ? LocationType.Atm : LocationType.Shop
-  });
-
-  return data;
+  const query = `rpc/get_locations?swlng=${southWest.lng}&nelng=${northEast.lng}&swlat=${southWest.lat}&nelat=${northEast.lat}`
+  const data = await fetchDb<Location[]>(query) ?? []
+  return data.map(parseLocation)
 }
+
+export async function getLocation(uuid: string): Promise<Location | undefined> {
+  const query = `rpc/get_location?uuid=${uuid}`
+  const location = await fetchDb<Location>(query)
+  if (!location) {
+    console.warn(`Location ${uuid} not found`)
+    return undefined
+  }
+  return parseLocation(location)
+}
+
 export async function queryResults(userQuery: string) {
-  const query = `rpc/query_search?query=${userQuery}`;
-  const suggestions = await fetchDb<Suggestion[]>(query);
-  return suggestions || [];
+  const query = `rpc/query_search?query=${userQuery}`
+  const suggestions = await fetchDb<Suggestion[]>(query)
+  return suggestions || []
 }
-
-
-
-

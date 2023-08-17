@@ -1,39 +1,38 @@
 const recapthaKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
 
 export function useCaptcha() {
-  let loaded = false;
+  let loaded = false
 
   async function getToken(): Promise<string> {
-    return await grecaptcha.execute(recapthaKey, { action: "submit" });
+    return await grecaptcha.execute(recapthaKey, { action: 'submit' })
   }
 
   const loadRecaptcha = () => {
-    if (loaded) return
-    const script = document.createElement("script");
+    if (loaded)
+      return
+    const script = document.createElement('script')
 
-    script.src = `https://www.google.com/recaptcha/api.js?render=${recapthaKey}`;
-    script.id = 'recaptcha-script';
-    script.async = true;
+    script.src = `https://www.google.com/recaptcha/api.js?render=${recapthaKey}`
+    script.id = 'recaptcha-script'
+    script.async = true
 
-    document.body.append(script);
+    document.body.append(script)
     script.onload = () => loaded = true
   }
 
   const removeRecaptcha = () => {
-    const script = document.getElementById('recaptcha-script');
-    if (script) {
-      script.remove();
-    }
+    const script = document.getElementById('recaptcha-script')
+    if (script)
+      script.remove()
 
-    const recaptchaElems = document.getElementsByClassName('grecaptcha-badge');
-    if (recaptchaElems.length) {
-      recaptchaElems[0].remove();
-    }
+    const recaptchaElems = document.getElementsByClassName('grecaptcha-badge')
+    if (recaptchaElems.length)
+      recaptchaElems[0].remove()
   }
 
   return {
     getToken,
     loadRecaptcha,
-    removeRecaptcha
+    removeRecaptcha,
   }
 }

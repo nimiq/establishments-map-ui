@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CryptoMapModal from "./CryptoMapModal.vue";
+import CryptoMapModal from './CryptoMapModal.vue'
 </script>
 
 <template>

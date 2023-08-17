@@ -1,6 +1,6 @@
-import { ProviderName } from "@/database";
-import { defineAsyncComponent } from "vue";
-import { i18n } from "@/i18n/i18n-setup";
+import { defineAsyncComponent } from 'vue'
+import { ProviderName } from '@/database'
+import { i18n } from '@/i18n/i18n-setup'
 
 export enum Theme {
   Default = 'default',
@@ -15,16 +15,16 @@ export enum Theme {
   FullCardLight = 'full-card',
 
   // A dark colorfull card
-  FullCardDark = 'full-card-dark'
+  FullCardDark = 'full-card-dark',
 }
 
-export type ProviderAssets = {
-  name: ProviderName;
-  theme: Theme;
-  bg: string;
-  label?: string;
-  tooltip?: string;
-  icon?: ReturnType<typeof defineAsyncComponent>;
+export interface ProviderAssets {
+  name: ProviderName
+  theme: Theme
+  bg: string
+  label?: string
+  tooltip?: string
+  icon?: ReturnType<typeof defineAsyncComponent>
 }
 
 export const providersAssets: Record<ProviderName, ProviderAssets> = {
@@ -38,8 +38,8 @@ export const providersAssets: Record<ProviderName, ProviderAssets> = {
     theme: Theme.FullCardDark,
     bg: 'radial-gradient(100% 100% at 100% 100%, #4D4C96 0%, #5F4B8B 100%)',
     icon: defineAsyncComponent(
-      () => import("@/components/icons/providers/default-atm.vue")
-    )
+      () => import('@/components/icons/providers/default-atm.vue'),
+    ),
   },
   [ProviderName.GoCrypto]: {
     name: ProviderName.GoCrypto,
@@ -52,8 +52,8 @@ export const providersAssets: Record<ProviderName, ProviderAssets> = {
       return i18n.t('GoCrypto is a global payment network that enables merchants to accept crypto payments.')
     },
     icon: defineAsyncComponent(
-      () => import("@/components/icons/providers/gocrypto.vue")
-    )
+      () => import('@/components/icons/providers/gocrypto.vue'),
+    ),
   },
   [ProviderName.Kurant]: {
     name: ProviderName.Kurant,
@@ -66,8 +66,8 @@ export const providersAssets: Record<ProviderName, ProviderAssets> = {
       return i18n.t('Kurant ATM is a blockchain-based ATM network and platform.')
     },
     icon: defineAsyncComponent(
-      () => import("@/components/icons/providers/kurant.vue")
-    )
+      () => import('@/components/icons/providers/kurant.vue'),
+    ),
   },
   [ProviderName.Bluecode]: {
     name: ProviderName.Bluecode,
@@ -81,8 +81,8 @@ export const providersAssets: Record<ProviderName, ProviderAssets> = {
       return 'Blah blah'
     },
     icon: defineAsyncComponent(
-      () => import("@/components/icons/providers/bluecode.vue")
-    )
+      () => import('@/components/icons/providers/bluecode.vue'),
+    ),
   },
   [ProviderName.CryptopaymentLink]: {
     name: ProviderName.CryptopaymentLink,
@@ -96,8 +96,8 @@ export const providersAssets: Record<ProviderName, ProviderAssets> = {
       return 'Blah blah'
     },
     icon: defineAsyncComponent(
-      () => import("@/components/icons/providers/cryptopayment-link.vue")
-    )
+      () => import('@/components/icons/providers/cryptopayment-link.vue'),
+    ),
   },
   [ProviderName.Edenia]: {
     name: ProviderName.Edenia,
@@ -111,7 +111,7 @@ export const providersAssets: Record<ProviderName, ProviderAssets> = {
       return 'Blah blah'
     },
     icon: defineAsyncComponent(
-      () => import("@/components/icons/providers/edenia.vue")
-    )
+      () => import('@/components/icons/providers/edenia.vue'),
+    ),
   },
-};
+}

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch } from 'vue'
 
 const props = defineProps({
   progress: {
@@ -25,7 +25,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-  'update:progress': (progress: number) => true,
+  'update:progress': (_: number) => true,
 })
 
 const dif = props.maxHeight - props.initialHeight
@@ -45,7 +45,8 @@ function onStart(event: PointerEvent) {
 }
 
 function onMove(event: PointerEvent) {
-  if (!dragging.value) return
+  if (!dragging.value)
+    return
   const yDelta = (initialY - event.clientY)
   const startingPoint = isOpen ? yDelta + dif : yDelta
   const newProgress = Math.max(0, Math.min(startingPoint / dif, 1))
@@ -63,12 +64,13 @@ function onEnd(event: PointerEvent) {
 
   if (isClick && !isOpen) {
     open()
-  } else {
-    if (isOpen) {
+  }
+  else {
+    if (isOpen)
       props.progress < 0.85 ? close() : open()
-    } else {
+
+    else
       props.progress > 0.15 ? open() : close()
-    }
   }
 }
 
@@ -101,12 +103,15 @@ watch(() => props.progress, onCardDrag, { immediate: true })
 </script>
 
 <template>
-  <article ref="container" class="absolute h-full touch-none sheet-transition will-change-auto"
-    @pointerdown.prevent="onStart" @pointermove.prevent="onMove" @pointerup.prevent="onEnd" :style="style">
+  <article
+    ref="container" class="absolute h-full touch-none sheet-transition will-change-auto"
+    :style="style" @pointerdown.prevent="onStart" @pointermove.prevent="onMove" @pointerup.prevent="onEnd"
+  >
     <slot name="dragger">
       <div class="relative">
         <hr
-          class="absolute inset-x-0 z-10 w-32 h-1 mx-auto mt-2 ml-auto border-0 rounded-full bg-black/20 mix-blend-difference">
+          class="absolute inset-x-0 z-10 w-32 h-1 mx-auto mt-2 ml-auto border-0 rounded-full bg-black/20 mix-blend-difference"
+        >
       </div>
     </slot>
     <slot />

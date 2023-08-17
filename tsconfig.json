@@ -19,11 +19,11 @@
     },
     "types": [
       "grecaptcha"
-    ],
+    ]
   },
   "references": [
     {
       "path": "./tsconfig.config.json"
     }
-  ],
+  ]
 }
