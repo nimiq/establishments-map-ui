@@ -39,7 +39,7 @@ export const useApp = defineStore('app', () => {
   }
 
   async function goToLocation(uuid: string) {
-    const location = useLocations().locations.get(uuid)
+    const location = await useLocations().getLocationByUuid(uuid)
     if (!location)
       return false
 

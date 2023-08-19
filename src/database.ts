@@ -1,6 +1,6 @@
-import type { Suggestion } from './stores/autocomplete'
-import { i18n } from './i18n/i18n-setup'
 import type { Point } from './composables/useMap'
+import { i18n } from './i18n/i18n-setup'
+import type { Suggestion } from './stores/autocomplete'
 
 export interface BoundingBox {
   southWest: Point
@@ -51,12 +51,12 @@ export function translateCategory(category: Category) {
     case Category.SportsFitness: return i18n.t('Sports & Fitness')
     default:
       console.error(`Translation for category ${category} is missing`)
-      return i18n.t('Other')
+      return i18n.t('Miscellaneous')
   }
 }
 
 export enum ProviderName {
-  Default = 'Default',
+  Default = 'DEFAULT',
   DefaultAtm = 'DefaultAtm',
   GoCrypto = 'GoCrypto',
   Kurant = 'Kurant',
@@ -64,6 +64,7 @@ export enum ProviderName {
   CryptopaymentLink = 'CryptopaymentLink',
   Edenia = 'Edenia',
 }
+const PROVIDER_NAMES = Object.values(ProviderName)
 
 export enum LocationType {
   Atm = 'atm',
@@ -80,8 +81,8 @@ export interface Location {
   lat: number
   lng: number
   provider: ProviderName
-  cryptos_accepted: Currency[]
-  cryptos_available: Currency[]
+  accepts: Currency[]
+  sells: Currency[]
   type: LocationType
   rating?: number
   photo?: string
@@ -118,19 +119,23 @@ async function fetchDb<T>(query: string): Promise<T | undefined> {
   }
 
   const data: T = await response.json()
+  // eslint-disable-next-line no-console
+  console.log(`🔍 GET ${url}`)
+  // eslint-disable-next-line no-console
+  console.log(data)
   return data
 }
 
 function parseLocation(location: Location) {
-  const providerNames = Object.values(ProviderName)
-
-  if (!providerNames.includes(location.provider)) {
-    console.warn(`Unknown provider: ${location.provider}`)
+  if (!location.provider || !PROVIDER_NAMES.includes(location.provider)) {
+    console.warn(`Unknown provider: '${location.provider}'. Location: ${JSON.stringify(location)}`)
     location.provider = ProviderName.Default
   }
 
-  const type = location.cryptos_available.length > 0 || location.category === Category.Cash
-  location.type = type ? LocationType.Atm : LocationType.Shop
+  const isAtm = location.sells.length > 0 || location.category === Category.Cash
+  location.type = isAtm ? LocationType.Atm : LocationType.Shop
+  if (isAtm && location.provider === ProviderName.Default)
+    location.provider = ProviderName.DefaultAtm
 
   location.url = location.gmaps || location.instagram || location.facebook
 

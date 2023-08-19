@@ -22,8 +22,18 @@ export const FALLBACK_POSITION: Position = { center: { lat: 9.832213439337215, l
 
 export function useMap() {
   const map$ = ref<typeof GoogleMap>()
-  const mapReady = computed(() => !!map$?.value)
   const map = computed(() => map$?.value ? map$?.value.map as google.maps.Map : undefined)
+  const center = () => map.value?.getCenter()?.toJSON() as Point
+  const zoom = () => map.value?.getZoom() as number
+  const mapHasPosition = () => center().lat !== 0 && center().lng !== 0 && zoom() !== 0
+  const boundingBox = () => {
+    if (!mapHasPosition())
+      return
+    return {
+      southWest: map.value!.getBounds()!.getSouthWest().toJSON(),
+      northEast: map.value!.getBounds()!.getNorthEast().toJSON(),
+    }
+  }
 
   function setPosition(p?: Position | EstimatedPosition | google.maps.LatLngBounds) {
     if (!map.value || !p)
@@ -59,30 +69,15 @@ export function useMap() {
     }
     else {
       const { useGeoIp } = await import('@/composables/useGeoLocation')
-      const { geolocateIp, ipPosition, errorBrowser } = useGeoIp()
+      const { geolocateIp, ipPosition, ipPositionError } = useGeoIp()
       await geolocateIp()
-      if (!errorBrowser.value) {
+      if (!ipPositionError.value) {
         setPosition(ipPosition.value)
       }
       else {
         setPosition(FALLBACK_POSITION)
-        console.warn(`Error getting user's location: ${errorBrowser.value}. Using fallback position. ${FALLBACK_POSITION}`)
+        console.warn(`Error getting user's location: ${ipPositionError.value}. Using fallback position. ${JSON.stringify(FALLBACK_POSITION)}`)
       }
-    }
-  }
-
-  const center = () => map.value?.getCenter()?.toJSON() as Point
-  const zoom = () => map.value?.getZoom() as number
-  const mapHasPosition = () => !!center() && !!zoom()
-  const increaseZoom = () => map.value?.setZoom(zoom() + 1)
-  const decreaseZoom = () => map.value?.setZoom(zoom() - 1)
-  const bounds = () => map.value?.getBounds() as google.maps.LatLngBounds
-  const boundingBox = () => {
-    if (!mapReady.value)
-      return
-    return {
-      southWest: { lat: bounds().getSouthWest().lat(), lng: bounds().getSouthWest().lng() },
-      northEast: { lat: bounds().getNorthEast().lat(), lng: bounds().getNorthEast().lng() },
     }
   }
 
@@ -96,17 +91,17 @@ export function useMap() {
 
   return {
     map$,
-    mapReady,
 
     setInitialPosition,
     setPosition,
+    mapHasPosition,
 
-    boundingBox,
     center,
     zoom,
-    mapHasPosition,
-    decreaseZoom,
-    increaseZoom,
+    boundingBox,
+
+    decreaseZoom: () => map.value?.setZoom(map.value.getZoom()! - 1),
+    increaseZoom: () => map.value?.setZoom(map.value.getZoom()! + 1),
 
     goToPlaceId,
   }

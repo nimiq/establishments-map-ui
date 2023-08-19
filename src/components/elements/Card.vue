@@ -67,22 +67,22 @@ export enum CardLayout {
         leave-active-class="transition duration-75 ease-out" leave-from-class="transform opacity-100"
         leave-to-class="transform translate-y-3 opacity-0"
       >
-        <template v-if="progress > 0.5 && location.cryptos_accepted.length > 0 && location.cryptos_available.length > 0">
+        <template v-if="progress > 0.5 && location.accepts.length > 0 && location.sells.length > 0">
           <div
             class="grid grid-flow-col grid-cols-[auto,auto] grid-rows-[auto,1fr] gap-y-1 gap-x-2 w-max h-max relative z-20"
           >
             <h5 class="text-xs text-white/60">
               {{ $t('Buy') }}
             </h5>
-            <CryptoList :cryptos="location.cryptos_accepted" />
+            <CryptoList :cryptos="location.accepts" />
             <h5 class="text-xs text-white/60">
               {{ $t('Sell') }}
             </h5>
-            <CryptoList :cryptos="location.cryptos_available" />
+            <CryptoList :cryptos="location.sells" />
           </div>
         </template>
         <template v-else>
-          <CryptoList :cryptos="[...new Set(location.cryptos_accepted.concat(location.cryptos_available))]" class="relative z-20" />
+          <CryptoList :cryptos="[...new Set(location.accepts.concat(location.sells))]" class="relative z-20" />
         </template>
       </transition>
     </div>

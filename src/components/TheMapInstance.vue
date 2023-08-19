@@ -9,7 +9,7 @@ import { useMap } from '@/composables/useMap'
 import CategoryIcon from '@/components/atoms/CategoryIcon.vue'
 import googleMapStyles from '@/assets/google-map-styles'
 
-const { map$, setInitialPosition, center, zoom, mapHasPosition, boundingBox } = useMap()
+const { map$, mapHasPosition, setInitialPosition, center, zoom, boundingBox } = useMap()
 
 const googleMapsKey = import.meta.env.VITE_GOOGLE_MAP_KEY
 
@@ -39,8 +39,8 @@ const router = useRouter()
 const { getLocations, locations } = useLocations()
 const debouncedFn = useDebounceFn(async () => {
   if (!mapHasPosition())
-    await setInitialPosition()
-  getLocations(boundingBox())
+    return
+  getLocations(boundingBox()!)
   router.push({ name: 'coords', params: { ...center(), zoom: zoom() } })
 }, 300, { maxWait: 700 })
 </script>
@@ -51,7 +51,7 @@ const debouncedFn = useDebounceFn(async () => {
       ref="map$" :api-key="googleMapsKey"
       class="w-full h-full" disable-default-ui :clickable-icons="false"
       :map-gesture-handling="mapGestureBehaviour" :keyboard-shortcuts="false" :styles="googleMapStyles"
-      :min-zoom="3" :restriction="restriction" @bounds_changed="debouncedFn"
+      :min-zoom="3" :restriction="restriction" @bounds_changed="debouncedFn" @idle.once="setInitialPosition"
     >
       <MarkerCluster :options="{ algorithm: superClusterAlgorithm, renderer: { render } }">
         <CustomMarker

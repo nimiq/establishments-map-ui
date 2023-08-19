@@ -1,32 +1,32 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, reactive } from 'vue'
 import { type BoundingBox, type Location, getLocations as getDbLocations, getLocation } from '@/database'
 
-export const useLocations = defineStore('Locations', () => {
+export const useLocations = defineStore('locations', () => {
   // const appStore = useApp()
   // const { selectedCategories, selectedCurrencies } = storeToRefs(appStore)
 
-  const locationsMap = ref(new Map<string, Location>())
-  const locations = computed(() => Object.values(locationsMap.value))
+  const locationsMap = reactive(new Map<string, Location>())
+  const locations = computed(() => [...locationsMap.values()])
   // const locationsInView = computed(() => Array.from(locations.value.values()).filter(e => includeLocation(e, boundingBox.value)))
 
   async function getLocations(boundingBox: BoundingBox) {
     const newLocations = await getDbLocations(boundingBox)
-    newLocations.forEach(newLocation => locationsMap.value.set(newLocation.uuid, newLocation))
+    newLocations.forEach(newLocation => locationsMap.set(newLocation.uuid, newLocation))
   }
 
   async function getLocationByUuid(uuid: string) {
-    if (!locationsMap.value.has(uuid))
-      return locationsMap.value.get(uuid)
+    if (!locationsMap.has(uuid))
+      return locationsMap.get(uuid)
 
     const location = await getLocation(uuid)
     if (!location)
       return
-    locationsMap.value.set(uuid, location)
+    locationsMap.set(uuid, location)
     return location
   }
 
-  // function includeLocation({ lat, lng, category, cryptos_accepted, cryptos_available }: Location, boundingBox?: BoundingBox) {
+  // function includeLocation({ lat, lng, category, accepts, sells }: Location, boundingBox?: BoundingBox) {
   //   if (!boundingBox)
   //     return true
   //   const { northEast: ne, southWest: sw } = boundingBox
@@ -35,7 +35,7 @@ export const useLocations = defineStore('Locations', () => {
   //   if (!insideBoundingBox)
   //     return false
 
-  //   const currencies = cryptos_accepted.concat(cryptos_available)
+  //   const currencies = accepts.concat(sells)
   //   const isFilteredByCurrencies = selectedCurrencies.value.length === 0 || currencies.some(c => selectedCurrencies.value.includes(c))
   //   const isFilteredByCategories = selectedCategories.value.length === 0 || selectedCategories.value.includes(category)
   //   return isFilteredByCurrencies && isFilteredByCategories
@@ -43,8 +43,10 @@ export const useLocations = defineStore('Locations', () => {
 
   return {
     getLocations,
+    getLocationByUuid,
+
+    locationsMap,
     locations,
     // locationsInView,
-    getLocationByUuid,
   }
 })
