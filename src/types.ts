@@ -118,7 +118,8 @@ export interface Location {
   facebook?: string
   gmaps?: string
 
-  // We can only have one link. See parseLocation function for more details.
+  // Given the social media fields, we can generate just one link
+  // See parseLocation function for more details.
   linkTo?: LocationLink
   url?: string
 
@@ -126,7 +127,7 @@ export interface Location {
   theme: Theme
   bgFullCard: boolean
   bg: string
-  providerIcon?: ReturnType<typeof defineAsyncComponent>
+  providerLogo?: ReturnType<typeof defineAsyncComponent>
 
   // Provider text
   providerLabel?: string

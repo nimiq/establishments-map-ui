@@ -64,7 +64,7 @@ function onSelect(suggestion?: Suggestion) {
 </script>
 
 <template>
-  <header class="relative z-10 w-full p-10 py-6 pl-4 pr-6 desktop:p-4 transition-[border] flex items-center gap-x-2 desktop:gap-x-4 desktop:max-w-xs desktop:rounded-2xl">
+  <header class="relative z-10 flex items-center w-full p-10 py-6 pl-4 pr-6 desktop:p-4 gap-x-2 desktop:gap-x-4">
     <img src="@/assets/logo.svg" :alt="$t('Crypto Map logo')" class="h-[22px]">
     <SearchBox
       :autocomplete="querySearch" :suggestions="suggestions" class="flex-1" rounded-full

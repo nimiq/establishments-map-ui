@@ -9,10 +9,10 @@ const { locations } = storeToRefs(locationsStore)
 </script>
 
 <template>
-  <ul class="flex flex-col w-80">
+  <ul class="overflow-auto scroll-space">
     <li
       v-for="(location, i) in locations" :key="i"
-      class="relative px-6 py-5 overflow-hidden bg-white border-space/10 border-t-xs group/card [&_[data-rings]]:-rotate-90"
+      class="relative px-6 py-5 overflow-hidden border-space/10 border-t-xs group/card [&_[data-rings]]:-rotate-90"
       :style="`background: ${location.isDark ? location.bg : 'white'}`"
     >
       <CardBg v-if="location.isAtm" :progress="0" :location="location" />

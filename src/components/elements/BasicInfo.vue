@@ -27,7 +27,7 @@ const GmapsPin = defineAsyncComponent(() => import('@/components/icons/icon-gmap
       'text-space': location.isLight,
     }"
   >
-    <h2 class="text-base font-bold leading-[?1.3] col-span-2 pb-1 text-balance truncate">
+    <h2 class="text-base font-bold leading-[1.3] col-span-2 pb-1 text-balance truncate">
       {{ location.name }}
     </h2>
 

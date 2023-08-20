@@ -3,7 +3,7 @@ import { i18n } from '@/i18n/i18n-setup'
 import { Provider, Theme } from '@/types'
 import type { Location } from '@/types'
 
-export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'bgFullCard' | 'theme' | 'providerLabel' | 'providerIcon' | 'providerTooltip'>> = {
+export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'bgFullCard' | 'theme' | 'providerLabel' | 'providerLogo' | 'providerTooltip'>> = {
   [Provider.Default]: {
     bg: 'white',
     bgFullCard: false,
@@ -14,7 +14,7 @@ export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'bgFullCard
     theme: Theme.Dark,
     bgFullCard: true,
     bg: 'radial-gradient(100% 100% at 100% 100%, #4D4C96 0%, #5F4B8B 100%)',
-    providerIcon: defineAsyncComponent(
+    providerLogo: defineAsyncComponent(
       () => import('@/components/icons/providers/default-atm.vue'),
     ),
   },
@@ -28,7 +28,7 @@ export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'bgFullCard
     get providerTooltip() {
       return i18n.t('GoCrypto is a global payment network that enables merchants to accept crypto payments.')
     },
-    providerIcon: defineAsyncComponent(
+    providerLogo: defineAsyncComponent(
       () => import('@/components/icons/providers/gocrypto.vue'),
     ),
   },
@@ -42,7 +42,7 @@ export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'bgFullCard
     get providerTooltip() {
       return i18n.t('Kurant ATM is a blockchain-based ATM network and platform.')
     },
-    providerIcon: defineAsyncComponent(
+    providerLogo: defineAsyncComponent(
       () => import('@/components/icons/providers/kurant.vue'),
     ),
   },
@@ -57,7 +57,7 @@ export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'bgFullCard
       // TODO
       return 'Blah blah'
     },
-    providerIcon: defineAsyncComponent(
+    providerLogo: defineAsyncComponent(
       () => import('@/components/icons/providers/bluecode.vue'),
     ),
   },
@@ -72,7 +72,7 @@ export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'bgFullCard
       // TODO
       return 'Blah blah'
     },
-    providerIcon: defineAsyncComponent(
+    providerLogo: defineAsyncComponent(
       () => import('@/components/icons/providers/cryptopayment-link.vue'),
     ),
   },
@@ -87,7 +87,7 @@ export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'bgFullCard
       // TODO
       return 'Blah blah'
     },
-    providerIcon: defineAsyncComponent(
+    providerLogo: defineAsyncComponent(
       () => import('@/components/icons/providers/edenia.vue'),
     ),
   },
@@ -97,7 +97,7 @@ export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'bgFullCard
     theme: Theme.Light,
     bgFullCard: false,
     bg: 'pink',
-    providerIcon: defineAsyncComponent(
+    providerLogo: defineAsyncComponent(
       () => import('@/components/icons/providers/default-atm.vue'),
     ),
   },

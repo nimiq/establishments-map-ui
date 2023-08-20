@@ -10,6 +10,7 @@ export const PROVIDERS = Object.values(Provider)
 const databaseUrl = import.meta.env.VITE_DATABASE_URL
 const databaseToken = import.meta.env.VITE_DATABASE_KEY
 
+// TODO: It would be nice to show error messages to the user as a Toast 🙃
 async function fetchDb<T>(query: string): Promise<T | undefined> {
   const url = `${databaseUrl}/${query}`
   const response = await fetch(url, {
@@ -51,7 +52,7 @@ function parseLocation(location: Location) {
   location.linkTo = location.gmaps ? LocationLink.GMaps : location.instagram ? LocationLink.Instagram : location.facebook ? LocationLink.Facebook : undefined
   location.url = location.gmaps || location.instagram || location.facebook
 
-  Object.assign(location, providersAssets[location.provider]) // assing all the keys from the asset to the location
+  Object.assign(location, providersAssets[location.provider]) // Assing all the keys from the asset to the location
 
   const isAtm = location.category === Category.Cash
   location.isAtm = isAtm
