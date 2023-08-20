@@ -1,3 +1,0 @@
-<template>
-  <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path stroke="#1F2348" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M1 1.5V5.60526C1 6.33112 1.295 7.02725 1.8201 7.5405C2.3452 8.05376 3.05739 8.3421 3.8 8.3421C4.54261 8.3421 5.2548 8.05376 5.7799 7.5405C6.305 7.02725 6.6 6.33112 6.6 5.60526V1.5" /><path stroke="#1F2348" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.80078 1.5V14.5" /><path stroke="#1F2348" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.8008 14.5V1.5C10.8008 1.5 15.0008 3.55263 15.0008 11.7632H10.8008" /></svg>
-</template>
