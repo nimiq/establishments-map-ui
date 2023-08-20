@@ -35,10 +35,14 @@ async function fetchDb<T>(query: string): Promise<T | undefined> {
   }
 
   const data: T = await response.json()
-  // eslint-disable-next-line no-console
-  console.log(`🔍 GET ${url}`)
-  // eslint-disable-next-line no-console
+
+  /* eslint-disable no-console */
+  console.group('🔍 Database GET')
+  console.log(`Fetching to ${url}`)
   console.log(data)
+  console.groupEnd()
+  /* eslint-enable no-console */
+
   return data
 }
 
@@ -46,8 +50,8 @@ function parseLocation(location: Location) {
   const isAtm = location.category === Category.Cash
 
   if (!location.provider || !PROVIDERS.includes(location.provider)) {
-    location.provider = isAtm ? Provider.DefaultAtm : Provider.DefaultShop
     console.warn(`Unknown provider: '${location.provider}'. Setting ${location.provider} provider. Location: ${JSON.stringify(location)}`)
+    location.provider = isAtm ? Provider.DefaultAtm : Provider.DefaultShop
   }
 
   // Prioritize links in this order: 1. Google Maps -> 2. Instagram -> 3. Facebook

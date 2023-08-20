@@ -19,6 +19,16 @@ const { listIsShown } = storeToRefs(appStore)
 
 <template>
   <TheMapInstance class="relative flex flex-col w-screen h-screen" :locations="locations">
+    <div
+      :class="{ 'translate-x-0 delay-75 duration-1000': listIsShown, '-translate-x-full duration-500 delay-100': !listIsShown }"
+      style="background-image: linear-gradient(90deg, #1F2348 0%, transparent 100%);"
+      class="opacity-[0.06] absolute inset-0 max-w-[368px] transition-transform will-change-transform pointer-events-none "
+    />
+    <div
+      :class="{ 'translate-x-0 delay-75 duration-1000': listIsShown, '-translate-x-full duration-500 delay-100': !listIsShown }"
+      style="background-image: linear-gradient(90deg, #1F2348 0%, transparent 100%);"
+      class="opacity-[0.06] absolute inset-0 max-w-[368px] transition-transform will-change-transform pointer-events-none "
+    />
     <div class="absolute flex flex-col max-w-xs bottom-6 top-6 left-6">
       <div class="bg-white shadow-header rounded-2xl" style="mask-image: linear-gradient(white, white);">
         <InteractionBar />
