@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import Card, { CardLayout } from './Card.vue'
+import Card from './Card.vue'
 import { locations } from '@/assets-dev/stories/locations'
-import type { Location } from '@/database'
+import { type Location, LocationType } from '@/types'
 
 const progressState = ref<'expanded' | 'not-expanded' | 'loop' | 'custom'>('expanded')
 const customProgress = ref(0)
@@ -21,7 +21,7 @@ const progress = computed(() => {
     return 0
   return intervalValue.value % 1
 })
-const layout = ({ category }: Location) => category === 'cash' ? CardLayout.Atm : CardLayout.Location
+const layout = ({ category }: Location) => category === 'cash' ? LocationType.Atm : LocationType.Shop
 </script>
 
 <template>

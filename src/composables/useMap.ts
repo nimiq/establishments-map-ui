@@ -1,21 +1,7 @@
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import type { GoogleMap } from 'vue3-google-map/*'
-
-export interface Point {
-  lat: number
-  lng: number
-}
-
-export interface EstimatedPosition {
-  center: Point
-  accuracy: number // in meters
-}
-
-export interface Position {
-  center: Point
-  zoom: number
-}
+import type { EstimatedPosition, Point, Position } from '@/types'
 
 // Costa Rica
 export const FALLBACK_POSITION: Position = { center: { lat: 9.832213439337215, lng: -84.19869984449741 }, zoom: 9 }

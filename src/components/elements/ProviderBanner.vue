@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { type ProviderAssets, Theme } from '@/assets-dev/provider-assets'
+import type { PropType } from 'vue'
 import Popover from '@/components/atoms/Popover.vue'
 import InfoIcon from '@/components/icons/icon-info.vue'
+import type { Location } from '@/types'
 
-const props = defineProps({
-  assets: {
-    type: Object as () => ProviderAssets,
+defineProps({
+  location: {
+    type: Object as PropType<Location>,
     required: true,
   },
   isAtm: {
@@ -14,40 +14,36 @@ const props = defineProps({
     default: false,
   },
 })
-
-const isDarkTheme = computed(() =>
-  [Theme.BottomBannerDark, Theme.FullCardDark].includes(props.assets.theme),
-)
 </script>
 
 <template>
-  <footer class="relative flex items-center" :style="`height: ${assets.label ? '56px' : '36px'};`">
-    <div v-if="assets.label" class="z-20 flex items-center pt-1.5 pl-6 pr-4 text-xs gap-x-1.5">
+  <footer class="relative flex items-center" :style="`height: ${location.providerLabel ? '56px' : '36px'};`">
+    <div v-if="location.providerLabel" class="z-20 flex items-center pt-1.5 pl-6 pr-4 text-xs gap-x-1.5">
       <i18n-t
-        :keypath="assets.label" tag="p" :class="{
-          'text-white/60 [&>b]:text-white': isDarkTheme,
-          'text-space/60 [&>b]:text-space': !isDarkTheme,
+        :keypath="location.providerLabel" tag="p" :class="{
+          'text-white/60 [&>b]:text-white': location.isDark,
+          'text-space/60 [&>b]:text-space': location.isLight,
         }"
       >
         <!-- The name in the label can optionally be written bold by including a {provider} placeholder -->
         <template #provider>
-          <b>{{ assets.name }}</b>
+          <b>{{ location.provider }}</b>
         </template>
       </i18n-t>
       <Popover preferred-position="top">
         <template #trigger>
           <InfoIcon
             :class="{
-              'text-white/50': isDarkTheme,
-              'text-space/50': !isDarkTheme,
+              'text-white/50': location.isDark,
+              'text-space/50': location.isLight,
             }"
           />
         </template>
         <template #title>
-          {{ assets.name }}
+          {{ location.provider }}
         </template>
         <template #description>
-          {{ assets.tooltip }}
+          {{ location.providerTooltip }}
         </template>
       </Popover>
     </div>

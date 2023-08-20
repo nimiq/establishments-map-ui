@@ -4,6 +4,7 @@ import { SuperClusterAlgorithm } from '@googlemaps/markerclusterer'
 import { useDebounceFn } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { CustomMarker, GoogleMap, MarkerCluster } from 'vue3-google-map'
+import { computed } from 'vue'
 import { useLocations } from '@/stores/locations'
 import { useMap } from '@/composables/useMap'
 import CategoryIcon from '@/components/atoms/CategoryIcon.vue'
@@ -31,7 +32,14 @@ const restriction = {
   strictBounds: true,
 }
 
-const mapGestureBehaviour = useRoute().params.gestureBehaviour || 'greedy'
+const validGestureBehaviours = ['cooperative', 'greedy', 'none', 'auto'] as const
+type GestureBehaviour = typeof validGestureBehaviours[number]
+const mapGestureBehaviour = computed<GestureBehaviour>(() => {
+  const gestureBehaviourParam = useRoute().params.gestureBehaviour
+  if (typeof gestureBehaviourParam === 'string' && ['cooperative', 'greedy', 'none', 'auto'].includes(gestureBehaviourParam))
+    return gestureBehaviourParam as GestureBehaviour
+  return 'greedy'
+})
 
 const router = useRouter()
 
@@ -50,7 +58,7 @@ const debouncedFn = useDebounceFn(async () => {
     <GoogleMap
       ref="map$" :api-key="googleMapsKey"
       class="w-full h-full" disable-default-ui :clickable-icons="false"
-      :map-gesture-handling="mapGestureBehaviour" :keyboard-shortcuts="false" :styles="googleMapStyles"
+      :gesture-handling="mapGestureBehaviour" :keyboard-shortcuts="false" :styles="googleMapStyles"
       :min-zoom="3" :restriction="restriction" @bounds_changed="debouncedFn" @idle.once="setInitialPosition"
     >
       <MarkerCluster :options="{ algorithm: superClusterAlgorithm, renderer: { render } }">

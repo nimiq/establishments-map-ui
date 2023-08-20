@@ -1,48 +1,25 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import type { SelectOption } from '../atoms/Select.vue'
 import TextAreaInput from '@/components/atoms/TextAreaInput.vue'
 import FormContainer from '@/components/forms/FormContainer.vue'
-import { i18n } from '@/i18n/i18n-setup'
 import { useLocations } from '@/stores/locations'
-import type { Location } from '@/database'
+import { translateIssue } from '@/translations'
+import type { Location } from '@/types'
+import { Issue } from '@/types'
 
-enum IssueCategory {
-  LOCATION_GONE = 'location_gone',
-  MISSING_CURRENCY = 'missing_currency',
-  MISSING_NOT_ACCEPTED = 'missing_not_accepted',
-  NO_CRYPTO = 'no_crypto',
-  OTHER = 'other',
-}
+const { getLocationByUuid } = useLocations()
 
-function translateIssueCategory(issueCategory: string) {
-  switch (issueCategory as IssueCategory) {
-    case IssueCategory.LOCATION_GONE: return i18n.t('Location gone')
-    case IssueCategory.MISSING_CURRENCY: return i18n.t('Currency missing')
-    case IssueCategory.MISSING_NOT_ACCEPTED: return i18n.t('Currency not accepted')
-    case IssueCategory.NO_CRYPTO: return i18n.t('No crypto')
-    case IssueCategory.OTHER:
-    default:
-      return i18n.t('Other')
-  }
-}
-
-const locationsStore = useLocations()
-const { locations } = storeToRefs(locationsStore)
-
-const selectedIssue = ref<SelectOption>()
+const selectedIssue = ref<Issue>()
 const issueDescription = ref<string>('')
 const disabled = computed(() => !selectedIssue.value || !issueDescription.value)
 
 const route = useRoute()
 const uuid = computed(() => route.params.uuid as string)
-const location = computed(() => locations.value.get(uuid.value) as Location | undefined)
+const location = ref<Location>()
 
 onMounted(async () => {
-  if (locations.value.has(uuid.value))
-    await locationsStore.getLocationByUuid(uuid.value)
+  location.value = await getLocationByUuid(uuid.value)
 })
 
 async function onSubmit(captcha: string) {
@@ -79,13 +56,13 @@ async function onSubmit(captcha: string) {
     <template #form>
       <Select
         v-model:selected-single="selectedIssue" :multiple="false" :label="$t('Select issue')"
-        :options="Object.values(IssueCategory)" :placeholder="$t('Select issue')" replace-placeholder
+        :options="Object.values(Issue)" :placeholder="$t('Select issue')" replace-placeholder
       >
         <template #option="{ option: issue }">
-          {{ translateIssueCategory(issue) }}
+          {{ translateIssue(issue) }}
         </template>
         <template #selected="{ option: issue }">
-          {{ translateIssueCategory(issue) }}
+          {{ translateIssue(issue) }}
         </template>
       </Select>
 

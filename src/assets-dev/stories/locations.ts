@@ -1,11 +1,32 @@
-import { Category, Currency, type Location, LocationType, ProviderName } from '@/database'
+import { providersAssets } from '../provider-assets'
+import { CATEGORIES } from '@/database'
+import { translateCategory } from '@/translations'
+import { Category, Currency, type Location, LocationType, Provider } from '@/types'
 
-export const locations: Record<ProviderName, Location> = {
-  [ProviderName.Default]: {
+function getExtra(provider: Provider, locationType: LocationType): Pick<Location, 'isAtm' | 'isShop' | 'isDark' | 'isLight' | 'assets' | 'provider' | 'category' | 'category_label'> {
+  const assets = providersAssets[provider]
+  if (!assets)
+    throw new Error(`Provider ${provider} not found in providersAssets`)
+
+  const isAtm = locationType === LocationType.Atm
+  const category = isAtm ? Category.CarsBikes : CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)]
+
+  return {
+    isAtm,
+    isShop: locationType === LocationType.Shop,
+    isDark: assets.theme === 'dark',
+    isLight: assets.theme === 'light',
+    assets,
+    provider,
+    category,
+    category_label: translateCategory(category),
+  }
+}
+
+export const locations: Record<Provider, Location> = {
+  [Provider.Default]: {
     uuid: '1',
     name: 'Mercedes-Benz Arena',
-    category: Category.Entertainment,
-    type: LocationType.Shop,
     address: 'Kreuzbergstrasse 28, 10247, Berlin',
     accepts: [Currency.BTC, Currency.NIM, Currency.ETH],
     sells: [],
@@ -15,13 +36,11 @@ export const locations: Record<ProviderName, Location> = {
     rating: 4,
     gmaps: 'https://goo.gl/maps/ujJkv9DFuPfkwqat9',
     photo: 'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
-    provider: ProviderName.Default,
+    ...getExtra(Provider.Default, LocationType.Shop),
   },
-  [ProviderName.DefaultAtm]: {
+  [Provider.DefaultAtm]: {
     uuid: '2',
     name: 'ATM',
-    category: Category.Cash,
-    type: LocationType.Atm,
     address: 'Kreuzbergstrasse 28, 10247, Berlin',
     accepts: [Currency.BTC, Currency.NIM, Currency.ETH, Currency.DASH, Currency.XLM],
     sells: [],
@@ -30,13 +49,12 @@ export const locations: Record<ProviderName, Location> = {
     lng: 1,
     rating: 4,
     gmaps: 'https://goo.gl/maps/ujJkv9DFuPfkwqat9',
-    provider: ProviderName.DefaultAtm,
+    ...getExtra(Provider.DefaultAtm, LocationType.Shop),
+
   },
-  [ProviderName.Kurant]: {
+  [Provider.Kurant]: {
     uuid: '2',
     name: 'ATM (Kurant)',
-    type: LocationType.Atm,
-    category: Category.Cash,
     address: 'Kreuzbergstrasse 28, 10247, Berlin',
     accepts: [Currency.BTC, Currency.NIM],
     sells: [Currency.NIM],
@@ -45,13 +63,11 @@ export const locations: Record<ProviderName, Location> = {
     lng: 1,
     rating: 4,
     gmaps: 'https://goo.gl/maps/ujJkv9DFuPfkwqat9',
-    provider: ProviderName.Kurant,
+    ...getExtra(Provider.Kurant, LocationType.Shop),
   },
-  [ProviderName.Bluecode]: {
+  [Provider.Bluecode]: {
     uuid: '3',
     name: 'Room 88',
-    type: LocationType.Shop,
-    category: Category.FoodDrinks,
     address: 'Kreuzbergstrasse 28, 10247, Berlin',
     accepts: [Currency.BTC, Currency.NIM, Currency.ETH],
     sells: [],
@@ -61,13 +77,11 @@ export const locations: Record<ProviderName, Location> = {
     rating: 4,
     gmaps: 'https://goo.gl/maps/ujJkv9DFuPfkwqat9',
     photo: 'https://images.unsplash.com/photo-1543007631-283050bb3e8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
-    provider: ProviderName.Bluecode,
+    ...getExtra(Provider.Bluecode, LocationType.Shop),
   },
-  [ProviderName.GoCrypto]: {
+  [Provider.GoCrypto]: {
     uuid: '4',
     name: 'Mercedes-Benz Arena',
-    type: LocationType.Shop,
-    category: Category.Entertainment,
     address: 'Kreuzbergstrasse 28, 10247, Berlin',
     accepts: [Currency.BTC, Currency.NIM, Currency.ETH],
     sells: [],
@@ -77,13 +91,11 @@ export const locations: Record<ProviderName, Location> = {
     rating: 4,
     gmaps: 'https://goo.gl/maps/ujJkv9DFuPfkwqat9',
     photo: 'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
-    provider: ProviderName.GoCrypto,
+    ...getExtra(Provider.GoCrypto, LocationType.Shop),
   },
-  [ProviderName.CryptopaymentLink]: {
+  [Provider.CryptopaymentLink]: {
     uuid: '5',
     name: 'Mercedes-Benz Arena',
-    type: LocationType.Shop,
-    category: Category.Entertainment,
     address: 'Kreuzbergstrasse 28, 10247, Berlin',
     accepts: [Currency.BTC, Currency.NIM, Currency.USDC_POLYGON],
     sells: [],
@@ -93,13 +105,11 @@ export const locations: Record<ProviderName, Location> = {
     rating: 4,
     gmaps: 'https://goo.gl/maps/ujJkv9DFuPfkwqat9',
     photo: 'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
-    provider: ProviderName.CryptopaymentLink,
+    ...getExtra(Provider.CryptopaymentLink, LocationType.Shop),
   },
-  [ProviderName.Edenia]: {
+  [Provider.Edenia]: {
     uuid: '5',
     name: 'Mercedes-Benz Arena',
-    type: LocationType.Shop,
-    category: Category.Cash,
     address: 'Kreuzbergstrasse 28, 10247, Berlin',
     accepts: [Currency.BTC, Currency.NIM, Currency.USDC_POLYGON],
     sells: [],
@@ -108,6 +118,6 @@ export const locations: Record<ProviderName, Location> = {
     lng: 1,
     rating: 4,
     gmaps: 'https://goo.gl/maps/ujJkv9DFuPfkwqat9',
-    provider: ProviderName.Edenia,
+    ...getExtra(Provider.Edenia, LocationType.Shop),
   },
 }

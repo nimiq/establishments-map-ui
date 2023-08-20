@@ -1,96 +1,11 @@
-import type { Point } from './composables/useMap'
-import { i18n } from './i18n/i18n-setup'
+import { providersAssets } from './assets-dev/provider-assets'
 import type { Suggestion } from './stores/autocomplete'
+import { translateCategory } from './translations'
+import { type BoundingBox, Category, Currency, type Location, LocationLink, Provider, Theme } from './types'
 
-export interface BoundingBox {
-  southWest: Point
-  northEast: Point
-}
-export enum Currency {
-  NIM = 'NIM',
-  BTC = 'BTC',
-  USDC_POLYGON = 'USDC_POLYGON',
-  ETH = 'ETH',
-  LTC = 'LTC',
-  LBTC = 'LBTC',
-  XLM = 'XLM',
-  XRP = 'XRP',
-  DASH = 'DASH',
-}
-export const currencies = Object.values(Currency)
-
-export enum Category {
-  CarsBikes = 'cars_bikes',
-  Cash = 'cash',
-  ComputerElectronics = 'computer_electronics',
-  Entertainment = 'entertainment',
-  FoodDrinks = 'food_drinks',
-  HealthBeauty = 'health_beauty',
-  HotelLodging = 'hotel_lodging',
-  LeisureActivities = 'leisure_activities',
-  Miscellaneous = 'miscellaneous',
-  RestaurantBar = 'restaurant_bar',
-  Shop = 'shop',
-  SportsFitness = 'sports_fitness',
-}
-export const categories = Object.values(Category)
-
-export function translateCategory(category: Category) {
-  switch (category) {
-    case Category.CarsBikes: return i18n.t('Cars & Bikes')
-    case Category.Cash: return i18n.t('Cash')
-    case Category.ComputerElectronics: return i18n.t('Computer & Electronics')
-    case Category.Entertainment: return i18n.t('Entertainment')
-    case Category.FoodDrinks: return i18n.t('Food & Drinks')
-    case Category.HealthBeauty: return i18n.t('Health & Beauty')
-    case Category.HotelLodging: return i18n.t('Hotel & Lodging')
-    case Category.LeisureActivities: return i18n.t('Leisure Activities')
-    case Category.Miscellaneous: return i18n.t('Miscellaneous')
-    case Category.RestaurantBar: return i18n.t('Restaurant & Bar')
-    case Category.Shop: return i18n.t('Shop')
-    case Category.SportsFitness: return i18n.t('Sports & Fitness')
-    default:
-      console.error(`Translation for category ${category} is missing`)
-      return i18n.t('Miscellaneous')
-  }
-}
-
-export enum ProviderName {
-  Default = 'DEFAULT',
-  DefaultAtm = 'DefaultAtm',
-  GoCrypto = 'GoCrypto',
-  Kurant = 'Kurant',
-  Bluecode = 'Bluecode',
-  CryptopaymentLink = 'CryptopaymentLink',
-  Edenia = 'Edenia',
-}
-const PROVIDER_NAMES = Object.values(ProviderName)
-
-export enum LocationType {
-  Atm = 'atm',
-  Shop = 'shop',
-}
-
-export interface Location {
-  uuid: string
-  name: string
-  address: string
-  category: Category
-  category_label: string
-  gmaps_type: string
-  lat: number
-  lng: number
-  provider: ProviderName
-  accepts: Currency[]
-  sells: Currency[]
-  type: LocationType
-  rating?: number
-  photo?: string
-  instagram?: string
-  url?: string
-  gmaps?: string
-  facebook?: string
-}
+export const CURRENCIES = Object.values(Currency)
+export const CATEGORIES = Object.values(Category)
+export const PROVIDERS = Object.values(Provider)
 
 const databaseUrl = import.meta.env.VITE_DATABASE_URL
 const databaseToken = import.meta.env.VITE_DATABASE_KEY
@@ -127,23 +42,30 @@ async function fetchDb<T>(query: string): Promise<T | undefined> {
 }
 
 function parseLocation(location: Location) {
-  if (!location.provider || !PROVIDER_NAMES.includes(location.provider)) {
+  if (!location.provider || !PROVIDERS.includes(location.provider)) {
     console.warn(`Unknown provider: '${location.provider}'. Location: ${JSON.stringify(location)}`)
-    location.provider = ProviderName.Default
+    location.provider = Provider.Default
   }
 
-  const isAtm = location.sells.length > 0 || location.category === Category.Cash
-  location.type = isAtm ? LocationType.Atm : LocationType.Shop
-  if (isAtm && location.provider === ProviderName.Default)
-    location.provider = ProviderName.DefaultAtm
-
+  // Prioritize links in this order: 1. Google Maps -> 2. Instagram -> 3. Facebook
+  location.linkTo = location.gmaps ? LocationLink.GMaps : location.instagram ? LocationLink.Instagram : location.facebook ? LocationLink.Facebook : undefined
   location.url = location.gmaps || location.instagram || location.facebook
 
-  // Make the translation reactive
+  Object.assign(location, providersAssets[location.provider]) // assing all the keys from the asset to the location
+
+  const isAtm = location.category === Category.Cash
+  location.isAtm = isAtm
+  location.isShop = location.category === Category.Shop
+  location.isDark = location.theme === Theme.Dark
+  location.isLight = location.theme === Theme.Light
+
+  if (isAtm && location.provider === Provider.Default)
+    location.provider = Provider.DefaultAtm
+
+  // Make the translation reactive in case user change language
   Object.defineProperty(location, 'category_label', {
     get: () => translateCategory(location.category),
   })
-
   return location
 }
 

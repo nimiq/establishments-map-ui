@@ -2,7 +2,7 @@ import { useRouteQuery } from '@vueuse/router'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useLocations } from '@/stores/locations'
-import { type Category, type Currency, categories, currencies } from '@/database'
+import { CATEGORIES, CURRENCIES, type Category, type Currency } from '@/database'
 import { useMap } from '@/composables/useMap'
 
 export const useApp = defineStore('app', () => {
@@ -19,7 +19,7 @@ export const useApp = defineStore('app', () => {
     if (!c)
       return []
     const categoriesArray = Array.isArray(c) ? c : [c]
-    return categoriesArray.filter(category => categories.includes(category))
+    return categoriesArray.filter(category => CATEGORIES.includes(category))
   })
   const selectedCurrenciesQuery = useRouteQuery<Currency | Currency[]>('currencies')
   const selectedCurrencies = computed(() => {
@@ -27,7 +27,7 @@ export const useApp = defineStore('app', () => {
     if (!c)
       return []
     const currenciesArray = Array.isArray(c) ? c : [c]
-    return currenciesArray.filter(currency => currencies.includes(currency))
+    return currenciesArray.filter(currency => CURRENCIES.includes(currency))
   })
 
   function setSelectedCurrencies(currencies: Currency[]) {

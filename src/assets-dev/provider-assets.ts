@@ -1,117 +1,104 @@
 import { defineAsyncComponent } from 'vue'
-import { ProviderName } from '@/database'
 import { i18n } from '@/i18n/i18n-setup'
+import { Provider, Theme } from '@/types'
+import type { Location } from '@/types'
 
-export enum Theme {
-  Default = 'default',
-
-  // A light colorfull banner at the bottom
-  BottomBannerLight = 'bottom-banner-light',
-
-  // A dark colorfull banner at the bottom
-  BottomBannerDark = 'bottom-banner-dark',
-
-  // A light colorfull card
-  FullCardLight = 'full-card',
-
-  // A dark colorfull card
-  FullCardDark = 'full-card-dark',
-}
-
-export interface ProviderAssets {
-  name: ProviderName
-  theme: Theme
-  bg: string
-  label?: string
-  tooltip?: string
-  icon?: ReturnType<typeof defineAsyncComponent>
-}
-
-export const providersAssets: Record<ProviderName, ProviderAssets> = {
-  [ProviderName.Default]: {
-    name: ProviderName.DefaultAtm,
-    theme: Theme.Default,
+export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'bgFullCard' | 'theme' | 'providerLabel' | 'providerIcon' | 'providerTooltip'>> = {
+  [Provider.Default]: {
     bg: 'white',
+    bgFullCard: false,
+    theme: Theme.Light,
+
   },
-  [ProviderName.DefaultAtm]: {
-    name: ProviderName.DefaultAtm,
-    theme: Theme.FullCardDark,
+  [Provider.DefaultAtm]: {
+    theme: Theme.Dark,
+    bgFullCard: true,
     bg: 'radial-gradient(100% 100% at 100% 100%, #4D4C96 0%, #5F4B8B 100%)',
-    icon: defineAsyncComponent(
+    providerIcon: defineAsyncComponent(
       () => import('@/components/icons/providers/default-atm.vue'),
     ),
   },
-  [ProviderName.GoCrypto]: {
-    name: ProviderName.GoCrypto,
-    theme: Theme.BottomBannerLight,
+  [Provider.GoCrypto]: {
+    theme: Theme.Light,
+    bgFullCard: false,
     bg: '#F0BF4C',
-    get label() {
+    get providerLabel() {
       return i18n.t('{provider} app required')
     },
-    get tooltip() {
+    get providerTooltip() {
       return i18n.t('GoCrypto is a global payment network that enables merchants to accept crypto payments.')
     },
-    icon: defineAsyncComponent(
+    providerIcon: defineAsyncComponent(
       () => import('@/components/icons/providers/gocrypto.vue'),
     ),
   },
-  [ProviderName.Kurant]: {
-    name: ProviderName.Kurant,
-    theme: Theme.FullCardDark,
+  [Provider.Kurant]: {
+    theme: Theme.Dark,
+    bgFullCard: true,
     bg: '#A92E19',
-    get label() {
+    get providerLabel() {
       return i18n.t('Register with {provider}')
     },
-    get tooltip() {
+    get providerTooltip() {
       return i18n.t('Kurant ATM is a blockchain-based ATM network and platform.')
     },
-    icon: defineAsyncComponent(
+    providerIcon: defineAsyncComponent(
       () => import('@/components/icons/providers/kurant.vue'),
     ),
   },
-  [ProviderName.Bluecode]: {
-    name: ProviderName.Bluecode,
+  [Provider.Bluecode]: {
     bg: '#004899',
-    theme: Theme.BottomBannerDark,
-    get label() {
+    bgFullCard: false,
+    theme: Theme.Dark,
+    get providerLabel() {
       return i18n.t('{provider} required')
     },
-    get tooltip() {
-      // return i18n.t('TODO')
+    get providerTooltip() {
+      // TODO
       return 'Blah blah'
     },
-    icon: defineAsyncComponent(
+    providerIcon: defineAsyncComponent(
       () => import('@/components/icons/providers/bluecode.vue'),
     ),
   },
-  [ProviderName.CryptopaymentLink]: {
-    name: ProviderName.CryptopaymentLink,
+  [Provider.CryptopaymentLink]: {
     bg: '#5C6CFF',
-    theme: Theme.BottomBannerDark,
-    get label() {
+    theme: Theme.Dark,
+    bgFullCard: false,
+    get providerLabel() {
       return i18n.t('{provider} available')
     },
-    get tooltip() {
-      // return i18n.t('TODO')
+    get providerTooltip() {
+      // TODO
       return 'Blah blah'
     },
-    icon: defineAsyncComponent(
+    providerIcon: defineAsyncComponent(
       () => import('@/components/icons/providers/cryptopayment-link.vue'),
     ),
   },
-  [ProviderName.Edenia]: {
-    name: ProviderName.Edenia,
+  [Provider.Edenia]: {
     bg: '#00B2B0',
-    theme: Theme.FullCardDark,
-    get label() {
+    theme: Theme.Dark,
+    bgFullCard: false,
+    get providerLabel() {
       return i18n.t('By {provider}')
     },
-    get tooltip() {
-      // return i18n.t('TODO')
+    get providerTooltip() {
+      // TODO
       return 'Blah blah'
     },
-    icon: defineAsyncComponent(
+    providerIcon: defineAsyncComponent(
       () => import('@/components/icons/providers/edenia.vue'),
+    ),
+  },
+
+  // TODO
+  [Provider.CryptoCR]: {
+    theme: Theme.Light,
+    bgFullCard: false,
+    bg: 'pink',
+    providerIcon: defineAsyncComponent(
+      () => import('@/components/icons/providers/default-atm.vue'),
     ),
   },
 }

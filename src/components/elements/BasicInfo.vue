@@ -1,23 +1,12 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { CardLayout } from './Card.vue'
-import { Theme } from '@/assets-dev/provider-assets.ts'
+import { type PropType, defineAsyncComponent } from 'vue'
 import Button from '@/components/atoms/Button.vue'
 import EllipsisVertical from '@/components/icons/icon-ellipsis-vertical.vue'
-import GmapsPin from '@/components/icons/icon-gmaps-pin.vue'
 import StarFilledIcon from '@/components/icons/icon-star-filled.vue'
 import StarIcon from '@/components/icons/icon-star.vue'
-import type { Location } from '@/database'
+import { type Location, LocationLink } from '@/types'
 
 defineProps({
-  layout: {
-    type: String as PropType<CardLayout>,
-    required: true,
-  },
-  theme: {
-    type: String as PropType<Theme>,
-    default: Theme.Default,
-  },
   location: {
     type: Object as PropType<Location>,
     required: true,
@@ -27,16 +16,18 @@ defineProps({
     default: 0,
   },
 })
+
+const GmapsPin = defineAsyncComponent(() => import('@/components/icons/icon-gmaps-pin.vue'))
 </script>
 
 <template>
   <div
     class="relative grid grid-cols-[auto_1fr_72px] grid-rows-[repeat(3,auto)] items-center group/card" :class="{
-      'text-white': theme === Theme.FullCardDark,
-      'text-space': theme !== Theme.FullCardDark,
+      'text-white': location.isDark,
+      'text-space': location.isLight,
     }"
   >
-    <h2 class="text-base font-bold leading-[1.3] col-span-2 pb-1 text-balance truncate">
+    <h2 class="text-base font-bold leading-[?1.3] col-span-2 pb-1 text-balance truncate">
       {{ location.name }}
     </h2>
 
@@ -49,7 +40,10 @@ defineProps({
         }"
       >
         <template #icon>
-          <GmapsPin />
+          <GmapsPin v-if="location.linkTo === LocationLink.GMaps" />
+          <!-- TODO Add logos -->
+          <span v-if="location.linkTo === LocationLink.Instagram">Instagram</span>
+          <span v-if="location.linkTo === LocationLink.Facebook">Facebook</span>
         </template>
       </Button>
 
@@ -66,8 +60,8 @@ defineProps({
           <template #icon>
             <EllipsisVertical
               class="h-5" :class="{
-                'text-white/50': theme === Theme.FullCardDark,
-                'text-space/30': theme !== Theme.FullCardDark,
+                'text-space/30': location.isLight,
+                'text-white/50': location.isDark,
               }"
             />
           </template>
@@ -75,7 +69,7 @@ defineProps({
       </transition>
     </div>
 
-    <template v-if="layout === CardLayout.Location">
+    <template v-if="location.isShop">
       <span class="row-start-2 text-xs font-semibold capitalize text-space/60">
         {{ location.gmaps_type || location.category }}
       </span>
@@ -85,7 +79,7 @@ defineProps({
         </template>
       </div>
     </template>
-    <span v-else-if="layout === CardLayout.Atm" class="row-start-2 text-xs text-white/70">
+    <span v-else-if="location.isAtm" class="row-start-2 text-xs text-white/70">
       <template v-if="location.accepts?.length > 0 && location.sells?.length > 0">{{
         $t('Buy & Sell crypto only*')
       }}</template>
@@ -94,8 +88,8 @@ defineProps({
     </span>
     <p
       class="text-xs leading-[1.5] grid-cols-1 col-span-3 row-start-3" :class="{
-        'text-white/60': layout === CardLayout.Atm,
-        'text-space/70': layout === CardLayout.Location,
+        'text-white/60': location.isDark,
+        'text-space/70': location.isLight,
       }"
     >
       {{ location.address }}

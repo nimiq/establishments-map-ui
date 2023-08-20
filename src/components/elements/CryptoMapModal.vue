@@ -31,7 +31,7 @@ import GearIcon from '@/components/icons/icon-gear.vue'
       </p>
 
       <div class="flex items-center justify-between mt-8">
-        <Button bg="sky" href="/Locations/add">
+        <Button bg="sky" href="/locations/add">
           <template #label>
             {{ $t('Add Crypto location') }}
           </template>

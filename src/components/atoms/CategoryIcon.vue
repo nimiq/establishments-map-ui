@@ -11,7 +11,7 @@ import MiscellaneousIcon from '@/components/icons/categories/miscellaneous.vue'
 import RestaurantBarIcon from '@/components/icons/categories/restaurant_bar.vue'
 import ShopIcon from '@/components/icons/categories/shop.vue'
 import SportsFitnessIcon from '@/components/icons/categories/sports_fitness.vue'
-import { Category } from '@/database'
+import { Category } from '@/types'
 
 defineProps({
   category: {

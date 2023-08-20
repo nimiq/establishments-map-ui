@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
+import type { Currency } from '@nimiq/utils'
 import SearchBox from '../atoms/SearchBox.vue'
 import Select from '../atoms/Select.vue'
 import CryptoIcon from '@/components/atoms/CryptoIcon.vue'
 import FormContainer from '@/components/forms/FormContainer.vue'
-import { type Currency, currencies } from '@/database'
+import { CURRENCIES } from '@/database'
 import { type Suggestion, useAutocomplete } from '@/stores/autocomplete'
 
 const autocompleteStore = useAutocomplete()
@@ -57,8 +58,8 @@ function autocompleteGoogle(query: string) {
       />
 
       <Select
-        v-model="selectedCurrencies" class="mt-6" :label="$t('Select Cryptocurrency')"
-        input-id="cryptocurrency-input" :options="currencies" :placeholder="$t('Select Cryptocurrency')"
+        v-model="selectedCurrencies" class="mt-6"
+        :label="$t('Select Cryptocurrency')" :options="CURRENCIES" :placeholder="$t('Select Cryptocurrency')"
       >
         <template #option="{ option: currency }">
           <CryptoIcon :crypto="currency" size="sm" bg="white" />

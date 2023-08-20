@@ -1,19 +1,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { CardLayout } from './Card.vue'
-import { Theme, providersAssets } from '@/assets-dev/provider-assets'
 import BasicInfo from '@/components/elements/BasicInfo.vue'
 import CardBg from '@/components/elements/CardBg.vue'
-import type { Location } from '@/database'
 import { useLocations } from '@/stores/locations'
-
-const layout = ({ category }: Location) => category === 'cash' ? CardLayout.Atm : CardLayout.Location
-const asset = ({ provider }: Location) => providersAssets[provider]
-function bgColor(e: Location) {
-  return {
-    background: [Theme.FullCardDark, Theme.FullCardLight].includes(asset(e).theme) ? asset(e).bg : 'white',
-  }
-}
 
 const locationsStore = useLocations()
 const { locations } = storeToRefs(locationsStore)
@@ -22,12 +11,12 @@ const { locations } = storeToRefs(locationsStore)
 <template>
   <ul class="flex flex-col w-80">
     <li
-      v-for="(l, i) in locations" :key="i"
+      v-for="(location, i) in locations" :key="i"
       class="relative px-6 py-5 overflow-hidden bg-white border-space/10 border-t-xs group/card [&_[data-rings]]:-rotate-90"
-      :style="bgColor(l)"
+      :style="`background: ${location.isDark ? location.bg : 'white'}`"
     >
-      <CardBg v-if="layout(l) === CardLayout.Atm" :layout="layout(l)" :progress="0" :provider-assets="asset(l)" />
-      <BasicInfo :location="l" :layout="layout(l)" :theme="asset(l).theme" />
+      <CardBg v-if="location.isAtm" :progress="0" :location="location" />
+      <BasicInfo :location="location" />
     </li>
   </ul>
 </template>

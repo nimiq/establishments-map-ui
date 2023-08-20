@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { type PropType, ref } from 'vue'
-import { CardLayout } from './Card.vue'
-import type { Location } from '@/database'
-import Card from '@/components/elements/Card.vue'
 import SheetModal from '@/components/atoms/SheetModal.vue'
+import Card from '@/components/elements/Card.vue'
+import type { Location } from '@/types'
 
 defineProps({
   locations: {
@@ -17,8 +16,6 @@ const INITIAL_GAP_TO_SCREEN = 20
 
 // Value is between 0 and 1
 const progress = ref(0)
-
-const layout = ({ category }: Location) => category === 'cash' ? CardLayout.Atm : CardLayout.Location
 </script>
 
 <template>
@@ -35,7 +32,7 @@ const layout = ({ category }: Location) => category === 'cash' ? CardLayout.Atm 
         :initial-gap-to-screen="INITIAL_GAP_TO_SCREEN" class="relative w-full bg-white rounded-t-lg" :progress="progress"
         @update:progress="progress = $event"
       >
-        <Card :location="l" :progress="progress" :layout="layout(l)" />
+        <Card :location="l" :progress="progress" />
       </SheetModal>
     </li>
   </ul>

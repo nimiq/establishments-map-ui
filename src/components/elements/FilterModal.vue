@@ -8,9 +8,10 @@ import CryptoIcon from '@/components/atoms/CryptoIcon.vue'
 import Select from '@/components/atoms/Select.vue'
 import CrossIcon from '@/components/icons/icon-cross.vue'
 import FilterIcon from '@/components/icons/icon-filter.vue'
-import { type Category, type Currency, translateCategory } from '@/database'
-import { categories, currencies } from '@/database'
+import { CATEGORIES, CURRENCIES } from '@/database'
 import { useApp } from '@/stores/app'
+import { translateCategory } from '@/translations'
+import type { Category, Currency } from '@/types'
 
 const isOpen = ref(false)
 
@@ -103,7 +104,7 @@ function applyFilters() {
 
                 <Select
                   v-model="unappliedFiltersCurrencies" :placeholder="$t('Select Cryptocurrency')"
-                  :options="currencies" class="px-6 md:px-10"
+                  :options="CURRENCIES" class="px-6 md:px-10"
                 >
                   <template #label>
                     <h3 class="mb-6 text-sm font-semibold tracking-wider uppercase text-space/40 md:mb-8">
@@ -124,7 +125,7 @@ function applyFilters() {
                   </template>
                 </Select>
                 <Select
-                  v-model="unappliedFiltersCategories" :options="categories"
+                  v-model="unappliedFiltersCategories" :options="CATEGORIES"
                   :placeholder="$t('Select category')" class="px-6 mt-9 md:px-10"
                 >
                   <template #label>

@@ -13,10 +13,9 @@ const { locations } = storeToRefs(locationsStore)
 
 <template>
   <TheMapInstance class="relative flex flex-col w-screen h-screen" :locations="locations">
-    <div class="absolute flex-1 bg-white top-6 left-6 rounded-2xl">
-      <InteractionBar>
-        <DesktopList />
-      </InteractionBar>
+    <div class="absolute flex-1 bg-white top-6 left-6 rounded-2xl shadow-header">
+      <InteractionBar />
+      <DesktopList />
     </div>
     <FilterModal class="absolute top-6 right-6" />
     <Controls class="absolute bottom-6 right-6" />

@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { type PropType, computed, defineAsyncComponent } from 'vue'
-import { Theme, providersAssets } from '@/assets-dev/provider-assets.ts'
 import CryptoList from '@/components/atoms/CryptoList.vue'
 import BasicInfo from '@/components/elements/BasicInfo.vue'
 import CardBg from '@/components/elements/CardBg.vue'
-import { type Location, ProviderName } from '@/database'
+import { type Location, Provider } from '@/types'
 
 const props = defineProps({
   location: {
@@ -15,36 +14,16 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  layout: {
-    type: String as PropType<CardLayout>,
-    required: true,
-  },
 })
 
 const ProviderBanner = defineAsyncComponent(() => import('@/components/elements/ProviderBanner.vue'))
-const showProviderBanner = computed(() => props.location.provider !== ProviderName.Default)
-const providerAssets = computed(() => providersAssets[props.location.provider])
-
-const isAtm = computed(() => props.layout === CardLayout.Atm)
-const isLocation = computed(() => props.layout === CardLayout.Location)
-const bgColor = computed(() => {
-  return {
-    background: providerAssets.value && [Theme.FullCardDark, Theme.FullCardLight].includes(providerAssets.value.theme) ? providerAssets.value.bg : 'white',
-  }
-})
-</script>
-
-<script lang="ts">
-export enum CardLayout {
-  Location = 'location',
-  Atm = 'atm',
-}
+const showProviderBanner = computed(() => props.location.provider !== Provider.Default)
 </script>
 
 <template>
-  <div class="relative overflow-hidden rounded-lg duration-[--duration,0] group/card" :style="bgColor">
+  <div class="relative overflow-hidden rounded-lg duration-[--duration,0] group/card" :style="`background: ${location.bgFullCard ? location.bg : 'white'}`">
     <CardBg
-      v-if="location.provider !== ProviderName.Default" :layout="layout" :provider-assets="providerAssets"
+      v-if="location.provider !== Provider.Default" :location="location"
       :progress="progress"
     />
 
@@ -56,10 +35,7 @@ export enum CardLayout {
     </div>
 
     <div class="px-6 py-5 space-y-5">
-      <BasicInfo
-        :location="location" :layout="layout" :theme="providerAssets?.theme" :is-atm="isAtm"
-        :provider-assets="providerAssets" :progress="progress"
-      />
+      <BasicInfo :location="location" :progress="progress" />
 
       <transition
         enter-active-class="transition duration-100 ease-out"
@@ -88,9 +64,9 @@ export enum CardLayout {
     </div>
 
     <ProviderBanner
-      v-if="progress > 0 && showProviderBanner && providerAssets" :assets="providerAssets" :is-atm="isAtm"
+      v-if="progress > 0 && showProviderBanner && location.provider !== Provider.Default" :location="location"
       class="absolute w-full rounded-b-lg -mt-9"
-      :style="`backgroundColor: ${isLocation ? providerAssets.bg : 'transparent'}; opacity: ${progress / 0.8}; bottom: -${(1 - progress) * 54}px;`"
+      :style="`backgroundColor: ${location.isShop ? location.bg : 'transparent'}; opacity: ${progress / 0.8}; bottom: -${(1 - progress) * 54}px;`"
     />
   </div>
 </template>

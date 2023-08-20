@@ -1,15 +1,10 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { CardLayout } from './Card.vue'
-import type { ProviderAssets } from '@/assets-dev/provider-assets.ts'
+import type { Location } from '@/types'
 
 defineProps({
-  layout: {
-    type: String as PropType<CardLayout>,
-    required: true,
-  },
-  providerAssets: {
-    type: Object as PropType<ProviderAssets>,
+  location: {
+    type: Object as PropType<Location>,
     required: true,
   },
   progress: {
@@ -20,7 +15,7 @@ defineProps({
 </script>
 
 <template>
-  <template v-if="layout === CardLayout.Location">
+  <template v-if="location.isShop">
     <div
       class="absolute rounded-t-lg right-4 bottom-4 bg-[radial-gradient(100%_75.78%_at_100%_0%,_#ffffff_0%,_rgba(255,_255,_255,_0)_100%)] opacity-20 pointer-events-none"
     />
@@ -31,18 +26,18 @@ defineProps({
         class="absolute grid p-2 bg-white rounded-full w-9 h-9 right-4 bottom-4 place-content-center"
         style="box-shadow: 0px 12.8571px 27.1429px rgba(31, 35, 72, 0.07), 0px 5px 6.07143px rgba(31, 35, 72, 0.04), 0px 1.42857px 1.78571px rgba(31, 35, 72, 0.02)"
       >
-        <component :is="providerAssets?.icon" v-if="progress === 1" class="w-6 h-6 zoom-in " />
+        <component :is="location.providerIcon" v-if="progress === 1" class="w-6 h-6 zoom-in " />
       </div>
     </div>
   </template>
 
-  <template v-if="layout === CardLayout.Atm">
+  <template v-if="location.isAtm">
     <div class="absolute bottom-0 right-0 z-20 grid pointer-events-none place-content-center">
       <div
         class="absolute -bottom-2.5 -right-2.5 bg-[url(@/assets/atm-provider-rings-bg.svg)] bg-no-repeat h-[118px] w-[118px]"
         data-rings
       />
-      <component :is="providerAssets?.icon" class="w-9 h-9 absolute right-[30px] bottom-[30px]" />
+      <component :is="location.providerIcon" class="w-9 h-9 absolute right-[30px] bottom-[30px]" />
     </div>
   </template>
 </template>
