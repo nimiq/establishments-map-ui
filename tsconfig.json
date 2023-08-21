@@ -1,28 +1,28 @@
 {
-  "include": [
-    "env.d.ts",
-    "src/**/*"
-  ],
   "compilerOptions": {
-    "allowImportingTsExtensions": true,
-    "lib": [
-      "DOM",
-      "ES2017"
-    ],
-    "skipLibCheck": true,
     "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
+    "module": "ESNext",
+    "target": "ESNext",
+    "lib": ["DOM", "ESNext"],
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noUnusedLocals": true,
+    "strictNullChecks": true,
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
     "types": [
+      "vitest",
+      "vite/client",
       "grecaptcha"
-    ]
-  },
-  "references": [
-    {
-      "path": "./tsconfig.config.json"
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
     }
-  ]
+  },
+  "exclude": ["dist", "node_modules"]
 }

@@ -1,6 +1,7 @@
 {
   "name": "nimiq-map",
-  "version": "0.0.0",
+  "version": "2.0.0",
+  "description": "A map of locations where you can pay with Crypto around the world",
   "scripts": {
     "dev": "vite",
     "build": "pnpm i18n:extract && pnpm type-check && pnpm build-only",
@@ -24,6 +25,7 @@
     "@headlessui/vue": "^1.7.16",
     "@nimiq/utils": "^0.9.1",
     "@nimiq/vue3-components": "github:nimiq/vue3-components#build/full",
+    "@types/google.maps": "^3.53.6",
     "@vueuse/components": "^10.3.0",
     "@vueuse/core": "^10.3.0",
     "@vueuse/math": "^10.3.0",
@@ -33,13 +35,13 @@
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.2.4",
     "vue-virtual-scroller": "2.0.0-beta.8",
-    "vue3-google-map": "^0.15.0"
+    "vue3-google-map": "^0.17.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.40.2",
     "@histoire/plugin-vue": "^0.16.5",
     "@types/grecaptcha": "^3.0.4",
-    "@vitejs/plugin-vue": "^3.2.0",
+    "@vitejs/plugin-vue": "^4.2.3",
     "autoprefixer": "^10.4.15",
     "eslint": "^8.47.0",
     "eslint-plugin-vue": "^9.17.0",
