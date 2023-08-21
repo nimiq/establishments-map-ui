@@ -1,43 +1,45 @@
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import type { GoogleMap } from 'vue3-google-map/*'
+import { defineStore } from 'pinia'
+import type { GoogleMap } from 'vue3-google-map'
 import type { EstimatedPosition, Point, Position } from '@/types'
 
 // Costa Rica
 export const FALLBACK_POSITION: Position = { center: { lat: 9.832213439337215, lng: -84.19869984449741 }, zoom: 9 }
 
-export function useMap() {
-  const map$ = ref<typeof GoogleMap>()
-  const map = computed(() => map$?.value ? map$?.value.map as google.maps.Map : undefined)
-  const center = computed(() => map.value?.getCenter()?.toJSON() as Point)
-  const zoom = computed(() => map.value?.getZoom() as number)
-  const mapHasPosition = computed(() => center.value.lat !== 0 && center.value.lng !== 0 && zoom.value !== 0)
+export const useMap = defineStore('map', () => {
+  const mapInstance = ref<typeof GoogleMap>()
+  const map = computed(() => mapInstance.value?.map)
+  const center = () => map.value?.getCenter()?.toJSON() as Point
+  const zoom = () => map.value?.getZoom() as number
+  const increaseZoom = () => map.value?.setZoom(zoom() + 1)
+  const decreaseZoom = () => map.value?.setZoom(zoom() - 1)
+  const mapHasPosition = () => center() && center()?.lat !== 0 && center()?.lng !== 0 && zoom() !== 0
   const boundingBox = computed(() => {
-    if (!mapHasPosition.value)
+    if (!mapHasPosition())
       return
     return {
       southWest: map.value!.getBounds()!.getSouthWest().toJSON(),
       northEast: map.value!.getBounds()!.getNorthEast().toJSON(),
     }
   })
-
   function setPosition(p?: Position | EstimatedPosition | google.maps.LatLngBounds) {
     if (!map.value || !p)
       return
 
     if ('zoom' in p) {
-      map.value.setCenter(p.center)
-      map.value.setZoom(p.zoom)
+      map.value?.setCenter(p.center)
+      map.value?.setZoom(p.zoom)
     }
     else if ('accuracy' in p) {
       const circle = new google.maps.Circle({
         center: p.center,
         radius: p.accuracy,
       })
-      map.value.fitBounds(circle.getBounds()!)
+      map.value?.fitBounds(circle.getBounds()!)
     }
     else if (p instanceof google.maps.LatLngBounds) {
-      map.value.fitBounds(p)
+      map.value?.fitBounds(p)
     }
   }
 
@@ -76,20 +78,20 @@ export function useMap() {
   }
 
   return {
-    map$,
+    map,
+    mapInstance,
 
     setInitialPosition,
     setPosition,
     mapHasPosition,
 
-    map,
     center,
     zoom,
     boundingBox,
 
-    decreaseZoom: () => map.value?.setZoom(zoom.value! - 1),
-    increaseZoom: () => map.value?.setZoom(zoom.value! + 1),
+    increaseZoom,
+    decreaseZoom,
 
     goToPlaceId,
   }
-}
+})

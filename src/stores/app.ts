@@ -1,9 +1,9 @@
 import { useRouteQuery } from '@vueuse/router'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { useLocations } from '@/stores/locations'
+import { useMap } from '@/stores/map'
 import { CATEGORIES, CURRENCIES } from '@/database'
-import { useMap } from '@/composables/useMap'
+import { useLocations } from '@/stores/locations'
 import type { Category, Currency } from '@/types'
 
 export const useApp = defineStore('app', () => {

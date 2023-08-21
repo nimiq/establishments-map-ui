@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { queryResults as queryResultsDb } from '@/database'
-import { useMap } from '@/composables/useMap'
+import { useMap } from '@/stores/map'
 import { AutocompleteStatus, type Suggestion, SuggestionType } from '@/types'
 
 interface AutocompleteGoogleOptions {

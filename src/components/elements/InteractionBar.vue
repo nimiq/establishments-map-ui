@@ -4,8 +4,8 @@ import SearchBox from '@/components/atoms/SearchBox.vue'
 import CryptoMapModal from '@/components/elements/CryptoMapModal.vue'
 import { useApp } from '@/stores/app'
 import { useAutocomplete } from '@/composables/useAutocomplete'
-import { useMap } from '@/composables/useMap'
 import { type Suggestion, SuggestionType } from '@/types'
+import { useMap } from '@/stores/map'
 
 const { querySearch, dbSuggestions, googleSuggestions } = useAutocomplete()
 

@@ -5,14 +5,17 @@ import { useDebounceFn } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { CustomMarker, GoogleMap, MarkerCluster } from 'vue3-google-map'
 import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useLocations } from '@/stores/locations'
-import { useMap } from '@/composables/useMap'
 import CategoryIcon from '@/components/atoms/CategoryIcon.vue'
 import googleMapStyles from '@/assets/google-map-styles'
+import { useMap } from '@/stores/map'
 
 const googleMapsKey = import.meta.env.VITE_GOOGLE_MAP_KEY
 
-const { map$, mapHasPosition, setInitialPosition, center, zoom, boundingBox } = useMap()
+const mapStore = useMap()
+const { mapHasPosition, center, zoom } = mapStore
+const { boundingBox, mapInstance } = storeToRefs(mapStore)
 
 const superClusterAlgorithm = new SuperClusterAlgorithm({ radius: 160, maxZoom: 18 })
 function render(cluster: Cluster) {
@@ -46,20 +49,20 @@ const router = useRouter()
 // Make the API request after the map has not been moved for 300ms or after 700ms
 const { getLocations, locations } = useLocations()
 const debouncedFn = useDebounceFn(async () => {
-  if (!mapHasPosition.value)
+  if (!mapHasPosition())
     return
   getLocations(boundingBox.value!)
-  router.push({ name: 'coords', params: { ...center.value, zoom: zoom.value } })
+  router.push({ name: 'coords', params: { ...center(), zoom: zoom() } })
 }, 300, { maxWait: 700 })
 </script>
 
 <template>
   <div>
     <GoogleMap
-      ref="map$" :api-key="googleMapsKey"
-      class="w-full h-full" disable-default-ui :clickable-icons="false"
+      ref="mapInstance" :api-key="googleMapsKey"
+      class="w-full h-full" disable-default-ui
       :gesture-handling="mapGestureBehaviour" :keyboard-shortcuts="false" :styles="googleMapStyles"
-      :min-zoom="3" :restriction="restriction" @bounds_changed="debouncedFn" @idle.once="setInitialPosition"
+      :min-zoom="3" :restriction="restriction" @bounds_changed="debouncedFn" @idle.once="useMap().setInitialPosition"
     >
       <MarkerCluster :options="{ algorithm: superClusterAlgorithm, renderer: { render } }">
         <CustomMarker
