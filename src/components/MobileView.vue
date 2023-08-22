@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import TheMapInstance from '@/components/TheMapInstance.vue'
+import TheMapInstance from '@/components/elements/TheMapInstance.vue'
 import MobileList from '@/components/elements/MobileList.vue'
 import FilterModal from '@/components/elements/FilterModal.vue'
 import { useLocations } from '@/stores/locations'

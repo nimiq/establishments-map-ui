@@ -10,8 +10,7 @@ const databaseUrl = import.meta.env.VITE_DATABASE_URL
 const databaseToken = import.meta.env.VITE_DATABASE_KEY
 
 // TODO: It would be nice to show error messages to the user as a Toast 🙃
-async function fetchDb<T>(query: string): Promise<T | undefined> {
-  const url = `${databaseUrl}/${query}`
+async function fetchDb<T>(url: URL): Promise<T | undefined> {
   const response = await fetch(url, {
     method: 'GET',
     headers: {
@@ -75,15 +74,20 @@ function parseLocation(location: Location) {
   return location
 }
 
-export async function getLocations({ northEast, southWest }: BoundingBox): Promise<Location[]> {
-  const query = `rpc/get_locations?swlng=${southWest.lng}&nelng=${northEast.lng}&swlat=${southWest.lat}&nelat=${northEast.lat}`
-  const data = await fetchDb<Location[]>(query) ?? []
+export async function getLocations({ neLat, neLng, swLat, swLng }: BoundingBox): Promise<Location[]> {
+  const url = new URL(`${databaseUrl}/rpc/get_locations`)
+  url.searchParams.set('swlng', swLng.toString())
+  url.searchParams.set('nelng', neLng.toString())
+  url.searchParams.set('swlat', swLat.toString())
+  url.searchParams.set('nelat', neLat.toString())
+  const data = await fetchDb<Location[]>(url) ?? []
   return data.map(parseLocation)
 }
 
 export async function getLocation(uuid: string): Promise<Location | undefined> {
-  const query = `rpc/get_location?uuid=${uuid}`
-  const location = await fetchDb<Location>(query)
+  const url = new URL(`${databaseUrl}/rpc/get_location`)
+  url.searchParams.set('uuid', uuid)
+  const location = await fetchDb<Location>(url)
   if (!location) {
     console.warn(`Location ${uuid} not found`)
     return undefined
@@ -92,7 +96,8 @@ export async function getLocation(uuid: string): Promise<Location | undefined> {
 }
 
 export async function queryResults(userQuery: string) {
-  const query = `rpc/query_search?query=${userQuery}`
-  const suggestions = await fetchDb<Suggestion[]>(query)
+  const url = new URL(`${databaseUrl}/rpc/query_search`)
+  url.searchParams.set('query', userQuery)
+  const suggestions = await fetchDb<Suggestion[]>(url)
   return suggestions || []
 }

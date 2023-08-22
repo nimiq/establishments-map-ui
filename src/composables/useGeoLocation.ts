@@ -1,6 +1,6 @@
 import { useGeolocation } from '@vueuse/core'
 import { ref } from 'vue'
-import type { EstimatedPosition } from '@/types'
+import type { EstimatedMapPosition } from '@/types'
 
 interface GeoIpResponse {
   location?: {
@@ -15,7 +15,7 @@ interface GeoIpResponse {
 
 export function useGeoIp() {
   const ipPositionError = ref()
-  const ipPosition = ref<EstimatedPosition>()
+  const ipPosition = ref<EstimatedMapPosition>()
   async function geolocateIp() {
     const url = new URL('https://geoip.nimiq-network.com:8443/v1/locate')
     const response = await fetch(url).catch((e) => {
@@ -51,7 +51,7 @@ export function useGeoIp() {
   const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
   const MAX_WAIT = 5000
   const INTERVAL = 500
-  async function geolocateUserViaBrowser(): Promise<EstimatedPosition> {
+  async function geolocateUserViaBrowser(): Promise<EstimatedMapPosition> {
     geolocatingUserBrowser.value = true
     resumeGeolocation()
 

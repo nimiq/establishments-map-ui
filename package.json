@@ -31,16 +31,18 @@
     "@vueuse/math": "^10.3.0",
     "@vueuse/router": "^10.3.0",
     "pinia": "^2.1.6",
+    "supercluster": "^8.0.1",
     "vue": "^3.3.4",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.2.4",
     "vue-virtual-scroller": "2.0.0-beta.8",
-    "vue3-google-map": "^0.17.0"
+    "vue3-google-map": "0.15.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.40.2",
     "@histoire/plugin-vue": "^0.16.5",
     "@types/grecaptcha": "^3.0.4",
+    "@types/supercluster": "^7.1.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "autoprefixer": "^10.4.15",
     "eslint": "^8.47.0",

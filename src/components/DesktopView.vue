@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
-import TheMapInstance from '@/components/TheMapInstance.vue'
+import TheMapInstance from '@/components/elements/TheMapInstance.vue'
 import Button from '@/components/atoms/Button.vue'
 import Controls from '@/components/elements/Controls.vue'
 import DesktopList from '@/components/elements/DesktopList.vue'
@@ -19,7 +19,7 @@ const listIsShown = ref(false)
 <template>
   <TheMapInstance class="relative flex flex-col w-screen h-screen" :locations="locations" />
   <div
-    v-for="i in 1" :key="i"
+    v-for="i in 2" :key="i"
     :class="{ 'translate-x-0 delay-100 duration-500 opacity-10': listIsShown, '-translate-x-full duration-1000 delay-75 opacity-0': !listIsShown }"
     class="absolute inset-0 max-w-[368px] transition-[transform,opacity] will-change-transform pointer-events-none bg-gradient-to-r from-space to-space/0"
   />

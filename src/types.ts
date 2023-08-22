@@ -56,8 +56,10 @@ export enum Provider {
 
 /* Map Types */
 export interface BoundingBox {
-  southWest: Point
-  northEast: Point
+  swLat: number
+  swLng: number
+  neLat: number
+  neLng: number
 }
 
 export interface Point {
@@ -65,14 +67,19 @@ export interface Point {
   lng: number
 }
 
-export interface EstimatedPosition {
+export interface EstimatedMapPosition {
   center: Point
   accuracy: number // in meters
 }
 
-export interface Position {
+export interface MapPosition {
   center: Point
   zoom: number
+}
+
+export interface Cluster {
+  center: Point
+  count: number
 }
 
 /** UI Types
