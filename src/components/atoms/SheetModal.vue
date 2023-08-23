@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
   progress: {
@@ -100,6 +100,18 @@ function onCardDrag(progress: number) {
   }
 }
 watch(() => props.progress, onCardDrag, { immediate: true })
+
+function resizeListener() {
+  onCardDrag(props.progress)
+}
+
+onMounted(() => {
+  window.addEventListener('resize', resizeListener)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', resizeListener)
+})
 </script>
 
 <template>
