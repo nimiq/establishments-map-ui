@@ -46,6 +46,7 @@ const css: string = !props.mono && needBg ? 'ring-1 rounded-full ring-space/10' 
       'bg-white/[0.15]': bg === 'white/15',
       'bg-white': bg === 'white' && needBg,
     }"
+    :title="crypto.toUpperCase()"
   >
     <NimIcon v-if="crypto === 'nim'" :class="css" :style="[styles, { width: mono && '22px' }]" />
     <BtcIcon v-else-if="crypto === 'btc'" :class="css" :style="[styles, { width: mono && '28px' }]" />
