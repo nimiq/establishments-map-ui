@@ -26,7 +26,7 @@ const googleMapStyles = [
 ] as (typeof GoogleMap.map.MapTypeStyle)[]
 
 const restriction = {
-  latLngBounds: { north: 80, south: -80, west: -179.999999, east: 179.999999 },
+  latLngBounds: { north: 80, south: -80, west: Number.NEGATIVE_INFINITY, east: Number.POSITIVE_INFINITY },
   strictBounds: true,
 }
 
