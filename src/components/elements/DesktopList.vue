@@ -41,6 +41,7 @@ defineProps({
   <RecycleScroller
     key-field="uuid"
     :items="locations"
+    :item-size="99"
     list-tag="ul"
     item-tag="li"
     :class="`overflow-auto scroll-space transition-[height] will-change-[height] ${listIsShown ? 'h-[calc(100vh-10.5rem)]' : 'h-0'}`"
