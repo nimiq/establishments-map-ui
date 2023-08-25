@@ -69,9 +69,9 @@ const GmapsPin = defineAsyncComponent(() => import('@/components/icons/icon-gmap
       </transition>
     </div>
 
-    <template v-if="location.isShop">
+    <template v-if="!location.isAtm">
       <span class="row-start-2 text-xs font-semibold capitalize text-space/60">
-        {{ location.gmaps_type || location.category }}
+        {{ (location.gmapstype[0] || location.category).replaceAll('_', ' ') }}
       </span>
       <div v-if="location.rating" class="row-start-2 flex gap-x-0.5">
         <template v-for="i in 5" :key="i">
