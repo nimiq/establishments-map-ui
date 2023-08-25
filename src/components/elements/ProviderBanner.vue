@@ -19,7 +19,7 @@ defineProps({
 
 <template>
   <footer class="relative flex items-center" :class="{ 'h-16': location.providerLabel, 'h-9': !location.providerLabel }">
-    <CardBg v-if="location.isShop && location.providerLabel" :location="location" />
+    <CardBg v-if="!location.isAtm && location.providerLabel" :location="location" />
 
     <div v-if="location.providerLabel" class="z-20 flex items-center pt-1.5 pl-6 pr-4 text-xs gap-x-1.5">
       <i18n-t
