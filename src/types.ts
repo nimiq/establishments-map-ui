@@ -109,7 +109,7 @@ export interface Location {
   address: string
   category: Category
   category_label: string
-  gmapstype: string[]
+  gmaps_types: string[]
   lat: number
   lng: number
   provider: Provider

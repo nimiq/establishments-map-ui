@@ -70,8 +70,8 @@ const GmapsPin = defineAsyncComponent(() => import('@/components/icons/icon-gmap
     </div>
 
     <template v-if="!location.isAtm">
-      <span class="row-start-2 text-xs font-semibold capitalize text-space/60">
-        {{ (location.gmapstype[0] || location.category).replaceAll('_', ' ') }}
+      <span class="row-start-2 text-xs font-semibold first-letter:capitalize text-space/60">
+        {{ (location.gmaps_types[0]).replaceAll('_', ' ') || location.category_label }}
       </span>
       <div v-if="location.rating" class="row-start-2 flex gap-x-0.5">
         <template v-for="i in 5" :key="i">
@@ -79,7 +79,7 @@ const GmapsPin = defineAsyncComponent(() => import('@/components/icons/icon-gmap
         </template>
       </div>
     </template>
-    <span v-else-if="location.isAtm" class="row-start-2 text-xs text-white/70 font-semibold">
+    <span v-else-if="location.isAtm" class="row-start-2 text-xs font-semibold text-white/70">
       <template v-if="location.accepts?.length > 0 && location.sells?.length > 0">{{
         $t('Buy & sell crypto')
       }}</template>
@@ -90,7 +90,7 @@ const GmapsPin = defineAsyncComponent(() => import('@/components/icons/icon-gmap
       class="text-xs leading-[1.5] grid-cols-1 col-span-3 row-start-3" :class="{
         'text-white/70': location.bgFullCard && location.isDark,
         'text-space/60': !location.bgFullCard || location.isLight,
-        'whitespace-nowrap truncate': progress === 0,
+        'truncate': progress === 0,
       }"
     >
       {{ location.address }}
