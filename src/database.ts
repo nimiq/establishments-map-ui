@@ -75,7 +75,7 @@ function parseLocation(location: Location) {
 }
 
 export async function getLocations({ neLat, neLng, swLat, swLng }: BoundingBox): Promise<Location[]> {
-  const url = new URL(`${databaseUrl}/rpc/get_locations`)
+  const url = new URL(`${databaseUrl}/rest/v1/rpc/get_locations`)
   url.searchParams.set('swlng', swLng.toString())
   url.searchParams.set('nelng', neLng.toString())
   url.searchParams.set('swlat', swLat.toString())
@@ -85,7 +85,7 @@ export async function getLocations({ neLat, neLng, swLat, swLng }: BoundingBox):
 }
 
 export async function getLocation(uuid: string): Promise<Location | undefined> {
-  const url = new URL(`${databaseUrl}/rpc/get_location`)
+  const url = new URL(`${databaseUrl}/rest/v1/rpc/get_location`)
   url.searchParams.set('uuid', uuid)
   const location = await fetchDb<Location>(url)
   if (!location) {
@@ -96,7 +96,7 @@ export async function getLocation(uuid: string): Promise<Location | undefined> {
 }
 
 export async function queryResults(userQuery: string) {
-  const url = new URL(`${databaseUrl}/rpc/query_search`)
+  const url = new URL(`${databaseUrl}/rest/v1/rpc/query_search`)
   url.searchParams.set('query', userQuery)
   const suggestions = await fetchDb<Suggestion[]>(url)
   return suggestions || []
