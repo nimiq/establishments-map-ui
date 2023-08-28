@@ -19,7 +19,7 @@ const listIsShown = ref(true)
     <DefineTemplate v-slot="{ locations }">
       <div class="relative h-screen">
         <img src="@/assets-dev/stories/map-new-york-square.png" alt="" class="object-cover h-full">
-        <div class="absolute flex flex-col max-w-xs bottom-6 top-6 left-6">
+        <div class="absolute flex flex-col max-w-xs bottom-6 top-6 left-6 h-max pointer-events-none [&>*]:pointer-events-auto">
           <div class="bg-white shadow-header rounded-2xl" style="mask-image: linear-gradient(white, white);">
             <InteractionBar />
             <DesktopList :locations="Object.values(locations)" :list-is-shown="listIsShown" />
