@@ -11,22 +11,25 @@ export const useCluster = defineStore('cluster', () => {
   const DECAY_FACTOR = 1.05 // You can adjust this to change how fast the radius decreases
 
   function locationToPoint({ lat, lng }: Location): Supercluster.PointFeature<AnyProps> {
-    return { type: 'Feature', geometry: { type: 'Point', coordinates: [lng, lat] }, properties: {} }
+    return { type: 'Feature', geometry: { type: 'Point', coordinates: [lng, lat] }, properties: { lng, lat } }
   }
 
+  const clusterAlgorithm = ref<Supercluster>()
+
   function cluster(locations: Location[], { neLat, neLng, swLat, swLng }: BoundingBox, zoom: number) {
-    const clusterAlgorithm = new Supercluster({
+    clusterAlgorithm.value = new Supercluster({
       radius: BASE_RADIUS / DECAY_FACTOR ** zoom,
     })
-    clusterAlgorithm.load(locations.map(locationToPoint))
-    clusters.value = clusterAlgorithm.getClusters([swLng, swLat, neLng, neLat], zoom).map((c) => {
+    clusterAlgorithm.value.load(locations.map(locationToPoint))
+    clusters.value = clusterAlgorithm.value.getClusters([swLng, swLat, neLng, neLat], zoom).map((c) => {
       const center: Point = { lng: c.geometry.coordinates[0], lat: c.geometry.coordinates[1] }
       const count = c.properties.point_count || 1
-      return { center, count }
+      return { center, count, clusterId: c.properties.cluster_id }
     })
   }
 
   return {
+    clusterAlgorithm,
     cluster,
     clusters,
   }

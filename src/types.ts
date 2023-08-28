@@ -80,6 +80,7 @@ export interface MapPosition {
 export interface Cluster {
   center: Point
   count: number
+  clusterId: number
 }
 
 /** UI Types
