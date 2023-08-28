@@ -80,17 +80,14 @@ export interface MapPosition {
 
 export interface Cluster {
   center: Point
-  count: number
   clusterId: number
-
-  // This is the name of the location if the cluster is a single location
-  name: string
-  category?: Category
+  count: number
 }
 
 export interface MemoizedCluster {
   boundingBox: BoundingBox
   clusters: Cluster[]
+  singles: Location[]
   categories: Category[]
   currencies: Currency[]
 }

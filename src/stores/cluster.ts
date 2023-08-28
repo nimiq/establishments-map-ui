@@ -3,18 +3,21 @@ import type { AnyProps } from 'supercluster'
 import Supercluster from 'supercluster'
 import { ref } from 'vue'
 import { useApp } from './app'
-import type { BoundingBox, Category, Cluster, Location, MemoizedCluster, Point } from '@/types'
+import type { BoundingBox, Cluster, Location, MemoizedCluster, Point } from '@/types'
 
 export const useCluster = defineStore('cluster', () => {
   const { selectedCategories, selectedCurrencies } = storeToRefs(useApp())
 
   const clusters = ref<Cluster[]>([])
 
+  // All items that are not clustered
+  const singles = ref<Location[]>([])
+
   const BASE_RADIUS = 140 // This is the max cluster radius at zoom level 0
   const DECAY_FACTOR = 1.05 // You can adjust this to change how fast the radius decreases
 
-  function locationToPoint({ lat, lng, name, category }: Location): Supercluster.PointFeature<AnyProps> {
-    return { type: 'Feature', geometry: { type: 'Point', coordinates: [lng, lat] }, properties: { name, category } }
+  function locationToPoint(location: Location): Supercluster.PointFeature<AnyProps> {
+    return { type: 'Feature', geometry: { type: 'Point', coordinates: [location.lng, location.lat] }, properties: { location } }
   }
 
   /*
@@ -46,19 +49,30 @@ export const useCluster = defineStore('cluster', () => {
     clusterAlgorithm.value = new Supercluster({
       radius: BASE_RADIUS / DECAY_FACTOR ** zoom,
     })
+
     clusterAlgorithm.value.load(locations.map(locationToPoint))
-    clusters.value = clusterAlgorithm.value.getClusters([swLng, swLat, neLng, neLat], zoom).map((c) => {
+
+    const newSingles: Location[] = []
+    const newClusters: Cluster[] = []
+
+    for (const c of clusterAlgorithm.value.getClusters([swLng, swLat, neLng, neLat], zoom)) {
       const center: Point = { lng: c.geometry.coordinates[0], lat: c.geometry.coordinates[1] }
       const count = c.properties.point_count || 1
-      const name = count === 1 ? c.properties.name : ''
-      const category = count === 1 ? c.properties.category as Category : undefined
-      return { center, count, clusterId: c.properties.cluster_id, name, category }
-    })
+      const clusterId = c.properties.cluster_id
+      if (count > 1)
+        newClusters.push({ center, count, clusterId })
+      else
+        newSingles.push(c.properties.location)
+    }
+
+    singles.value = newSingles
+    clusters.value = newClusters
 
     // Store this newly computed cluster data in memoizedData
     const newMemoizedData: MemoizedCluster = {
       boundingBox: { neLat, neLng, swLat, swLng },
       clusters: clusters.value,
+      singles: singles.value,
       categories: selectedCategories.value,
       currencies: selectedCurrencies.value,
     }
@@ -74,5 +88,6 @@ export const useCluster = defineStore('cluster', () => {
     clusterAlgorithm,
     cluster,
     clusters,
+    singles,
   }
 })
