@@ -8,6 +8,7 @@ export const PROVIDERS = Object.values(Provider)
 
 const databaseUrl = import.meta.env.VITE_DATABASE_URL
 const databaseToken = import.meta.env.VITE_DATABASE_KEY
+const googleMapsApi = import.meta.env.VITE_GOOGLE_MAP_KEY
 
 // TODO: It would be nice to show error messages to the user as a Toast 🙃
 async function fetchDb<T>(url: URL): Promise<T | undefined> {
@@ -54,6 +55,11 @@ function parseLocation(location: Location) {
   else if (isAtm && location.provider === Provider.DefaultShop) {
     location.provider = Provider.DefaultAtm
   }
+
+  // If the photo is not a URL, then it's a reference to Google Maps
+  const hasPhoto = location.photo && location.photo.startsWith('http')
+  if (!hasPhoto)
+    location.photo = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${location.photo}&key=${googleMapsApi}`
 
   // Prioritize links in this order: 1. Google Maps -> 2. Instagram -> 3. Facebook
   location.linkTo = location.gmaps ? LocationLink.GMaps : location.instagram ? LocationLink.Instagram : location.facebook ? LocationLink.Facebook : undefined
