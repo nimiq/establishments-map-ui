@@ -82,7 +82,10 @@ export interface Cluster {
   center: Point
   count: number
   clusterId: number
-  name: string // This is the name of the location if the cluster is a single location
+
+  // This is the name of the location if the cluster is a single location
+  name: string
+  category?: Category
 }
 
 export interface MemoizedCluster {

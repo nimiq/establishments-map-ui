@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { CustomMarker } from 'vue3-google-map'
+import { defineAsyncComponent } from 'vue'
 import { useCluster } from '@/stores/cluster'
 import { useMap } from '@/stores/map'
 import type { Point } from '@/types'
@@ -25,15 +26,23 @@ function onClusterClick(center: Point, clusterId: number) {
 }
 
 const showName = (count: number) => count === 1 && zoom() >= 8
+
+const showCategoryIcon = (count: number) => count === 1 && zoom() >= 13
+const CategoryIcon = defineAsyncComponent(
+  () => import('@/components/icons/categories/CategoryIcon.vue'),
+)
 </script>
 
 <template>
   <CustomMarker
-    v-for="({ center, count, clusterId, name }, i) in clusters" :key="i"
+    v-for="({ center, count, clusterId, name, category }, i) in clusters" :key="i"
     :options="{ position: center, anchorPoint: showName(count) ? 'LEFT_CENTER' : 'CENTER' }"
   >
     <div v-if="count === 1" class="flex items-center gap-x-2 max-w-[176px] z-10">
-      <div class="grid w-3 h-3 text-sm font-bold text-white rounded-full shadow ring-white/40 ring-2 place-content-center bg-space" />
+      <div v-if="showCategoryIcon(count)" class="grid w-8 h-8 text-white rounded-full shadow ring-white/40 ring-2 place-content-center bg-space">
+        <CategoryIcon :category="category!" class="w-7" />
+      </div>
+      <div v-else class="grid w-3 h-3 text-sm font-bold text-white rounded-full shadow ring-white/40 ring-2 place-content-center bg-space" />
       <!-- TODO Make the text-border white -->
       <span v-if="showName(count)" class="text-base font-semibold leading-none text-space" style="text-shadow: 0px 0px 4px white;">{{ name }}</span>
     </div>
