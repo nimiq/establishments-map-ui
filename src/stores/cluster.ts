@@ -18,19 +18,10 @@ export const useCluster = defineStore('cluster', () => {
   }
 
   /*
-    Memoization in Clustering:
-
-    We use memoization to optimize map performance and prevent resource-heavy site crashes.
-
-    1. Why?
-      - Memoization stores and reuses previous clusters to save resources.
-
-    2. How?
+    With memoziation, we reduce redundant calculations and optimizes user map interactions to optimize map performance:
       - `memoizedCluster` stores clusters, bounding boxes, and filters by zoom level.
       - Before re-clustering, we check for existing data matching the current zoom, bounding box, and filters.
       - If a match is found, we reuse stored clusters; otherwise, new clusters are computed and stored.
-
-    This reduces redundant calculations and optimizes user map interactions.
   */
   const memoizedCluster = ref<Map<number, MemoizedCluster[]>>(new Map())
 
