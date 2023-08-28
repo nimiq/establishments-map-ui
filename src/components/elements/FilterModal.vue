@@ -12,6 +12,9 @@ import { CATEGORIES, CURRENCIES } from '@/database'
 import { useApp } from '@/stores/app'
 import { translateCategory, translateCrypto } from '@/translations'
 import type { Category, Currency } from '@/types'
+import { useLocations } from '@/stores/locations'
+import { useMap } from '@/stores/map'
+import { useCluster } from '@/stores/cluster'
 
 const isOpen = ref(false)
 
@@ -35,11 +38,21 @@ const nFilters = computed(() => {
   return selectedCategories.value.length + selectedCurrencies.value.length
 })
 
+const { locations } = storeToRefs(useLocations())
+const { boundingBox, zoom } = useMap()
+
+function updateFilters() {
+  appStore.setSelectedCategories(unappliedFiltersCategories.value)
+  appStore.setSelectedCurrencies(unappliedFiltersCurrencies.value)
+
+  // re-render the clusters in the map
+  useCluster().cluster(locations.value, boundingBox()!, zoom())
+}
+
 function clearFilters() {
   unappliedFiltersCategories.value = []
   unappliedFiltersCurrencies.value = []
-  appStore.setSelectedCategories([])
-  appStore.setSelectedCurrencies([])
+  updateFilters()
 }
 
 function closeModal({ shouldClearFilters }: { shouldClearFilters: boolean }) {
@@ -54,8 +67,7 @@ function openModal() {
 }
 
 function applyFilters() {
-  appStore.setSelectedCategories(unappliedFiltersCategories.value)
-  appStore.setSelectedCurrencies(unappliedFiltersCurrencies.value)
+  updateFilters()
   closeModal({ shouldClearFilters: false })
 }
 </script>
@@ -121,7 +133,7 @@ function applyFilters() {
                     {{ $t('More cryptocurrencies supported in the future') }}
                   </template>
                   <template #selected-option="{ option: currency }">
-                    {{ currency }}
+                    {{ translateCrypto(currency) }}
                   </template>
                 </Select>
                 <Select
