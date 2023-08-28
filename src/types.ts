@@ -32,13 +32,14 @@ export enum Category {
 export enum Currency {
   NIM = 'NIM',
   BTC = 'BTC',
-  USDC_POLYGON = 'USDC_POLYGON',
+  USDC_on_POLYGON = 'USDC_on_POLYGON',
   ETH = 'ETH',
   LTC = 'LTC',
   LBTC = 'LBTC',
   XLM = 'XLM',
   XRP = 'XRP',
   DASH = 'DASH',
+  BCH = 'BCH',
 }
 
 export enum Provider {

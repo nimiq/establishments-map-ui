@@ -10,7 +10,7 @@ import CrossIcon from '@/components/icons/icon-cross.vue'
 import FilterIcon from '@/components/icons/icon-filter.vue'
 import { CATEGORIES, CURRENCIES } from '@/database'
 import { useApp } from '@/stores/app'
-import { translateCategory } from '@/translations'
+import { translateCategory, translateCrypto } from '@/translations'
 import type { Category, Currency } from '@/types'
 
 const isOpen = ref(false)
@@ -114,7 +114,7 @@ function applyFilters() {
                   <template #option="{ option: currency }">
                     <div class="flex items-center gap-x-2">
                       <CryptoIcon :crypto="currency" size="sm" bg="white" />
-                      <b>{{ currency }}</b>
+                      <b>{{ translateCrypto(currency) }}</b>
                     </div>
                   </template>
                   <template #after-options>

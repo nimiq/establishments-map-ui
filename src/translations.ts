@@ -1,5 +1,5 @@
 import { i18n } from './i18n/i18n-setup'
-import { Category, Issue } from './types'
+import { Category, Currency, Issue } from './types'
 
 export function translateCategory(category: Category) {
   switch (category) {
@@ -31,4 +31,10 @@ export function translateIssue(issue: Issue) {
     default:
       return i18n.t('Other')
   }
+}
+
+export function translateCrypto(currency: Currency) {
+  if (currency === Currency.USDC_on_POLYGON)
+    return i18n.t('USDC on POLYGON')
+  return currency
 }

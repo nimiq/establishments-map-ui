@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { PropType } from 'vue'
+import { Currency } from '@/types'
 import BtcIcon from '@/components/icons/cryptos/icon-btc.vue'
 import DashIcon from '@/components/icons/cryptos/icon-dash.vue'
 import EthIcon from '@/components/icons/cryptos/icon-eth.vue'
@@ -12,7 +14,7 @@ import BchIcon from '@/components/icons/cryptos/icon-bch.vue'
 
 const props = defineProps({
   crypto: {
-    type: String,
+    type: String as PropType<Currency>,
     required: true,
   },
   mono: {
@@ -27,13 +29,11 @@ const props = defineProps({
     default: 'transparent',
   },
 })
-const crypto = props.crypto.toLocaleLowerCase()
-
 const styles = props.mono
   ? { '--bg': 'transparent', '--brandmark': 'rgba(255, 255, 255)' }
   : {}
 
-const needBg = ['eth', 'xrp', 'xlm'].includes(crypto)
+const needBg = [Currency.ETH, Currency.XRP, Currency.XLM].includes(props.crypto)
 
 const css: string = !props.mono && needBg ? 'ring-1 rounded-full ring-space/10' : ''
 </script>
@@ -50,15 +50,15 @@ const css: string = !props.mono && needBg ? 'ring-1 rounded-full ring-space/10' 
     }"
     :title="crypto.toUpperCase()"
   >
-    <NimIcon v-if="crypto === 'nim'" :class="css" :style="[styles, { width: mono && '22px' }]" />
-    <BtcIcon v-else-if="crypto === 'btc'" :class="css" :style="[styles, { width: mono && '28px' }]" />
-    <LtcIcon v-else-if="crypto === 'ltc'" :class="css" :style="[styles, { width: mono && '20px' }]" />
-    <EthIcon v-else-if="crypto === 'eth'" :class="css" :style="[styles, { width: mono && '22px' }]" />
-    <XrpIcon v-else-if="crypto === 'xrp'" :class="css" :style="[styles, { width: mono && '26px' }]" />
-    <DashIcon v-else-if="crypto === 'dash'" :class="css" :style="[styles, { width: mono && '26px' }]" />
-    <XlmIcon v-else-if="crypto === 'xlm'" :class="css" :style="[styles, { width: mono && '28px' }]" />
-    <LBtcIcon v-else-if="crypto === 'lbtc'" :class="css" :style="[styles, { width: mono && '28px' }]" />
-    <UsdcIcon v-else-if="crypto === 'usdc'" :class="css" :style="[styles, { width: mono && '28px' }]" />
-    <BchIcon v-else-if="crypto === 'bch'" :class="css" :style="[styles, { width: mono && '28px' }]" />
+    <NimIcon v-if="crypto === Currency.NIM" :class="css" :style="[styles, { width: mono && '22px' }]" />
+    <BtcIcon v-else-if="crypto === Currency.BTC" :class="css" :style="[styles, { width: mono && '28px' }]" />
+    <LtcIcon v-else-if="crypto === Currency.LTC" :class="css" :style="[styles, { width: mono && '20px' }]" />
+    <EthIcon v-else-if="crypto === Currency.ETH" :class="css" :style="[styles, { width: mono && '22px' }]" />
+    <XrpIcon v-else-if="crypto === Currency.XRP" :class="css" :style="[styles, { width: mono && '26px' }]" />
+    <DashIcon v-else-if="crypto === Currency.DASH" :class="css" :style="[styles, { width: mono && '26px' }]" />
+    <XlmIcon v-else-if="crypto === Currency.XLM" :class="css" :style="[styles, { width: mono && '28px' }]" />
+    <LBtcIcon v-else-if="crypto === Currency.LBTC" :class="css" :style="[styles, { width: mono && '28px' }]" />
+    <UsdcIcon v-else-if="crypto === Currency.USDC_on_POLYGON" :class="css" :style="[styles, { width: mono && '28px' }]" />
+    <BchIcon v-else-if="crypto === Currency.BCH" :class="css" :style="[styles, { width: mono && '28px' }]" />
   </div>
 </template>
