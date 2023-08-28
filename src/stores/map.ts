@@ -80,6 +80,6 @@ export const useMap = defineStore('map', () => {
     goToPlaceId,
 
     // Make the API request after the map has not been moved for 300ms or after 700ms
-    onBoundsChanged: useDebounceFn(onBoundsChanged, 300, { maxWait: 700 }),
+    onBoundsChanged: useDebounceFn(onBoundsChanged, 300, { maxWait: 2000 }),
   }
 })
