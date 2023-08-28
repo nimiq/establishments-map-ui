@@ -85,6 +85,13 @@ export interface Cluster {
   name: string // This is the name of the location if the cluster is a single location
 }
 
+export interface MemoizedCluster {
+  boundingBox: BoundingBox
+  clusters: Cluster[]
+  categories: Category[]
+  currencies: Currency[]
+}
+
 /** UI Types
 
 Since the UI is quite flexible, better to define all cases using types, and we develop the UI from these types.
