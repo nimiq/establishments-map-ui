@@ -193,6 +193,10 @@ msgstr ""
 msgid "Search Map"
 msgstr ""
 
+#: src/components/elements/MapMarkers.vue:30
+msgid "See location details"
+msgstr ""
+
 #: src/components/atoms/Select.vue:34
 #: src/components/atoms/Select.vue:38
 msgid "Select an option"
@@ -289,6 +293,10 @@ msgstr ""
 
 #: src/components/forms/NewCandidate.vue:15
 msgid "Type the name of the location"
+msgstr ""
+
+#: src/translations.ts:38
+msgid "USDC on POLYGON"
 msgstr ""
 
 #: src/components/forms/ReportLocation.vue:28

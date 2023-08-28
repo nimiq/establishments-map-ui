@@ -10,17 +10,13 @@ msgstr ""
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/assets-dev/provider-assets.ts:26
+#: src/assets-dev/provider-assets.ts:23 src/assets-dev/provider-assets.ts:49
 msgid "{provider} app required"
 msgstr "{provider} app vereist"
 
-#: src/assets-dev/provider-assets.ts:69
+#: src/assets-dev/provider-assets.ts:63
 msgid "{provider} available"
 msgstr "{provider} beschikbaar"
-
-#: src/assets-dev/provider-assets.ts:54
-msgid "{provider} required"
-msgstr "{provider} vereist"
 
 #: src/components/forms/NewCandidate.vue:4
 msgid "Add a location to the Crypto Map"
@@ -30,11 +26,6 @@ msgstr "Voeg een locatie toe aan de Crypto Map"
 msgid "Add Crypto location"
 msgstr "Crypto locatie toevoegen "
 
-#: src/components/TheMap.vue:39 src/components/TheMap.vue:40
-#: src/components/TheMap.vue:43
-msgid "Add location"
-msgstr "Locatie toevoegen"
-
 #: src/components/elements/FilterModal.vue:91
 msgid "Apply filters"
 msgstr "Filters toepassen"
@@ -42,25 +33,21 @@ msgstr "Filters toepassen"
 #: src/components/forms/FormContainer.vue:64
 #: src/components/forms/FormContainer.vue:9
 #: src/components/forms/NewCandidate.vue:47
-#: src/components/forms/ReportLocation.vue:44 src/components/TheList.vue:56
+#: src/components/forms/ReportLocation.vue:44
 msgid "Back to the Map"
 msgstr "Terug naar de kaart"
 
-#: src/components/elements/Card.vue:29
+#: src/components/elements/Card.vue:26
 msgid "Buy"
 msgstr "Kopen"
 
 #: src/components/elements/BasicInfo.vue:62
-msgid "Buy & Sell crypto only*"
-msgstr "Alleen crypto kopen en verkopen*"
+msgid "Buy & sell crypto"
+msgstr ""
 
-#: src/components/elements/BasicInfo.vue:64
-msgid "Buy crypto only*"
-msgstr "Alleen crypto kopen*"
-
-#: src/assets-dev/provider-assets.ts:84
-msgid "By {provider}"
-msgstr "Door {provider}"
+#: src/components/elements/BasicInfo.vue:65
+msgid "Buy crypto only"
+msgstr ""
 
 #: src/translations.ts:6
 msgid "Cars & Bikes"
@@ -133,7 +120,7 @@ msgstr "Zoek locatie"
 msgid "Food & Drinks"
 msgstr "Eten & drinken"
 
-#: src/assets-dev/provider-assets.ts:29
+#: src/assets-dev/provider-assets.ts:27
 msgid ""
 "GoCrypto is a global payment network that enables merchants to accept crypto"
 " payments."
@@ -145,15 +132,16 @@ msgstr ""
 msgid "Health & Beauty"
 msgstr "Gezondheid & verzorging"
 
-#: src/components/DesktopView.vue:23
+#: src/components/DesktopView.vue:22
+#: src/components/elements/DesktopList.story.vue:17
 msgid "Hide list"
-msgstr ""
+msgstr "Verberg lijst"
 
 #: src/translations.ts:12
 msgid "Hotel & Lodging"
 msgstr "Hotel & accommodatie"
 
-#: src/assets-dev/provider-assets.ts:43
+#: src/assets-dev/provider-assets.ts:40
 msgid "Kurant ATM is a blockchain-based ATM network and platform."
 msgstr ""
 "Kurant geldautomaat is een platform gebaseerd op blockchain technologie"
@@ -162,9 +150,9 @@ msgstr ""
 msgid "Leisure Activities"
 msgstr "Vrije tijd"
 
-#: src/components/DesktopView.vue:20
+#: src/components/DesktopView.vue:19
 msgid "Loading"
-msgstr ""
+msgstr "Bezig met laden"
 
 #: src/components/atoms/SearchBox.vue:59
 msgid "Loading..."
@@ -191,15 +179,11 @@ msgstr "Geen crypto"
 msgid "Nothing found."
 msgstr "Geen resultaten."
 
-#: src/components/TheList.vue:44
-msgid "Oops, no Locations around here"
-msgstr "Oops, er zijn geen resultaten in deze omgeving "
-
 #: src/translations.ts:32
 msgid "Other"
 msgstr "Anders"
 
-#: src/assets-dev/provider-assets.ts:40
+#: src/assets-dev/provider-assets.ts:36 src/assets-dev/provider-assets.ts:77
 msgid "Register with {provider}"
 msgstr "Registreer bij {provider}"
 
@@ -219,6 +203,10 @@ msgstr "Restaurant & bar"
 msgid "Search Map"
 msgstr "Zoek op de kaart"
 
+#: src/components/elements/MapMarkers.vue:30
+msgid "See location details"
+msgstr ""
+
 #: src/components/atoms/Select.vue:34 src/components/atoms/Select.vue:38
 msgid "Select an option"
 msgstr "Selecteer een optie"
@@ -237,13 +225,13 @@ msgstr "Selecteer cryptovaluta"
 msgid "Select issue"
 msgstr "Selecteer probleem"
 
-#: src/components/elements/Card.vue:33
+#: src/components/elements/Card.vue:30
 msgid "Sell"
 msgstr "Verkopen"
 
-#: src/components/elements/BasicInfo.vue:65
-msgid "Sell crypto only*"
-msgstr "Alleen crypto verkopen*"
+#: src/components/elements/BasicInfo.vue:64
+msgid "Sell crypto only"
+msgstr ""
 
 #: src/components/forms/FormContainer.vue:47
 msgid "Send"
@@ -253,16 +241,17 @@ msgstr "Verstuur"
 msgid "Shop"
 msgstr "Winkel"
 
-#: src/components/DesktopView.vue:26
+#: src/components/DesktopView.vue:25
+#: src/components/elements/DesktopList.story.vue:20
 msgid "Show list"
-msgstr ""
+msgstr "Toon lijst"
 
 #: src/components/atoms/Button.story.vue:12
 msgid "Show more Locations"
 msgstr "Laad meer locaties"
 
-#: src/components/elements/Controls.vue:4
-#: src/components/elements/Controls.vue:5 src/components/TheMap.vue:7
+#: src/components/elements/Controls.vue:5
+#: src/components/elements/Controls.vue:6
 msgid "Show your location"
 msgstr "Toon je locatie"
 
@@ -323,6 +312,10 @@ msgstr "Probeer opnieuw"
 msgid "Type the name of the location"
 msgstr "Vul de naam van de locatie in"
 
+#: src/translations.ts:38
+msgid "USDC on POLYGON"
+msgstr ""
+
 #: src/components/forms/ReportLocation.vue:28
 msgid "Write your problem here"
 msgstr "Schrijf hier je probleem op"
@@ -330,11 +323,3 @@ msgstr "Schrijf hier je probleem op"
 #: src/components/forms/NewCandidate.vue:7
 msgid "You can add any location that has a Google Business Profile."
 msgstr "Je kunt elke locatie toevoegen die een Google-bedrijfsprofiel heeft."
-
-#: src/components/TheMap.vue:18
-msgid "Zoom in"
-msgstr "Inzoomen"
-
-#: src/components/TheMap.vue:29
-msgid "Zoom out"
-msgstr "Uitzoomen"

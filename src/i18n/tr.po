@@ -10,16 +10,12 @@ msgstr ""
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/assets-dev/provider-assets.ts:26
+#: src/assets-dev/provider-assets.ts:23 src/assets-dev/provider-assets.ts:49
 msgid "{provider} app required"
 msgstr ""
 
-#: src/assets-dev/provider-assets.ts:69
+#: src/assets-dev/provider-assets.ts:63
 msgid "{provider} available"
-msgstr ""
-
-#: src/assets-dev/provider-assets.ts:54
-msgid "{provider} required"
 msgstr ""
 
 #: src/components/forms/NewCandidate.vue:4
@@ -30,11 +26,6 @@ msgstr ""
 msgid "Add Crypto location"
 msgstr ""
 
-#: src/components/TheMap.vue:39 src/components/TheMap.vue:40
-#: src/components/TheMap.vue:43
-msgid "Add location"
-msgstr "Lokasyon ekle"
-
 #: src/components/elements/FilterModal.vue:91
 msgid "Apply filters"
 msgstr "Filtreleri uygula"
@@ -42,24 +33,20 @@ msgstr "Filtreleri uygula"
 #: src/components/forms/FormContainer.vue:64
 #: src/components/forms/FormContainer.vue:9
 #: src/components/forms/NewCandidate.vue:47
-#: src/components/forms/ReportLocation.vue:44 src/components/TheList.vue:56
+#: src/components/forms/ReportLocation.vue:44
 msgid "Back to the Map"
 msgstr "Haritaya Geri Dön"
 
-#: src/components/elements/Card.vue:29
+#: src/components/elements/Card.vue:26
 msgid "Buy"
 msgstr ""
 
 #: src/components/elements/BasicInfo.vue:62
-msgid "Buy & Sell crypto only*"
+msgid "Buy & sell crypto"
 msgstr ""
 
-#: src/components/elements/BasicInfo.vue:64
-msgid "Buy crypto only*"
-msgstr ""
-
-#: src/assets-dev/provider-assets.ts:84
-msgid "By {provider}"
+#: src/components/elements/BasicInfo.vue:65
+msgid "Buy crypto only"
 msgstr ""
 
 #: src/translations.ts:6
@@ -133,7 +120,7 @@ msgstr "Konum bulun"
 msgid "Food & Drinks"
 msgstr "Yiyecek ve İçecekler"
 
-#: src/assets-dev/provider-assets.ts:29
+#: src/assets-dev/provider-assets.ts:27
 msgid ""
 "GoCrypto is a global payment network that enables merchants to accept crypto"
 " payments."
@@ -145,7 +132,8 @@ msgstr ""
 msgid "Health & Beauty"
 msgstr "Sağlık ve Güzellik"
 
-#: src/components/DesktopView.vue:23
+#: src/components/DesktopView.vue:22
+#: src/components/elements/DesktopList.story.vue:17
 msgid "Hide list"
 msgstr ""
 
@@ -153,7 +141,7 @@ msgstr ""
 msgid "Hotel & Lodging"
 msgstr "Otel ve Konaklama"
 
-#: src/assets-dev/provider-assets.ts:43
+#: src/assets-dev/provider-assets.ts:40
 msgid "Kurant ATM is a blockchain-based ATM network and platform."
 msgstr "Kurant ATM, blok zinciri tabanlı bir ATM ağı ve platformudur."
 
@@ -161,7 +149,7 @@ msgstr "Kurant ATM, blok zinciri tabanlı bir ATM ağı ve platformudur."
 msgid "Leisure Activities"
 msgstr "Boş Zaman Etkinlikleri"
 
-#: src/components/DesktopView.vue:20
+#: src/components/DesktopView.vue:19
 msgid "Loading"
 msgstr ""
 
@@ -190,15 +178,11 @@ msgstr "Kripto yok"
 msgid "Nothing found."
 msgstr "Hiçbir şey bulunamadı."
 
-#: src/components/TheList.vue:44
-msgid "Oops, no Locations around here"
-msgstr "Oops, buralarda lokasyon yok"
-
 #: src/translations.ts:32
 msgid "Other"
 msgstr "Diğer"
 
-#: src/assets-dev/provider-assets.ts:40
+#: src/assets-dev/provider-assets.ts:36 src/assets-dev/provider-assets.ts:77
 msgid "Register with {provider}"
 msgstr ""
 
@@ -218,6 +202,10 @@ msgstr "Restoran ve Bar"
 msgid "Search Map"
 msgstr "Harita üzerinde ara"
 
+#: src/components/elements/MapMarkers.vue:30
+msgid "See location details"
+msgstr ""
+
 #: src/components/atoms/Select.vue:34 src/components/atoms/Select.vue:38
 msgid "Select an option"
 msgstr ""
@@ -236,12 +224,12 @@ msgstr "Kripto Para Birimi Seçin"
 msgid "Select issue"
 msgstr "Sorun seç"
 
-#: src/components/elements/Card.vue:33
+#: src/components/elements/Card.vue:30
 msgid "Sell"
 msgstr ""
 
-#: src/components/elements/BasicInfo.vue:65
-msgid "Sell crypto only*"
+#: src/components/elements/BasicInfo.vue:64
+msgid "Sell crypto only"
 msgstr ""
 
 #: src/components/forms/FormContainer.vue:47
@@ -252,7 +240,8 @@ msgstr "Gönder"
 msgid "Shop"
 msgstr "Mağaza"
 
-#: src/components/DesktopView.vue:26
+#: src/components/DesktopView.vue:25
+#: src/components/elements/DesktopList.story.vue:20
 msgid "Show list"
 msgstr ""
 
@@ -260,8 +249,8 @@ msgstr ""
 msgid "Show more Locations"
 msgstr "Daha fazla lokasyon göster"
 
-#: src/components/elements/Controls.vue:4
-#: src/components/elements/Controls.vue:5 src/components/TheMap.vue:7
+#: src/components/elements/Controls.vue:5
+#: src/components/elements/Controls.vue:6
 msgid "Show your location"
 msgstr ""
 
@@ -320,6 +309,10 @@ msgstr "Tekrar deneyin"
 msgid "Type the name of the location"
 msgstr "Konumun adını yazın"
 
+#: src/translations.ts:38
+msgid "USDC on POLYGON"
+msgstr ""
+
 #: src/components/forms/ReportLocation.vue:28
 msgid "Write your problem here"
 msgstr "Problemini buraya yaz"
@@ -327,11 +320,3 @@ msgstr "Problemini buraya yaz"
 #: src/components/forms/NewCandidate.vue:7
 msgid "You can add any location that has a Google Business Profile."
 msgstr "Google İşletme Profili olan herhangi bir konumu ekleyebilirsiniz."
-
-#: src/components/TheMap.vue:18
-msgid "Zoom in"
-msgstr ""
-
-#: src/components/TheMap.vue:29
-msgid "Zoom out"
-msgstr ""
