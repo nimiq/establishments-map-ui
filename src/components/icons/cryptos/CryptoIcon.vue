@@ -7,6 +7,8 @@ import LtcIcon from '@/components/icons/cryptos/icon-ltc.vue'
 import NimIcon from '@/components/icons/cryptos/icon-nim.vue'
 import XlmIcon from '@/components/icons/cryptos/icon-xlm.vue'
 import XrpIcon from '@/components/icons/cryptos/icon-xrp.vue'
+import UsdcIcon from '@/components/icons/cryptos/icon-usdc.vue'
+import BchIcon from '@/components/icons/cryptos/icon-bch.vue'
 
 const props = defineProps({
   crypto: {
@@ -56,6 +58,7 @@ const css: string = !props.mono && needBg ? 'ring-1 rounded-full ring-space/10' 
     <DashIcon v-else-if="crypto === 'dash'" :class="css" :style="[styles, { width: mono && '26px' }]" />
     <XlmIcon v-else-if="crypto === 'xlm'" :class="css" :style="[styles, { width: mono && '28px' }]" />
     <LBtcIcon v-else-if="crypto === 'lbtc'" :class="css" :style="[styles, { width: mono && '28px' }]" />
-    <!-- TODO Add USDC Polygon icon -->
+    <UsdcIcon v-else-if="crypto === 'usdc'" :class="css" :style="[styles, { width: mono && '28px' }]" />
+    <BchIcon v-else-if="crypto === 'bch'" :class="css" :style="[styles, { width: mono && '28px' }]" />
   </div>
 </template>
