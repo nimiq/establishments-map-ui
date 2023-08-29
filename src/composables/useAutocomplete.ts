@@ -1,11 +1,13 @@
+import { useThrottleFn } from '@vueuse/core'
 import { ref } from 'vue'
 import { queryResults as queryResultsDb } from '@/database'
+import { detectLanguage } from '@/i18n/i18n-setup'
 import { useMap } from '@/stores/map'
 import { AutocompleteStatus, type Suggestion, SuggestionType } from '@/types'
 
-interface AutocompleteGoogleOptions {
-  searchForLocation?: boolean
-  searchForRegions?: boolean
+enum GoogleAutocompleteFor {
+  Location = 'establishment',
+  Regions = '(regions)',
 }
 
 export function useAutocomplete() {
@@ -18,33 +20,34 @@ export function useAutocomplete() {
   const autocompleteService = ref<google.maps.places.AutocompleteService>()
 
   function init() {
-    if (!sessionToken.value)
-      sessionToken.value = new google.maps.places.AutocompleteSessionToken()
-    if (!autocompleteService.value)
-      autocompleteService.value = new google.maps.places.AutocompleteService()
+    sessionToken.value ||= new google.maps.places.AutocompleteSessionToken()
+    autocompleteService.value ||= new google.maps.places.AutocompleteService()
   }
 
-  async function autocompleteGoogle(query: string, { searchForLocation, searchForRegions }: AutocompleteGoogleOptions) {
+  async function autocompleteGoogle(query: string, autocompleteFor: GoogleAutocompleteFor) {
     init()
-    await autocompleteService.value?.getPlacePredictions({
+    const request: google.maps.places.AutocompletionRequest = {
       input: query,
       sessionToken: sessionToken.value,
-      location: useMap().map.value?.getCenter(),
-      bounds: useMap().map.value?.getBounds(),
-      types: [
-        searchForLocation ? 'location' : '',
-        searchForRegions ? '(regions)' : '',
-      ].filter(Boolean),
-    }, (predictions, status) => {
+      types: [autocompleteFor],
+      language: detectLanguage(),
+      ...(autocompleteFor === GoogleAutocompleteFor.Regions
+        ? { locationBias: useMap().map?.getBounds() }
+        : undefined),
+    }
+    const fn = autocompleteFor === GoogleAutocompleteFor.Regions ? 'getQueryPredictions' : 'getPlacePredictions'
+    await autocompleteService.value?.[fn](request, (predictions, status) => {
       if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions)
         return
 
-      googleSuggestions.value = predictions.map(p => ({
-        id: p.place_id,
-        label: p.description,
-        type: SuggestionType.GoogleLocation,
-        matchedSubstrings: p.matched_substrings,
-      }))
+      googleSuggestions.value = predictions
+        .filter(p => !!p.place_id)
+        .map(p => ({
+          id: p.place_id as string,
+          label: p.description,
+          type: SuggestionType.GoogleLocation,
+          matchedSubstrings: p.matched_substrings,
+        }))
     })
   }
 
@@ -55,7 +58,7 @@ export function useAutocomplete() {
     }
 
     dbSuggestions.value = await queryResultsDb(query)
-    autocompleteGoogle(query, { searchForLocation: true })
+    autocompleteGoogle(query, GoogleAutocompleteFor.Regions)
   }
 
   return {
@@ -63,6 +66,6 @@ export function useAutocomplete() {
     querySearch,
     dbSuggestions,
     googleSuggestions,
-    autocompleteGoogle,
+    autocompleteGoogleLocations: useThrottleFn((query: string) => autocompleteGoogle(query, GoogleAutocompleteFor.Location), 300),
   }
 }

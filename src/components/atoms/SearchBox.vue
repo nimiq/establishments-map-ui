@@ -117,7 +117,7 @@ function sanitizeAndHighlightMatches(str: string, matches: Suggestion['matchedSu
     parts[match.offset + match.length - 1] = `${parts[match.offset + match.length - 1]}</b>`
   }
 
-  parts.join('')
+  return parts.join('')
 }
 
 function clearInput() {

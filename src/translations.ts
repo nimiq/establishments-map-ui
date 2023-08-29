@@ -33,7 +33,7 @@ export function translateIssue(issue: Issue) {
   }
 }
 
-export function translateCrypto(currency: Currency) {
+export function translateCurrency(currency: Currency) {
   if (currency === Currency.USDC_on_POLYGON)
     return i18n.t('USDC on POLYGON')
   return currency

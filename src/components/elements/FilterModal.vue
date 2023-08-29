@@ -10,7 +10,7 @@ import CrossIcon from '@/components/icons/icon-cross.vue'
 import FilterIcon from '@/components/icons/icon-filter.vue'
 import { CATEGORIES, CURRENCIES } from '@/database'
 import { useApp } from '@/stores/app'
-import { translateCategory, translateCrypto } from '@/translations'
+import { translateCategory, translateCurrency } from '@/translations'
 import type { Category, Currency } from '@/types'
 import { useLocations } from '@/stores/locations'
 import { useMap } from '@/stores/map'
@@ -126,14 +126,14 @@ function applyFilters() {
                   <template #option="{ option: currency }">
                     <div class="flex items-center gap-x-2">
                       <CryptoIcon :crypto="currency" size="sm" bg="white" />
-                      <b>{{ translateCrypto(currency) }}</b>
+                      <b>{{ translateCurrency(currency) }}</b>
                     </div>
                   </template>
                   <template #after-options>
                     {{ $t('More cryptocurrencies supported in the future') }}
                   </template>
                   <template #selected-option="{ option: currency }">
-                    {{ translateCrypto(currency) }}
+                    {{ translateCurrency(currency) }}
                   </template>
                 </Select>
                 <Select

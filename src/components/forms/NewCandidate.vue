@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { Currency } from '@nimiq/utils'
 import { computed, ref } from 'vue'
 import SearchBox from '../atoms/SearchBox.vue'
 import Select from '../atoms/Select.vue'
-import CryptoIcon from '@/components/icons/cryptos/CryptoIcon.vue'
 import FormContainer from '@/components/forms/FormContainer.vue'
+import CryptoIcon from '@/components/icons/cryptos/CryptoIcon.vue'
 import { useAutocomplete } from '@/composables/useAutocomplete'
 import { CURRENCIES } from '@/database'
-import type { Suggestion } from '@/types'
+import { translateCurrency } from '@/translations'
+import type { Currency, Suggestion } from '@/types'
 
-const { googleSuggestions, autocompleteGoogle } = useAutocomplete()
+const { googleSuggestions, autocompleteGoogleLocations } = useAutocomplete()
 
 const selectedCurrencies = ref<Currency[]>([])
 const selectedPlace = ref<Suggestion>()
@@ -47,7 +47,7 @@ async function onSubmit(captcha: string) {
     </template>
     <template #form>
       <SearchBox
-        :autocomplete="(query: string) => autocompleteGoogle(query, { searchForLocation: true })" :suggestions="googleSuggestions" :label="$t('Find location')"
+        :autocomplete="(query: string) => autocompleteGoogleLocations(query)" :suggestions="googleSuggestions" :label="$t('Find location')"
         :placeholder="$t('Type the name of the location')" combobox-options-classes="w-[calc(100%+4px)] -left-0.5 top-unset"
         bg-combobox="space" input-id="search-input" :allow-clean="false" @selected="(selectedPlace = $event)"
       />
@@ -58,13 +58,13 @@ async function onSubmit(captcha: string) {
       >
         <template #option="{ option: currency }">
           <CryptoIcon :crypto="currency" size="sm" bg="white" />
-          <span>{{ currency }}</span>
+          <span>{{ translateCurrency(currency) }}</span>
         </template>
         <template #after-options>
           {{ $t('More cryptocurrencies supported in the future') }}
         </template>
         <template #selected-option="{ option: currency }">
-          {{ currency }}
+          {{ translateCurrency(currency) }}
         </template>
       </Select>
     </template>
