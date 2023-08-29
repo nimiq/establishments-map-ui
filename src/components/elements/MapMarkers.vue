@@ -6,10 +6,11 @@ import { defineAsyncComponent } from 'vue'
 import { CustomMarker } from 'vue3-google-map'
 
 // @ts-expect-error The types will be added in the future
-import { PopoverArrow, PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'radix-vue'
+import { PopoverAnchor, PopoverArrow, PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'radix-vue'
 import type { Location, Point } from '@/types'
 import { useMap } from '@/stores/map'
 import { useCluster } from '@/stores/cluster'
+import { useLocations } from '@/stores/locations'
 import Card from '@/components/elements/Card.vue'
 
 // TODO Import this from radix-vue
@@ -52,6 +53,18 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{ location: Locat
 const { smaller } = useBreakpoints(screens)
 const DESKTOP_LAYOUT = 'md' // FIXME This is suppose to be the same value as in the tailwind config
 const isMobile = smaller(DESKTOP_LAYOUT)
+
+const { setSelectedLocationUuid } = useLocations()
+const { selectedLocationUuid } = storeToRefs(useLocations())
+
+function onPopupOpen(location: Location) {
+  setSelectedLocationUuid(location.uuid)
+}
+
+function onPopupClose(location: Location) {
+  if (selectedLocationUuid.value === location.uuid)
+    setSelectedLocationUuid(undefined)
+}
 </script>
 
 <template>
@@ -64,21 +77,23 @@ const isMobile = smaller(DESKTOP_LAYOUT)
     </div>
   </CustomMarker>
 
-  <DefineTemplate v-slot="{ location: { category, name, isAtm, bg } }">
-    <div class="flex items-center gap-x-2 max-w-[176px]">
+  <DefineTemplate v-slot="{ location: { category, name, isAtm, bg, uuid } }">
+    <div class="flex items-center max-w-[176px]">
       <div
         v-if="isAtm" class="grid w-8 h-8 text-white rounded-full shadow ring-white/40 ring-2 place-content-center" :style="`background: ${
           bg}`"
       >
         {{ $t('ATM') }}
       </div>
-      <div v-else-if="showCategoryIcon()" class="grid w-8 h-8 text-white rounded-full shadow ring-white/40 ring-2 place-content-center bg-space">
+      <div v-else-if="showCategoryIcon()" class="grid w-8 h-8 text-white rounded-full shadow ring-white/40 ring-2 place-content-center" :class="uuid === selectedLocationUuid ? 'bg-sky' : 'bg-space'">
         <CategoryIcon :category="category" class="w-7" />
       </div>
-      <div v-else class="grid w-3 h-3 text-sm font-bold text-white rounded-full shadow ring-white/40 ring-2 place-content-center bg-space" />
+      <div v-else class="grid w-3 h-3 text-sm font-bold text-white rounded-full shadow ring-white/40 ring-2 place-content-center" :class="uuid === selectedLocationUuid ? 'bg-sky' : 'bg-space'" />
+      <PopoverAnchor class="mx-1" />
       <span
         v-if="!isAtm && showSingleName()"
         class="outline-text flex-1 text-base font-semibold leading-none text-left text-space"
+        :class="{ invisible: uuid === selectedLocationUuid }"
         :data-outline="name"
       >
         {{ name }}
@@ -97,9 +112,9 @@ const isMobile = smaller(DESKTOP_LAYOUT)
         <ReuseTemplate :location="location" class="px-1 transition-shadow rounded-sm" />
       </PopoverTrigger>
       <PopoverPortal>
-        <PopoverContent side="right" :side-offset="5" class="shadow">
+        <PopoverContent side="right" :side-offset="5" class="shadow" @open-auto-focus="onPopupOpen(location)" @close-auto-focus="onPopupClose(location)">
           <Card :location="location" :progress="1" class="max-w-xs" />
-          <PopoverArrow :style="`fill: ${location.bg};width: 16px;height:8px`" />
+          <PopoverArrow :style="`fill: ${location.isAtm ? location.bg : 'white'}; width: 16px; height:8px`" />
 
           <!-- TODO Once this is fixed https://github.com/radix-vue/radix-vue/issues/353 use custom arrow -->
           <!-- <PopoverArrow as-child>

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { type PropType, defineAsyncComponent } from 'vue'
+import { storeToRefs } from 'pinia'
 import Button from '@/components/atoms/Button.vue'
 import EllipsisVertical from '@/components/icons/icon-ellipsis-vertical.vue'
 import StarFilledIcon from '@/components/icons/icon-star-filled.vue'
 import StarIcon from '@/components/icons/icon-star.vue'
 import { type Location, LocationLink } from '@/types'
+import { useLocations } from '@/stores/locations'
 
 defineProps({
   location: {
@@ -17,6 +19,8 @@ defineProps({
   },
 })
 
+const { selectedLocationUuid } = storeToRefs(useLocations())
+
 const GmapsPin = defineAsyncComponent(() => import('@/components/icons/icon-gmaps-pin.vue'))
 </script>
 
@@ -27,7 +31,7 @@ const GmapsPin = defineAsyncComponent(() => import('@/components/icons/icon-gmap
       'text-space': !location.isAtm || location.isLight,
     }"
   >
-    <h2 class="text-base font-bold leading-[1.3] col-span-2 pb-1 text-balance truncate">
+    <h2 class="text-base font-bold leading-[1.3] col-span-2 pb-1 text-balance truncate" :class="{ 'text-sky': selectedLocationUuid === location.uuid }">
       <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
       <template v-if="location.isAtm">{{ $t('ATM') }} (</template>{{ location.name }}<template v-if="location.isAtm">)</template>
     </h2>

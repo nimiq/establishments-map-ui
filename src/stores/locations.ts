@@ -66,10 +66,18 @@ export const useLocations = defineStore('locations', () => {
     return isFilteredByCurrencies && isFilteredByCategories
   }
 
+  const selectedLocationUuid = ref<string>()
+  function setSelectedLocationUuid(uuid?: string) {
+    selectedLocationUuid.value = uuid
+  }
+
   return {
     loaded,
     getLocations,
     getLocationByUuid,
     locations,
+
+    selectedLocationUuid,
+    setSelectedLocationUuid,
   }
 })
