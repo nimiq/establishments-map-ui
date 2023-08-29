@@ -3,6 +3,7 @@ import { type PropType, defineAsyncComponent } from 'vue'
 import CryptoList from '@/components/atoms/CryptoList.vue'
 import BasicInfo from '@/components/elements/BasicInfo.vue'
 import CardBg from '@/components/elements/CardBg.vue'
+import ShareAndReportMenu from '@/components/elements/ShareAndReportMenu.vue'
 import type { Location } from '@/types'
 
 defineProps({
@@ -34,8 +35,9 @@ function arrayEquals(arrA: string[], arrB: string[]): boolean {
       <img class="object-cover w-full h-full rounded-sm" :src="location.photo" alt="">
     </div>
 
-    <div class="px-6 py-5 space-y-5">
+    <div class="relative px-6 py-5 space-y-5">
       <BasicInfo :location="location" :progress="progress" />
+      <ShareAndReportMenu class="absolute top-0 right-4" />
 
       <transition
         enter-active-class="transition duration-100 ease-out"

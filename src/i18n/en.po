@@ -23,6 +23,11 @@ msgstr ""
 msgid "Apply filters"
 msgstr ""
 
+#: src/components/elements/BasicInfo.vue:10
+#: src/components/elements/MapMarkers.vue:17
+msgid "ATM"
+msgstr ""
+
 #: src/components/forms/FormContainer.vue:64
 #: src/components/forms/FormContainer.vue:9
 #: src/components/forms/NewCandidate.vue:47
@@ -30,15 +35,15 @@ msgstr ""
 msgid "Back to the Map"
 msgstr ""
 
-#: src/components/elements/Card.vue:26
+#: src/components/elements/Card.vue:27
 msgid "Buy"
 msgstr ""
 
-#: src/components/elements/BasicInfo.vue:62
+#: src/components/elements/BasicInfo.vue:63
 msgid "Buy & sell crypto"
 msgstr ""
 
-#: src/components/elements/BasicInfo.vue:65
+#: src/components/elements/BasicInfo.vue:66
 msgid "Buy crypto only"
 msgstr ""
 
@@ -193,7 +198,7 @@ msgstr ""
 msgid "Search Map"
 msgstr ""
 
-#: src/components/elements/MapMarkers.vue:30
+#: src/components/elements/MapMarkers.vue:42
 msgid "See location details"
 msgstr ""
 
@@ -216,11 +221,11 @@ msgstr ""
 msgid "Select issue"
 msgstr ""
 
-#: src/components/elements/Card.vue:30
+#: src/components/elements/Card.vue:31
 msgid "Sell"
 msgstr ""
 
-#: src/components/elements/BasicInfo.vue:64
+#: src/components/elements/BasicInfo.vue:65
 msgid "Sell crypto only"
 msgstr ""
 
