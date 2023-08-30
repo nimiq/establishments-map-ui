@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
+import { useBreakpoints } from '@vueuse/core'
+import { screens } from 'tailwindcss-nimiq-theme'
 import CryptoList from '@/components/atoms/CryptoList.vue'
 import BasicInfo from '@/components/elements/BasicInfo.vue'
 import CardBg from '@/components/elements/CardBg.vue'
@@ -18,13 +20,19 @@ defineProps({
   },
 })
 
+const isMobile = useBreakpoints(screens).smaller('md')
+
 function arrayEquals(arrA: string[], arrB: string[]): boolean {
   return arrA.length === arrB.length && arrA.every((value, index) => value === arrB[index])
 }
 </script>
 
 <template>
-  <div class="relative rounded-lg duration-[--duration,0] group/card" :style="`background: ${location.isAtm ? location.bg : 'white'}`">
+  <div
+    class="relative rounded-lg duration-[--duration,0] group/card h-full overflow-hidden"
+    :class="{ 'rounded-b-0': progress === 1 && isMobile }"
+    :style="`background: ${location.isAtm ? location.bg : 'white'}`"
+  >
     <CardBg v-if="location.isAtm" :location="location" />
 
     <div

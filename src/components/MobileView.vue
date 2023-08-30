@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
 import TheMapInstance from '@/components/elements/TheMapInstance.vue'
 import MobileList from '@/components/elements/MobileList.vue'
 import FilterModal from '@/components/elements/FilterModal.vue'
@@ -9,6 +10,7 @@ import Controls from '@/components/elements/Controls.vue'
 
 const locationsStore = useLocations()
 const { locations } = storeToRefs(locationsStore)
+const isListShown = computed(() => locations.value.length > 0)
 </script>
 
 <template>
@@ -16,7 +18,7 @@ const { locations } = storeToRefs(locationsStore)
     <InteractionBar />
     <TheMapInstance class="relative flex-1" />
     <FilterModal class="absolute top-24 right-5" />
-    <Controls class="absolute bottom-6 right-6" />
+    <Controls class="absolute bottom-6 right-6" :class="{ hidden: isListShown }" />
     <MobileList :locations="locations" class="absolute bottom-0 w-full" />
   </div>
 </template>
