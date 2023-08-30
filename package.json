@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "pnpm i18n:extract && pnpm type-check && pnpm build-only",
-    "preview": "pnpm i18n:extract && vite preview --port 4173",
+    "preview": "vite preview --port 4173",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.ts --ignore-pattern dist/ --ignore-pattern '*.config.{js,ts}' --ignore-pattern src/i18n",
