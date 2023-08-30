@@ -54,6 +54,13 @@ const isMobile = smaller(DESKTOP_LAYOUT)
 
 const { selectedUuid: initialUuid } = useLocations()
 const { selectedUuid } = storeToRefs(useLocations())
+
+function extractColorFromBg(bg: string) {
+  const regex = /#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})/g
+  // TODO: Find a way to know if the arrow is on the left or right side and use the correct color
+  const colors = bg.match(regex) || []
+  return colors
+}
 </script>
 
 <template>
@@ -102,7 +109,7 @@ const { selectedUuid } = storeToRefs(useLocations())
       @update:open="isOpen => selectedUuid = isOpen ? location.uuid : undefined"
     >
       <PopoverAnchor
-        class="h-full absolute -left-1 pointer-events-none"
+        class="absolute h-full pointer-events-none -left-1"
         :class="location.isAtm || showCategoryIcon() ? 'w-10' : 'w-5'"
       />
       <PopoverTrigger :aria-label="$t('See location details')" class="cursor-pointer" :data-trigger-uuid="location.uuid">
@@ -111,7 +118,7 @@ const { selectedUuid } = storeToRefs(useLocations())
       <PopoverPortal>
         <PopoverContent side="right" :side-offset="5" class="rounded-lg shadow">
           <Card :location="location" :progress="1" class="max-w-xs" />
-          <PopoverArrow :style="`fill: ${location.isAtm ? location.bg : 'white'}; width: 16px; height:8px`" />
+          <PopoverArrow class="w-4 h-2" :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg)[1] : 'white'}`" />
 
           <!-- TODO Once this is fixed https://github.com/radix-vue/radix-vue/issues/353 use custom arrow -->
           <!-- <PopoverArrow as-child>
