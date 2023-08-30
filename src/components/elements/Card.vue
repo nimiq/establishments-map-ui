@@ -36,7 +36,7 @@ function arrayEquals(arrA: string[], arrB: string[]): boolean {
 
     <div class="relative px-6 py-5 space-y-5">
       <BasicInfo :location="location" :progress="progress" />
-      <ShareAndReportMenu v-if="progress === 1" class="absolute top-0 right-4" />
+      <ShareAndReportMenu v-if="progress === 1" :location="location" class="absolute top-0 right-4" />
 
       <transition
         enter-active-class="transition duration-100 ease-out"
