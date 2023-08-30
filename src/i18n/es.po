@@ -18,6 +18,10 @@ msgstr ""
 msgid "{provider} available"
 msgstr ""
 
+#: src/components/elements/DesktopList.vue:25
+msgid "+ {count} grouped"
+msgstr ""
+
 #: src/components/forms/NewCandidate.vue:4
 msgid "Add a location to the Crypto Map"
 msgstr "Añadir un lugar al Crypto Map"
@@ -26,26 +30,31 @@ msgstr "Añadir un lugar al Crypto Map"
 msgid "Add Crypto location"
 msgstr ""
 
-#: src/components/elements/FilterModal.vue:91
+#: src/components/elements/FilterModal.vue:103
 msgid "Apply filters"
 msgstr "Aplicar filtros"
+
+#: src/components/elements/BasicInfo.vue:10
+#: src/components/elements/MapMarkers.vue:17
+msgid "ATM"
+msgstr ""
 
 #: src/components/forms/FormContainer.vue:64
 #: src/components/forms/FormContainer.vue:9
 #: src/components/forms/NewCandidate.vue:47
-#: src/components/forms/ReportLocation.vue:44
+#: src/components/forms/ReportLocation.vue:53
 msgid "Back to the Map"
 msgstr "Volver al mapa"
 
-#: src/components/elements/Card.vue:26
+#: src/components/elements/Card.vue:27
 msgid "Buy"
 msgstr ""
 
-#: src/components/elements/BasicInfo.vue:62
+#: src/components/elements/BasicInfo.vue:39
 msgid "Buy & sell crypto"
 msgstr ""
 
-#: src/components/elements/BasicInfo.vue:65
+#: src/components/elements/BasicInfo.vue:42
 msgid "Buy crypto only"
 msgstr ""
 
@@ -57,11 +66,15 @@ msgstr "Coches & Bicicletas"
 msgid "Cash"
 msgstr "Efectivo"
 
-#: src/components/elements/FilterModal.vue:71
+#: src/components/elements/FilterModal.vue:83
 msgid "Categories"
 msgstr "Categorias"
 
-#: src/components/elements/FilterModal.vue:86
+#: src/components/elements/CardDotsMenu.vue:17
+msgid "Check out {locationName} on Nimiq's Crypto Map"
+msgstr ""
+
+#: src/components/elements/FilterModal.vue:98
 msgid "Clear"
 msgstr "Limpiar"
 
@@ -82,7 +95,7 @@ msgstr ""
 msgid "Crypto Map logo"
 msgstr ""
 
-#: src/components/elements/FilterModal.vue:49
+#: src/components/elements/FilterModal.vue:61
 msgid "Cryptocurrencies"
 msgstr "Criptomonedas"
 
@@ -99,7 +112,7 @@ msgstr "Criptomoneda no aceptada"
 msgid "Describe here"
 msgstr ""
 
-#: src/components/forms/ReportLocation.vue:29
+#: src/components/forms/ReportLocation.vue:37
 msgid "Describe the issue"
 msgstr "Describa el problema"
 
@@ -107,8 +120,8 @@ msgstr "Describa el problema"
 msgid "Entertainment"
 msgstr "Entretenimiento"
 
-#: src/components/elements/FilterModal.vue:39
-#: src/components/elements/FilterModal.vue:8
+#: src/components/elements/FilterModal.vue:19
+#: src/components/elements/FilterModal.vue:51
 msgid "Filters"
 msgstr "Filtros"
 
@@ -155,6 +168,10 @@ msgstr "Actividades de ocio"
 msgid "Loading"
 msgstr ""
 
+#: src/components/forms/ReportLocation.vue:17
+msgid "Loading information"
+msgstr ""
+
 #: src/components/atoms/SearchBox.vue:59
 msgid "Loading..."
 msgstr "Cargando..."
@@ -167,7 +184,7 @@ msgstr "Establecimiento ya no existe"
 msgid "Miscellaneous"
 msgstr "Misceláneo"
 
-#: src/components/elements/FilterModal.vue:59
+#: src/components/elements/FilterModal.vue:71
 #: src/components/forms/NewCandidate.vue:28
 msgid "More cryptocurrencies supported in the future"
 msgstr "Más criptomonedas soportadas en el futuro"
@@ -192,7 +209,7 @@ msgstr ""
 msgid "Report an issue with a location"
 msgstr "Informar de un problema con un establecimiento"
 
-#: src/components/forms/ReportLocation.vue:33
+#: src/components/forms/ReportLocation.vue:42
 msgid "Report Location"
 msgstr "Notificar de establecimiento"
 
@@ -204,33 +221,33 @@ msgstr "Restaurantes & Bares"
 msgid "Search Map"
 msgstr "Buscar mapa"
 
-#: src/components/elements/MapMarkers.vue:30
+#: src/components/elements/MapMarkers.vue:46
 msgid "See location details"
 msgstr ""
 
-#: src/components/atoms/Select.vue:34 src/components/atoms/Select.vue:38
+#: src/components/atoms/Select.vue:33 src/components/atoms/Select.vue:37
 msgid "Select an option"
 msgstr ""
 
-#: src/components/elements/FilterModal.vue:67
+#: src/components/elements/FilterModal.vue:79
 msgid "Select category"
 msgstr "Seleccionar categoría"
 
-#: src/components/elements/FilterModal.vue:44
+#: src/components/elements/FilterModal.vue:56
 #: src/components/forms/NewCandidate.vue:21
 msgid "Select Cryptocurrency"
 msgstr "Seleccionar criptomoneda"
 
-#: src/components/forms/ReportLocation.vue:16
-#: src/components/forms/ReportLocation.vue:17
+#: src/components/forms/ReportLocation.vue:24
+#: src/components/forms/ReportLocation.vue:25
 msgid "Select issue"
 msgstr "Seleccionar un problema"
 
-#: src/components/elements/Card.vue:30
+#: src/components/elements/Card.vue:31
 msgid "Sell"
 msgstr ""
 
-#: src/components/elements/BasicInfo.vue:64
+#: src/components/elements/BasicInfo.vue:41
 msgid "Sell crypto only"
 msgstr ""
 
@@ -257,7 +274,7 @@ msgid "Show your location"
 msgstr ""
 
 #: src/components/forms/NewCandidate.vue:52
-#: src/components/forms/ReportLocation.vue:49
+#: src/components/forms/ReportLocation.vue:58
 msgid "Something went wrong"
 msgstr "Algo ha ido mal"
 
@@ -273,7 +290,7 @@ msgstr "Escribe algo..."
 msgid "Submit Location"
 msgstr "Enviar sugerencia"
 
-#: src/components/forms/ReportLocation.vue:38
+#: src/components/forms/ReportLocation.vue:47
 msgid "Thank you for reporting this issue"
 msgstr "Gracias por notificar este problema"
 
@@ -282,7 +299,7 @@ msgid "Thank you for submitting a new location to the Crypto Map!"
 msgstr "¡Gracias por enviar un nuevo lugar al Crypto Map!"
 
 #: src/components/forms/NewCandidate.vue:55
-#: src/components/forms/ReportLocation.vue:52
+#: src/components/forms/ReportLocation.vue:61
 msgid "There has been a problem on our side."
 msgstr "Ha habido un problema de nuestro lado."
 
@@ -293,7 +310,7 @@ msgid ""
 msgstr ""
 
 #: src/components/forms/NewCandidate.vue:44
-#: src/components/forms/ReportLocation.vue:41
+#: src/components/forms/ReportLocation.vue:50
 msgid ""
 "This may take a few days to process. Keep an eye out for changes to the "
 "location in the Crypto Map."
@@ -303,7 +320,7 @@ msgstr ""
 
 #: src/components/forms/FormContainer.vue:83
 #: src/components/forms/NewCandidate.vue:58
-#: src/components/forms/ReportLocation.vue:55
+#: src/components/forms/ReportLocation.vue:64
 msgid "Try again"
 msgstr "Inténtalo de nuevo"
 
@@ -315,7 +332,7 @@ msgstr "Escribe el nombre del lugar"
 msgid "USDC on POLYGON"
 msgstr ""
 
-#: src/components/forms/ReportLocation.vue:28
+#: src/components/forms/ReportLocation.vue:36
 msgid "Write your problem here"
 msgstr "Escribe tu problema aquí"
 
