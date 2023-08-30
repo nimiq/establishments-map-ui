@@ -4,7 +4,7 @@ import CryptoList from '@/components/atoms/CryptoList.vue'
 import BasicInfo from '@/components/elements/BasicInfo.vue'
 import CardBg from '@/components/elements/CardBg.vue'
 import ProviderBanner from '@/components/elements/ProviderBanner.vue'
-import ShareAndReportMenu from '@/components/elements/ShareAndReportMenu.vue'
+import CardDotsMenu from '@/components/elements/CardDotsMenu.vue'
 import type { Location } from '@/types'
 
 defineProps({
@@ -36,7 +36,7 @@ function arrayEquals(arrA: string[], arrB: string[]): boolean {
 
     <div class="relative px-6 py-5 space-y-5">
       <BasicInfo :location="location" :progress="progress" />
-      <ShareAndReportMenu v-if="progress === 1" :location="location" class="absolute top-0 right-4" />
+      <CardDotsMenu v-if="progress === 1" :location="location" class="absolute top-0 right-4" />
 
       <transition
         enter-active-class="transition duration-100 ease-out"
