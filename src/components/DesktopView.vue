@@ -9,15 +9,17 @@ import FilterModal from '@/components/elements/FilterModal.vue'
 import InteractionBar from '@/components/elements/InteractionBar.vue'
 import IconChevronDown from '@/components/icons/icon-chevron-down.vue'
 import { useLocations } from '@/stores/locations'
+import { useCluster } from '@/stores/cluster'
 
 const locationsStore = useLocations()
-const { locations, loaded: locationsLoaded } = storeToRefs(locationsStore)
+const { loaded: locationsLoaded } = storeToRefs(locationsStore)
+const { singles, clusters } = storeToRefs(useCluster())
 
 const listIsShown = ref(false)
 </script>
 
 <template>
-  <TheMapInstance class="relative flex flex-col w-screen h-screen" :locations="locations" />
+  <TheMapInstance class="relative flex flex-col w-screen h-screen" />
   <div
     v-for="i in 2" :key="i"
     :class="{ 'translate-x-0 delay-100 duration-500 opacity-10': listIsShown, '-translate-x-full duration-1000 delay-75 opacity-0': !listIsShown }"
@@ -26,7 +28,7 @@ const listIsShown = ref(false)
   <div class="absolute flex flex-col max-w-xs bottom-6 top-6 left-6 h-max pointer-events-none [&>*]:pointer-events-auto">
     <div class="bg-white shadow-header rounded-2xl" style="mask-image: linear-gradient(white, white);">
       <InteractionBar />
-      <DesktopList :locations="locations" :list-is-shown="listIsShown" />
+      <DesktopList :locations="singles" :clusters="clusters" :list-is-shown="listIsShown" />
     </div>
     <Button bg-color="white" class="mt-6" :loading="!locationsLoaded" @click="listIsShown = !listIsShown">
       <template v-if="locationsLoaded" #icon>

@@ -3,12 +3,16 @@ import type { PropType } from 'vue'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import BasicInfo from '@/components/elements/BasicInfo.vue'
 import CardBg from '@/components/elements/CardBg.vue'
-import type { Location } from '@/types'
+import type { Cluster, Location } from '@/types'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 defineProps({
   locations: {
     type: Array as PropType<Location[]>,
+    required: true,
+  },
+  clusters: {
+    type: Array as PropType<Cluster[]>,
     required: true,
   },
   listIsShown: {
@@ -60,6 +64,12 @@ function onLocationClicked({ uuid }: Location) {
         <CardBg v-if="location.isAtm" :location="location" :with-gradient="false" class="translate-y-1" />
         <BasicInfo :location="location" />
       </button>
+    </template>
+
+    <template v-if="clusters.length" #after>
+      <div class="px-6 py-5 border-space/10 border-t-xs text-sm font-semibold text-space/50">
+        {{ $t('+ {count} grouped', clusters.reduce((sum, cluster) => sum + cluster.count, 0)) }}
+      </div>
     </template>
   </RecycleScroller>
 </template>

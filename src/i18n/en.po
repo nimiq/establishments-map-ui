@@ -11,6 +11,10 @@ msgstr ""
 msgid "{provider} available"
 msgstr ""
 
+#: src/components/elements/DesktopList.vue:25
+msgid "+ {count} grouped"
+msgstr ""
+
 #: src/components/forms/NewCandidate.vue:4
 msgid "Add a location to the Crypto Map"
 msgstr ""
@@ -198,7 +202,7 @@ msgstr ""
 msgid "Search Map"
 msgstr ""
 
-#: src/components/elements/MapMarkers.vue:42
+#: src/components/elements/MapMarkers.vue:46
 msgid "See location details"
 msgstr ""
 
