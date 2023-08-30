@@ -52,6 +52,7 @@ const { smaller } = useBreakpoints(screens)
 const DESKTOP_LAYOUT = 'md' // FIXME This is suppose to be the same value as in the tailwind config
 const isMobile = smaller(DESKTOP_LAYOUT)
 
+const { selectedUuid: initialUuid } = useLocations()
 const { selectedUuid } = storeToRefs(useLocations())
 </script>
 
@@ -96,7 +97,7 @@ const { selectedUuid } = storeToRefs(useLocations())
 
     <PopoverRoot
       v-else
-      :default-open="location.uuid === selectedUuid"
+      :default-open="location.uuid === initialUuid"
       @update:open="isOpen => selectedUuid = isOpen ? location.uuid : undefined"
     >
       <PopoverTrigger :aria-label="$t('See location details')" class="p-1 cursor-pointer">
