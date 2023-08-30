@@ -52,8 +52,8 @@ async function handleShare() {
 
     <DropdownMenuPortal>
       <DropdownMenuContent
-        class="outline-none bg-gradient-space rounded-sm p-1 will-change-[colors] shadow"
-        :side-offset="10"
+        class="outline-none bg-gradient-space rounded-sm p-1 will-change-[colors] shadow absolute -top-6 -right-2 min-w-max animate-slideLeftAndFade"
+        :side-offset="0"
       >
         <DropdownMenuItem
           class="flex px-4 py-2 text-white transition-colors outline-none cursor-pointer select-none hover:text-white/80"
