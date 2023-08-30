@@ -17,6 +17,10 @@ defineProps({
   },
 })
 
+function onLocationClicked({ uuid }: Location) {
+  (document.querySelector(`[data-trigger-uuid=${uuid}]`) as HTMLElement)?.click()
+}
+
 // const heights = {
 //   border: 0.8,
 //   py: 20 * 2,
@@ -51,6 +55,7 @@ defineProps({
       <button
         class="w-full px-6 py-5 text-left"
         :style="`background: ${location.isAtm && location.isDark ? location.bg : 'white'}`"
+        @click="onLocationClicked(location)"
       >
         <CardBg v-if="location.isAtm" :location="location" :with-gradient="false" class="translate-y-1" />
         <BasicInfo :location="location" />

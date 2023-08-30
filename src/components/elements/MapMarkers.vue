@@ -100,7 +100,7 @@ const { selectedUuid } = storeToRefs(useLocations())
       :default-open="location.uuid === initialUuid"
       @update:open="isOpen => selectedUuid = isOpen ? location.uuid : undefined"
     >
-      <PopoverTrigger :aria-label="$t('See location details')" class="p-1 cursor-pointer">
+      <PopoverTrigger :aria-label="$t('See location details')" class="p-1 cursor-pointer" :data-trigger-uuid="location.uuid">
         <ReuseTemplate :location="location" class="px-1 transition-shadow rounded-sm" />
       </PopoverTrigger>
       <PopoverPortal>
