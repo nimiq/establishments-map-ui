@@ -104,7 +104,7 @@ const { selectedUuid } = storeToRefs(useLocations())
         <ReuseTemplate :location="location" class="px-1 transition-shadow rounded-sm" />
       </PopoverTrigger>
       <PopoverPortal>
-        <PopoverContent side="right" :side-offset="5" class="shadow">
+        <PopoverContent side="right" :side-offset="5" class="rounded-lg shadow">
           <Card :location="location" :progress="1" class="max-w-xs" />
           <PopoverArrow :style="`fill: ${location.isAtm ? location.bg : 'white'}; width: 16px; height:8px`" />
 
