@@ -82,6 +82,7 @@ const { selectedUuid } = storeToRefs(useLocations())
       <span
         v-if="!isAtm && showSingleName()"
         class="flex-1 text-base font-semibold leading-none text-left outline-text text-space"
+        :class="{ invisible: uuid === selectedUuid }"
         :data-outline="name"
       >
         {{ name }}

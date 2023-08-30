@@ -18,7 +18,7 @@ defineProps({
 })
 
 function onLocationClicked({ uuid }: Location) {
-  (document.querySelector(`[data-trigger-uuid=${uuid}]`) as HTMLElement)?.click()
+  (document.querySelector(`[data-trigger-uuid="${uuid}"]`) as HTMLElement)?.click()
 }
 
 // const heights = {

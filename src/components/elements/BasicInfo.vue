@@ -19,7 +19,7 @@ defineProps({
   },
 })
 
-const { selectedLocationUuid } = storeToRefs(useLocations())
+const { selectedUuid } = storeToRefs(useLocations())
 
 const GmapsPin = defineAsyncComponent(() => import('@/components/icons/icon-gmaps-pin.vue'))
 </script>
@@ -31,7 +31,7 @@ const GmapsPin = defineAsyncComponent(() => import('@/components/icons/icon-gmap
       'text-space': !location.isAtm || location.isLight,
     }"
   >
-    <h2 class="text-base font-bold leading-[1.3] col-span-2 pb-1 text-balance truncate" :class="{ 'text-sky': selectedLocationUuid === location.uuid }">
+    <h2 class="text-base font-bold leading-[1.3] col-span-2 pb-1 text-balance truncate" :class="{ 'text-sky': selectedUuid === location.uuid }">
       <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
       <template v-if="location.isAtm">{{ $t('ATM') }} (</template>{{ location.name }}<template v-if="location.isAtm">)</template>
     </h2>
