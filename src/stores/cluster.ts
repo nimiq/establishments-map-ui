@@ -26,12 +26,12 @@ export const useCluster = defineStore('cluster', () => {
       - Before re-clustering, we check for existing data matching the current zoom, bounding box, and filters.
       - If a match is found, we reuse stored clusters; otherwise, new clusters are computed and stored.
   */
-  const memoizedCluster = shallowRef<Map<number, MemoizedCluster[]>>(new Map())
+  const memoizedClusters = new Map<number, MemoizedCluster[]>()
 
   const clusterAlgorithm = shallowRef<Supercluster>()
 
   function cluster(locations: Location[], { neLat, neLng, swLat, swLng }: BoundingBox, zoom: number) {
-    const existingData = memoizedCluster.value.get(zoom)
+    const existingData = memoizedClusters.get(zoom)
 
     if (existingData) {
       const toStr = (arr: string[]) => JSON.stringify(arr.sort())
@@ -84,7 +84,7 @@ export const useCluster = defineStore('cluster', () => {
       existingData.push(newMemoizedData)
 
     else
-      memoizedCluster.value.set(zoom, [newMemoizedData])
+      memoizedClusters.set(zoom, [newMemoizedData])
   }
 
   return {
