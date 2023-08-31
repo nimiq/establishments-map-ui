@@ -29,5 +29,15 @@ import Button from './Button.vue'
         </template>
       </Button>
     </Variant>
+
+    <Variant title="Icon">
+      <div class="px-2 py-4 bg-space">
+        <Button href="https://nimiq.com" bg-color="transparent" text-color="white">
+          <template #label>
+            Visit nimiq.com
+          </template>
+        </Button>
+      </div>
+    </Variant>
   </Story>
 </template>

@@ -4,6 +4,7 @@ import { TooltipArrow, TooltipContent, TooltipPortal, TooltipProvider, TooltipRo
 import { useBreakpoints } from '@vueuse/core'
 import { screens } from 'tailwindcss-nimiq-theme'
 import CardBg from '@/components/elements/CardBg.vue'
+import Button from '@/components/atoms/Button.vue'
 import InfoIcon from '@/components/icons/icon-info.vue'
 import ProviderCircleLogo from '@/components/icons/providers/ProviderCircleLogo.vue'
 import { type Location, Provider } from '@/types'
@@ -75,6 +76,12 @@ const isMobile = useBreakpoints(screens).smaller('md')
                 <p class="mt-2 text-sm text-white/60">
                   {{ location.providerTooltip }}
                 </p>
+
+                <Button v-if="location.providerTooltipCta" :href="location.providerTooltipCta" bg-color="transparent" text-color="white" class="!px-0 opacity-60">
+                  <template #label>
+                    {{ $t('Learn more') }}
+                  </template>
+                </Button>
 
                 <!-- The use of -ml-3 it is a hack to position it centered -->
                 <TooltipArrow class=" fill-space" size="10" :class="!isMobile && '-ml-3'" />

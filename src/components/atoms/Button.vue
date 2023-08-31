@@ -39,7 +39,7 @@ const props = defineProps({
     default: false,
   },
   textColor: {
-    type: String as () => 'sky' | 'ocean',
+    type: String as () => 'sky' | 'ocean' | 'white',
     default: undefined,
   },
   layout: {
@@ -104,9 +104,12 @@ function getComponent() {
   >
     <transition name="icon">
       <span
-        v-if="!props.hideIcon && (hasSlot('icon') || getComponent() === 'a')" :class="{
+        v-if="!props.hideIcon && hasSlot('icon')" :class="{
           'text-white/60': ['space', 'sky', 'ocean'].includes(props.bgColor),
           'text-space/60': ['white', 'transparent', 'grey'].includes(props.bgColor),
+          'text-ocean': textColor === 'ocean',
+          'text-sky': textColor === 'sky',
+          'text-white': textColor === 'white',
           'text-opacity-40': isDisabled,
         }" data-icon
       >
@@ -115,7 +118,7 @@ function getComponent() {
     </transition>
 
     <span
-      v-if="hasSlot('label')" class="font-bold text-center whitespace-nowrap" :class="{
+      v-if="hasSlot('label')" class="text-center truncate" :class="{
         'text-white [button:disabled>&]:!text-white/40': ['space', 'sky', 'ocean'].includes(
           props.bgColor,
         ),
@@ -123,10 +126,12 @@ function getComponent() {
         'text-space/60': props.bgColor === 'transparent' && !textColor,
         'text-ocean': textColor === 'ocean',
         'text-sky': textColor === 'sky',
+        'text-white': textColor === 'white',
         'text-opacity-40': isDisabled,
         'text-sm md:text-base': props.size === 'lg',
         'text-xs md:text-sm': props.size === 'md',
         'text-11 md:text-xs': props.size === 'sm',
+        'font-bold': getComponent() !== 'a' && getComponent() !== 'arouter-link',
       }"
     >
       <slot name="label" />
@@ -135,7 +140,15 @@ function getComponent() {
     <template v-if="getComponent() === 'a'">
       <!-- TODO This only supports external links for now -->
       <ArrowLinkIcon
-        class="w-2.5 h-2.5 relative text-sky group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300"
+        class="w-2.5 h-2.5 relative group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300"
+        :class="{
+          'text-space': ['white', 'grey'].includes(props.bgColor) && !textColor,
+          'text-space/60': props.bgColor === 'transparent' && !textColor,
+          'text-ocean': textColor === 'ocean',
+          'text-sky': textColor === 'sky',
+          'text-white': textColor === 'white',
+          'text-opacity-40': isDisabled,
+        }"
       />
     </template>
 
