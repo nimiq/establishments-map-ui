@@ -48,7 +48,12 @@ function onStart(event: PointerEvent) {
 function onMove(event: PointerEvent) {
   if (!dragging.value)
     return
+
   const yDelta = initialY - event.clientY
+
+  if (Math.abs(yDelta) < 10)
+    return
+
   let newProgress: number
   if (initialOpen) {
     // yDelta is negative for dragging down
