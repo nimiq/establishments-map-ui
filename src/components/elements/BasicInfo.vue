@@ -20,7 +20,9 @@ defineProps({
 
 const { selectedUuid } = storeToRefs(useLocations())
 
-const GmapsPin = defineAsyncComponent(() => import('@/components/icons/icon-gmaps-pin.vue'))
+const IconGmapsPin = defineAsyncComponent(() => import('@/components/icons/icon-gmaps-pin.vue'))
+const InstagramLogo = defineAsyncComponent(() => import('@/components/icons/icon-instagram.vue'))
+const FacebookLogo = defineAsyncComponent(() => import('@/components/icons/icon-facebook.vue'))
 </script>
 
 <template>
@@ -41,10 +43,9 @@ const GmapsPin = defineAsyncComponent(() => import('@/components/icons/icon-gmap
         class="absolute z-100 top-0 transition-[top,right] !w-[52px] right-0 lg:opacity-0 lg:group-hover/card:opacity-100" size="sm"
       >
         <template #icon>
-          <GmapsPin v-if="location.linkTo === LocationLink.GMaps" />
-          <!-- TODO Add logos -->
-          <span v-if="location.linkTo === LocationLink.Instagram">Instagram</span>
-          <span v-if="location.linkTo === LocationLink.Facebook">Facebook</span>
+          <IconGmapsPin v-if="location.linkTo === LocationLink.GMaps" class="h-4" />
+          <InstagramLogo v-else-if="location.linkTo === LocationLink.Instagram" class="h-4" />
+          <FacebookLogo v-else-if="location.linkTo === LocationLink.Facebook" class="h-4" />
         </template>
       </Button>
     </div>
