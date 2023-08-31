@@ -4,13 +4,12 @@ import { computed } from 'vue'
 import TheMapInstance from '@/components/elements/TheMapInstance.vue'
 import MobileList from '@/components/elements/MobileList.vue'
 import FilterModal from '@/components/elements/FilterModal.vue'
-import { useLocations } from '@/stores/locations'
 import InteractionBar from '@/components/elements/InteractionBar.vue'
 import Controls from '@/components/elements/Controls.vue'
+import { useCluster } from '@/stores/cluster'
 
-const locationsStore = useLocations()
-const { locations } = storeToRefs(locationsStore)
-const isListShown = computed(() => locations.value.length > 0)
+const { singles } = storeToRefs(useCluster())
+const isListShown = computed(() => singles.value.length > 0)
 </script>
 
 <template>
@@ -19,6 +18,6 @@ const isListShown = computed(() => locations.value.length > 0)
     <TheMapInstance class="relative flex-1" />
     <FilterModal class="absolute top-24 right-5" />
     <Controls class="absolute bottom-6 right-6" :class="{ hidden: isListShown }" />
-    <MobileList :locations="locations" class="absolute bottom-0 w-full" />
+    <MobileList :locations="singles" class="absolute bottom-0 w-full" />
   </div>
 </template>
