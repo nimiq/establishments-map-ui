@@ -44,7 +44,7 @@ const mapGestureBehaviour = computed<GestureBehaviour>(() => {
 <template>
   <GoogleMap
     ref="mapInstance" :language="detectLanguage()" disable-default-ui :gesture-handling="mapGestureBehaviour" :keyboard-shortcuts="false"
-    class="w-full h-full" :styles="googleMapStyles" :min-zoom="3" :restriction="restriction" @bounds_changed="mapStore.onBoundsChanged"
+    class="w-full h-full" :styles="googleMapStyles" :max-zoom="21" :min-zoom="3" :restriction="restriction" @bounds_changed="mapStore.onBoundsChanged"
     @idle.once="setInitialMapPosition"
   >
     <MapMarkers />
