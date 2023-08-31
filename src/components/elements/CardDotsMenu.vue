@@ -75,7 +75,7 @@ function handleOpen(open: boolean) {
         >
           <template v-if="shareIsSupported">
             <IconShare class="w-4 h-4 mr-3" />
-            <span class="text-base font-semibold leading-4">${{ $t('Share') }}</span>
+            <span class="text-base font-semibold leading-4">{{ $t('Share') }}</span>
           </template>
           <template v-else>
             <CopyIcon v-if="!isUrlCopied" class="w-4 h-4 mr-3" />
