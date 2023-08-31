@@ -1,5 +1,5 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <svg width="100%" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
     <path
       style="fill: var(--bg, #fff)"
       d="M12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12S0 5.372 0 12c0 6.627 5.373 12 12 12Z"
