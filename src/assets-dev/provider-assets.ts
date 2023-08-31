@@ -76,11 +76,4 @@ export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'bgFullCard
       return i18n.t('Edenia enables users to easily purchase cryptocurrencies through a network of ATMs')
     },
   },
-
-  // TODO
-  [Provider.CryptoCR]: {
-    theme: Theme.Light,
-    bgFullCard: false,
-    bg: 'pink',
-  },
 }

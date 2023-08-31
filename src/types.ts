@@ -50,9 +50,6 @@ export enum Provider {
   Bluecode = 'Bluecode',
   CryptopaymentLink = 'Cryptopayment Link',
   Edenia = 'Edenia',
-
-  // TODO
-  CryptoCR = 'CryptoCR',
 }
 
 /* Map Types */
