@@ -1,4 +1,3 @@
-import process from 'node:process'
 import { createI18n } from 'vue-i18n'
 import { Cookie } from '@nimiq/utils'
 
@@ -18,7 +17,7 @@ export const i18nRegistration = createI18n({
 })
 export const i18n = i18nRegistration.global
 
-if (process.env.NODE_ENV === 'production')
+if (import.meta.env.PROD)
   // trick to not show numbers instead of string before language is loaded
   i18n.missing = (locale, key) => /^[0-9]+$/.test(key) ? '' : key
 
