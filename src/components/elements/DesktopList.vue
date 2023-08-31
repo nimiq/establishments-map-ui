@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type PropType, ref, watch } from 'vue'
-import { RecycleScroller } from 'vue-virtual-scroller'
+import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
 import { storeToRefs } from 'pinia'
 import BasicInfo from '@/components/elements/BasicInfo.vue'
 import CardBg from '@/components/elements/CardBg.vue'
@@ -30,7 +30,7 @@ function onLocationClicked({ uuid }: Location) {
   ;(document.querySelector(`[data-trigger-uuid="${uuid}"]`) as HTMLElement)?.click()
 }
 
-const scroller = ref<RecycleScroller>()
+const scroller = ref<DynamicScroller>()
 
 const { selectedUuid } = storeToRefs(useLocations())
 
@@ -68,31 +68,36 @@ watch(selectedUuid, (uuid) => {
 </script>
 
 <template>
-  <RecycleScroller
+  <DynamicScroller
     ref="scroller"
     key-field="uuid"
     :items="locations"
-    :item-size="99"
+    :min-item-size="99"
     list-tag="ul"
     item-tag="li"
     :class="`overflow-auto scroll-space transition-[height] will-change-[height] ${listIsShown ? 'h-[calc(100vh-10.5rem)]' : 'h-0'}`"
     item-class="relative overflow-hidden border-space/10 border-t-xs group/card [&_[data-rings]]:-rotate-90"
   >
-    <template #default="{ item: location }">
-      <button
-        class="w-full px-6 py-5 text-left"
-        :style="`background: ${location.isAtm && location.isDark ? location.bg : 'white'}`"
-        @click="onLocationClicked(location)"
+    <template #default="{ item: location, active }">
+      <DynamicScrollerItem
+        :item="location"
+        :active="active"
       >
-        <CardBg v-if="location.isAtm" :location="location" :with-gradient="false" class="translate-y-1" />
-        <BasicInfo :location="location" />
-      </button>
+        <button
+          class="w-full px-6 py-5 text-left"
+          :style="`background: ${location.isAtm && location.isDark ? location.bg : 'white'}`"
+          @click="onLocationClicked(location)"
+        >
+          <CardBg v-if="location.isAtm" :location="location" :with-gradient="false" class="translate-y-1" />
+          <BasicInfo :location="location" />
+        </button>
+      </DynamicScrollerItem>
     </template>
 
     <template v-if="clusters.length" #after>
-      <div class="px-6 py-5 border-space/10 border-t-xs text-sm font-semibold text-space/50">
+      <div class="px-6 py-5 text-sm font-semibold border-space/10 border-t-xs text-space/50">
         {{ $t('+ {count} grouped', clusters.reduce((sum, cluster) => sum + cluster.count, 0)) }}
       </div>
     </template>
-  </RecycleScroller>
+  </DynamicScroller>
 </template>
