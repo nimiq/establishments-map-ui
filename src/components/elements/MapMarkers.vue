@@ -55,11 +55,12 @@ const isMobile = smaller(DESKTOP_LAYOUT)
 const { selectedUuid: initialUuid } = useLocations()
 const { selectedUuid } = storeToRefs(useLocations())
 
+// Needed when bg color is a gradient
 function extractColorFromBg(bg: string) {
   const regex = /#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})/g
   // TODO: Find a way to know if the arrow is on the left or right side and use the correct color
   const colors = bg.match(regex) || []
-  return colors
+  return colors[colors.length - 1]
 }
 </script>
 
@@ -118,7 +119,7 @@ function extractColorFromBg(bg: string) {
       <PopoverPortal>
         <PopoverContent side="right" :side-offset="5" class="rounded-lg shadow">
           <Card :location="location" :progress="1" class="max-w-xs" />
-          <PopoverArrow class="w-4 h-2" :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg)[1] : 'white'}`" />
+          <PopoverArrow class="w-4 h-2" :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg) : 'white'}`" />
 
           <!-- TODO Once this is fixed https://github.com/radix-vue/radix-vue/issues/353 use custom arrow -->
           <!-- <PopoverArrow as-child>
