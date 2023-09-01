@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type PropType, defineAsyncComponent } from 'vue'
+import { type PropType, computed, defineAsyncComponent } from 'vue'
 import { storeToRefs } from 'pinia'
 import Button from '@/components/atoms/Button.vue'
 import StarFilledIcon from '@/components/icons/icon-star-filled.vue'
@@ -7,16 +7,22 @@ import StarIcon from '@/components/icons/icon-star.vue'
 import { type Location, LocationLink } from '@/types'
 import { useLocations } from '@/stores/locations'
 
-defineProps({
+const props = defineProps({
   location: {
     type: Object as PropType<Location>,
     required: true,
+  },
+  nameAsLink: {
+    type: Boolean,
+    default: false,
   },
   progress: {
     type: Number,
     default: 0,
   },
 })
+
+const showNameAsLink = computed(() => props.nameAsLink && props.location.url)
 
 const { selectedUuid } = storeToRefs(useLocations())
 
@@ -32,13 +38,13 @@ const FacebookLogo = defineAsyncComponent(() => import('@/components/icons/icon-
       'text-space': !location.isAtm || location.isLight,
     }"
   >
-    <h2
-      class="text-base font-bold leading-[1.3] col-span-2 pb-1 text-balance max-w-[calc(100%-3rem)]"
-      :class="{ 'text-sky': !location.isAtm && selectedUuid === location.uuid }"
+    <component
+      :is="showNameAsLink ? 'a' : 'h3'" :href="showNameAsLink ? location.url : undefined" :target="showNameAsLink ? '_blank' : undefined" class="text-base font-bold leading-[1.3] col-span-2 pb-1 text-balance max-w-[calc(100%-3rem)]"
+      :class="{ 'text-sky': !location.isAtm && selectedUuid === location.uuid, 'cursor-pointer': location.url }"
     >
-      <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
-      <template v-if="location.isAtm">{{ $t('ATM') }} (</template>{{ location.name }}<template v-if="location.isAtm">)</template>
-    </h2>
+      <template v-if="location.isAtm">{{ $t('ATM') }} ({{ location.name }})</template>
+      <template v-else>{{ location.name }}</template>
+    </component>
 
     <div class="relative flex self-start row-span-2 ml-2">
       <Button
