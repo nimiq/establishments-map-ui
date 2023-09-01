@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { GoogleMap } from 'vue3-google-map'
 import { useMap } from '@/stores/map'
@@ -33,12 +32,12 @@ const restriction = {
 
 const validGestureBehaviours = ['cooperative', 'greedy', 'none', 'auto'] as const
 type GestureBehaviour = typeof validGestureBehaviours[number]
-const mapGestureBehaviour = computed<GestureBehaviour>(() => {
-  const gestureBehaviourParam = useRoute().params.gestureBehaviour
-  if (typeof gestureBehaviourParam === 'string' && ['cooperative', 'greedy', 'none', 'auto'].includes(gestureBehaviourParam))
-    return gestureBehaviourParam as GestureBehaviour
-  return 'greedy'
-})
+
+const gestureBehaviourParam = useRoute().params.gestureBehaviour
+const mapGestureBehaviour
+  = typeof gestureBehaviourParam === 'string' && ['cooperative', 'greedy', 'none', 'auto'].includes(gestureBehaviourParam)
+    ? gestureBehaviourParam as GestureBehaviour
+    : 'greedy'
 </script>
 
 <template>
