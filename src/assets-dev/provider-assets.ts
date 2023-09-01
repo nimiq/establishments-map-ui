@@ -92,5 +92,6 @@ export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'bgFullCard
     get providerTooltip() {
       return i18n.t('Edenia enables users to easily purchase cryptocurrencies through a network of ATMs')
     },
+    providerTooltipCta: 'https://edenia.com/',
   },
 }
