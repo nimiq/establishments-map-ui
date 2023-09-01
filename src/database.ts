@@ -108,7 +108,7 @@ export async function getLocation(uuid: string): Promise<Location | undefined> {
   return parseLocation(location)
 }
 
-export async function queryLocations(userQuery: string) {
+export async function searchLocations(userQuery: string) {
   const url = new URL(`${databaseUrl}/rest/v1/rpc/search_locations`)
   url.searchParams.set('p_query', userQuery)
   const suggestions = await fetchDb<Omit<Suggestion, 'type'>[]>(url)

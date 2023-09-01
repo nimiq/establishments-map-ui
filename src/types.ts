@@ -159,6 +159,7 @@ export enum AutocompleteStatus {
   Loading = 'loading',
   WithResults = 'with-results',
   NoResults = 'no-results',
+  Error = 'error',
 }
 
 export interface SearchFor {

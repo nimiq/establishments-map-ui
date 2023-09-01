@@ -59,8 +59,8 @@ function onSelect(suggestion?: Suggestion) {
   <header class="relative z-10 flex items-center w-full p-10 py-6 pl-4 pr-6 desktop:p-4 gap-x-2 desktop:gap-x-4">
     <img src="@/assets/logo.svg" :alt="$t('Crypto Map logo')" class="h-[22px]">
     <SearchBox
-      :autocomplete="querySearch" :suggestions="suggestions" class="flex-1 w-full" rounded-full
-      combobox-options-classes="w-[320px] desktop:!top-[88px] !rounded-t-0 !rounded-b-2xl" size="sm"
+      :autocomplete="querySearch" :suggestions="suggestions" class="flex-1 w-full " rounded-full
+      combobox-options-classes="!rounded-t-0 !rounded-b-2xl desktop:w-[320px] desktop:!top-[88px] max-desktop:w-full max-desktop:!left-0 max-desktop:!top-[78px]" size="sm"
       :placeholder="$t('Search Map')" data-search-box @open="searchBoxOpen" @selected="onSelect"
     />
     <CryptoMapModal />
