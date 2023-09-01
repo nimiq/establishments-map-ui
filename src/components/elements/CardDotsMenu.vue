@@ -58,7 +58,13 @@ function handleOpen(open: boolean) {
 <template>
   <DropdownMenuRoot :open="keepOpen" @update:open="handleOpen">
     <DropdownMenuTrigger v-bind="$attrs">
-      <IconThreeDots class="w-5 h-5 text-space/30 hover:text-space/50" />
+      <IconThreeDots
+        class="w-5 h-5 transition-colors"
+        :class="{
+          'text-space/30 hover:text-space/50': location.isLight,
+          'text-white/60 hover:text-white/80': location.isDark,
+        }"
+      />
     </DropdownMenuTrigger>
 
     <DropdownMenuPortal>
