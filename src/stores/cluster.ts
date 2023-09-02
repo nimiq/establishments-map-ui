@@ -38,7 +38,10 @@ export const useCluster = defineStore('cluster', () => {
       const categoriesStr = toStr(selectedCategories.value)
       const currenciesStr = toStr(selectedCurrencies.value)
       for (const { boundingBox: { neLat: memNeLat, neLng: memNeLng, swLat: memSwLat, swLng: memSwLng }, clusters: memoizedCluster, categories, currencies } of existingData) {
-        const isWithinBoundingBox = neLat <= memNeLat && neLng <= memNeLng && swLat >= memSwLat && swLng >= memSwLng
+        const isWithinBoundingBox = neLng > swLng
+          ? neLat <= memNeLat && neLng <= memNeLng && swLat >= memSwLat && swLng >= memSwLng
+          : neLat <= memNeLat && (neLng <= memNeLng || neLng >= memSwLng) && swLat >= memSwLat // Consider anti-meridian
+
         const hasSameCategories = toStr(categories) === categoriesStr
         const hasSameCurrencies = toStr(currencies) === currenciesStr
         if (isWithinBoundingBox && hasSameCategories && hasSameCurrencies) {

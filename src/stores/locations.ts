@@ -24,12 +24,7 @@ export const useLocations = defineStore('locations', () => {
   const locations = computed(() => {
     if (!currentBoundingBox.value)
       return []
-    const { neLat, neLng, swLat, swLng } = currentBoundingBox.value
-    return [...locationsMap.values()].filter((location) => {
-      const { lat, lng } = location
-      const isWithinBoundingBox = lat <= neLat && lng <= neLng && lat >= swLat && lng >= swLng
-      return isWithinBoundingBox && includeLocation(location)
-    })
+    return [...locationsMap.values()].filter(location => includeLocation(location, currentBoundingBox.value!))
   })
 
   async function getLocations(boundingBox: BoundingBox) {
@@ -61,11 +56,15 @@ export const useLocations = defineStore('locations', () => {
 
   const { selectedCurrencies, selectedCategories } = storeToRefs(useFilters())
 
-  function includeLocation({ category, accepts, sells }: Location) {
+  function includeLocation({ category, accepts, sells, lat, lng }: Location, { neLat, neLng, swLat, swLng }: BoundingBox) {
+    const isWithinBoundingBox = neLng > swLng
+      ? lat <= neLat && lng <= neLng && lat >= swLat && lng >= swLng
+      : lat <= neLat && (lng <= neLng || lng >= swLng) && lat >= swLat // Consider anti-meridian
+
     const currencies = accepts.concat(sells)
     const isFilteredByCurrencies = selectedCurrencies.value.length === 0 || currencies.some(c => selectedCurrencies.value.includes(c))
     const isFilteredByCategories = selectedCategories.value.length === 0 || selectedCategories.value.includes(category)
-    return isFilteredByCurrencies && isFilteredByCategories
+    return isWithinBoundingBox && isFilteredByCurrencies && isFilteredByCategories
   }
 
   const router = useRouter()
