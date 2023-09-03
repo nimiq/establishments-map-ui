@@ -15,6 +15,7 @@ async function setBrowserPosition() {
   isGeolocationLoading.value = true
   const browserPosition = await geolocateUserViaBrowser()
   if (errorBrowser.value) {
+    /* eslint-disable-next-line no-alert */
     alert(`${errorBrowser.value.message}. Moving to closest location`)
     await geolocateIp()
     if (!ipPositionError.value && ipPosition.value)
