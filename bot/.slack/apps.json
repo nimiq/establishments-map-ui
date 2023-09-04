@@ -1,0 +1,11 @@
+{
+  "apps": {
+    "TJESQQZN2": {
+      "app_id": "A05C344DP6E",
+      "IsDev": false,
+      "team_domain": "nimiq",
+      "team_id": "TJESQQZN2"
+    }
+  },
+  "default": "nimiq"
+}
