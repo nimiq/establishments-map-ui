@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { type PropType, computed, defineAsyncComponent } from 'vue'
+import { type PropType, defineAsyncComponent } from 'vue'
+import { computedAsync, useBreakpoints } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { type Location, LocationLink } from 'types'
+import { screens } from 'tailwindcss-nimiq-theme'
 import Button from '@/components/atoms/Button.vue'
 import StarFilledIcon from '@/components/icons/icon-star-filled.vue'
 import StarIcon from '@/components/icons/icon-star.vue'
@@ -22,7 +24,16 @@ const props = defineProps({
   },
 })
 
-const showNameAsLink = computed(() => props.nameAsLink && props.location.url)
+const isMobile = useBreakpoints(screens).smaller('md')
+
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+const showNameAsLink = computedAsync(async () => {
+  if (!isMobile.value)
+    return props.nameAsLink && props.location.url
+  // Wait for the card to be fully open, if not it will cause the link to open when wanting to open the card (clicking on the name when the card is closed)
+  await sleep(500)
+  return props.nameAsLink && props.location.url && props.progress === 1
+})
 
 const { selectedUuid } = storeToRefs(useLocations())
 
