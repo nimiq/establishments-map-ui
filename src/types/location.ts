@@ -2,8 +2,7 @@
 Since the UI is quite flexible, better to define all cases using types, and we develop the UI from these types.
 */
 
-import type { Currency } from '@nimiq/utils'
-import type { Category, Provider } from './database'
+import type { Category, Currency, Provider } from './database'
 
 export enum LocationType {
   Shop = 'shop',

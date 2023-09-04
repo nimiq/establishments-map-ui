@@ -6,6 +6,7 @@ import { useMap } from './map'
 import { getLocations as getDbLocations, getLocation } from '@/database'
 import type { BoundingBox, Location } from '@/types/'
 import { useFilters } from '@/stores/filters'
+import { isPointWithinBoundingBox } from '@/shared'
 
 export const useLocations = defineStore('locations', () => {
   // We just track the first load, so we can show a loading indicator
@@ -19,7 +20,7 @@ export const useLocations = defineStore('locations', () => {
       - Before fetching, we check if the current bounding box is within a larger fetched bounding box.
       - If so, the fetch is skipped; otherwise, a new fetch occurs and `memoizedLocations` is updated.
   */
-  const memoizedLocations: BoundingBox[] = []
+  const memoizedLocations: Map<BoundingBox, Location[]> = new Map()
   const locationsMap = shallowReactive(new Map<string, Location>())
   const locations = computed(() => {
     if (!currentBoundingBox.value)
@@ -27,21 +28,27 @@ export const useLocations = defineStore('locations', () => {
     return [...locationsMap.values()].filter(location => includeLocation(location, currentBoundingBox.value!))
   })
 
-  async function getLocations(boundingBox: BoundingBox) {
+  function setLocations(locations: Location[]) {
+    locations.forEach(location => locationsMap.set(location.uuid, location))
+  }
+
+  async function getLocations(boundingBox: BoundingBox): Promise<Location[]> {
     currentBoundingBox.value = boundingBox
 
     // Check if the current bounding box is within an already fetched bounding box
-    for (const { neLat, neLng, swLat, swLng } of memoizedLocations) {
+    for (const [{ neLat, neLng, swLat, swLng }, locations] of memoizedLocations.entries()) {
       if (boundingBox.neLat <= neLat && boundingBox.neLng <= neLng && boundingBox.swLat >= swLat && boundingBox.swLng >= swLng)
-        return
+        return locations
     }
 
     const newLocations = await getDbLocations(boundingBox)
-    newLocations.forEach(newLocation => locationsMap.set(newLocation.uuid, newLocation))
+    setLocations(newLocations)
 
     // Update memoizedLocations
-    memoizedLocations.push(boundingBox)
+    memoizedLocations.set(boundingBox, newLocations)
     loaded.value = true
+
+    return newLocations
   }
 
   async function getLocationByUuid(uuid: string) {
@@ -56,11 +63,8 @@ export const useLocations = defineStore('locations', () => {
 
   const { selectedCurrencies, selectedCategories } = storeToRefs(useFilters())
 
-  function includeLocation({ category, accepts, sells, lat, lng }: Location, { neLat, neLng, swLat, swLng }: BoundingBox) {
-    const isWithinBoundingBox = neLng > swLng
-      ? lat <= neLat && lng <= neLng && lat >= swLat && lng >= swLng
-      : lat <= neLat && (lng <= neLng || lng >= swLng) && lat >= swLat // Consider anti-meridian
-
+  function includeLocation({ category, accepts, sells, lat, lng }: Location, bbox: BoundingBox) {
+    const isWithinBoundingBox = isPointWithinBoundingBox(bbox, { lat, lng })
     const currencies = accepts.concat(sells)
     const isFilteredByCurrencies = selectedCurrencies.value.length === 0 || currencies.some(c => selectedCurrencies.value.includes(c))
     const isFilteredByCategories = selectedCategories.value.length === 0 || selectedCategories.value.includes(category)
@@ -94,6 +98,7 @@ export const useLocations = defineStore('locations', () => {
     getLocations,
     getLocationByUuid,
     locations,
+    setLocations,
 
     selectedUuid,
     goToLocation,

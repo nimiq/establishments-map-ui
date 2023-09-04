@@ -1,5 +1,3 @@
-import type { Currency } from '@nimiq/utils'
-import type { Category } from './database'
 import type { Location } from './location'
 
 export interface BoundingBox {
@@ -25,15 +23,20 @@ export interface MapPosition {
 }
 
 export interface Cluster {
+  id: number // Used for optimization in the rendering process
   center: Point
-  clusterId: number
+  expansionZoom: number // The new zoom when the cluster is expanded
   count: number
 }
 
-export interface MemoizedCluster {
+export interface LocationClusterParams {
   boundingBox: BoundingBox
+  zoom: number
+  categories?: string
+  currencies?: string
+}
+
+export interface LocationClusterSet {
   clusters: Cluster[]
   singles: Location[]
-  categories: Category[]
-  currencies: Currency[]
 }

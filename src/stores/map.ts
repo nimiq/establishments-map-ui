@@ -5,6 +5,7 @@ import { useDebounceFn } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { useLocations } from './locations'
 import { useCluster } from './cluster'
+import { useFilters } from './filters'
 import type { EstimatedMapPosition, MapPosition, Point } from '@/types/'
 
 export const useMap = defineStore('map', () => {
@@ -20,6 +21,7 @@ export const useMap = defineStore('map', () => {
   const locationsStore = useLocations()
   const { cluster } = useCluster()
   const { selectedUuid } = storeToRefs(useLocations())
+  const { selectedCategories, selectedCurrencies } = storeToRefs(useFilters())
 
   async function onBoundsChanged() {
     const bbox = boundingBox.value
@@ -32,7 +34,13 @@ export const useMap = defineStore('map', () => {
       replace: true,
     })
     await locationsStore.getLocations(bbox)
-    cluster(locationsStore.locations, bbox, zoom.value)
+    cluster({
+      boundingBox: bbox,
+      zoom: zoom.value,
+    }, {
+      categories: selectedCategories.value,
+      currencies: selectedCurrencies.value,
+    })
   }
 
   // Make the API request after the map has not been moved for 300ms or after 700ms

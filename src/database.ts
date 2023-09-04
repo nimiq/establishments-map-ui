@@ -1,6 +1,7 @@
 import { providersAssets } from './assets-dev/provider-assets'
 import { translateCategory } from './translations'
-import { type BoundingBox, Category, Currency, type Location, LocationLink, Provider, type Suggestion, Theme } from './types'
+import type { BoundingBox, Cluster, Location, LocationClusterSet, Suggestion } from './types'
+import { Category, Currency, LocationLink, Provider, Theme } from './types'
 
 export const CURRENCIES = Object.values(Currency)
 export const CATEGORIES = Object.values(Category)
@@ -94,6 +95,26 @@ export async function getLocations({ neLat, neLng, swLat, swLng }: BoundingBox):
   url.searchParams.set('nelat', neLat.toString())
   const data = await fetchDb<Location[]>(url) ?? []
   return data.map(parseLocation)
+}
+
+/**
+ * The maximum zoom level at which the clusters are computed in the database.
+ * If the user zooms in more than this, the clusters will be computed in the client.
+ */
+export async function getClusterMaxZoom(): Promise<number> {
+  const url = new URL(`${databaseUrl}/rest/v1/rpc/get_max_zoom`)
+  return await fetchDb<number>(url) ?? -1 // FIXME: Show error to user instead of using -1
+}
+
+export async function getClusters(zoomLevel: number, { neLat, neLng, swLat, swLng }: BoundingBox): Promise<[Cluster[], Location[]]> {
+  const url = new URL(`${databaseUrl}/rest/v1/rpc/get_clusters`)
+  url.searchParams.set('zoom_level', zoomLevel.toString())
+  url.searchParams.set('swlng', swLng.toString())
+  url.searchParams.set('nelng', neLng.toString())
+  url.searchParams.set('swlat', swLat.toString())
+  url.searchParams.set('nelat', neLat.toString())
+  const data = await fetchDb<LocationClusterSet>(url) ?? { clusters: [], singles: [] }
+  return [data.clusters, data.singles.map(parseLocation)]
 }
 
 export async function getLocation(uuid: string): Promise<Location | undefined> {

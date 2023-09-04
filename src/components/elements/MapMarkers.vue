@@ -3,43 +3,28 @@ import { createReusableTemplate, useBreakpoints } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { PopoverAnchor, PopoverArrow, PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'radix-vue'
 import { screens } from 'tailwindcss-nimiq-theme'
-import { computed, defineAsyncComponent } from 'vue'
+import { defineAsyncComponent } from 'vue'
 import { CustomMarker } from 'vue3-google-map'
-import type { Location, Point } from '@/types'
+import type { Location } from '@/types'
 import { useMap } from '@/stores/map'
 import { useLocations } from '@/stores/locations'
 import { useCluster } from '@/stores/cluster'
 import Card from '@/components/elements/Card.vue'
 
-// TODO Import this from radix-vue
+// TODO Import this from radix-vue. We need to import it lazily so we don't load it in the mobile version
 // const PopoverArrow = defineAsyncComponent(() => import('radix-vue'))
 // const PopoverContent = defineAsyncComponent(() => import('radix-vue'))
 // const PopoverPortal = defineAsyncComponent(() => import('radix-vue'))
 // const PopoverRoot = defineAsyncComponent(() => import('radix-vue'))
 // const PopoverTrigger = defineAsyncComponent(() => import('radix-vue'))
 
-const { clusters, singles, clusterAlgorithm } = storeToRefs(useCluster())
+const { clusters, singles } = storeToRefs(useCluster())
 
 const { setPosition } = useMap()
 const { zoom } = storeToRefs(useMap())
 
-function onClusterClick(center: Point, clusterId: number) {
-  if (!clusterAlgorithm.value)
-    return
-
-  // If zoom is lower than 13, the minimum zoom change must be 3
-  // To make it more fluid
-  const proposedZoom = clusterAlgorithm.value.getClusterExpansionZoom(clusterId)
-  const newZoom = proposedZoom < 13 ? Math.max(proposedZoom, zoom.value + 3) : proposedZoom
-
-  setPosition({
-    center,
-    zoom: newZoom,
-  })
-}
-
-const showSingleName = computed(() => zoom.value >= 11)
-const showCategoryIcon = computed(() => zoom.value >= 13)
+const showSingleName = () => zoom.value >= 11
+const showCategoryIcon = () => zoom.value >= 13
 
 const CategoryIcon = defineAsyncComponent(
   () => import('@/components/icons/categories/CategoryIcon.vue'),
@@ -67,10 +52,10 @@ function extractColorFromBg(bg: string) {
 
 <template>
   <CustomMarker
-    v-for="({ center, count, clusterId }) in clusters" :key="clusterId"
+    v-for="({ center, count, expansionZoom, id }) in clusters" :key="id"
     :options="{ position: center, anchorPoint: 'CENTER' }"
   >
-    <div class="grid text-sm font-bold text-white transition-colors rounded-full shadow cursor-pointer aspect-square place-content-center bg-space hover:bg-[#35395A] focus:bg-[#35395A] ring-white/20 ring-2 ring-offset-1 ring-offset-white/40" :style="`width: clamp(24px, ${0.24 * count + 24}px, 48px); font-size: clamp(14px, ${0.14 * count + 4}px, 18px)`" @click="onClusterClick(center, clusterId)">
+    <div class="grid text-sm font-bold text-white transition-colors rounded-full shadow cursor-pointer aspect-square place-content-center bg-space hover:bg-[#35395A] focus:bg-[#35395A] ring-white/20 ring-2 ring-offset-1 ring-offset-white/40" :style="`width: clamp(24px, ${0.24 * count + 24}px, 48px); font-size: clamp(14px, ${0.14 * count + 4}px, 18px)`" @click="setPosition({ center, zoom: expansionZoom })">
       {{ count < 100 ? count : '99+' }}
     </div>
   </CustomMarker>
@@ -123,17 +108,19 @@ function extractColorFromBg(bg: string) {
       <PopoverPortal>
         <PopoverContent side="right" :side-offset="5" class="rounded-lg shadow">
           <Card :location="location" :progress="1" class="max-w-xs" />
-          <PopoverArrow class="w-4 h-2" :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg) : 'white'}`" />
+          <PopoverArrow class="w-4 h-2" />
 
-          <!-- TODO Once this is fixed https://github.com/radix-vue/radix-vue/issues/353 use custom arrow -->
-          <!-- <PopoverArrow as-child>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 10" class="relative h-3 text-space w-max left-2" :style="`color: ${location.bg}`">
+          <PopoverArrow as-child>
+            <svg
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 10" class="relative h-3 w-max left-2"
+              :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg) : 'white'}`"
+            >
               <path
                 fill="currentColor"
                 d="M12.63 1.83 8.27 8.25A4 4 0 0 1 4.97 10h17.8a4 4 0 0 1-3.3-1.75L15.1 1.83a1.5 1.5 0 0 0-2.48 0z"
               />
             </svg>
-          </PopoverArrow> -->
+          </PopoverArrow>
         </PopoverContent>
       </PopoverPortal>
     </PopoverRoot>
