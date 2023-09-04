@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Category } from 'types'
 import CarsBikesIcon from '@/components/icons/categories/cars_bikes.vue'
 import CashIcon from '@/components/icons/categories/cash.vue'
 import ComputerElectronicsIcon from '@/components/icons/categories/computer_electronics.vue'
@@ -11,7 +12,6 @@ import MiscellaneousIcon from '@/components/icons/categories/miscellaneous.vue'
 import RestaurantBarIcon from '@/components/icons/categories/restaurant_bar.vue'
 import ShopIcon from '@/components/icons/categories/shop.vue'
 import SportsFitnessIcon from '@/components/icons/categories/sports_fitness.vue'
-import { Category } from '@/types'
 
 defineProps({
   category: {

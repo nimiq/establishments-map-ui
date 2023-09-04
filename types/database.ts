@@ -50,3 +50,37 @@ export enum Provider {
   CryptopaymentLink = 'Cryptopayment Link',
   Edenia = 'Edenia',
 }
+
+export interface DatabaseArgs {
+  url: string
+  apikey: string
+}
+
+export interface DatabaseAuthArgs extends DatabaseArgs {
+  auth: {
+    email: string
+    password: string
+  }
+}
+
+export enum DbWriteFunction {
+  Insert = 'insert_location',
+  InsertRaw = 'insert_raw_location',
+  InsertRawBulk = 'insert_locations',
+  DeleteLocation = 'delete_location_by_uuid',
+  InsertLocationsClustersSet = 'insert_locations_clusters_set',
+  FlushClustersTable = 'flush_clusters_table',
+}
+
+export interface InsertLocationsClustersSetParamsItem {
+  lat: number
+  lng: number
+  count: number
+  locationUuid?: string // If count is 1
+  expansionZoom?: number // If count is greater 1
+}
+
+export interface InsertLocationsClustersSetParams {
+  zoom_level: number
+  items: InsertLocationsClustersSetParamsItem[]
+}

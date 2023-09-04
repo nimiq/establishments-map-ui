@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { type PropType, computed, defineAsyncComponent } from 'vue'
 import { storeToRefs } from 'pinia'
+import { type Location, LocationLink } from 'types'
 import Button from '@/components/atoms/Button.vue'
 import StarFilledIcon from '@/components/icons/icon-star-filled.vue'
 import StarIcon from '@/components/icons/icon-star.vue'
-import { type Location, LocationLink } from '@/types'
 import { useLocations } from '@/stores/locations'
 
 const props = defineProps({

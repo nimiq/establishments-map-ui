@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { type Location, LocationType } from 'types'
 import Card from './Card.vue'
 import { locations } from '@/assets-dev/stories/locations'
-import { type Location, LocationType } from '@/types'
 
 const progressState = ref<'expanded' | 'not-expanded' | 'loop' | 'custom'>('expanded')
 const customProgress = ref(0)

@@ -4,19 +4,18 @@ import { storeToRefs } from 'pinia'
 import { computed, ref, watchEffect } from 'vue'
 import { useBreakpoints } from '@vueuse/core'
 import { screens } from 'tailwindcss-nimiq-theme'
+import { CATEGORIES, CURRENCIES } from 'database'
+import type { Category, Currency } from 'types'
 import Button from '@/components/atoms/Button.vue'
 import CategoryIcon from '@/components/icons/categories/CategoryIcon.vue'
 import CryptoIcon from '@/components/icons/cryptos/CryptoIcon.vue'
 import Select from '@/components/atoms/Select.vue'
 import CrossIcon from '@/components/icons/icon-cross.vue'
 import FilterIcon from '@/components/icons/icon-filter.vue'
-import { CATEGORIES, CURRENCIES } from '@/database'
 import { useFilters } from '@/stores/filters'
 import { translateCategory, translateCurrency } from '@/translations'
-import type { Category, Currency } from '@/types'
-import { useLocations } from '@/stores/locations'
-import { useMap } from '@/stores/map'
 import { useCluster } from '@/stores/cluster'
+import { useMap } from '@/stores/map'
 
 const isOpen = ref(false)
 const isMobile = useBreakpoints(screens).smaller('md')
@@ -41,15 +40,19 @@ const nFilters = computed(() => {
   return selectedCategories.value.length + selectedCurrencies.value.length
 })
 
-const { locations } = storeToRefs(useLocations())
 const { boundingBox, zoom } = storeToRefs(useMap())
 
 function updateFilters() {
   filtersStore.setSelectedCategories(unappliedFiltersCategories.value)
   filtersStore.setSelectedCurrencies(unappliedFiltersCurrencies.value)
 
-  // re-render the clusters in the map
-  useCluster().cluster(locations.value, boundingBox.value!, zoom.value)
+  useCluster().cluster({
+    zoom: zoom.value,
+    boundingBox: boundingBox.value!,
+  }, {
+    categories: unappliedFiltersCategories.value,
+    currencies: unappliedFiltersCurrencies.value,
+  })
 }
 
 function clearFilters() {

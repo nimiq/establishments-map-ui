@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import { Provider } from 'types'
 import BluecodeIcon from './bluecode.vue'
 import CryptopaymentLinkIcon from './cryptopayment-link.vue'
 import DefaultAtmIcon from './default-atm.vue'
 import EdeniaIcon from './edenia.vue'
 import GoCryptoIcon from './gocrypto.vue'
 import KurantIcon from './kurant.vue'
-import { Provider } from '@/types'
 
 defineProps({
   provider: {

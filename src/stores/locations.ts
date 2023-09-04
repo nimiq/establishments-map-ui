@@ -2,11 +2,11 @@ import { defineStore, storeToRefs } from 'pinia'
 import { computed, ref, shallowReactive, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useRouteQuery } from '@vueuse/router'
+import type { BoundingBox, Location } from 'types'
+import { getLocations as getDbLocations, getLocation } from 'database'
 import { useMap } from './map'
-import { getLocations as getDbLocations, getLocation } from '@/database'
-import type { BoundingBox, Location } from '@/types/'
 import { useFilters } from '@/stores/filters'
-import { isPointWithinBoundingBox } from '@/shared'
+import { DATABASE_ARGS, isPointWithinBoundingBox, parseLocation } from '@/shared'
 
 export const useLocations = defineStore('locations', () => {
   // We just track the first load, so we can show a loading indicator
@@ -41,7 +41,7 @@ export const useLocations = defineStore('locations', () => {
         return locations
     }
 
-    const newLocations = await getDbLocations(boundingBox)
+    const newLocations = await getDbLocations(DATABASE_ARGS, boundingBox, parseLocation)
     setLocations(newLocations)
 
     // Update memoizedLocations
@@ -54,7 +54,7 @@ export const useLocations = defineStore('locations', () => {
   async function getLocationByUuid(uuid: string) {
     if (locationsMap.has(uuid))
       return locationsMap.get(uuid)
-    const location = await getLocation(uuid)
+    const location = await getLocation(DATABASE_ARGS, uuid, parseLocation)
     if (!location)
       return
     locationsMap.set(uuid, location)

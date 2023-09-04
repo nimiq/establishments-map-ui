@@ -1,9 +1,10 @@
 import { useDebounceFn } from '@vueuse/core'
 import { ref } from 'vue'
+import { AutocompleteStatus, type Suggestion, SuggestionType } from 'types'
+import { searchLocations } from 'database'
 import { detectLanguage } from '@/i18n/i18n-setup'
 import { useMap } from '@/stores/map'
-import { AutocompleteStatus, type Suggestion, SuggestionType } from '@/types/'
-import { searchLocations } from '@/database'
+import { DATABASE_ARGS } from '@/shared'
 
 enum GoogleAutocompleteFor {
   Location = 'establishment',
@@ -57,7 +58,7 @@ export function useAutocomplete() {
   }
 
   async function autocompleteDatabase(query: string) {
-    const locations = await searchLocations(query)
+    const locations = await searchLocations(DATABASE_ARGS, query)
     return locations.map(q => Object.assign(q, { type: SuggestionType.Location }))
   }
 

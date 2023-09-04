@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { type Suggestion, SuggestionType } from 'types'
 import SearchBox from '@/components/atoms/SearchBox.vue'
 import CryptoMapModal from '@/components/elements/CryptoMapModal.vue'
 import { useAutocomplete } from '@/composables/useAutocomplete'
-import { type Suggestion, SuggestionType } from '@/types'
 import { useMap } from '@/stores/map'
 import { useLocations } from '@/stores/locations'
 

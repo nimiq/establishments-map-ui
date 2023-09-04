@@ -1,5 +1,5 @@
 import type { LocationQuery, RouteParams } from 'vue-router'
-import type { MapPosition } from '@/types/'
+import type { MapPosition } from 'types'
 import { useMap } from '@/stores/map'
 
 /**

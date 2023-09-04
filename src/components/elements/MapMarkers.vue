@@ -5,7 +5,7 @@ import { PopoverAnchor, PopoverArrow, PopoverContent, PopoverPortal, PopoverRoot
 import { screens } from 'tailwindcss-nimiq-theme'
 import { defineAsyncComponent } from 'vue'
 import { CustomMarker } from 'vue3-google-map'
-import type { Location } from '@/types'
+import type { Location } from 'types'
 import { useMap } from '@/stores/map'
 import { useLocations } from '@/stores/locations'
 import { useCluster } from '@/stores/cluster'

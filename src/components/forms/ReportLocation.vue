@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import type { Location } from 'types'
+import { Issue } from 'types'
 import Select from '../atoms/Select.vue'
 import TextAreaInput from '@/components/atoms/TextAreaInput.vue'
 import FormContainer from '@/components/forms/FormContainer.vue'
 import { useLocations } from '@/stores/locations'
 import { translateIssue } from '@/translations'
-import type { Location } from '@/types'
-import { Issue } from '@/types'
 import CircleSpinner from '@/components/icons/icon-circle-spinner.vue'
 
 const selectedIssue = ref<Issue>()

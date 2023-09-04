@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
+import { type Location } from 'types'
 import ProviderLogo from '../icons/providers/ProviderLogo.vue'
-import { type Location } from '@/types'
 
 defineProps({
   location: {

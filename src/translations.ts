@@ -1,5 +1,5 @@
+import { Category, Currency, Issue } from 'types'
 import { i18n } from './i18n/i18n-setup'
-import { Category, Currency, Issue } from './types'
 
 export function translateCategory(category: Category) {
   switch (category) {

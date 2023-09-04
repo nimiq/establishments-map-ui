@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
-import type { AnyProps } from 'supercluster'
 import Supercluster from 'supercluster'
 import { shallowRef } from 'vue'
+import type { Category, Cluster, Currency, Location, LocationClusterParams, LocationClusterSet } from 'types'
+import { getClusterMaxZoom, getClusters } from 'database'
 import { useLocations } from './locations'
-import type { Category, Cluster, Currency, Location, LocationClusterParams, LocationClusterSet, Point } from '@/types'
-import { getClusterMaxZoom, getClusters } from '@/database'
-import { isBoxWithinBox } from '@/shared'
+import { DATABASE_ARGS, isBoxWithinBox, parseLocation } from '@/shared'
+import { computeCluster } from '@/../shared/compute-cluster'
 
 export const useCluster = defineStore('cluster', () => {
   const { setLocations, getLocations } = useLocations()
@@ -14,10 +14,6 @@ export const useCluster = defineStore('cluster', () => {
 
   // All items that are not clustered
   const singles = shallowRef<Location[]>([])
-
-  function locationToPoint(location: Location): Supercluster.PointFeature<AnyProps> {
-    return { type: 'Feature', geometry: { type: 'Point', coordinates: [location.lng, location.lat] }, properties: { location } }
-  }
 
   /*
     With memoziation, we reduce redundant calculations/requests and optimizes user map interactions to optimize map performance:
@@ -45,48 +41,21 @@ export const useCluster = defineStore('cluster', () => {
     // we need to compute the clusters in the client
     if (currencies || categories)
       return true
-    maxZoomFromServer ||= await getClusterMaxZoom()
+    maxZoomFromServer ||= await getClusterMaxZoom(DATABASE_ARGS)
     return zoom > maxZoomFromServer
   }
 
   const clusterAlgorithm = new Supercluster({ radius: 88 })
 
-  async function getClusterFromClient({ zoom, boundingBox: bbox }: LocationClusterParams): Promise<[Cluster[], Location[]]> {
-    const newSingles: Location[] = []
-    const newClusters: Cluster[] = []
-
+  async function getClusterFromClient({ zoom, boundingBox: bbox }: LocationClusterParams): Promise<LocationClusterSet> {
     const locations = await getLocations(bbox)
-
-    // Clusters are computed in the client
-    clusterAlgorithm.load(locations.map(locationToPoint))
-
-    for (const c of clusterAlgorithm.getClusters([bbox.swLng, bbox.swLat, bbox.neLng, bbox.neLat], zoom)) {
-      const center: Point = { lng: c.geometry.coordinates[0], lat: c.geometry.coordinates[1] }
-      const count = c.properties.point_count || 1
-      const clusterId = c.properties.cluster_id
-
-      if (count > 1) {
-        newClusters.push({
-          id: clusterId,
-          center,
-          count,
-
-          // Compute it lazily
-          get expansionZoom() { return clusterAlgorithm.getClusterExpansionZoom(clusterId) },
-        })
-      }
-      else {
-        newSingles.push(c.properties.location)
-      }
-    }
-
-    return [newClusters, newSingles]
+    return computeCluster(clusterAlgorithm, locations, { zoom, boundingBox: bbox })
   }
 
-  async function getClusterFromDatabase({ zoom, boundingBox }: LocationClusterParams): Promise<[Cluster[], Location[]]> {
-    const [clusters, singles] = await getClusters(zoom, boundingBox)
-    setLocations(singles)
-    return [clusters, singles]
+  async function getClusterFromDatabase({ zoom, boundingBox }: LocationClusterParams): Promise<LocationClusterSet> {
+    const res = await getClusters(DATABASE_ARGS, boundingBox, zoom, parseLocation)
+    setLocations(res.singles)
+    return res
   }
 
   async function cluster(params: LocationClusterParams, { categories = [], currencies = [] }: { currencies?: Currency[]; categories?: Category[] }) {
@@ -94,10 +63,14 @@ export const useCluster = defineStore('cluster', () => {
     params.categories = categories.sort().join(',')
     if (hasMemoizedData(params))
       return
-    [clusters.value, singles.value] = await shouldRunInClient(params)
+
+    const { clusters: newClusters, singles: newSingles } = await shouldRunInClient(params)
       ? await getClusterFromClient(params)
       : await getClusterFromDatabase(params)
-    memoizedClusters.set(params, { clusters: clusters.value, singles: singles.value })
+    memoizedClusters.set(params, { clusters: newClusters, singles: newSingles })
+
+    clusters.value = newClusters
+    singles.value = newSingles
   }
 
   return {

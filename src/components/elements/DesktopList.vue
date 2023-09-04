@@ -2,9 +2,9 @@
 import { type PropType, ref, watch } from 'vue'
 import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
 import { storeToRefs } from 'pinia'
+import type { Cluster, Location } from 'types'
 import BasicInfo from '@/components/elements/BasicInfo.vue'
 import CardBg from '@/components/elements/CardBg.vue'
-import type { Cluster, Location } from '@/types'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useLocations } from '@/stores/locations'
 

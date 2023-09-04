@@ -1,6 +1,6 @@
+import { Provider, Theme } from 'types'
+import type { Location } from 'types'
 import { i18n } from '@/i18n/i18n-setup'
-import { Provider, Theme } from '@/types/'
-import type { Location } from '@/types/'
 
 // A dummy implementation of i18n.t that simply passes through the translation key. For usage for providerLabels, for
 // which the actual translation is happening in i18n-t in ProviderBanner, and for which a pre-translation here via the

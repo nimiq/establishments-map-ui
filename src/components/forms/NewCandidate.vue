@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { CURRENCIES } from 'database'
+import type { Currency, Suggestion } from 'types'
 import SearchBox from '../atoms/SearchBox.vue'
 import Select from '../atoms/Select.vue'
 import FormContainer from '@/components/forms/FormContainer.vue'
 import CryptoIcon from '@/components/icons/cryptos/CryptoIcon.vue'
 import { useAutocomplete } from '@/composables/useAutocomplete'
-import { CURRENCIES } from '@/database'
 import { translateCurrency } from '@/translations'
-import type { Currency, Suggestion } from '@/types'
 
 const { suggestions, status, querySearch } = useAutocomplete()
 

@@ -4,11 +4,11 @@ import { DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenu
 import type { PropType } from 'vue'
 import { ref, watch } from 'vue'
 import { CheckmarkSmallIcon, CopyIcon } from '@nimiq/vue3-components'
+import type { Location } from 'types'
 import IconFlag from '@/components/icons/icon-flag.vue'
 import IconShare from '@/components/icons/icon-share.vue'
 import IconThreeDots from '@/components/icons/icon-three-dots.vue'
 import { i18n } from '@/i18n/i18n-setup'
-import type { Location } from '@/types'
 
 const props = defineProps({
   location: {

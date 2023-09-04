@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { createReusableTemplate } from '@vueuse/core'
+import type { Location } from 'types'
 import Button from '../atoms/Button.vue'
 import DesktopList from './DesktopList.vue'
 import InteractionBar from '@/components/elements/InteractionBar.vue'
 import IconChevronDown from '@/components/icons/icon-chevron-down.vue'
-import type { Location } from '@/types'
 import { locations as defaultLocations } from '@/assets-dev/stories/locations'
 import { locations as locationsEdgeCases } from '@/assets-dev/stories/locations-edge-cases'
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { type PropType, nextTick, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import type { Location } from 'types'
 import { useLocations } from '@/stores/locations'
 import SheetModal from '@/components/atoms/SheetModal.vue'
 import Card from '@/components/elements/Card.vue'
-import type { Location } from '@/types'
 
 defineProps({
   locations: {

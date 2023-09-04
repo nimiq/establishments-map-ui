@@ -1,7 +1,7 @@
-export * from './database'
-export * from './map'
-export * from './location'
-export * from './autocomplete'
+export * from './database.ts'
+export * from './map.ts'
+export * from './location.ts'
+export * from './autocomplete.ts'
 
 export enum Issue {
   LOCATION_GONE = 'location_gone',

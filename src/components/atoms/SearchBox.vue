@@ -8,14 +8,14 @@ import {
   ComboboxOptions,
   TransitionRoot,
 } from '@headlessui/vue'
+import { vElementVisibility } from '@vueuse/components'
+import { useDebounceFn } from '@vueuse/core'
+import type { PredictionSubstring, Suggestion } from 'types'
+import { AutocompleteStatus } from 'types'
 import type { PropType } from 'vue'
 import { computed, ref, useSlots, watchEffect } from 'vue'
-import { useDebounceFn } from '@vueuse/core'
-import { vElementVisibility } from '@vueuse/components'
 import SearchIcon from '@/components/icons/icon-search.vue'
 import CrossIcon from '@/components/icons/icon-cross.vue'
-import { AutocompleteStatus } from '@/types'
-import type { PredictionSubstring, Suggestion } from '@/types'
 
 const props = defineProps({
   roundedFull: {

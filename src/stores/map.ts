@@ -2,11 +2,11 @@ import { computed, ref, shallowRef, watch } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import type { GoogleMap } from 'vue3-google-map'
 import { useDebounceFn } from '@vueuse/core'
+import type { EstimatedMapPosition, MapPosition, Point } from 'types'
 import { useRoute, useRouter } from 'vue-router'
-import { useLocations } from './locations'
 import { useCluster } from './cluster'
 import { useFilters } from './filters'
-import type { EstimatedMapPosition, MapPosition, Point } from '@/types/'
+import { useLocations } from './locations'
 
 export const useMap = defineStore('map', () => {
   const mapInstance = shallowRef<typeof GoogleMap>()

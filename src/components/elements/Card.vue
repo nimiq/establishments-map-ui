@@ -2,12 +2,12 @@
 import type { PropType } from 'vue'
 import { useBreakpoints } from '@vueuse/core'
 import { screens } from 'tailwindcss-nimiq-theme'
+import type { Location } from 'types'
 import CryptoList from '@/components/atoms/CryptoList.vue'
 import BasicInfo from '@/components/elements/BasicInfo.vue'
 import CardBg from '@/components/elements/CardBg.vue'
 import ProviderBanner from '@/components/elements/ProviderBanner.vue'
 import CardDotsMenu from '@/components/elements/CardDotsMenu.vue'
-import type { Location } from '@/types'
 
 defineProps({
   location: {

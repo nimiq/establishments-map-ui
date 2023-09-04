@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { Currency } from '@/types'
+import { Currency } from 'types'
 import BtcIcon from '@/components/icons/cryptos/icon-btc.vue'
 import DashIcon from '@/components/icons/cryptos/icon-dash.vue'
 import EthIcon from '@/components/icons/cryptos/icon-eth.vue'
