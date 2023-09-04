@@ -63,6 +63,16 @@ The bot has been developed with the [Deno Slack SDK](https://github.com/slackapi
 
 Since we are deploying the Edge Function in Supabase, we need to use `Deno` to develop the functions. Read more about how we use [`Supabase Functions`](#data-flow).
 
+For deploying functions you need to set some env vars, you can do that with:
+```bash
+supabase secrets set --env-file <path_to_env_file>
+```
+
+And deploy them with:
+```bash
+supabase functions deploy [function_name]
+```
+
 ## Data flow
 
 This section explains how we load the data from Supabase and how we use it in the application.

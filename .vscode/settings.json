@@ -11,7 +11,7 @@
     "https://deno.land": false
   },
   "[typescript]": {
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "editor.defaultFormatter": "denoland.vscode-deno"
   }
 }
