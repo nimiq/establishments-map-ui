@@ -85,7 +85,7 @@ watch(cards, (newCards, oldCards) => {
       :data-card-uuid="location.uuid"
     >
       <SheetModal
-        :initial-height="162" :max-height="location.photo ? 363 : 179" :initial-border-radius="8"
+        :max-height="location.photo ? 363 : 179" :initial-border-radius="8"
         :initial-gap-to-screen="INITIAL_GAP_TO_SCREEN" class="relative w-full bg-white rounded-t-lg" :progress="progress"
         @update:progress="progress = $event"
       >

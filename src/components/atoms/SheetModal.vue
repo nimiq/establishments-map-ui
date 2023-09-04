@@ -8,7 +8,7 @@ const props = defineProps({
   },
   initialHeight: {
     type: Number,
-    required: true,
+    required: false,
   },
   maxHeight: {
     type: Number,
@@ -28,7 +28,9 @@ const emit = defineEmits({
   'update:progress': (_: number) => true,
 })
 
-const heightDifference = props.maxHeight - props.initialHeight
+const containerHeight = ref(0)
+const initialHeight = computed(() => Math.max(props.initialHeight || 0, containerHeight.value))
+const heightDifference = computed(() => props.maxHeight - initialHeight.value)
 
 let initialY = 0
 let initialX = 0
@@ -57,11 +59,11 @@ function onMove(event: PointerEvent) {
   let newProgress: number
   if (initialOpen) {
     // yDelta is negative for dragging down
-    newProgress = Math.min(Math.max(heightDifference + yDelta, 0), heightDifference) / heightDifference
+    newProgress = Math.min(Math.max(heightDifference.value + yDelta, 0), heightDifference.value) / heightDifference.value
   }
   else {
     // yDelta is positive for dragging up
-    newProgress = Math.min(Math.max(yDelta, 0), heightDifference) / heightDifference
+    newProgress = Math.min(Math.max(yDelta, 0), heightDifference.value) / heightDifference.value
   }
   emit('update:progress', newProgress)
 }
@@ -114,7 +116,7 @@ function onCardDrag(progress: number) {
   const radius = (1 - progress) * props.initialBorderRadius
 
   style.value = {
-    height: isOpen.value ? 'min-content' : `${props.initialHeight + heightDifference * progress}px`,
+    height: isOpen.value ? 'min-content' : progress ? `${initialHeight.value + heightDifference.value * progress}px` : 'min-content',
     marginBottom: `${(1 - progress) * props.initialGapToScreen}px`,
     borderBottomRightRadius: `${radius}px`,
     borderBottomLeftRadius: `${radius}px`,
@@ -129,6 +131,8 @@ function resizeListener() {
 
 onMounted(() => {
   window.addEventListener('resize', resizeListener)
+  // Get height of the sheet after it's mounted
+  containerHeight.value = container.value!.offsetHeight
 })
 
 onBeforeUnmount(() => {
@@ -138,7 +142,7 @@ onBeforeUnmount(() => {
 
 <template>
   <article
-    ref="container" class="absolute h-full touch-pan-x sheet-transition will-change-auto"
+    ref="container" class="absolute h-full touch-pan-x sheet-transition will-change-auto min-h-fit"
     :style="style" @pointerdown="onStart" @pointermove="onMove" @pointerup="onEnd" @pointercancel="onCancel"
   >
     <slot name="dragger">
