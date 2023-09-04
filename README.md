@@ -1,7 +1,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/nimiq/crypto-map">
-    <img src="./public/logo.svg" alt="Logo" width="130" />
+    <img src="public/logo.svg" alt="Logo" width="130" />
   </a>
 
 <h1 align="center">
@@ -43,17 +43,17 @@ All PRs all welcome! Join our [Telegram](https://t.me/joinchat/AAAAAEJW-ozFwo7Er
 
 The project is structured in a monorepo:
 
-- [`./src`](`./src`): The vue app.
-- [`./types`](`./types`): Shared types across the project.
-- [`./shared`](`./shared`): Shared functions across the project.
-- [`./database`](`./database`): Functions to interact with the database.
-- [`./bot`](`./bot`): A slack bot to manage the database.
-- [`./supbase`](`./supabase`): Edge Functions in Supabase.
+- [`src`](src): The vue app.
+- [`types`](types): Shared types across the project.
+- [`shared`](shared): Shared functions across the project.
+- [`database`](database): Functions to interact with the database.
+- [`bot`](bot): A slack bot to manage the database.
+- [`supbase`](supabase): Edge Functions in Supabase.
 
 ### Database
 
-The `app` only can make read operations to the database, all read operations can be found in [`./database/getters.ts`](`./database/getters.ts`).
-The `bot` and `supabase` can make write operations to the database, [`./database/functions.ts`](`./database/functions.ts`). Write operations require authentication.
+The `app` only can make read operations to the database, all read operations can be found in [`database/getters.ts`](database/getters.ts).
+The `bot` and `supabase` can make write operations to the database, [`database/functions.ts`](database/functions.ts). Write operations require authentication.
 
 ### Bot
 
@@ -61,13 +61,13 @@ The bot has been developed with the [Deno Slack SDK](https://github.com/slackapi
 
 ### Supabase Functions
 
-Since we are deploying the Edge Function in Supabase, we need to use `Deno` and `TypeScript` to develop the functions. Read more about how we use [`Supabase Functions`](#data-flow).
+Since we are deploying the Edge Function in Supabase, we need to use `Deno` to develop the functions. Read more about how we use [`Supabase Functions`](#data-flow).
 
 ## Data flow
 
 This section explains how we load the data from Supabase and how we use it in the application.
 
-Firstly, we run the [Generate Locations Clusters Set](./supabase/functions/generate-locations_clusters-set.ts) function every time we update our main `locations` table, which contains all the data from all the `locations` we store.
+Firstly, we run the [Generate Locations Clusters Set](supabase/functions/generate-locations-clusters-set.ts) function every time we update our main `locations` table, which contains all the data from all the `locations` we store.
 
 This function will populate the `locations_clusters_set` table. This is a table that contains all the clusters from zoom level 3 (minimum zoom level in the application) to level 14. When the user explores the map at a zoom level between 3 and 14, we will load the clusters from this table.
 
@@ -75,9 +75,9 @@ When fetching data for the clusters, there may be locations that are not in the 
 
 This solution works well when the zoom level is between 3 and 14. However, the higher the zoom level, the more clusters we will have but the less computation is required to generate the clusters as there are fewer locations in the view. Therefore, from level 15 onwards, we will load the locations directly from the `locations` table and cluster them in the client.
 
-Each time we load a cluster or location, we will store it in memory, and before making any HTTP request or computation, we will check that we have the data in memory. See [`./src/stores/locations.ts`](`./src/stores/locations.ts`) and [`./src/stores/cluster.ts`](`./src/stores/cluster.ts`) for more details.
+Each time we load a cluster or location, we will store it in memory, and before making any HTTP request or computation, we will check that we have the data in memory. See [`src/stores/locations.ts`](src/stores/locations.ts) and [`src/stores/cluster.ts`](src/stores/cluster.ts) for more details.
 
-The code for the clustering can be found in [`./shared/compute-cluster.ts`](`./shared/compute-cluster.ts`). This function is used in the [`./src/stores/cluster.ts`](`./src/stores/cluster.ts`) store and in the [`./supabase/functions/generate-locations_clusters-set.ts`](`./supabase/functions/generate-locations_clusters-set.ts`) function.
+The code for the clustering can be found in [`shared/compute-cluster.ts`](shared/compute-cluster.ts). This function is used in the [`src/stores/cluster.ts`](src/stores/cluster.ts) store and in the [`supabase/functions/generate-locations_clusters-set.ts`](supabase/functions/generate-locations-clusters-set.ts) function.
 
 
 ## 🏗️ Stack
