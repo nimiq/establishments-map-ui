@@ -75,13 +75,13 @@ watch(cards, (newCards, oldCards) => {
 <template>
   <ul
     ref="scrollRoot"
-    class="flex items-end w-full overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-x-3 scroll-mx-[var(--spacing)]"
+    class="flex items-end w-full overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-x-3 scroll-mx-[var(--spacing)] pointer-events-none"
     :style="`--spacing: ${(1 - progress) * INITIAL_GAP_TO_SCREEN}px`"
   >
     <li
       v-for="location in locations" :key="location.uuid"
       ref="cards"
-      class="relative shrink-0 snap-center first:pl-[var(--spacing)] last:pr-[var(--spacing)]"
+      class="relative shrink-0 snap-center first:pl-[var(--spacing)] last:pr-[var(--spacing)] pointer-events-auto"
       :data-card-uuid="location.uuid"
     >
       <SheetModal

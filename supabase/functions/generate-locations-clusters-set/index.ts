@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 
 import Supercluster from 'supercluster'
-import type { BoundingBox, Cluster, Location } from '../../../types/index.ts'
-import { getLocations } from '../../../database/getters.ts'
-import type { DatabaseAuthArgs, InsertLocationsClustersSetParamsItem } from '../../../types/database.ts'
-import { computeCluster } from '../../../shared/compute-cluster.ts'
 import { flushClusterTable, insertLocationsClusterSet } from '../../../database/functions.ts'
+import { getLocations } from '../../../database/getters.ts'
+import { computeCluster } from '../../../shared/compute-cluster.ts'
+import type { DatabaseAuthArgs, InsertLocationsClustersSetParamsItem } from '../../../types/database.ts'
+import type { BoundingBox, Cluster, Location } from '../../../types/index.ts'
 
-const apikey = Deno.env.get('SUPABASE_ANON_KEY') || Deno.env.get('DB_AUTH_KEY')
-const url = Deno.env.get('DB_URL')
+const apikey = Deno.env.get('SUPABASE_ANON_KEY')
+const url = Deno.env.get('SUPABASE_DB_URL')
 const email = Deno.env.get('DB_AUTH_EMAIL')
 const password = Deno.env.get('DB_AUTH_PASSWORD')
 

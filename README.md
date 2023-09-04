@@ -63,14 +63,44 @@ The bot has been developed with the [Deno Slack SDK](https://github.com/slackapi
 
 Since we are deploying the Edge Function in Supabase, we need to use `Deno` to develop the functions. Read more about how we use [`Supabase Functions`](#data-flow).
 
-For deploying functions you need to set some env vars, you can do that with:
+#### Supabase CLI for Supabase Edge Functions
+
+You can install the Supabase CLI with:
+
 ```bash
-supabase secrets set --env-file <path_to_env_file>
+npm i supabase --save-dev # Or use npx supabase ...
 ```
 
-And deploy them with:
+###### Setting you .env file
+
+Initialize your `.env` file with:
+
 ```bash
-supabase functions deploy [function_name]
+cp ./supabase/functions/.env.example ./supabase/functions/.env 
+# Add the env vars in ./supabase/functions/.env 
+```
+
+For deploying functions you need to set some env vars, you can do that with:
+
+```bash
+supabase secrets set --env-file ./supabase/functions/.env
+supabase secrets list
+```
+
+##### Developing functions
+
+And deploy them with:
+
+```bash
+supabase functions serve generate-locations-clusters-set --env-file ./supabase/functions/.env --import-map ./supabase/functions/import_map.json
+```
+
+##### Deploying functions
+
+And deploy them with:
+
+```bash
+supabase functions deploy generate-locations-clusters-set
 ```
 
 ## Data flow
@@ -101,4 +131,5 @@ For the app:
 - [Radix UI](https://radix-vue.com) for porting Radix UI to Vue
 - [GMaps](https://developers.google.com/maps) Build awesome apps with Google’s knowledge of the real world
 - [Tailwind](https://tailwindcss.com/) A utility-first CSS framework for rapid UI development.
+- [Supabase](https://supabase.io/) The open source Firebase alternative. Instant APIs, scalable PostgreSQL, and realtime subscriptions.
 - [Deno Slack SDK](https://github.com/slackapi/deno-slack-sdk) A Deno SDK for Slack's APIs.
