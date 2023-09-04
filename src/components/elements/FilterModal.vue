@@ -42,15 +42,14 @@ const nFilters = computed(() => {
 })
 
 const { locations } = storeToRefs(useLocations())
-const { boundingBox } = useMap()
-const { zoom } = storeToRefs(useMap())
+const { boundingBox, zoom } = storeToRefs(useMap())
 
 function updateFilters() {
   filtersStore.setSelectedCategories(unappliedFiltersCategories.value)
   filtersStore.setSelectedCurrencies(unappliedFiltersCurrencies.value)
 
   // re-render the clusters in the map
-  useCluster().cluster(locations.value, boundingBox()!, zoom.value)
+  useCluster().cluster(locations.value, boundingBox.value!, zoom.value)
 }
 
 function clearFilters() {
