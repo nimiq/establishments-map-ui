@@ -8,11 +8,10 @@ import DesktopList from '@/components/elements/DesktopList.vue'
 import FilterModal from '@/components/elements/FilterModal.vue'
 import InteractionBar from '@/components/elements/InteractionBar.vue'
 import IconChevronDown from '@/components/icons/icon-chevron-down.vue'
-import { useLocations } from '@/stores/locations'
 import { useCluster } from '@/stores/cluster'
+import { useApp } from '@/stores/app'
 
-const locationsStore = useLocations()
-const { loaded: locationsLoaded } = storeToRefs(locationsStore)
+const { firstLocationsLoaded } = storeToRefs(useApp())
 const { singles, clusters } = storeToRefs(useCluster())
 
 const listIsShown = ref(false)
@@ -32,12 +31,12 @@ const openSuggestions = ref(false)
       <InteractionBar @open="openSuggestions = $event" />
       <DesktopList :locations="singles" :clusters="clusters" :list-is-shown="listIsShown" />
     </div>
-    <Button bg-color="white" class="mt-6" :loading="!locationsLoaded" @click="listIsShown = !listIsShown">
-      <template v-if="locationsLoaded" #icon>
+    <Button bg-color="white" class="mt-6" :loading="!firstLocationsLoaded" @click="listIsShown = !listIsShown">
+      <template v-if="firstLocationsLoaded" #icon>
         <IconChevronDown :class="{ 'rotate-180': listIsShown }" class="transition-transform delay-500" />
       </template>
       <template #label>
-        <template v-if="!locationsLoaded">
+        <template v-if="!firstLocationsLoaded">
           {{ $t('Loading') }}
         </template>
         <template v-else-if="listIsShown">

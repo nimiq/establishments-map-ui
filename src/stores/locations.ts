@@ -11,14 +11,9 @@ import { useFilters } from '@/stores/filters'
 import { DATABASE_ARGS, parseLocation } from '@/shared'
 
 export const useLocations = defineStore('locations', () => {
-  // We just track the first load, so we can show a loading indicator
-  const loaded = ref(false)
-
   const currentBoundingBox = ref<BoundingBox>()
 
-  /*
-    Reduce redundant database fetches by reusing fetched locations by tracking the areas explored by the user
-  */
+  //  Reduce redundant database fetches by reusing fetched locations by tracking the areas explored by the user
   let visitedAreas: MultiPolygon
 
   const locationsMap = shallowReactive(new Map<string, Location>())
@@ -45,7 +40,6 @@ export const useLocations = defineStore('locations', () => {
     setLocations(newLocations)
 
     visitedAreas = addBBoxToArea(boundingBox, visitedAreas)
-    loaded.value = true
 
     return newLocations
   }
@@ -92,7 +86,6 @@ export const useLocations = defineStore('locations', () => {
   }
 
   return {
-    loaded,
     getLocations,
     getLocationByUuid,
     locations,
