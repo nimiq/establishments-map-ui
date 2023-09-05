@@ -1,9 +1,9 @@
 import { getClusterMaxZoom, getClusters } from 'database'
 import { defineStore } from 'pinia'
 import Supercluster from 'supercluster'
-import type { Category, Cluster, ClusterArea, ComputedClusterSet, Currency, Location, LocationClusterParams, LocationClusterSet } from 'types'
-import { shallowRef } from 'vue'
+import type { Category, ClusterArea, ComputedClusterSet, Currency, LocationClusterParams, LocationClusterSet } from 'types'
 import { addBBoxToArea, bBoxIsWithinArea, toMultiPolygon } from 'shared'
+import { computed, shallowRef } from 'vue'
 import { useLocations } from './locations'
 import { DATABASE_ARGS, parseLocation } from '@/shared'
 import { computeCluster } from '@/../shared/compute-cluster'
@@ -11,30 +11,25 @@ import { computeCluster } from '@/../shared/compute-cluster'
 export const useCluster = defineStore('cluster', () => {
   const { setLocations, getLocations } = useLocations()
 
-  const clusters = shallowRef<Cluster[]>([])
-
-  // All items that are not clustered
-  const singles = shallowRef<Location[]>([])
-
   /*
     With memoziation, we reduce redundant calculations/requests and optimizes user map interactions to optimize map performance:
       - `memoizedCluster` stores clusters, bounding boxes, and filters by zoom level.
       - Before re-clustering, we check for existing data matching the current zoom, bounding box, and filters.
       - If a match is found, we reuse stored clusters; otherwise, new clusters are computed and stored.
   */
-  const memoized = new Map<LocationClusterParams, LocationClusterSet>()
+  const memoized = shallowRef(new Map<LocationClusterParams, LocationClusterSet>())
+  const active = shallowRef<LocationClusterSet>()
 
-  function getMemoized({ zoom, categories, currencies }: LocationClusterParams): [LocationClusterParams, LocationClusterSet | undefined] {
-    for (const key of memoized.keys()) {
+  function getKey({ zoom, categories, currencies }: LocationClusterParams): LocationClusterParams | undefined {
+    for (const key of memoized.value.keys()) {
       if (key.zoom === zoom && key.categories === categories && key.currencies === currencies)
-        return [key, memoized.get(key)!]
+        return key
     }
-    const newKey = {
-      zoom,
-      categories,
-      currencies,
-    }
-    return [newKey, undefined]
+  }
+
+  function getMemoized({ zoom, categories, currencies }: LocationClusterParams): { key: LocationClusterParams; item: LocationClusterSet | undefined } {
+    const key = getKey({ zoom, categories, currencies }) || { zoom, categories, currencies }
+    return { key, item: memoized.value.get(key) }
   }
 
   let maxZoomFromServer: number | undefined
@@ -62,11 +57,10 @@ export const useCluster = defineStore('cluster', () => {
 
   async function cluster(clusterArea: ClusterArea, { categories = [], currencies = [] }: { currencies?: Currency[]; categories?: Category[] }) {
     const { zoom, boundingBox } = clusterArea
-    const [key, item] = getMemoized({ zoom, categories: categories.sort().join(','), currencies: currencies.sort().join(',') })
+    const { key, item } = getMemoized({ zoom, categories: categories.sort().join(','), currencies: currencies.sort().join(',') })
 
     if (item && bBoxIsWithinArea(boundingBox, item.memoizedArea)) {
-      clusters.value = item.memoizedClusters
-      singles.value = item.memoizedSingles
+      active.value = memoized.value.get(key)
       return
     }
 
@@ -79,15 +73,13 @@ export const useCluster = defineStore('cluster', () => {
       memoizedClusters: newClusters,
       memoizedSingles: newSingles,
     }
-    memoized.set(key, newItem)
-
-    clusters.value = newClusters
-    singles.value = newSingles
+    memoized.value.set(key, newItem)
+    active.value = memoized.value.get(key)
   }
 
   return {
     cluster,
-    clusters,
-    singles,
+    clusters: computed(() => active.value?.memoizedClusters || []),
+    singles: computed(() => active.value?.memoizedSingles || []),
   }
 })
