@@ -2,12 +2,11 @@
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import TheMapInstance from '@/components/elements/TheMapInstance.vue'
-import Button from '@/components/atoms/Button.vue'
 import Controls from '@/components/elements/Controls.vue'
 import DesktopList from '@/components/elements/DesktopList.vue'
 import FilterModal from '@/components/elements/FilterModal.vue'
 import InteractionBar from '@/components/elements/InteractionBar.vue'
-import IconChevronDown from '@/components/icons/icon-chevron-down.vue'
+import ShowListButton from '@/components/elements/ShowListButton.vue'
 import { useCluster } from '@/stores/cluster'
 import { useApp } from '@/stores/app'
 
@@ -31,22 +30,7 @@ const openSuggestions = ref(false)
       <InteractionBar @open="openSuggestions = $event" />
       <DesktopList :locations="singles" :clusters="clusters" :list-is-shown="listIsShown" />
     </div>
-    <Button bg-color="white" class="mt-6" :loading="!firstLocationsLoaded" @click="listIsShown = !listIsShown">
-      <template v-if="firstLocationsLoaded" #icon>
-        <IconChevronDown :class="{ 'rotate-180': listIsShown }" class="transition-transform delay-500" />
-      </template>
-      <template #label>
-        <template v-if="!firstLocationsLoaded">
-          {{ $t('Loading') }}
-        </template>
-        <template v-else-if="listIsShown">
-          {{ $t('Hide list') }}
-        </template>
-        <template v-else>
-          {{ $t('Show list') }}
-        </template>
-      </template>
-    </Button>
+    <ShowListButton :first-locations-loaded="firstLocationsLoaded" :list-is-shown="listIsShown" class="mt-6" @click="listIsShown = !listIsShown" />
   </aside>
   <FilterModal class="absolute top-6 right-6" />
   <Controls class="absolute bottom-6 right-6" />

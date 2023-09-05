@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { ref, watch } from 'vue'
 import TheMapInstance from '@/components/elements/TheMapInstance.vue'
 import MobileList from '@/components/elements/MobileList.vue'
 import FilterModal from '@/components/elements/FilterModal.vue'
 import InteractionBar from '@/components/elements/InteractionBar.vue'
 import Controls from '@/components/elements/Controls.vue'
+import ShowListButton from '@/components/elements/ShowListButton.vue'
 import { useCluster } from '@/stores/cluster'
+import { useApp } from '@/stores/app'
 
+const { firstLocationsLoaded } = storeToRefs(useApp())
 const { singles } = storeToRefs(useCluster())
-const isListShown = computed(() => singles.value.length > 0)
+
+const isListShown = ref(false)
+watch(firstLocationsLoaded, () => {
+  if (firstLocationsLoaded.value)
+    isListShown.value = true
+})
 </script>
 
 <template>
@@ -18,6 +26,17 @@ const isListShown = computed(() => singles.value.length > 0)
     <TheMapInstance class="relative flex-1" />
     <FilterModal class="absolute top-24 right-5" />
     <Controls class="absolute bottom-6 right-6" :class="{ hidden: isListShown }" />
-    <MobileList :locations="singles" class="absolute bottom-0 w-full" />
+    <transition
+      enter-from-class="translate-y-[110%] opacity-0" leave-to-class="translate-y-[110%] opacity-0"
+      enter-active-class="transition duration-300" leave-active-class="transition duration-300"
+    >
+      <template v-if="singles.length > 0">
+        <MobileList v-if="isListShown" :locations="singles" class="absolute bottom-0 w-full" />
+        <ShowListButton
+          v-else :first-locations-loaded="firstLocationsLoaded" :list-is-shown="isListShown" chevron-direction="up"
+          class="absolute -translate-x-1/2 bottom-6 left-1/2" @click="isListShown = !isListShown"
+        />
+      </template>
+    </transition>
   </div>
 </template>
