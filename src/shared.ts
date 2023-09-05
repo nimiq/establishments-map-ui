@@ -1,6 +1,6 @@
 import { PROVIDERS } from 'database'
+import type { DatabaseArgs, Location } from 'types'
 import { Category, LocationLink, Provider, Theme } from 'types'
-import type { BoundingBox, DatabaseArgs, Location, Point } from 'types'
 import { providersAssets } from './assets-dev/provider-assets'
 import { translateCategory } from './translations'
 
@@ -9,26 +9,6 @@ const GOOGLE_MAPS_API = import.meta.env.VITE_GOOGLE_MAP_KEY
 export const DATABASE_ARGS: DatabaseArgs = {
   apikey: import.meta.env.VITE_DATABASE_KEY,
   url: import.meta.env.VITE_DATABASE_URL,
-}
-
-export function isBoxWithinBox(inBox: BoundingBox, outerBox: BoundingBox): boolean {
-  const { neLat: neLatIn, neLng: neLngIn, swLat: swLatIn, swLng: swLngIn } = inBox
-  const { neLat: neLatOut, neLng: neLngOut, swLat: swLatOut, swLng: swLngOut } = outerBox
-
-  // Handling anti-meridian
-  return swLngOut > neLngOut
-    ? (swLatIn >= swLatOut && neLatIn <= neLatOut && (swLngIn >= swLngOut || neLngIn <= neLngOut))
-    : (swLatIn >= swLatOut && neLatIn <= neLatOut && swLngIn >= swLngOut && neLngIn <= neLngOut)
-}
-
-export function isPointWithinBoundingBox(bbox: BoundingBox, point: Point): boolean {
-  const { lat, lng } = point
-  const { neLat, neLng, swLat, swLng } = bbox
-
-  // Handling anti-meridian
-  return swLng > neLng
-    ? (lat >= swLat && lat <= neLat && (lng >= swLng || lng <= neLng))
-    : (lat >= swLat && lat <= neLat && lng >= swLng && lng <= neLng)
 }
 
 export function parseLocation(location: Location) {

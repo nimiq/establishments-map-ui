@@ -1,3 +1,4 @@
+import type { MultiPolygon } from '@turf/turf'
 import type { Location } from './location'
 
 export interface BoundingBox {
@@ -29,14 +30,26 @@ export interface Cluster {
   count: number
 }
 
-export interface LocationClusterParams {
+export interface ClusterArea {
+  zoom: number
   boundingBox: BoundingBox
+}
+
+export interface LocationClusterParams {
   zoom: number
   categories?: string
   currencies?: string
 }
 
 export interface LocationClusterSet {
+  memoizedClusters: Cluster[]
+  memoizedSingles: Location[]
+
+  // The different areas where the clusters have been already computed
+  memoizedArea: MultiPolygon
+}
+
+export interface ComputedClusterSet {
   clusters: Cluster[]
   singles: Location[]
 }

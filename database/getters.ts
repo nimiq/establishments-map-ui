@@ -1,4 +1,4 @@
-import type { BoundingBox, DatabaseArgs, Location, LocationClusterSet, Suggestion } from '../types/index.ts'
+import type { BoundingBox, ComputedClusterSet, DatabaseArgs, Location, Suggestion } from '../types/index.ts'
 import { Category, Currency, Provider } from '../types/index.ts'
 
 enum DbFunction {
@@ -87,14 +87,14 @@ export async function searchLocations({ apikey, url: baseUrl }: DatabaseArgs, qu
   return await fetchDb<Omit<Suggestion, 'type'>[]>(url, apikey) ?? []
 }
 
-export async function getClusters({ apikey, url: baseUrl }: DatabaseArgs, { neLat, neLng, swLat, swLng }: BoundingBox, zoom: number, parseLocation: (l: Location) => Location = l => l): Promise<LocationClusterSet> {
+export async function getClusters({ apikey, url: baseUrl }: DatabaseArgs, { neLat, neLng, swLat, swLng }: BoundingBox, zoom: number, parseLocation: (l: Location) => Location = l => l): Promise<ComputedClusterSet> {
   const url = new URL(`${baseUrl}/rest/v1/rpc/${DbFunction.GetLocationsClustersSet}`)
   url.searchParams.set('swlng', swLng.toString())
   url.searchParams.set('nelng', neLng.toString())
   url.searchParams.set('swlat', swLat.toString())
   url.searchParams.set('nelat', neLat.toString())
   url.searchParams.set('zoom_level', zoom.toString())
-  const res = await fetchDb<LocationClusterSet>(url, apikey)
+  const res = await fetchDb<ComputedClusterSet>(url, apikey)
   return {
     clusters: res?.clusters ?? [],
     singles: res?.singles.map(parseLocation) ?? [],

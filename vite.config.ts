@@ -25,6 +25,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       'types': fileURLToPath(new URL('./types', import.meta.url)),
       'database': fileURLToPath(new URL('./database', import.meta.url)),
+      'shared': fileURLToPath(new URL('./shared', import.meta.url)),
     },
   },
   define: {

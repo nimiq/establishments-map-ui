@@ -37,17 +37,9 @@ const DECAY_FACTOR = 1.05
 const minZoom = Number(Deno.env.get('MIN_ZOOM')) || 3
 const maxZoom = Number(Deno.env.get('MAX_ZOOM')) || 14
 for (let zoom = minZoom; zoom <= maxZoom; zoom++) {
-  const algorithm = new Supercluster({
-    radius: BASE_RADIUS / DECAY_FACTOR ** zoom,
-  })
+  const algorithm = new Supercluster({ radius: BASE_RADIUS / DECAY_FACTOR ** zoom })
   const res = computeCluster(algorithm, locations, { zoom, boundingBox: bbox })
-  const singles: InsertLocationsClustersSetParamsItem[]
-    = (res.singles as Location[]).map(({ lng, lat, uuid }) => ({
-      lat,
-      lng,
-      count: 1,
-      locationUuid: uuid,
-    }))
+  const singles: InsertLocationsClustersSetParamsItem[] = (res.singles as Location[]).map(({ lng, lat, uuid }) => ({ lat, lng, count: 1, locationUuid: uuid }))
   const clusters: InsertLocationsClustersSetParamsItem[]
     = (res.clusters as Cluster[]).map((
       { center: { lat, lng }, count, expansionZoom },

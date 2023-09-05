@@ -23,7 +23,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "types": ["./types"],
-      "database": ["./database"]
+      "database": ["./database"],
+      "shared": ["./shared"]
     }
   },
   "exclude": ["dist", "node_modules"]

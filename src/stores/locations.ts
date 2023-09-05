@@ -1,12 +1,14 @@
+import { useRouteQuery } from '@vueuse/router'
+import { getLocations as getDbLocations, getLocation } from 'database'
 import { defineStore, storeToRefs } from 'pinia'
+import { addBBoxToArea, bBoxIsWithinArea, getLocationsWithinBBox } from 'shared'
+import type { BoundingBox, Location } from 'types'
 import { computed, ref, shallowReactive, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useRouteQuery } from '@vueuse/router'
-import type { BoundingBox, Location } from 'types'
-import { getLocations as getDbLocations, getLocation } from 'database'
+import type { MultiPolygon } from '@turf/turf'
 import { useMap } from './map'
 import { useFilters } from '@/stores/filters'
-import { DATABASE_ARGS, isPointWithinBoundingBox, parseLocation } from '@/shared'
+import { DATABASE_ARGS, parseLocation } from '@/shared'
 
 export const useLocations = defineStore('locations', () => {
   // We just track the first load, so we can show a loading indicator
@@ -15,17 +17,18 @@ export const useLocations = defineStore('locations', () => {
   const currentBoundingBox = ref<BoundingBox>()
 
   /*
-    Reduce redundant database fetches by reusing fetched locations by:
-      - `memoizedLocations` stores fetched bounding boxes without considering zoom levels.
-      - Before fetching, we check if the current bounding box is within a larger fetched bounding box.
-      - If so, the fetch is skipped; otherwise, a new fetch occurs and `memoizedLocations` is updated.
+    Reduce redundant database fetches by reusing fetched locations by tracking the areas explored by the user
   */
-  const memoizedLocations: Map<BoundingBox, Location[]> = new Map()
+  let visitedAreas: MultiPolygon
+
   const locationsMap = shallowReactive(new Map<string, Location>())
+
   const locations = computed(() => {
     if (!currentBoundingBox.value)
       return []
-    return [...locationsMap.values()].filter(location => includeLocation(location, currentBoundingBox.value!))
+    const filteredLocations = [...locationsMap.values()].filter(location => includeLocation(location))
+    // return getLocationsWithinBBox(filteredLocations, currentBoundingBox.value)
+    return filteredLocations
   })
 
   function setLocations(locations: Location[]) {
@@ -35,17 +38,13 @@ export const useLocations = defineStore('locations', () => {
   async function getLocations(boundingBox: BoundingBox): Promise<Location[]> {
     currentBoundingBox.value = boundingBox
 
-    // Check if the current bounding box is within an already fetched bounding box
-    for (const [{ neLat, neLng, swLat, swLng }, locations] of memoizedLocations.entries()) {
-      if (boundingBox.neLat <= neLat && boundingBox.neLng <= neLng && boundingBox.swLat >= swLat && boundingBox.swLng >= swLng)
-        return locations
-    }
+    if (bBoxIsWithinArea(boundingBox, visitedAreas))
+      return getLocationsWithinBBox(locations.value, boundingBox)
 
     const newLocations = await getDbLocations(DATABASE_ARGS, boundingBox, parseLocation)
     setLocations(newLocations)
 
-    // Update memoizedLocations
-    memoizedLocations.set(boundingBox, newLocations)
+    visitedAreas = addBBoxToArea(boundingBox, visitedAreas)
     loaded.value = true
 
     return newLocations
@@ -63,12 +62,11 @@ export const useLocations = defineStore('locations', () => {
 
   const { selectedCurrencies, selectedCategories } = storeToRefs(useFilters())
 
-  function includeLocation({ category, accepts, sells, lat, lng }: Location, bbox: BoundingBox) {
-    const isWithinBoundingBox = isPointWithinBoundingBox(bbox, { lat, lng })
+  function includeLocation({ category, accepts, sells, lat, lng }: Location) {
     const currencies = accepts.concat(sells)
     const isFilteredByCurrencies = selectedCurrencies.value.length === 0 || currencies.some(c => selectedCurrencies.value.includes(c))
     const isFilteredByCategories = selectedCategories.value.length === 0 || selectedCategories.value.includes(category)
-    return isWithinBoundingBox && isFilteredByCurrencies && isFilteredByCategories
+    return isFilteredByCurrencies && isFilteredByCategories
   }
 
   const router = useRouter()

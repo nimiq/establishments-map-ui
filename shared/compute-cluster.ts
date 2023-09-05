@@ -1,17 +1,13 @@
-import type { AnyProps } from 'supercluster'
 import type Supercluster from 'supercluster'
-import type { Cluster, Location, LocationClusterParams, LocationClusterSet, Point } from 'types'
+import type { Cluster, ComputedClusterSet, Location, LocationClusterParams, Point } from 'types'
+import { toPoint } from './'
 
-function locationToPoint(location: Location): Supercluster.PointFeature<AnyProps> {
-  return { type: 'Feature', geometry: { type: 'Point', coordinates: [location.lng, location.lat] }, properties: { location } }
-}
-
-export function computeCluster(algorithm: Supercluster, locations: Location[], { zoom, boundingBox: bbox }: LocationClusterParams): LocationClusterSet {
+export function computeCluster(algorithm: Supercluster, locations: Location[], { zoom, boundingBox: bbox }: LocationClusterParams): ComputedClusterSet {
   const singles: Location[] = []
   const clusters: Cluster[] = []
 
   // Clusters are computed in the client
-  algorithm.load(locations.map(locationToPoint))
+  algorithm.load(locations.map(toPoint) as GeoJSON.Feature<GeoJSON.Point, Location>[])
 
   for (const c of algorithm.getClusters([bbox.swLng, bbox.swLat, bbox.neLng, bbox.neLat], zoom)) {
     const center: Point = { lng: c.geometry.coordinates[0], lat: c.geometry.coordinates[1] }
