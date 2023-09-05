@@ -60,7 +60,7 @@ const FacebookLogo = defineAsyncComponent(() => import('@/components/icons/icon-
     <div class="relative flex self-start row-span-2 ml-2">
       <Button
         v-if="location.url && progress < 0.5" bg-color="white" :href="location.url" border-color="grey"
-        class="absolute z-100 top-0 transition-[top,right] !w-[52px] right-0 lg:opacity-0 lg:group-hover/card:opacity-100" size="sm"
+        class="absolute z-20 top-0 transition-[top,right] !w-[52px] right-0 lg:opacity-0 lg:group-hover/card:opacity-100" size="sm"
       >
         <template #icon>
           <IconGmapsPin v-if="location.linkTo === LocationLink.GMaps" class="h-4" />
