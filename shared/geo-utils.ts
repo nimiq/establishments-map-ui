@@ -10,7 +10,9 @@ export const toPoint = <T extends Point>(data: T) => point([data.lng, data.lat],
 export const toMultiPoint = <T extends Point>(data: T[]) => multiPoint(data.map(toPoint).map(d => d.geometry.coordinates))
 export const toPolygon = ({ swLat, neLat, neLng, swLng }: BoundingBox) => bboxPolygon([swLng, swLat, neLng, neLat])
 export const toMultiPolygon = (bbox: BoundingBox) => multiPolygon([toPolygon(bbox).geometry.coordinates])
-export const bBoxIsWithinArea = (bbox: BoundingBox, area: MultiPolygon) => booleanWithin(toPolygon(bbox), area)
+export const bBoxIsWithinArea = (bbox: BoundingBox, multiPoly?: MultiPolygon) => !multiPoly ? false : booleanWithin(toPolygon(bbox), multiPoly)
 export const pointWithingBbox = ({ lat, lng }: Point, bbox: BoundingBox) => booleanPointInPolygon([lng, lat], toPolygon(bbox))
-export const addBBoxToArea = (bbox: BoundingBox, multiPoly: MultiPolygon) => union(multiPoly, toPolygon(bbox))?.geometry as MultiPolygon || multiPoly
+export function addBBoxToArea(bbox: BoundingBox, multiPoly?: MultiPolygon) {
+  return !multiPoly ? toMultiPolygon(bbox).geometry : union(multiPoly, toPolygon(bbox))?.geometry as MultiPolygon || multiPoly
+}
 export const getLocationsWithinBBox = (locations: Location[], bbox: BoundingBox) => pointsWithinPolygon(toMultiPoint(locations), toPolygon(bbox)).features.map(f => f.properties as Location)
