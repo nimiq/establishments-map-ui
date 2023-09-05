@@ -37,7 +37,7 @@ export const useCluster = defineStore('cluster', () => {
     return [newKey, undefined]
   }
 
-  let maxZoomFromServer
+  let maxZoomFromServer: number | undefined
   async function shouldRunInClient({ zoom, categories, currencies }: LocationClusterParams): Promise<boolean> {
     // We cannot compute all clusters combinations in the server, if user has selected currencies or categories
     // we need to compute the clusters in the client
