@@ -17,7 +17,7 @@ export const useMap = defineStore('map', () => {
   const router = useRouter()
   const route = useRoute()
 
-  // Make the API request after the map has not been moved for 300ms or after 2000ms
+  // Update the route
   const updateRouteDebouncer = useDebounceFn(() => {
     if (!center.value)
       return
@@ -38,6 +38,19 @@ export const useMap = defineStore('map', () => {
     return { swLat, swLng, neLat, neLng }
   }
 
+  function onBoundsChanged() {
+    boundingBox.value = boundsToBox(map.value!.getBounds())
+    updateRouteDebouncer()
+
+    // If we don't have the item in the memoized map, we need to update the clusters
+    // If we have it, getMemoized will update the active value
+    if (useCluster().getMemoized().needsToUpdate)
+      clusterDebouncer()
+  }
+
+  // The bounds event is fired a lot, so we debounce it
+  const onBoundsChangedDebouncer = useDebounceFn(onBoundsChanged, 30)
+
   const unwatch = watch(map, (map) => {
     if (!map)
       return
@@ -47,15 +60,7 @@ export const useMap = defineStore('map', () => {
     map.addListener('zoom_changed', () => {
       zoom.value = map.getZoom()!
     })
-    map.addListener('bounds_changed', () => {
-      boundingBox.value = boundsToBox(map.getBounds())
-      updateRouteDebouncer()
-
-      // If we don't have the item in the memoized map, we need to update the clusters
-      // If we have it, getMemoized will update the active value
-      if (useCluster().getMemoized().needsToUpdate)
-        clusterDebouncer()
-    })
+    map.addListener('bounds_changed', onBoundsChangedDebouncer)
     unwatch()
   })
 

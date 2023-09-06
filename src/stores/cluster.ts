@@ -2,7 +2,7 @@ import { getClusterMaxZoom, getClusters } from 'database'
 import { defineStore, storeToRefs } from 'pinia'
 import type { Cluster, ComputedClusterSet, Location, LocationClusterParams, LocationClusterSet } from 'types'
 import { addBBoxToArea, algorithm, bBoxIsWithinArea, getItemsWithinBBox, toMultiPolygon } from 'shared'
-import { computed, ref } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { useLocations } from './locations'
 import { useFilters } from './filters'
 import { useMap } from './map'
@@ -26,9 +26,9 @@ export const useCluster = defineStore('cluster', () => {
    * The clusters and singles are computed from the memoized clusters and singles. For each zoom level and each filter combination,
    * we store the clusters and singles.
    */
-  const clusters = ref<Cluster[]>([])
+  const clusters = shallowRef<Cluster[]>([])
   const clustersInView = computed(() => boundingBox.value ? getItemsWithinBBox(clusters.value, boundingBox.value) : [])
-  const singles = ref<Location[]>([])
+  const singles = shallowRef<Location[]>([])
   const singlesInView = computed(() => boundingBox.value ? getItemsWithinBBox(filterLocations(singles.value), boundingBox.value) : [])
 
   function getKey({ zoom, categories, currencies }: LocationClusterParams): LocationClusterParams | undefined {
