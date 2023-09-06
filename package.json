@@ -67,7 +67,7 @@
     "webpack-i18n-tools": "github:nimiq/webpack-i18n-tools"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
+    "pre-commit": "pnpm lint-staged && pnpm type-check"
   },
   "lint-staged": {
     "*": "pnpm lint:fix"
