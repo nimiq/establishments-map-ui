@@ -1,9 +1,10 @@
+/// <reference lib="deno.ns" />
+
 /* eslint-disable no-console */
 
-import Supercluster from 'supercluster'
 import { flushClusterTable, insertLocationsClusterSet } from '../../../database/functions.ts'
 import { getLocations } from '../../../database/getters.ts'
-import { computeCluster } from '../../../shared/compute-cluster.ts'
+import { algorithm, computeCluster } from '../../../shared/compute-cluster.ts'
 import type { DatabaseAuthArgs, InsertLocationsClustersSetParamsItem } from '../../../types/database.ts'
 import type { BoundingBox, Cluster, Location } from '../../../types/index.ts'
 
@@ -31,13 +32,10 @@ await flushClusterTable(dbArgs)
 const bbox: BoundingBox = { neLat: 90, neLng: 180, swLat: -90, swLng: -180 }
 const locations = await getLocations(dbArgs, bbox)
 
-const BASE_RADIUS = 140
-const DECAY_FACTOR = 1.05
+const minZoom = Number(Deno.env.get('MIN_ZOOM'))
+const maxZoom = Number(Deno.env.get('MAX_ZOOM'))
 
-const minZoom = Number(Deno.env.get('MIN_ZOOM')) || 3
-const maxZoom = Number(Deno.env.get('MAX_ZOOM')) || 14
 for (let zoom = minZoom; zoom <= maxZoom; zoom++) {
-  const algorithm = new Supercluster({ radius: BASE_RADIUS / DECAY_FACTOR ** zoom })
   const res = computeCluster(algorithm, locations, { zoom, boundingBox: bbox })
   const singles: InsertLocationsClustersSetParamsItem[] = (res.singles as Location[]).map(({ lng, lat, uuid }) => ({ lat, lng, count: 1, locationUuid: uuid }))
   const clusters: InsertLocationsClustersSetParamsItem[]

@@ -1,5 +1,6 @@
 {
   "imports": {
-    "supercluster": "https://esm.sh/supercluster"
+    "supercluster": "https://esm.sh/supercluster",
+    "@turf/": "https://esm.sh/@turf/"
   }
 }
