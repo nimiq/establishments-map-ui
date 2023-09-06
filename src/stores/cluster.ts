@@ -1,8 +1,8 @@
 import { getClusterMaxZoom, getClusters } from 'database'
 import { defineStore, storeToRefs } from 'pinia'
-import type { ComputedClusterSet, LocationClusterParams, LocationClusterSet } from 'types'
+import type { Cluster, ComputedClusterSet, Location, LocationClusterParams, LocationClusterSet } from 'types'
 import { addBBoxToArea, algorithm, bBoxIsWithinArea, getItemsWithinBBox, toMultiPolygon } from 'shared'
-import { computed, ref, shallowRef } from 'vue'
+import { computed, ref } from 'vue'
 import { useLocations } from './locations'
 import { useFilters } from './filters'
 import { useMap } from './map'
@@ -20,20 +20,19 @@ export const useCluster = defineStore('cluster', () => {
   - Before re-clustering, we check for existing data matching the current zoom, bounding box, and filters.
   - If a match is found, we reuse stored clusters; otherwise, new clusters are computed and stored.
   */
-  const memoized = shallowRef(new Map<LocationClusterParams, LocationClusterSet>())
-  const active = ref<LocationClusterSet>()
+  const memoized = new Map<LocationClusterParams, LocationClusterSet>()
 
   /**
    * The clusters and singles are computed from the memoized clusters and singles. For each zoom level and each filter combination,
    * we store the clusters and singles.
    */
-  const clusters = computed(() => active.value?.memoizedClusters || [])
+  const clusters = ref<Cluster[]>([])
   const clustersInView = computed(() => boundingBox.value ? getItemsWithinBBox(clusters.value, boundingBox.value) : [])
-  const singles = computed(() => active.value?.memoizedSingles || [])
+  const singles = ref<Location[]>([])
   const singlesInView = computed(() => boundingBox.value ? getItemsWithinBBox(filterLocations(singles.value), boundingBox.value) : [])
 
   function getKey({ zoom, categories, currencies }: LocationClusterParams): LocationClusterParams | undefined {
-    for (const key of memoized.value.keys()) {
+    for (const key of memoized.keys()) {
       if (key.zoom === zoom && key.categories === categories && key.currencies === currencies)
         return key
     }
@@ -44,15 +43,15 @@ export const useCluster = defineStore('cluster', () => {
     // If the key already exists, we need to reference the existing key by memory. Creating a new object, even with the same values, will not work.
     const key = getKey(obj) || obj
 
-    const item: LocationClusterSet | undefined = memoized.value.get(key)
+    const item: LocationClusterSet | undefined = memoized.get(key)
 
     // If the item exists and the bounding box is within the memoized area, we can reuse the memoized item and there is no need to re-cluster
     const needsToUpdate = !item || !bBoxIsWithinArea(boundingBox.value!, item.memoizedArea)
 
     // Update the memoized item if it exists
     if (!needsToUpdate) {
-      active.value = undefined
-      active.value = item
+      clusters.value = item.memoizedClusters
+      singles.value = item.memoizedSingles
     }
 
     return { key, item, needsToUpdate }
@@ -93,16 +92,18 @@ export const useCluster = defineStore('cluster', () => {
       item.memoizedArea = addBBoxToArea(boundingBox.value!, item.memoizedArea)
       item.memoizedClusters.forEach(cluster => newClusters.push(cluster))
       item.memoizedSingles.forEach(single => newSingles.push(single))
+      memoized.set(key, item)
     }
     else {
-      memoized.value.set(key, {
+      memoized.set(key, {
         memoizedArea: toMultiPolygon(boundingBox.value!).geometry,
         memoizedClusters: newClusters,
         memoizedSingles: newSingles,
       })
     }
 
-    active.value = memoized.value.get(key)
+    clusters.value = newClusters
+    singles.value = newSingles
   }
 
   return {
