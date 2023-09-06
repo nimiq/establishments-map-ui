@@ -9,13 +9,22 @@ import Controls from '@/components/elements/Controls.vue'
 import ShowListButton from '@/components/elements/ShowListButton.vue'
 import { useCluster } from '@/stores/cluster'
 import { useApp } from '@/stores/app'
+import { useLocations } from '@/stores/locations'
 
 const { firstLocationsLoaded } = storeToRefs(useApp())
 const { singles } = storeToRefs(useCluster())
 
 const isListShown = ref(false)
-watch(firstLocationsLoaded, () => {
-  if (firstLocationsLoaded.value)
+
+// TODO: Only show list when user searched for something
+// watch(firstLocationsLoaded, () => {
+//   if (firstLocationsLoaded.value)
+//     isListShown.value = true
+// })
+
+const { selectedUuid } = storeToRefs(useLocations())
+watch(selectedUuid, (uuid) => {
+  if (uuid)
     isListShown.value = true
 })
 </script>
@@ -31,7 +40,7 @@ watch(firstLocationsLoaded, () => {
       enter-active-class="transition duration-300" leave-active-class="transition duration-300"
     >
       <template v-if="singles.length > 0">
-        <MobileList v-if="isListShown" :locations="singles" class="absolute bottom-0 w-full" @close-list="isListShown = false" />
+        <MobileList v-if="isListShown" :locations="singles" class="absolute bottom-0 w-full" @close-list="isListShown = false; selectedUuid = undefined;" />
         <ShowListButton
           v-else :first-locations-loaded="firstLocationsLoaded" :list-is-shown="isListShown" chevron-direction="up"
           class="absolute -translate-x-1/2 bottom-6 left-1/2" @click="isListShown = true"

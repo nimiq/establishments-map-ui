@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type PropType, nextTick, ref, watch } from 'vue'
+import { type PropType, nextTick, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { Location } from 'types'
 import { useLocations } from '@/stores/locations'
@@ -28,10 +28,10 @@ const { selectedUuid } = storeToRefs(useLocations())
 const scrollRoot = ref<HTMLElement>()
 const cards = ref<HTMLElement[]>()
 
-let scrollingIntoView = false
+let scrollingIntoView = !!selectedUuid.value
 let scrollingList = false
 
-watch(selectedUuid, (uuid) => {
+function handleSelectedUuidUpdate(uuid: string | undefined, smooth = true) {
   if (!uuid)
     return
 
@@ -39,16 +39,27 @@ watch(selectedUuid, (uuid) => {
     return
 
   scrollingIntoView = true
-  document.querySelector(`[data-card-uuid="${uuid}"]`)?.scrollIntoView({ behavior: 'smooth' })
+  document.querySelector(`[data-card-uuid="${uuid}"]`)?.scrollIntoView({ behavior: smooth ? 'smooth' : 'instant' })
 
-  if ('onscrollend' in window) {
-    scrollRoot.value!.addEventListener('scrollend', () => {
-      scrollingIntoView = false
-    }, { once: true })
+  if (smooth) {
+    if ('onscrollend' in window) {
+      scrollRoot.value!.addEventListener('scrollend', () => {
+        scrollingIntoView = false
+      }, { once: true })
+    }
+    else {
+      window.setTimeout(() => scrollingIntoView = false, 1000)
+    }
   }
   else {
-    window.setTimeout(() => scrollingIntoView = false, 1000)
+    scrollingIntoView = false
   }
+}
+
+watch(selectedUuid, uuid => handleSelectedUuidUpdate(uuid))
+
+onMounted(() => {
+  handleSelectedUuidUpdate(selectedUuid.value, false)
 })
 
 function intersectionHandler(entries: IntersectionObserverEntry[]) {
