@@ -18,6 +18,8 @@ export const useMap = defineStore('map', () => {
   const route = useRoute()
 
   async function onBoundsChanged() {
+    if (!center.value)
+      return
     router.push({
       name: 'coords',
       params: { ...center.value, zoom: zoom.value },
