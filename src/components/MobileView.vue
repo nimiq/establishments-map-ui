@@ -30,7 +30,7 @@ watch(selectedUuid, (uuid) => {
 </script>
 
 <template>
-  <div class="flex flex-col h-[100dvh] h-screen">
+  <div class="flex flex-col h-screen min-h-[100dvh] max-h-[100dvh]">
     <InteractionBar />
     <TheMapInstance class="relative flex-1" />
     <!-- Shadow -->
