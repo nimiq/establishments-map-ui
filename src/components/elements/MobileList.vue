@@ -91,19 +91,17 @@ watch(cards, (newCards, oldCards) => {
   <ul
     ref="scrollRoot"
     class="flex items-end w-full overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-x-3 scroll-mx-[var(--spacing)] pointer-events-none bg-gradient-to-t from-space/20 to-space/0 bg-bottom bg-no-repeat"
-    :style="`--spacing: ${(1 - Math.max(progress, 0)) * INITIAL_GAP_TO_SCREEN}px; background-size: 100% 184px;`"
+    :style="`--spacing: ${(1 - Math.max(progress, 0)) * INITIAL_GAP_TO_SCREEN}px; background-size: 100% 184px;--tw-gradient-from: rgb(31 35 72 / ${0.2 * Math.min((1 + progress * 2), 1)}) var(--tw-gradient-from-position);`"
   >
     <li
-      v-for="location in locations" :key="location.uuid"
-      ref="cards"
+      v-for="location in locations" :key="location.uuid" ref="cards"
       class="relative shrink-0 snap-center first:pl-[var(--spacing)] last:pr-[var(--spacing)] pointer-events-auto"
       :data-card-uuid="location.uuid"
     >
       <SheetModal
         :max-height="location.photo ? 363 : 179" :initial-border-radius="8"
         :initial-gap-to-screen="INITIAL_GAP_TO_SCREEN" class="relative w-full bg-white rounded-t-lg" :progress="progress"
-        @update:progress="progress = $event"
-        @close-list="() => $emit('closeList')"
+        @update:progress="progress = $event" @close-list="() => $emit('closeList')"
       >
         <Card :location="location" :progress="progress" />
       </SheetModal>
