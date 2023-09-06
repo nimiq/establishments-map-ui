@@ -12,7 +12,6 @@ import { DATABASE_ARGS, parseLocation } from '@/shared'
 
 export const useLocations = defineStore('locations', () => {
   const { filterLocations } = useFilters()
-  const { setPosition } = useMap()
 
   // Reduce redundant database fetches by reusing fetched locations by tracking the areas explored by the user
   let visitedAreas: MultiPolygon
