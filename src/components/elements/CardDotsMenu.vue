@@ -63,8 +63,8 @@ function handleOpen(open: boolean) {
       <IconThreeDots
         class="w-5 h-5 transition-colors"
         :class="{
-          'text-space/30 hover:text-space/50': location.isLight,
-          'text-white/60 hover:text-white/80': location.isDark,
+          'text-space/30 hover:text-space/50': !location.isAtm || location.isLight,
+          'text-white/60 hover:text-white/80': location.isAtm && location.isDark,
         }"
       />
     </DropdownMenuTrigger>
