@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
+import { type PropType } from 'vue'
 import { useBreakpoints } from '@vueuse/core'
 import { screens } from 'tailwindcss-nimiq-theme'
-import type { Location } from 'types'
+import { type Location } from 'types'
+import GmapsButton from './GmapsButton.vue'
 import CryptoList from '@/components/atoms/CryptoList.vue'
 import BasicInfo from '@/components/elements/BasicInfo.vue'
 import CardBg from '@/components/elements/CardBg.vue'
@@ -71,6 +72,8 @@ function arrayEquals(arrA: string[], arrB: string[]): boolean {
         </template>
       </transition>
     </div>
+
+    <GmapsButton v-if="location.photo && location.url && progress > 0.5" :location="location" class="absolute z-20 top-4 right-4" />
 
     <ProviderBanner
       v-if="progress > 0 && location.hasBottomBanner" :location="location"
