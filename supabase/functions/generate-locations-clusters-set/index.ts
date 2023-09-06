@@ -1,5 +1,3 @@
-/// <reference lib="deno.ns" />
-
 /* eslint-disable no-console */
 
 import { flushClusterTable, insertLocationsClusterSet } from '../../../database/functions.ts'
@@ -35,14 +33,18 @@ const locations = await getLocations(dbArgs, bbox)
 const minZoom = Number(Deno.env.get('MIN_ZOOM'))
 const maxZoom = Number(Deno.env.get('MAX_ZOOM'))
 
+const promises: Promise<unknown>[] = []
 for (let zoom = minZoom; zoom <= maxZoom; zoom++) {
   const res = computeCluster(algorithm, locations, { zoom, boundingBox: bbox })
   const singles: InsertLocationsClustersSetParamsItem[] = (res.singles as Location[]).map(({ lng, lat, uuid }) => ({ lat, lng, count: 1, locationUuid: uuid }))
-  await insertLocationsClusterSet(dbArgs, {
+  promises.push(insertLocationsClusterSet(dbArgs, {
     zoom_level: zoom,
     items: singles.concat(res.clusters as Cluster[]),
-  })
+  }))
   console.log(
-    `Added ${clusters.length} clusters and ${singles.length} singles at zoom level ${zoom}`,
+    `Added ${res.clusters.length} clusters and ${singles.length} singles at zoom level ${zoom}`,
   )
 }
+
+const res = await Promise.allSettled(promises)
+console.log(res.filter(({ status }) => status === 'rejected'))

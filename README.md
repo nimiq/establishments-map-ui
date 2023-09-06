@@ -100,7 +100,7 @@ supabase secrets list
 And deploy them with:
 
 ```bash
-supabase functions deploy generate-locations-clusters-set
+supabase functions deploy generate-locations-clusters-set --import-map supabase/import_map.json 
 ```
 
 ## Data flow
