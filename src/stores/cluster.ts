@@ -90,8 +90,8 @@ export const useCluster = defineStore('cluster', () => {
 
     if (item) {
       item.memoizedArea = addBBoxToArea(boundingBox.value!, item.memoizedArea)
-      item.memoizedClusters.forEach(cluster => newClusters.push(cluster))
-      item.memoizedSingles.forEach(single => newSingles.push(single))
+      item.memoizedClusters.push(...newClusters.filter(c => item.memoizedClusters.every(i => i.id !== c.id)))
+      item.memoizedSingles.push(...newSingles.filter(s => item.memoizedSingles.every(i => i.uuid !== s.uuid)))
       memoized.set(key, item)
     }
     else {
