@@ -1,38 +1,21 @@
 <script setup lang="ts">
 import { type PropType } from 'vue'
-import { computedAsync, useBreakpoints } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { type Location } from 'types'
-import { screens } from 'tailwindcss-nimiq-theme'
 import GmapsButton from './GmapsButton.vue'
 import StarFilledIcon from '@/components/icons/icon-star-filled.vue'
 import StarIcon from '@/components/icons/icon-star.vue'
 import { useLocations } from '@/stores/locations'
 
-const props = defineProps({
+defineProps({
   location: {
     type: Object as PropType<Location>,
     required: true,
-  },
-  nameAsLink: {
-    type: Boolean,
-    default: false,
   },
   progress: {
     type: Number,
     default: 0,
   },
-})
-
-const isMobile = useBreakpoints(screens).smaller('md')
-
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-const showNameAsLink = computedAsync(async () => {
-  if (!isMobile.value)
-    return props.nameAsLink && props.location.url
-  // Wait for the card to be fully open, if not it will cause the link to open when wanting to open the card (clicking on the name when the card is closed)
-  await sleep(500)
-  return props.nameAsLink && props.location.url && props.progress === 1
 })
 
 const { selectedUuid } = storeToRefs(useLocations())
@@ -47,18 +30,17 @@ const { selectedUuid } = storeToRefs(useLocations())
       'grid-cols-[auto_1fr_auto]': !location.photo,
     }"
   >
-    <component
-      :is="showNameAsLink ? 'a' : 'h3'" :href="showNameAsLink ? location.url : undefined" :target="showNameAsLink ? '_blank' : undefined" class="text-base font-bold leading-[1.3] col-span-2 pb-1 text-balance"
+    <h2
+      class="text-base font-bold leading-[1.3] col-span-2 pb-1 text-balance"
       :class="{
         'text-sky': !location.isAtm && selectedUuid === location.uuid,
-        'cursor-pointer': location.url,
         'mr-4': location.photo,
         'mr-2': !location.photo,
       }"
     >
-      <template v-if="location.isAtm">{{ $t('ATM') }} ({{ location.name }})</template>
-      <template v-else>{{ location.name }}</template>
-    </component>
+      <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
+      <template v-if="location.isAtm">{{ $t('ATM') }} (</template>{{ location.name }}<template v-if="location.isAtm">)</template>
+    </h2>
 
     <GmapsButton v-if="!location.photo && location.url && progress > 0.5" :location="location" class="mr-4 self-start -mt-2 -mb-2" />
 
