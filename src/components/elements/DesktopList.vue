@@ -46,25 +46,6 @@ watch(selectedUuid, (uuid) => {
   const index = props.locations.findIndex(location => location.uuid === uuid)
   scroller.value.scrollToItem(index - 2) // -2 to scroll the location to 2 entries from the top of the list
 })
-
-// const heights = {
-//   border: 0.8,
-//   py: 20 * 2,
-//   title: 20.8 + 4,
-//   categoryAndRating: 16,
-//   buyAndSell: 16,
-//   address: 18,
-// } as const
-
-// function getPoolType(l: Location): Location & { itemSize: number } {
-//   let itemSize = heights.border + heights.py + heights.title + (l.address ? heights.address : 0)
-//   if (!l.isAtm)
-//     itemSize += l.category || l.rating ? heights.categoryAndRating : 0
-//   else if (l.isAtm)
-//     itemSize += heights.buyAndSell
-
-//   return Object.assign(l, { itemSize })
-// }
 </script>
 
 <template>
@@ -80,6 +61,7 @@ watch(selectedUuid, (uuid) => {
   >
     <template #default="{ item: location, active }">
       <DynamicScrollerItem
+        :key="location.uuid"
         :item="location"
         :active="active"
       >
