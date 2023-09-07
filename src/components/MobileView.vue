@@ -26,7 +26,7 @@ const { selectedUuid } = storeToRefs(useLocations())
 watch(selectedUuid, (uuid) => {
   if (uuid)
     isListShown.value = true
-})
+}, { immediate: true })
 </script>
 
 <template>
