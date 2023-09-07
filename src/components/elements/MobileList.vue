@@ -38,8 +38,21 @@ function handleSelectedUuidUpdate(uuid: string | undefined, smooth = true) {
   if (scrollingList)
     return
 
+  const card = document.querySelector(`[data-card-uuid="${uuid}"]`)
+  if (!card)
+    return
+
   scrollingIntoView = true
-  document.querySelector(`[data-card-uuid="${uuid}"]`)?.scrollIntoView({ behavior: smooth ? 'smooth' : 'instant' })
+
+  if (smooth) {
+    card.scrollIntoView({ behavior: 'smooth' })
+  }
+  else {
+    scrollRoot.value!.scrollTo({
+      left: card.getBoundingClientRect().left,
+      behavior: 'instant',
+    })
+  }
 
   if (smooth) {
     if ('onscrollend' in window) {
