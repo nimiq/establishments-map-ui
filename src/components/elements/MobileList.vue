@@ -119,7 +119,11 @@ watch(cards, (newCards, oldCards) => {
             <hr
               class="absolute inset-x-0 z-10 w-32 h-1 mx-auto mt-2 ml-auto border-0 rounded-full" :class="[
                 { 'mt-3': progress === 1 },
-                [location.bgFullCard && location.theme === Theme.Dark ? 'bg-white/30 mix-blend-lighten' : 'bg-white mix-blend-darken'],
+                [
+                  location.isAtm && location.theme === Theme.Dark
+                    ? (location.photo && progress > 0.1 ? 'bg-white/80 mix-blend-lighten' : 'bg-white/30 mix-blend-lighten')
+                    : (location.photo && progress > 0.1 ? 'bg-space/60 mix-blend-darken' : 'bg-space/20 mix-blend-darken'),
+                ],
               ]"
             >
           </div>
