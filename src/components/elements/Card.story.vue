@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { type Location, LocationType } from 'types'
 import Card from './Card.vue'
 import { locations } from '@/assets-dev/stories/locations'
 
@@ -21,7 +20,6 @@ const progress = computed(() => {
     return 0
   return intervalValue.value % 1
 })
-const layout = ({ category }: Location) => category === 'cash' ? LocationType.Atm : LocationType.Shop
 </script>
 
 <template>
@@ -53,7 +51,7 @@ const layout = ({ category }: Location) => category === 'cash' ? LocationType.At
 
     <Variant v-for="(l, i) in locations" :key="i" :title="l.provider" class="flex items-end h-full">
       <Card
-        :location="l" :progress="progressState === 'custom' ? customProgress : progress" :layout="layout(l)"
+        :location="l" :progress="progressState === 'custom' ? customProgress : progress"
         class="relative"
       />
     </Variant>
