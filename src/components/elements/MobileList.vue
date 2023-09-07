@@ -44,15 +44,10 @@ function handleSelectedUuidUpdate(uuid: string | undefined, smooth = true) {
 
   scrollingIntoView = true
 
-  if (smooth) {
-    card.scrollIntoView({ behavior: 'smooth' })
-  }
-  else {
-    scrollRoot.value!.scrollTo({
-      left: card.getBoundingClientRect().left,
-      behavior: 'instant',
-    })
-  }
+  scrollRoot.value!.scrollTo({
+    left: scrollRoot.value!.scrollLeft + card.getBoundingClientRect().left,
+    behavior: smooth ? 'smooth' : 'instant',
+  })
 
   if (smooth) {
     if ('onscrollend' in window) {
