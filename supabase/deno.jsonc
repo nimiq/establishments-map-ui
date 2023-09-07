@@ -20,6 +20,7 @@
   "lock": false,
   "tasks": {
     "run": "deno run --allow-env --allow-read --allow-net ./functions/generate-locations-clusters-set/index.ts",
-    "deploy": "supabase functions deploy generate-locations-clusters-set --import-map supabase/import_map.json"
+    "dev:og": "npx supabase functions serve og-image --no-verify-jwt --env-file .env",
+    "deploy": "npx supabase functions deploy generate-locations-clusters-set --import-map supabase/import_map.json"
   }
 }
