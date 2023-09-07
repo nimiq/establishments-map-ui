@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type PropType } from 'vue'
 import { type Location } from 'types'
-import GmapsButton from './GmapsButton.vue'
+import LocationSocialButton from './LocationSocialButton.vue'
 import StarFilledIcon from '@/components/icons/icon-star-filled.vue'
 import StarIcon from '@/components/icons/icon-star.vue'
 
@@ -37,7 +37,7 @@ defineProps({
       <template v-if="location.isAtm">{{ $t('ATM') }} (</template>{{ location.name }}<template v-if="location.isAtm">)</template>
     </h3>
 
-    <GmapsButton v-if="!location.photo && location.url && progress > 0.5" :location="location" class="mr-5 self-start -mt-2 -mb-2" />
+    <LocationSocialButton v-if="!location.photo && location.url && progress > 0.5" :location="location" class="self-start mr-5 -mt-2 -mb-2" />
 
     <template v-if="!location.isAtm">
       <span class="row-start-2 text-xs font-semibold first-letter:capitalize text-space/60 whitespace-nowrap">

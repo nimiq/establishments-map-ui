@@ -3,7 +3,7 @@ import { type PropType } from 'vue'
 import { useBreakpoints } from '@vueuse/core'
 import { screens } from 'tailwindcss-nimiq-theme'
 import { type Location } from 'types'
-import GmapsButton from './GmapsButton.vue'
+import LocationSocialButton from './LocationSocialButton.vue'
 import CryptoList from '@/components/atoms/CryptoList.vue'
 import BasicInfo from '@/components/elements/BasicInfo.vue'
 import CardBg from '@/components/elements/CardBg.vue'
@@ -73,7 +73,9 @@ function arrayEquals(arrA: string[], arrB: string[]): boolean {
       </transition>
     </div>
 
-    <GmapsButton v-if="location.photo && location.url && progress > 0.5" :location="location" class="absolute z-20 top-4 right-4" />
+    <transition name="scale">
+      <LocationSocialButton v-if="location.photo && location.url && progress > 0.5" :location="location" class="absolute z-20 top-4 right-4" />
+    </transition>
 
     <ProviderBanner
       v-if="progress > 0 && location.hasBottomBanner" :location="location"
@@ -83,3 +85,26 @@ function arrayEquals(arrA: string[], arrB: string[]): boolean {
     />
   </div>
 </template>
+
+<style scoped>
+.scale-enter-active {
+  animation: icon-in 200ms ease-out;
+}
+
+.scale-leave-active {
+  animation: icon-in 150ms ease-in reverse;
+  opacity: 0;
+}
+
+@keyframes icon-in {
+  0% {
+    transform: scale(0.75);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+</style>
