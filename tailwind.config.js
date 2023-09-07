@@ -21,9 +21,6 @@ module.exports = {
         4.5: '18px',
         6.5: '26px',
       },
-      height: {
-        screen: ['100dvh', '100vh'],
-      },
       overflow: {
         initial: 'initial',
       },
