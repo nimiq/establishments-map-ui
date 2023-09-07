@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type PropType, nextTick, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import type { Location } from 'types'
+import { type Location, Theme } from 'types'
 import { useLocations } from '@/stores/locations'
 import SheetModal from '@/components/atoms/SheetModal.vue'
 import Card from '@/components/elements/Card.vue'
@@ -114,6 +114,16 @@ watch(cards, (newCards, oldCards) => {
         :initial-gap-to-screen="INITIAL_GAP_TO_SCREEN" class="relative w-full bg-white rounded-t-lg" :progress="progress"
         @update:progress="progress = $event" @close-list="() => $emit('closeList')"
       >
+        <template #dragger>
+          <div class="relative">
+            <hr
+              class="absolute inset-x-0 z-10 w-32 h-1 mx-auto mt-2 ml-auto border-0 rounded-full" :class="[
+                { 'mt-3': progress === 1 },
+                [location.bgFullCard && location.theme === Theme.Dark ? 'bg-white/30 mix-blend-lighten' : 'bg-white mix-blend-darken'],
+              ]"
+            >
+          </div>
+        </template>
         <Card :location="location" :progress="progress" />
       </SheetModal>
     </li>

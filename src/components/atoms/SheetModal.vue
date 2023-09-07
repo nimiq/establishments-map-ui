@@ -175,16 +175,7 @@ onBeforeUnmount(() => {
     ref="container" class="absolute h-full touch-pan-x sheet-transition will-change-auto min-h-fit" :style="style"
     @pointerdown="onStart" @pointermove="onMove" @pointerup="onEnd" @pointercancel="onCancel"
   >
-    <slot name="dragger">
-      <div class="relative">
-        <hr
-          class="absolute inset-x-0 z-10 w-32 h-1 mx-auto mt-2 ml-auto border-0 rounded-full bg-black/20" :class="{
-            'bg-white mt-3': isOpen,
-            'mix-blend-darken': !isOpen,
-          }"
-        >
-      </div>
-    </slot>
+    <slot name="dragger" />
     <slot />
   </article>
 </template>
