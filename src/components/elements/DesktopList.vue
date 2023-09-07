@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 import type { Cluster, Location } from 'types'
 import BasicInfo from '@/components/elements/BasicInfo.vue'
 import CardBg from '@/components/elements/CardBg.vue'
+import IconCactusDesert from '@/components/icons/icon-cactus-desert.vue'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useLocations } from '@/stores/locations'
 
@@ -50,6 +51,7 @@ watch(selectedUuid, (uuid) => {
 
 <template>
   <DynamicScroller
+    v-if="locations.length || clusters.length"
     ref="scroller"
     key-field="uuid"
     :items="locations"
@@ -82,4 +84,10 @@ watch(selectedUuid, (uuid) => {
       </div>
     </template>
   </DynamicScroller>
+  <template v-else>
+    <div class="transition-[height] will-change-[height] flex flex-col items-center justify-center gap-6 px-16" :class="`${listIsShown ? 'h-[calc(100vh-10.5rem)]' : 'h-0'}`">
+      <IconCactusDesert />
+      <span class="text-base text-center text-space font-regular" :class="`${listIsShown ? '' : 'h-0'}`">{{ $t('Oops, no businesses around here') }}</span>
+    </div>
+  </template>
 </template>
