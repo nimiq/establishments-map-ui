@@ -133,4 +133,12 @@ function onClusterClick(center: Point, proposedZoom: number) {
       </PopoverPortal>
     </PopoverRoot>
   </CustomMarker>
+
+  <template v-if="zoom > 15">
+    <CustomMarker
+      v-for="({ position, e }) in [{ position: { lat: 10.455694, lng: -84.676981 }, e: '🦥' }, { position: { lat: 19.260062, lng: 98.904358 }, e: '🐘' }, { position: { lng: -73.528486, lat: 45.503334 }, e: '🦫' }]" :key="e" :options="{ position, anchorPoint: 'CENTER' }"
+    >
+      <div class="grid w-12 h-12 p-2 text-4xl bg-white rounded-full shadow aspect-square place-content-center" title="1 out of 3">{{ e }}</div>
+    </CustomMarker>
+  </template>
 </template>
