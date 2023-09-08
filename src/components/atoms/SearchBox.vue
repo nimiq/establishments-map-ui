@@ -185,7 +185,7 @@ function onListVisibilityChange(isVisible: boolean) {
             class="absolute z-40 overflow-auto text-base shadow-lg scroll-space focus:outline-none"
           >
             <div
-              v-if="AutocompleteStatus.WithResults !== status" class="relative px-4 py-2 cursor-default select-none" :class="{
+              v-if="AutocompleteStatus.WithResults !== status" class="relative px-4 py-2 text-center cursor-default select-none h-[100px]" :class="{
                 'text-space/80': bgCombobox === 'white',
                 'text-white/80': bgCombobox === 'space',
               }"
