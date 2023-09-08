@@ -91,7 +91,7 @@ function arrayEquals(arrA: string[], arrB: string[]): boolean {
       class="absolute max-desktop:w-screen -mt-9"
       :class="{ 'rounded-b-lg': progress < 1 || !isMobile }"
       :style="{
-        backgroundColor: !location.isAtm ? location.bg : 'transparent',
+        backgroundColor: !location.isAtm ? location.bg[0] : 'transparent',
         opacity: progress / 0.8,
         bottom: `-${(1 - progress) * 70}px`, // the height is 54, we add 16px to delay the animation
         left: `calc(${1 - progress} * var(--initial-gap-to-screen) * -1)`, // make the provider grow in a vertical line

@@ -48,7 +48,7 @@ export interface Location {
 
   // UI Options
   theme: Theme
-  bg: string
+  bg: [string /* primary color */, string | undefined /* Active for atm */]
 
   // Provider text
   providerLabel?: string

@@ -15,6 +15,7 @@ body {
   width: 0.5rem;
   height: 0.375rem;
   margin: 2px;
+  scrollbar-gutter: stable;
 }
 
 .scroll-space::-webkit-scrollbar-thumb {

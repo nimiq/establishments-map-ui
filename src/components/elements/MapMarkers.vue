@@ -68,7 +68,10 @@ function onClusterClick(center: Point, proposedZoom: number) {
 
   <DefineTemplate v-slot="{ location: { category, name, isAtm, bg, uuid } }">
     <div class="flex items-center gap-x-2 max-w-[176px] group/marker">
-      <div v-if="isAtm" class="grid w-8 h-8 text-white rounded-full shadow ring-white/40 ring-2 place-content-center" :style="`background: ${bg}`">
+      <div
+        v-if="isAtm" class="grid w-8 h-8 text-white rounded-full shadow ring-white/40 ring-2 place-content-center bg-[--bg-1] hocus:bg-[--bg-2] transition-colors"
+        :style="{ '--bg-1': bg[0], '--bg-2': bg[1] }"
+      >
         {{ $t('ATM') }}
       </div>
       <div
@@ -114,13 +117,13 @@ function onClusterClick(center: Point, proposedZoom: number) {
       <PopoverPortal>
         <PopoverContent side="right" :side-offset="5" class="rounded-lg shadow">
           <Card :location="location" :progress="1" :class="location.photo ? 'max-w-xs' : 'max-w-sm'" />
-          <PopoverArrow class="w-4 h-2" :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg) : 'white'}`" />
+          <PopoverArrow class="w-4 h-2" :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg[0]) : 'white'}`" />
 
           <!-- TODO Once this is fixed https://github.com/radix-vue/radix-vue/issues/353 use custom arrow -->
           <!-- <PopoverArrow as-child>
             <svg
               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 10" class="relative h-3 w-max left-2"
-              :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg) : 'white'}`"
+              :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg[0]) : 'white'}`"
             >
               <path
                 fill="currentColor"

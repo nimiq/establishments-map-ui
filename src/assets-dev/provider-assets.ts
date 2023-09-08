@@ -19,17 +19,17 @@ const i18nKeyPassThrough = {
 // in i18n-t in ProviderBanner.
 export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'theme' | 'providerLabel' | 'providerTooltip' | 'providerTooltipCta'>> = {
   [Provider.DefaultShop]: {
-    bg: 'white',
+    bg: ['white', undefined],
     theme: Theme.Light,
 
   },
   [Provider.DefaultAtm]: {
     theme: Theme.Dark,
-    bg: 'radial-gradient(100% 100% at 100% 100%, #4D4C96 0%, #5F4B8B 100%)',
+    bg: ['radial-gradient(100% 100% at 100% 100%, #4D4C96 0%, #5F4B8B 100%)', 'radial-gradient(100% 100% at 100% 100%, hsl(241, 33%, 41%) 0%, hsl(259, 30%, 39%) 100%)'],
   },
   [Provider.GoCrypto]: {
     theme: Theme.Light,
-    bg: '#F0BF4C',
+    bg: ['#F0BF4C', undefined],
     get providerLabel() {
       const i18n = i18nKeyPassThrough
       return i18n.t('Powered by {provider}')
@@ -41,7 +41,7 @@ export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'theme' | '
   },
   [Provider.Kurant]: {
     theme: Theme.Dark,
-    bg: '#A92E19',
+    bg: ['#A92E19', 'hsl(9, 74%, 35%)'],
     get providerLabel() {
       const i18n = i18nKeyPassThrough
       return i18n.t('Register with {provider}')
@@ -52,7 +52,7 @@ export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'theme' | '
     providerTooltipCta: 'https://kurant.net',
   },
   [Provider.Bluecode]: {
-    bg: '#004899',
+    bg: ['#004899', undefined],
     theme: Theme.Dark,
     get providerLabel() {
       const i18n = i18nKeyPassThrough
@@ -64,7 +64,7 @@ export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'theme' | '
     providerTooltipCta: 'https://bluecode.com',
   },
   [Provider.CryptopaymentLink]: {
-    bg: '#5C6CFF',
+    bg: ['#5C6CFF', undefined],
     theme: Theme.Dark,
     get providerLabel() {
       const i18n = i18nKeyPassThrough
@@ -76,7 +76,7 @@ export const providersAssets: Record<Provider, Pick<Location, 'bg' | 'theme' | '
     providerTooltipCta: 'https://cplink.com',
   },
   [Provider.Edenia]: {
-    bg: '#00B2B0',
+    bg: ['#00B2B0', 'hsl(179, 100%, 32%)'],
     theme: Theme.Dark,
     get providerLabel() {
       const i18n = i18nKeyPassThrough

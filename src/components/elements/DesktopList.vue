@@ -69,8 +69,11 @@ watch(selectedUuid, (uuid) => {
         :active="active"
       >
         <button
-          class="w-full px-6 py-5 text-left"
-          :style="`background: ${location.isAtm && location.isDark ? location.bg : 'white'}`"
+          class="w-full px-6 py-5 text-left bg-[--bg-1] hocus:bg-[--bg-2] transition-colors"
+          :style="{
+            '--bg-1': location.isAtm && location.isDark ? location.bg[0] : 'white',
+            '--bg-2': location.isAtm && location.isDark && location.bg[1] ? location.bg[1] : '#f4f4f6',
+          }"
           @click="onLocationClicked(location)"
         >
           <CardBg v-if="location.isAtm" :location="location" :with-gradient="false" class="translate-y-1" />
