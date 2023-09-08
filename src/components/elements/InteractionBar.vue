@@ -59,7 +59,7 @@ const showHint = computed(() => shouldShowSearchBoxHint.value && useBreakpoints(
   </header>
 
   <!-- We need to hardcode the height, otherwise the desktop list will break -->
-  <p v-if="showHint" class="p-5 text-xs text-space/60" style="height: 88px">
+  <p v-if="showHint" class="p-5 text-xs border-t text-space/60 border-space/10" style="height: 88px">
     {{ $t('Enter country, city or zip code to discover locations that accept Bitcoin, Nimiq and other crypto-currencies.') }}
   </p>
 </template>
