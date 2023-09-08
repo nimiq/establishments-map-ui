@@ -12,7 +12,7 @@ import { useCluster } from '@/stores/cluster'
 import { useLocations } from '@/stores/locations'
 
 const { firstLocationsLoaded } = storeToRefs(useApp())
-const { singlesInView } = storeToRefs(useCluster())
+const { singlesInView, clustersInView } = storeToRefs(useCluster())
 
 const isListShown = ref(false)
 
@@ -46,12 +46,15 @@ watch(selectedUuid, (uuid) => {
       enter-from-class="translate-y-[110%] opacity-0" leave-to-class="translate-y-[110%] opacity-0"
       enter-active-class="transition duration-300" leave-active-class="transition duration-300"
     >
-      <template v-if="singlesInView.length > 0">
+      <template v-if="singlesInView.length > 0 || !firstLocationsLoaded">
         <MobileList v-if="isListShown" :locations="singlesInView" class="absolute bottom-0 w-full" @close-list="isListShown = false; selectedUuid = undefined;" />
         <Button v-else :first-locations-loaded="firstLocationsLoaded" bg-color="white" :loading="!firstLocationsLoaded" class="absolute -translate-x-1/2 bottom-6 left-1/2" @click="isListShown = true">
           <template #label>{{ $t(!firstLocationsLoaded ? 'Loading' : 'Show list') }}</template>
         </Button>
       </template>
+      <Button v-else-if="clustersInView.length === 0" bg-color="white" class="absolute -translate-x-1/2 bottom-6 left-1/2 [&>span]:text-pumpkin" as="label">
+        <template #label>{{ $t('Oops, no businesses around here') }}</template>
+      </Button>
     </transition>
   </div>
 </template>
