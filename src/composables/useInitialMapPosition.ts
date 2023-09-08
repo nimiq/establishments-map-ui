@@ -18,9 +18,10 @@ export async function useInitialMapPosition(p: RouteParams, query: LocationQuery
     const location = await (await import('@/stores/locations')).useLocations().getLocationByUuid(query.uuid as string /* UUID already valid. See router.ts */)
     if (location) {
       // We set the locations in the store, and then we show the card
+      // https://github.com/nimiq/crypto-map/commit/45b8cdf2e7aabba6039d69043190b8357950736d#r126800610
       (await import ('@/stores/cluster')).useCluster().singles = [location]
       const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-      await sleep(100) // We need to wait for the marker to be rendered in the right position to avoid CLS
+      await sleep(500) // We need to wait for the marker to be rendered in the right position to avoid CLS
       ;(document.querySelector(`[data-trigger-uuid="${query.uuid}"]`) as HTMLElement)?.click()
     }
     else {
