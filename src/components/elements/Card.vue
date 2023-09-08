@@ -51,6 +51,7 @@ function arrayEquals(arrA: string[], arrB: string[]): boolean {
                     country: location.address.split(',').at(-1),
                     providedBy: $tc('Provided by {provider}', location.provider),
                   })"
+        draggable="false"
         @load="($event.target as HTMLImageElement).classList.remove('animate-pulse')"
       >
     </div>
