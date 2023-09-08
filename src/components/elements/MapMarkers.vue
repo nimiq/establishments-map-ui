@@ -59,6 +59,7 @@ function onClusterClick(center: Point, proposedZoom: number) {
   <CustomMarker
     v-for="({ lat, lng, count, expansionZoom, id }) in clusters" :key="id"
     :options="{ position: { lat, lng }, anchorPoint: 'CENTER' }"
+    data-custom-marker
   >
     <div class="grid text-sm font-bold text-white transition-colors rounded-full shadow cursor-pointer aspect-square place-content-center bg-space hover:bg-[#35395A] focus:bg-[#35395A] ring-white/20 ring-2 ring-offset-1 ring-offset-white/40" :style="`width: clamp(24px, ${0.24 * count + 24}px, 48px); font-size: clamp(14px, ${0.14 * count + 4}px, 18px)`" @click="onClusterClick({ lat, lng }, expansionZoom)">
       {{ count < 100 ? count : '99+' }}
@@ -98,6 +99,7 @@ function onClusterClick(center: Point, proposedZoom: number) {
   <CustomMarker
     v-for="location in singles" :key="location.uuid"
     :options="{ position: { lng: location.lng, lat: location.lat }, anchorPoint: showSingleName ? 'LEFT_CENTER' : 'CENTER' }"
+    data-custom-marker
   >
     <ReuseTemplate v-if="isMobile" :location="location" @click="selectedUuid = location.uuid" />
 

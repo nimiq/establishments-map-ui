@@ -2,9 +2,11 @@
 import { type PropType, nextTick, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { type Location, Theme } from 'types'
+import { useEventListener } from '@vueuse/core'
 import { useLocations } from '@/stores/locations'
 import SheetModal from '@/components/atoms/SheetModal.vue'
 import Card from '@/components/elements/Card.vue'
+import { useMap } from '@/stores/map'
 
 defineProps({
   locations: {
@@ -13,7 +15,7 @@ defineProps({
   },
 })
 
-defineEmits({
+const emit = defineEmits({
   closeList: () => true,
 })
 
@@ -93,6 +95,12 @@ watch(cards, (newCards, oldCards) => {
   if (newCards && newCards.length > 0)
     newCards.forEach(card => observer.observe(card))
 }, { deep: true })
+
+const { mapInstance } = storeToRefs(useMap())
+useEventListener(mapInstance.value?.$el, 'click', (event: MouseEvent) => {
+  if (!(event.target as HTMLElement).closest('[data-custom-marker]'))
+    emit('closeList')
+})
 </script>
 
 <template>
@@ -103,6 +111,7 @@ watch(cards, (newCards, oldCards) => {
   >
     <li
       v-for="location in locations" :key="location.uuid" ref="cards"
+
       class="relative shrink-0 snap-center first:pl-[var(--spacing)] last:pr-[var(--spacing)] pointer-events-auto"
       :data-card-uuid="location.uuid"
     >
