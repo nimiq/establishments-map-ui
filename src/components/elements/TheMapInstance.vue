@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { GoogleMap } from 'vue3-google-map'
 import { useMap } from '@/stores/map'
-import { detectLanguage } from '@/i18n/i18n-setup'
+import { i18n } from '@/i18n/i18n-setup'
 import { useInitialMapPosition } from '@/composables/useInitialMapPosition'
 import MapMarkers from '@/components/elements/MapMarkers.vue'
 
@@ -42,7 +42,7 @@ const mapGestureBehaviour
 
 <template>
   <GoogleMap
-    ref="mapInstance" :language="detectLanguage()" disable-default-ui :gesture-handling="mapGestureBehaviour" :keyboard-shortcuts="false"
+    ref="mapInstance" :language="i18n.locale" disable-default-ui :gesture-handling="mapGestureBehaviour" :keyboard-shortcuts="false"
     class="w-full h-full" :styles="googleMapStyles" :max-zoom="21" :min-zoom="3" :restriction="restriction" :clickable-icons="false"
     @idle.once="setInitialMapPosition"
   >

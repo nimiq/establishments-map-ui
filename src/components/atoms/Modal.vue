@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Dialog, DialogDescription, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { ref, useSlots } from 'vue'
+import { useBreakpoints } from '@vueuse/core'
+import { screens } from 'tailwindcss-nimiq-theme'
 import CrossIcon from '@/components/icons/icon-cross.vue'
 
 const emit = defineEmits({
@@ -9,6 +11,7 @@ const emit = defineEmits({
 })
 
 const isOpen = ref(false)
+const isMobile = useBreakpoints(screens).smaller('md')
 
 function closeModal() {
   isOpen.value = false
@@ -38,11 +41,15 @@ function hasSlot(slot: 'pre-title' | 'title') {
       </TransitionChild>
 
       <div class="fixed inset-x-0 bottom-0 overflow-y-auto md:inset-0">
-        <div class="flex items-center justify-center min-h-full text-center">
+        <div class="flex items-center justify-center min-h-full overflow-hidden text-center">
           <TransitionChild
-            as="template" enter="duration-300 ease-out" enter-from="opacity-0 scale-95"
-            enter-to="opacity-100 scale-100" leave="duration-200 ease-in" leave-from="opacity-100 scale-100"
-            leave-to="opacity-0 scale-95"
+            as="template"
+            enter="duration-300 ease-out"
+            leave="duration-200 ease-in"
+            :enter-from="`${isMobile ? 'translate-y-full' : ''} opacity-0 scale-95`"
+            :enter-to="`${isMobile ? 'translate-y-0' : ''} opacity-100 scale-100`"
+            :leave-from="`${isMobile ? 'translate-y-0' : ''} opacity-100 scale-100`"
+            :leave-to="`${isMobile ? 'translate-y-full' : ''} opacity-0 scale-95`"
           >
             <DialogPanel
               class="relative w-full px-6 py-8 text-left align-middle transition-all transform bg-white rounded-t-lg shadow-lg md:px-10 md:rounded-lg md:max-w-lg"
