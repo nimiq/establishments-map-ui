@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 import Button from '@/components/atoms/Button.vue'
 import Controls from '@/components/elements/Controls.vue'
 import FilterModal from '@/components/elements/FilterModal.vue'
@@ -11,10 +11,8 @@ import { useApp } from '@/stores/app'
 import { useCluster } from '@/stores/cluster'
 import { useLocations } from '@/stores/locations'
 
-const { firstLocationsLoaded } = storeToRefs(useApp())
+const { firstLocationsLoaded, isListShown } = storeToRefs(useApp())
 const { singlesInView, clustersInView } = storeToRefs(useCluster())
-
-const isListShown = ref(false)
 
 // TODO: Only show list when user searched for something
 // watch(firstLocationsLoaded, () => {

@@ -6,6 +6,7 @@ import { useCluster } from './cluster'
 export const useApp = defineStore('app', () => {
   // We just track the first load, so we can show a loading indicator
   const firstLocationsLoaded = ref(false)
+  const isListShown = ref(false)
 
   const { singles, clusters } = storeToRefs(useCluster())
 
@@ -23,6 +24,7 @@ export const useApp = defineStore('app', () => {
 
   return {
     firstLocationsLoaded,
+    isListShown,
     shouldShowSearchBoxHint,
     hideSearchBoxHint,
   }

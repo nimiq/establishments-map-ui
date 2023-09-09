@@ -4,12 +4,13 @@ import { storeToRefs } from 'pinia'
 import { PopoverAnchor, PopoverArrow, PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'radix-vue'
 import { screens } from 'tailwindcss-nimiq-theme'
 import type { Location, Point } from 'types'
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { CustomMarker } from 'vue3-google-map'
 import { useMap } from '@/stores/map'
 import { useLocations } from '@/stores/locations'
 import { useCluster } from '@/stores/cluster'
 import Card from '@/components/elements/Card.vue'
+import { useApp } from '@/stores/app'
 
 // TODO Import this from radix-vue. We need to import it lazily so we don't load it in the mobile version
 // const PopoverArrow = defineAsyncComponent(() => import('radix-vue'))
@@ -22,6 +23,7 @@ const { clusters, singles } = storeToRefs(useCluster())
 
 const { setPosition } = useMap()
 const { zoom } = storeToRefs(useMap())
+const { isListShown } = storeToRefs(useApp())
 
 const showSingleName = computed(() => zoom.value >= 11)
 const showCategoryIcon = computed(() => zoom.value >= 13)
@@ -52,6 +54,32 @@ function onClusterClick(center: Point, proposedZoom: number) {
   // To make it more fluid if zoom is lower than 13, the minimum zoom change must be 3
   const newZoom = proposedZoom < 13 ? Math.max(proposedZoom, zoom.value + 3) : proposedZoom
   setPosition({ center, zoom: newZoom })
+}
+
+const popoverKey = ref(0)
+function handlePopoverOpen(isOpen: boolean, location: Location) {
+  if (!isOpen) {
+    selectedUuid.value = undefined
+    return
+  }
+  // Find element by uuid and scroll to it
+  const element = document.querySelector(`[data-trigger-uuid="${location.uuid}"]`)
+  // Get distance from marker to left side of the screen
+  const distance = element?.getBoundingClientRect().left
+  // If < 368px (width of the locations list), move the map to the marker
+  if (distance && distance < 368 && isListShown.value) {
+    popoverKey.value = 0
+    useMap().setPosition({
+      center: { lat: location.lat, lng: location.lng },
+      zoom: zoom.value,
+    }, true)
+    const stop = setInterval(() => {
+      popoverKey.value += 1
+      if (popoverKey.value === 50)
+        clearInterval(stop)
+    }, 10)
+  }
+  selectedUuid.value = location.uuid
 }
 </script>
 
@@ -105,7 +133,7 @@ function onClusterClick(center: Point, proposedZoom: number) {
 
     <PopoverRoot
       v-else
-      @update:open="isOpen => selectedUuid = isOpen ? location.uuid : undefined"
+      @update:open="isOpen => handlePopoverOpen(isOpen, location)"
     >
       <PopoverAnchor
         class="absolute h-full pointer-events-none -left-1"
@@ -114,7 +142,7 @@ function onClusterClick(center: Point, proposedZoom: number) {
       <PopoverTrigger :aria-label="$t('See location details')" class="cursor-pointer" :data-trigger-uuid="location.uuid">
         <ReuseTemplate :location="location" class="transition-shadow rounded-sm" />
       </PopoverTrigger>
-      <PopoverPortal>
+      <PopoverPortal :key="popoverKey">
         <PopoverContent side="right" :side-offset="5" class="rounded-lg shadow" @open-auto-focus.prevent>
           <Card :location="location" :progress="1" :class="location.photo ? 'max-w-xs' : 'max-w-sm'" />
           <PopoverArrow class="w-4 h-2" :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg[0]) : 'white'}`" />

@@ -67,13 +67,18 @@ export const useMap = defineStore('map', () => {
   const increaseZoom = () => map.value?.setZoom(zoom.value + 1)
   const decreaseZoom = () => map.value?.setZoom(zoom.value - 1)
 
-  function setPosition(p?: MapPosition | EstimatedMapPosition | google.maps.LatLngBounds) {
+  function setPosition(p?: MapPosition | EstimatedMapPosition | google.maps.LatLngBounds, smooth = false) {
     if (!map.value || !p)
       return
 
     if ('zoom' in p) {
-      map.value?.setCenter(p.center)
-      map.value?.setZoom(p.zoom)
+      if (smooth) {
+        map.value?.panTo(p.center)
+      }
+      else {
+        map.value?.setCenter(p.center)
+        map.value?.setZoom(p.zoom)
+      }
     }
     else if ('accuracy' in p) {
       const circle = new google.maps.Circle({
