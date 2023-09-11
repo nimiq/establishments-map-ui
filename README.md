@@ -13,9 +13,9 @@ Explore the world and find places to spend your crypto.
 <p>
 
 <p align="center">
-<a href="https://map.nimiq.com/" target="__blank"><img src="https://img.shields.io/badge/Locations-2000-blue?style=flat&colorA=002438&colorB=41c399" alt="Locations"></a>
-<a href="https://map.nimiq.com/" target="__blank"><img src="https://img.shields.io/badge/Cryptos-12-blue?style=flat&colorA=002438&colorB=41c399" alt="Cryptos"></a>
-<a href="https://map.nimiq.com/" target="__blank"><img src="https://img.shields.io/badge/Providers-6-blue?style=flat&colorA=002438&colorB=41c399" alt="Providers"></a>
+<a href="https://map.nimiq.com/" target="__blank"><img src="https://img.shields.io/badge/Locations-2184-blue?style=flat&colorA=002438&colorB=41c399" alt="Locations"></a>
+<a href="https://map.nimiq.com/" target="__blank"><img src="https://img.shields.io/badge/Cryptos-10-blue?style=flat&colorA=002438&colorB=41c399" alt="Cryptos"></a>
+<a href="https://map.nimiq.com/" target="__blank"><img src="https://img.shields.io/badge/Providers-7-blue?style=flat&colorA=002438&colorB=41c399" alt="Providers"></a>
 </p>
 
 <p align="center">
