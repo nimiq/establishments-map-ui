@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia'
-import { computed, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { watchOnce } from '@vueuse/core'
 import { useCluster } from './cluster'
 
@@ -8,7 +8,13 @@ export const useApp = defineStore('app', () => {
   const firstLocationsLoaded = ref(false)
   const isListShown = ref(false)
   const mapLoaded = ref(false)
-  const showSplashScreen = computed(() => !mapLoaded.value || !firstLocationsLoaded.value)
+
+  const until = Date.now() + 200 // Show the splash screen at least for 300ms
+  const showSplashScreen = ref(true)
+  watch([mapLoaded, firstLocationsLoaded], () => {
+    if (mapLoaded.value && firstLocationsLoaded.value)
+      setTimeout(() => showSplashScreen.value = false, Math.max(0, until - Date.now()))
+  })
 
   const { singles, clusters } = storeToRefs(useCluster())
 
