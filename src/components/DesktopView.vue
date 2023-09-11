@@ -7,11 +7,10 @@ import DesktopList from '@/components/elements/DesktopList.vue'
 import FilterModal from '@/components/elements/FilterModal.vue'
 import InteractionBar from '@/components/elements/InteractionBar.vue'
 import TheMapInstance from '@/components/elements/TheMapInstance.vue'
-import IconChevronDown from '@/components/icons/icon-chevron-down.vue'
 import { useApp } from '@/stores/app'
 import { useCluster } from '@/stores/cluster'
 
-const { firstLocationsLoaded, isListShown } = storeToRefs(useApp())
+const { isListShown } = storeToRefs(useApp())
 const { singlesInView, clustersInView } = storeToRefs(useCluster())
 
 const openSuggestions = ref(false)
@@ -31,11 +30,8 @@ const openSuggestions = ref(false)
       <InteractionBar @open="openSuggestions = $event" />
       <DesktopList :singles="singlesInView" :clusters="clustersInView" :list-is-shown="isListShown" />
     </div>
-    <Button bg-color="white" :loading="!firstLocationsLoaded" class="mt-6 shadow" @click="isListShown = !isListShown">
-      <template v-if="firstLocationsLoaded" #icon>
-        <IconChevronDown :class="{ 'rotate-180': isListShown }" class="transition-transform delay-500" />
-      </template>
-      <template #label>{{ $t(!firstLocationsLoaded ? 'Loading' : isListShown ? 'Hide list' : 'Show list') }}</template>
+    <Button bg-color="white" class="mt-6 shadow" @click="isListShown = !isListShown">
+      <template #label>{{ $t(isListShown ? 'Hide list' : 'Show list') }}</template>
     </Button>
   </aside>
   <FilterModal class="absolute top-6 right-6" />

@@ -11,7 +11,7 @@ import { useApp } from '@/stores/app'
 import { useCluster } from '@/stores/cluster'
 import { useLocations } from '@/stores/locations'
 
-const { firstLocationsLoaded, isListShown } = storeToRefs(useApp())
+const { isListShown } = storeToRefs(useApp())
 const { singlesInView, clustersInView } = storeToRefs(useCluster())
 
 // TODO: Only show list when user searched for something
@@ -44,10 +44,7 @@ watch(selectedUuid, (uuid) => {
       enter-from-class="translate-y-[110%] opacity-0" leave-to-class="translate-y-[110%] opacity-0"
       enter-active-class="transition duration-300" leave-active-class="transition duration-300"
     >
-      <Button v-if="!firstLocationsLoaded" bg-color="white" loading class="absolute -translate-x-1/2 shadow bottom-6 left-1/2" as="label">
-        <template #label>{{ $t('Loading') }}</template>
-      </Button>
-      <template v-else-if="singlesInView.length > 0">
+      <template v-if="singlesInView.length > 0">
         <MobileList v-if="isListShown" :locations="singlesInView" class="absolute bottom-0 w-full" @close-list="isListShown = false; selectedUuid = undefined;" />
         <Button v-else bg-color="white" class="absolute -translate-x-1/2 shadow bottom-6 left-1/2" @click="isListShown = true">
           <template #label>{{ $t('Show list') }}</template>

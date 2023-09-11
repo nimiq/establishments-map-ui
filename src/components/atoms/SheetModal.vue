@@ -136,12 +136,12 @@ function open(smooth = false) {
   if (smooth) {
     const source = ref(0)
     const output = useTransition(source, {
-      duration: 500,
+      duration: 300,
       transition: TransitionPresets.easeOutQuart,
     })
     source.value = 1
     const stop = watch(output, () => {
-      emit('update:progress', output.value / 1)
+      emit('update:progress', output.value)
       if (output.value >= 1) {
         source.value = 0
         stop()

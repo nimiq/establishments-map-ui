@@ -48,13 +48,13 @@ const isDark = useDark()
 </script>
 
 <template>
-  <transition leave-active-class="ease-in duration-50" leave-from-class="opacity-100" leave-to-class="opacity-0">
+  <transition leave-active-class="duration-150 ease-in" leave-from-class="opacity-100" leave-to-class="opacity-0">
     <div
       v-if="showSplashScreen"
       class="absolute inset-0 grid supports-[height:100dvh]:h-[100dvh] h-screen px-12 z-100 place-content-center"
       :class="isDark ? 'bg-space' : 'bg-white'"
     >
-      <img :src="`logo-horizontal-${isDark ? 'dark' : 'light'}.svg`" loading="eager" :alt="$t('Crypto Map logo')">
+      <img :src="`logo-horizontal-${isDark ? 'dark' : 'light'}.svg`" loading="eager" :alt="$t('Crypto Map logo')" class="animate-fade">
     </div>
   </transition>
 
