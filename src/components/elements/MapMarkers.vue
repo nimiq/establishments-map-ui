@@ -89,7 +89,7 @@ function handlePopoverOpen(isOpen: boolean, location: Location) {
     :options="{ position: { lat, lng }, anchorPoint: 'CENTER' }"
     data-custom-marker
   >
-    <div class="grid text-sm font-bold text-white transition-colors rounded-full shadow cursor-pointer aspect-square place-content-center bg-space hover:bg-[#35395A] focus:bg-[#35395A] ring-white/20 ring-2 ring-offset-1 ring-offset-white/40" :style="`width: clamp(24px, ${0.24 * count + 24}px, 48px); font-size: clamp(14px, ${0.14 * count + 4}px, 18px)`" @click="onClusterClick({ lat, lng }, expansionZoom)">
+    <div class="grid text-sm font-bold text-white transition-colors rounded-full shadow cursor-pointer aspect-square place-content-center bg-space hover:bg-[#35395A] focus:bg-[#35395A] ring-white/20 ring-2 ring-offset-1 ring-offset-white/40 max-desktop:clickable" :style="`width: clamp(24px, ${0.24 * count + 24}px, 48px); font-size: clamp(14px, ${0.14 * count + 4}px, 18px)`" @click="onClusterClick({ lat, lng }, expansionZoom)">
       {{ count < 100 ? count : '99+' }}
     </div>
   </CustomMarker>
@@ -97,25 +97,25 @@ function handlePopoverOpen(isOpen: boolean, location: Location) {
   <DefineTemplate v-slot="{ location: { category, name, isAtm, bg, uuid } }">
     <div class="flex items-center gap-x-2 max-w-[176px] group/marker">
       <div
-        v-if="isAtm" class="grid w-8 h-8 text-white rounded-full shadow ring-white/40 ring-2 place-content-center bg-[--bg-1] hocus:bg-[--bg-2] transition-colors"
+        v-if="isAtm" class="grid w-8 h-8 text-white rounded-full shadow ring-white/40 ring-2 place-content-center bg-[--bg-1] hocus:bg-[--bg-2] transition-colors max-desktop:clickable"
         :style="{ '--bg-1': bg[0], '--bg-2': bg[1] }"
       >
         {{ $t('ATM') }}
       </div>
       <div
         v-else-if="showCategoryIcon"
-        class="grid w-8 h-8 text-white transition-colors rounded-full shadow ring-white/40 ring-2 place-content-center" :class="uuid === selectedUuid ? 'bg-sky' : 'bg-space group-hover/marker:bg-[#494d6c] group-focus/marker:bg-[#494d6c]'"
+        class="grid w-8 h-8 text-white transition-colors rounded-full shadow ring-white/40 ring-2 place-content-center max-desktop:clickable" :class="uuid === selectedUuid ? 'bg-sky' : 'bg-space group-hover/marker:bg-[#494d6c] group-focus/marker:bg-[#494d6c]'"
       >
         <CategoryIcon :category="category" class="w-7" />
       </div>
       <div
-        v-else class="grid w-3 h-3 text-sm font-bold text-white transition-colors rounded-full shadow ring-white/40 ring-2 place-content-center"
+        v-else class="grid w-3 h-3 text-sm font-bold text-white transition-colors rounded-full shadow ring-white/40 ring-2 place-content-center clickable"
         :class="uuid === selectedUuid ? 'bg-sky' : 'bg-space group-hover/marker:bg-[#494d6c] group-focus/marker:bg-[#494d6c]'"
       />
       <!-- <PopoverAnchor class="mx-1" /> -->
       <span
         v-if="!isAtm && showSingleName"
-        class="flex-1 text-base font-semibold leading-none text-left transition-[color,-webkit-text-stroke] select-none [-webkit-text-stroke:_3px_white] relative before:content-[attr(data-outline)] before:absolute before:[-webkit-text-stroke:0]"
+        class="flex-1 text-base font-semibold leading-none text-left transition-[color,-webkit-text-stroke] select-none [-webkit-text-stroke:_3px_white] relative before:content-[attr(data-outline)] before:absolute before:[-webkit-text-stroke:0] max-desktop:clickable"
         :class="[uuid === selectedUuid ? 'text-sky' : 'text-space group-hover/marker:text-space/80 group-focus/marker:bg-[#35395A]', { invisible: !isMobile && uuid === selectedUuid }]"
         :data-outline="name"
       >
