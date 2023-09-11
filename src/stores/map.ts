@@ -39,6 +39,8 @@ export const useMap = defineStore('map', () => {
   }
 
   function onBoundsChanged() {
+    if (!map.value || !map.value.getBounds())
+      return
     boundingBox.value = boundsToBox(map.value!.getBounds())
     updateRouteDebouncer()
 

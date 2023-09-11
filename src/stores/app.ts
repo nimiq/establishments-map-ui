@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { watchOnce } from '@vueuse/core'
 import { useCluster } from './cluster'
 
@@ -7,6 +7,8 @@ export const useApp = defineStore('app', () => {
   // We just track the first load, so we can show a loading indicator
   const firstLocationsLoaded = ref(false)
   const isListShown = ref(false)
+  const mapLoaded = ref(false)
+  const showSplashScreen = computed(() => !mapLoaded.value || !firstLocationsLoaded.value)
 
   const { singles, clusters } = storeToRefs(useCluster())
 
@@ -27,5 +29,7 @@ export const useApp = defineStore('app', () => {
     isListShown,
     shouldShowSearchBoxHint,
     hideSearchBoxHint,
+    mapLoaded,
+    showSplashScreen,
   }
 })

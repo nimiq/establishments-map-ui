@@ -47,7 +47,7 @@ export const useCluster = defineStore('cluster', () => {
     const item: LocationClusterSet | undefined = memoized.get(key)
 
     // If the item exists and the bounding box is within the memoized area, we can reuse the memoized item and there is no need to re-cluster
-    const needsToUpdate = !item || !bBoxIsWithinArea(boundingBox.value!, item.memoizedArea)
+    const needsToUpdate = !item || !boundingBox.value || !bBoxIsWithinArea(boundingBox.value, item.memoizedArea)
 
     // Update the memoized item if it exists
     if (!needsToUpdate) {
