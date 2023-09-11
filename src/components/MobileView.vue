@@ -30,7 +30,7 @@ watch(selectedUuid, (uuid) => {
 <template>
   <div class="flex flex-col supports-[height:100dvh]:h-[100dvh] h-screen">
     <InteractionBar />
-    <TheMapInstance class="relative flex-1" />
+    <TheMapInstance class="flex-1" />
     <!-- Shadow -->
     <!-- <div
       :class="{ 'translate-y-0 delay-100 duration-500 opacity-20': isListShown, 'translate-y-full duration-500 opacity-0': !isListShown }"

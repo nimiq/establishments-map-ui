@@ -18,7 +18,7 @@ const openSuggestions = ref(false)
 </script>
 
 <template>
-  <TheMapInstance class="relative flex flex-col w-screen h-screen" />
+  <TheMapInstance class="w-screen h-screen" />
   <!-- Shadow -->
   <div
     :class="{ 'translate-x-0 delay-100 duration-500 opacity-20': isListShown, '-translate-x-full duration-1000 delay-75 opacity-0': !isListShown }"

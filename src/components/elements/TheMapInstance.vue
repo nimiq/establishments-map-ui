@@ -2,13 +2,17 @@
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { GoogleMap } from 'vue3-google-map'
-import { computed } from 'vue'
+import { useDark } from '@vueuse/core'
 import { useMap } from '@/stores/map'
 import { i18n } from '@/i18n/i18n-setup'
 import { useInitialMapPosition } from '@/composables/useInitialMapPosition'
 import MapMarkers from '@/components/elements/MapMarkers.vue'
+import { useApp } from '@/stores/app'
+
+const GOOGLE_MAP_KEY = import.meta.env.VITE_GOOGLE_MAP_KEY
 
 const { params: initialParams } = useRoute()
+const { mapLoaded, showSplashScreen } = storeToRefs(useApp())
 const { query } = useRoute()
 const setInitialMapPosition = () => useInitialMapPosition(initialParams, query)
 
@@ -40,19 +44,24 @@ const mapGestureBehaviour
     ? gestureBehaviourParam as GestureBehaviour
     : 'greedy'
 
-const apiKey = computed(() => {
-  const apiKey = import.meta.env.VITE_GOOGLE_MAP_KEY
-  if (!apiKey)
-    throw new Error('Google Maps API key not found')
-  return apiKey
-})
+const isDark = useDark()
 </script>
 
 <template>
+  <transition leave-active-class="ease-in duration-50" leave-from-class="opacity-100" leave-to-class="opacity-0">
+    <div
+      v-if="showSplashScreen"
+      class="absolute inset-0 grid supports-[height:100dvh]:h-[100dvh] h-screen px-12 z-100 place-content-center"
+      :class="isDark ? 'bg-space' : 'bg-white'"
+    >
+      <img :src="`logo-horizontal-${isDark ? 'dark' : 'light'}.svg`" loading="eager" :alt="$t('Crypto Map logo')">
+    </div>
+  </transition>
+
   <GoogleMap
-    ref="mapInstance" :api-key="apiKey" :language="i18n.locale" disable-default-ui :gesture-handling="mapGestureBehaviour" :keyboard-shortcuts="false"
-    class="w-full h-full" :styles="googleMapStyles" :max-zoom="21" :min-zoom="3" :restriction="restriction" :clickable-icons="false"
-    @idle.once="setInitialMapPosition"
+    ref="mapInstance" v-bind="$attrs" :api-key="GOOGLE_MAP_KEY" :language="i18n.locale" disable-default-ui :gesture-handling="mapGestureBehaviour"
+    :keyboard-shortcuts="false" :styles="googleMapStyles" :max-zoom="21" :min-zoom="3" :restriction="restriction" :clickable-icons="false"
+    @idle.once="() => { mapLoaded = true; setInitialMapPosition() }"
   >
     <MapMarkers />
   </GoogleMap>
