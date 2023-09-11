@@ -77,7 +77,7 @@ export const useCluster = defineStore('cluster', () => {
 
   async function getClusterFromClient(): Promise<ComputedClusterSet> {
     const locations = await getLocations(boundingBox.value!)
-    return computeCluster(algorithm, locations, { boundingBox: boundingBox.value!, zoom: zoom.value })
+    return computeCluster(algorithm(80), locations, { boundingBox: boundingBox.value!, zoom: zoom.value })
   }
 
   async function getClusterFromDatabase(): Promise<ComputedClusterSet> {
