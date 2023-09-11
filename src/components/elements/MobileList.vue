@@ -205,3 +205,9 @@ if (isIOs) {
     </li>
   </ul>
 </template>
+
+<style scoped>
+ul::-webkit-scrollbar{
+  display: none;
+}
+</style>
