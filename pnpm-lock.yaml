@@ -60,8 +60,8 @@ dependencies:
     specifier: ^2.1.6
     version: 2.1.6(typescript@5.1.6)(vue@3.3.4)
   radix-vue:
-    specifier: ^0.1.30
-    version: 0.1.30(vue@3.3.4)
+    specifier: ^0.1.33
+    version: 0.1.33(vue@3.3.4)
   supercluster:
     specifier: ^8.0.1
     version: 8.0.1
@@ -4282,8 +4282,8 @@ packages:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
     dev: true
 
-  /radix-vue@0.1.30(vue@3.3.4):
-    resolution: {integrity: sha512-RS+etP0ePL3MhPsfmr/BCGviTtWSegOWEgfUxM4j8oeNm2kzj8sYC+3TbSm9WaaimgFUqiy123tJhvGgVrL+qw==}
+  /radix-vue@0.1.33(vue@3.3.4):
+    resolution: {integrity: sha512-2nwcjrXNXML//iOxUeqyh2bBXQtQt3Xy1NqM2oHZJTNNEaL2QnMjlSN51DXMzx3QB2uex2IwqA1cFTHbJ34tyw==}
     dependencies:
       '@floating-ui/dom': 1.5.1
       '@floating-ui/vue': 1.0.2(vue@3.3.4)
