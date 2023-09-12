@@ -101,79 +101,13 @@ useEventListener(mapInstance.value?.$el, 'click', (event: MouseEvent) => {
   if (!(event.target as HTMLElement).closest('[data-custom-marker]'))
     emit('closeList')
 })
-
-// Dynamically resize ul element when cards are extended to emulate `pointer-events:none` on iOS
-// and allow users to click in the area of an extended image-less card that would usually be covered
-// by the image.
-const isIOs = (
-  navigator.platform?.startsWith('iPhone')
-  || navigator.platform?.startsWith('iPod')
-  || navigator.platform?.startsWith('iPad')
-) || !!navigator.userAgent.match(/(iPhone|iPod|iPad)/g)
-
-// By default, on non-iOS devices and during scrolling, no max-height is set on the list
-const maxUlHeight = ref('unset')
-
-// Only run the whole shabang on iOS devices
-if (isIOs) {
-  let scrollendTimeout: number | undefined
-
-  function timeoutHandler() {
-    // If a card is scrolled to, we set the max-height of the list to the height of that card
-    if (selectedUuid.value) {
-      const currentCard = document.querySelector(`[data-card-uuid="${selectedUuid.value}"]`)
-      if (currentCard) {
-        const height = currentCard.getBoundingClientRect().height
-        maxUlHeight.value = `${height}px`
-      }
-    }
-
-    // Then reset the timeout variable, to not unnecessary clear expired timeouts
-    scrollendTimeout = undefined
-  }
-
-  function scrollHandler(event: Event) {
-    // As soon as scrolling starts, we unset the max-height to allow all cards to fully display
-    maxUlHeight.value = 'unset'
-
-    // If a timeout is currently running, we clear it
-    if (scrollendTimeout)
-      window.clearTimeout(scrollendTimeout)
-
-    // In any case, we start a new timeout to set the max-height after scrolling stops (this approach
-    // is necessary, as iOS does not support the `scrollend` event)
-    scrollendTimeout = window.setTimeout(timeoutHandler, 100)
-  }
-
-  // Only attach the scroll listener when the cards are extended
-  let attached = false
-  watch(progress, (p) => {
-    // Attach the listener when cards are fully extended and the listener is not yet attached
-    if (p === 1 && !attached) {
-      scrollRoot.value!.addEventListener('scroll', scrollHandler)
-      attached = true
-    }
-
-    // Detech the listener when cards become unextended and the listener is currently attached
-    if (p < 1 && attached) {
-      scrollRoot.value!.removeEventListener('scroll', scrollHandler)
-      attached = false
-
-      // Also reset the max-height to allow all cards to fully display
-      maxUlHeight.value = 'unset'
-    }
-  }, { immediate: true })
-}
 </script>
 
 <template>
   <ul
     ref="scrollRoot"
     class="flex items-end w-full overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-x-3 scroll-mx-[var(--spacing)] bg-gradient-to-t from-space/20 to-space/0 bg-bottom bg-no-repeat"
-    :class="{
-      'pointer-events-none': !isIOs,
-    }"
-    :style="`--spacing: ${(1 - Math.max(progress, 0)) * INITIAL_GAP_TO_SCREEN}px; background-size: 100% 184px;--tw-gradient-from: rgb(31 35 72 / ${0.2 * Math.min((1 + progress * 2), 1)}) var(--tw-gradient-from-position); --initial-gap-to-screen: ${INITIAL_GAP_TO_SCREEN}px; max-height: ${maxUlHeight};`"
+    :style="`--spacing: ${(1 - Math.max(progress, 0)) * INITIAL_GAP_TO_SCREEN}px; background-size: 100% 184px;--tw-gradient-from: rgb(31 35 72 / ${0.2 * Math.min((1 + progress * 2), 1)}) var(--tw-gradient-from-position); --initial-gap-to-screen: ${INITIAL_GAP_TO_SCREEN}px;`"
   >
     <li
       v-for="location in locations" :key="location.uuid" ref="cards"
