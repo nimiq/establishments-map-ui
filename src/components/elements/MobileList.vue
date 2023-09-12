@@ -101,6 +101,19 @@ useEventListener(mapInstance.value?.$el, 'click', (event: MouseEvent) => {
   if (!(event.target as HTMLElement).closest('[data-custom-marker]'))
     emit('closeList')
 })
+
+// This block of code allows the user to click through the unordered list (ul) while still being able to scroll.
+// It emulates the behavior of setting pointer-events to 'none' on the ul and 'auto' on the list items (li).
+// The original implementation only worked on Android, so the following is a cross-platform workaround.
+// See https://stackoverflow.com/questions/50315332/disable-all-pointer-events-except-scroll-on-overlaying-div
+useEventListener(scrollRoot, 'pointerdown', (event) => {
+  scrollRoot.value!.style.pointerEvents = 'none';
+  (document.elementFromPoint(event.clientX, event.clientY) as HTMLElement).click()
+})
+
+useEventListener(document.body, 'pointerup', () => {
+  scrollRoot.value!.style.pointerEvents = 'all'
+})
 </script>
 
 <template>
