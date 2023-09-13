@@ -13,6 +13,8 @@ likely we also need to update things in the UI, so not really a downside!
     -> And so on
  */
 
+import type { RawLocation } from './location.ts'
+
 export enum Category {
   CarsBikes = 'cars_bikes',
   Cash = 'cash',
@@ -54,6 +56,7 @@ export enum Provider {
 export interface DatabaseArgs {
   url: string
   apikey: string
+  token?: string
 }
 
 export interface DatabaseAuthArgs extends DatabaseArgs {
@@ -64,12 +67,20 @@ export interface DatabaseAuthArgs extends DatabaseArgs {
 }
 
 export enum DbWriteFunction {
-  Insert = 'insert_location',
-  InsertRaw = 'insert_raw_location',
-  InsertRawBulk = 'insert_locations',
+  UpsertRawLocation = 'upsert_location',
+  UpsertLocationsWithGMaps = 'upsert_locations_with_gmaps_api',
   DeleteLocation = 'delete_location_by_uuid',
   InsertLocationsClustersSet = 'insert_locations_clusters_set',
   FlushClustersTable = 'flush_clusters_table',
+}
+
+export enum DbReadFunction {
+  GetLocations = 'get_locations',
+  GetLocation = 'get_location_by_uuid',
+  SearchLocations = 'search_locations',
+  GetLocationsClustersSet = 'get_locations_clusters_set',
+  GetMaxZoom = 'get_max_zoom_computed_clusters_in_server',
+  GetStats = 'get_stats',
 }
 
 export interface InsertLocationsClustersSetParamsItem {
@@ -83,4 +94,27 @@ export interface InsertLocationsClustersSetParamsItem {
 export interface InsertLocationsClustersSetParams {
   zoom_level: number
   items: InsertLocationsClustersSetParamsItem[]
+}
+
+// ------ Return types --------
+
+export interface DatabaseStatistics {
+  cryptos: number
+  locations: number
+  providers: number
+  providers_count: Record<Provider, number>
+  crypto_sells_combinations: Record<string, number>
+  crypto_accepts_combinations: Record<string, number>
+}
+
+export interface InsertWithPlaceIdArgs extends Partial<RawLocation> {
+  accepts: RawLocation['accepts']
+  place_id?: string
+}
+
+// The return structure of the PL/pgSQL function.
+export interface InsertWithPlaceIdResponse {
+  added: RawLocation[]
+  multiples: object[][]
+  errors: { input: InsertWithPlaceIdArgs; error: string; apiUrl: string }[]
 }

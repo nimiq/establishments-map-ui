@@ -1,5 +1,5 @@
 import type { MultiPolygon } from '@turf/helpers'
-import type { Location } from './location'
+import type { Location } from './location.ts'
 
 export interface BoundingBox {
   swLat: number

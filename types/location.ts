@@ -2,7 +2,7 @@
 Since the UI is quite flexible, better to define all cases using types, and we develop the UI from these types.
 */
 
-import type { Category, Currency, Provider } from './database'
+import type { Category, Currency, Provider } from './database.ts'
 
 export enum LocationType {
   Shop = 'shop',
@@ -21,25 +21,8 @@ export enum LocationLink {
   Facebook = 'facebook',
 }
 
-export interface Location {
-  uuid: string
-  name: string
-  address: string
-  category: Category
+export interface Location extends RawLocation {
   category_label: string
-  gmaps_types: string[]
-  lat: number
-  lng: number
-  provider: Provider
-  accepts: Currency[]
-  sells: Currency[]
-  rating?: number
-  photo?: string
-
-  // These social media fields are coming from the database
-  instagram?: string
-  facebook?: string
-  gmaps?: string
 
   // Given the social media fields, we can generate just one link
   // See parseLocation function for more details.
@@ -60,4 +43,22 @@ export interface Location {
   isDark: boolean
   isLight: boolean
   hasBottomBanner: boolean
+}
+
+export interface RawLocation {
+  uuid: string
+  name: string
+  address: string
+  category: Category
+  lat: number
+  lng: number
+  provider: Provider
+  accepts: Currency[]
+  sells: Currency[]
+  rating?: number
+  photo?: string
+  instagram?: string
+  facebook?: string
+  gmaps?: string
+  gmaps_types: string[]
 }
