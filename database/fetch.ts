@@ -51,7 +51,7 @@ export async function fetchDb<T, FnName extends DbReadFunction | DbWriteFunction
 
 export async function getAuth({ url, apikey, auth: { email, password } }: DatabaseAuthArgs): Promise<string | undefined> {
   const urlAuth = new URL(`${url}/auth/v1/token?grant_type=password`)
-  const headers = { ...HEADERS, apikey }
+  const headers = { apikey }
   const body = JSON.stringify({ email, password })
   const response = await fetch(urlAuth, { method: 'POST', headers, body }).catch(error => `Error POST ${urlAuth.href}: ${error}`)
   if (typeof response === 'string') {
@@ -61,5 +61,7 @@ export async function getAuth({ url, apikey, auth: { email, password } }: Databa
   const data = await response.json()
   if (!data?.access_token)
     throw new Error('No access token found!')
+  // eslint-disable-next-line no-console
+  console.log(`Fetching token from ${urlAuth.href}. Token: ${!!data.access_token}`)
   return data.access_token
 }
