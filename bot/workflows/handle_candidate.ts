@@ -1,11 +1,14 @@
-import { DefineWorkflow, Schema } from 'deno-slack-sdk/mod.ts'
+import {
+  DefineWorkflow,
+  Schema,
+} from 'https://deno.land/x/deno_slack_sdk@2.2.0/mod.ts'
 import { VerifyCaptcha } from '../functions/verify_captcha.ts'
 import { HandleCandidateMessage } from '../functions/handle_candidate_message.ts'
-import { CreateEstablishmentWithPlaceId } from '../functions/create_establishment_with_place_id.ts'
+import { CreateLocationWithPlaceId } from '../functions/create_location_with_place_id.ts'
 import { UpdateContextMessage } from '../functions/update_context_message.ts'
 
 const HandleCandidateWorkflow = DefineWorkflow({
-  callback_id: 'handle_candidate',
+  callback_id: 'handle_candidate_wf',
   title: 'Candidate notification',
   description:
     'Sends a message in the notification channel with the new candidate info',
@@ -57,8 +60,8 @@ const messageStep = HandleCandidateWorkflow.addStep(
   },
 )
 
-const establishmentToDbStep = HandleCandidateWorkflow.addStep(
-  CreateEstablishmentWithPlaceId,
+const locationToDbStep = HandleCandidateWorkflow.addStep(
+  CreateLocationWithPlaceId,
   {
     place_id: HandleCandidateWorkflow.inputs.gmapsPlaceId,
     accepts: HandleCandidateWorkflow.inputs.currencies,
@@ -69,7 +72,7 @@ const establishmentToDbStep = HandleCandidateWorkflow.addStep(
 HandleCandidateWorkflow.addStep(
   UpdateContextMessage,
   {
-    establishment: establishmentToDbStep.outputs.establishment,
+    location: locationToDbStep.outputs.location,
     message_ts: messageStep.outputs.message_ts,
     reviewer: messageStep.outputs.reviewer,
     environment: HandleCandidateWorkflow.inputs.dev ? 'Test' : 'Production',

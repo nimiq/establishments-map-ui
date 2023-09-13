@@ -1,16 +1,21 @@
-import { DefineFunction, Schema, SlackFunction } from 'deno-slack-sdk/mod.ts'
-import { EstablishmentType } from '../types/establishments.ts'
-import { getMessageString } from '../util/message_establishment.ts'
+import {
+  DefineFunction,
+  Schema,
+  SlackFunction,
+} from 'https://deno.land/x/deno_slack_sdk@2.2.0/mod.ts'
+import { LocationType } from '../types/location.ts'
+import { getMessageString } from '../util/message_location.ts'
+import type { RawLocation } from '../../types/location.ts'
 
 export const UpdateContextMessage = DefineFunction({
   callback_id: 'update_context_message',
   title: 'Updates context message',
-  description: 'Updates the message with the establishmetn info',
+  description: 'Updates the message with the location info',
   source_file: 'functions/update_context_message.ts',
   input_parameters: {
     properties: {
-      establishment: {
-        type: EstablishmentType,
+      location: {
+        type: LocationType,
       },
       message_ts: {
         type: Schema.slack.types.message_ts,
@@ -38,7 +43,7 @@ export const UpdateContextMessage = DefineFunction({
       },
     },
     required: [
-      'establishment',
+      'location',
       'message_ts',
       'reviewer',
       'environment',
@@ -51,7 +56,7 @@ export default SlackFunction(
   UpdateContextMessage,
   async ({ client, inputs, env }) => {
     const {
-      establishment,
+      location,
       message_ts,
       environment,
       reviewer,
@@ -60,9 +65,7 @@ export default SlackFunction(
       reason_id,
     } = inputs
     const dev = environment === 'Test'
-    const channel = dev
-      ? env.SLACK_CHANNEL_ID_TEST
-      : env.SLACK_CHANNEL_ID
+    const channel = dev ? env.SLACK_CHANNEL_ID_TEST : env.SLACK_CHANNEL_ID
     const crypto_map_domain = dev
       ? env.CRYPTO_MAP_DOMAIN_TEST
       : env.CRYPTO_MAP_DOMAIN
@@ -72,17 +75,17 @@ export default SlackFunction(
       case 'candidate_added':
         text = getMessageString({
           type: 'candidate_added',
-          ...establishment,
+          ...location as RawLocation,
           dev,
           crypto_map_domain,
           reviewer,
         })
         break
 
-      case 'establishment_deleted_issue':
+      case 'location_deleted_issue':
         text = getMessageString({
-          type: 'establishment_deleted_issue',
-          ...establishment,
+          type: 'location_deleted_issue',
+          ...location as RawLocation,
           dev,
           crypto_map_domain,
           reviewer,

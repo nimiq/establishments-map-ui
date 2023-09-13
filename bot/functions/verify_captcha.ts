@@ -1,4 +1,8 @@
-import { DefineFunction, Schema, SlackFunction } from 'deno-slack-sdk/mod.ts'
+import {
+  DefineFunction,
+  Schema,
+  SlackFunction,
+} from 'https://deno.land/x/deno_slack_sdk@2.2.0/mod.ts'
 
 export const VerifyCaptcha = DefineFunction({
   callback_id: 'verify_captcha',

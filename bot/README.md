@@ -21,9 +21,9 @@ Manage the [Crypto Map](https://map.nimiq.com)
 
 ## Supported Workflows
 
-- **Delete establishment**
-- **Create establishment**
-- **Notify of an issue in a establishment**
+- **Delete location**
+- **Create location**
+- **Notify of an issue in a location**
 - **Notify of a candidate in the Crypto Map**
 
 ## Setup

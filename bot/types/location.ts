@@ -1,12 +1,11 @@
 import { Schema } from 'https://deno.land/x/deno_slack_sdk@2.2.0/mod.ts'
 import { DefineType } from 'https://deno.land/x/deno_slack_sdk@2.2.0/types/mod.ts'
 
-const EstablishmentType = DefineType({
-  name: 'Establishment',
+const LocationType = DefineType({
+  name: 'Location',
   type: Schema.types.object,
-  description: 'Establishment information',
+  description: 'Location information',
   properties: {
-    id: { type: Schema.types.number },
     uuid: { type: Schema.types.string },
     name: { type: Schema.types.string },
     address: { type: Schema.types.string },
@@ -20,7 +19,7 @@ const EstablishmentType = DefineType({
         type: Schema.types.string,
       },
     },
-    place_id: { type: Schema.types.string },
+    gmaps: { type: Schema.types.string },
     photo: { type: Schema.types.string, default: '' },
     provider: { type: Schema.types.string },
     accepts: {
@@ -46,7 +45,8 @@ const EstablishmentType = DefineType({
     'lng',
     'accepts',
     'sells',
+    'gmaps_types',
   ],
 })
 
-export { EstablishmentType }
+export { LocationType }

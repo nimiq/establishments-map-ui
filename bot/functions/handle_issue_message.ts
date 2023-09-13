@@ -1,8 +1,13 @@
 /* eslint-disable no-console */
 
-import { DefineFunction, Schema, SlackFunction } from 'deno-slack-sdk/mod.ts'
-import { EstablishmentType } from '../types/establishments.ts'
-import { getMessageString } from '../util/message_establishment.ts'
+import {
+  DefineFunction,
+  Schema,
+  SlackFunction,
+} from 'https://deno.land/x/deno_slack_sdk@2.2.0/mod.ts'
+import { getMessageString } from '../util/message_location.ts'
+import { LocationType } from '../types/location.ts'
+import type { RawLocation } from '../../types/location.ts'
 
 export const HandleIssueMessage = DefineFunction({
   callback_id: 'handle_issue_message',
@@ -12,9 +17,9 @@ export const HandleIssueMessage = DefineFunction({
   source_file: 'functions/handle_issue_message.ts',
   input_parameters: {
     properties: {
-      establishment: {
-        type: EstablishmentType,
-        description: 'The establishment',
+      location: {
+        type: LocationType,
+        description: 'The location',
       },
       reason: {
         type: Schema.types.string,
@@ -29,7 +34,7 @@ export const HandleIssueMessage = DefineFunction({
         enum: ['Test', 'Production'],
       },
     },
-    required: ['establishment', 'reason', 'reason_id', 'environment'],
+    required: ['location', 'reason', 'reason_id', 'environment'],
   },
   output_parameters: {
     properties: {
@@ -49,23 +54,16 @@ export const HandleIssueMessage = DefineFunction({
 export default SlackFunction(
   HandleIssueMessage,
   async ({ inputs, env, client }) => {
-    const { establishment, environment, reason, reason_id } = inputs
+    const { location, environment, reason, reason_id } = inputs
     const dev = environment === 'Test'
-    if (typeof establishment === 'string')
-      return { error: establishment }
+    if (typeof location === 'string')
+      return { error: location }
 
     const crypto_map_domain = dev
       ? env.CRYPTO_MAP_DOMAIN_TEST
       : env.CRYPTO_MAP_DOMAIN
 
-    const text = getMessageString({
-      type: 'new_issue',
-      dev,
-      ...establishment,
-      crypto_map_domain,
-      reason,
-      reason_id,
-    })
+    const text = getMessageString({ type: 'new_issue', dev, ...location as RawLocation, crypto_map_domain, reason, reason_id })
 
     const channel = dev ? env.SLACK_CHANNEL_ID_TEST : env.SLACK_CHANNEL_ID
 
@@ -96,7 +94,7 @@ export default SlackFunction(
                 text: {
                   type: 'mrkdwn',
                   text:
-                    'This will mark the issue as ignored. You can always delete the establishment later if you change your mind.',
+                    'This will mark the issue as ignored. You can always delete the location later if you change your mind.',
                 },
                 confirm: {
                   type: 'plain_text',
@@ -110,9 +108,9 @@ export default SlackFunction(
             },
             {
               type: 'button',
-              text: { type: 'plain_text', text: 'Delete establishment' },
-              value: 'delete_establishment',
-              action_id: 'delete_establishment',
+              text: { type: 'plain_text', text: 'Delete location' },
+              value: 'delete_location',
+              action_id: 'delete_location',
               style: 'danger',
               confirm: {
                 title: {
@@ -122,7 +120,7 @@ export default SlackFunction(
                 text: {
                   type: 'mrkdwn',
                   text:
-                    ':exclamation: This will remove the establishment from the :cryptomap: Crypto Map. This action is irreversible',
+                    ':exclamation: This will remove the location from the :cryptomap: Crypto Map. This action is irreversible',
                 },
                 confirm: {
                   type: 'plain_text',
@@ -144,7 +142,7 @@ export default SlackFunction(
     }
   },
 ).addBlockActionsHandler(
-  ['ignore_issue', 'delete_establishment'],
+  ['ignore_issue', 'delete_location'],
   async ({ action, body, client, env }) => {
     const reviewer = body.user.id
 
@@ -155,28 +153,20 @@ export default SlackFunction(
 
     console.log(
       `The user ${reviewer} chose ${action.value}. So,${
-        action.value === 'delete_establishment' ? 'deleted' : 'ignored'
-      } the establishment ${body.function_data.inputs.establishment.uuid}`,
+        action.value === 'delete_location' ? 'deleted' : 'ignored'
+      } the location ${body.function_data.inputs.location.uuid}`,
     )
-    const type = action.value === 'delete_establishment'
+    const type = action.value === 'delete_location'
       ? 'approve_issue'
       : 'ignore_issue'
 
-    const { environment, establishment, reason, reason_id }
+    const { environment, location, reason, reason_id }
       = body.function_data.inputs
     const dev = environment === 'Test'
     const crypto_map_domain = dev
       ? env.CRYPTO_MAP_DOMAIN_TEST
       : env.CRYPTO_MAP_DOMAIN
-    const text = getMessageString({
-      type,
-      dev,
-      ...establishment,
-      reason,
-      reason_id,
-      reviewer,
-      crypto_map_domain,
-    })
+    const text = getMessageString({ type, dev, ...location as RawLocation, crypto_map_domain, reason, reason_id, reviewer })
     const channel = dev ? env.SLACK_CHANNEL_ID_TEST : env.SLACK_CHANNEL_ID
 
     await client.chat.update({

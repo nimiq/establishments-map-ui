@@ -1,32 +1,29 @@
-import type { Establishment } from './types.ts'
+import type { RawLocation } from '../../types/location.ts'
 
 type NewCandidate =
   & {
     type: 'new_candidate'
   }
-  & Pick<
-    Establishment,
-    'name' | 'accepts' | 'gmaps' | 'gmaps_place_id' | 'facebook' | 'instagram'
-  >
+  & Pick<RawLocation, 'name' | 'accepts' | 'gmaps' | 'facebook' | 'instagram'>
 
 type NewIssue = {
   type: 'new_issue'
   crypto_map_domain: string
   reason_id: string
   reason: string
-} & Establishment
+} & RawLocation
 
 type IgnoreIssue = Omit<NewIssue, 'type'> & {
   type: 'ignore_issue'
   reviewer: string
-} & Establishment
+} & RawLocation
 
 type ApproveIssue = Omit<IgnoreIssue, 'type'> & {
   type: 'approve_issue'
 }
 
-type EstablishmentDeletedViaIssue = Omit<IgnoreIssue, 'type'> & {
-  type: 'establishment_deleted_issue'
+type RawLocationDeletedViaIssue = Omit<IgnoreIssue, 'type'> & {
+  type: 'location_deleted_issue'
 }
 
 type ProcessedCandidate = Omit<NewCandidate, 'type'> & {
@@ -37,23 +34,23 @@ type ProcessedCandidate = Omit<NewCandidate, 'type'> & {
 type AddedCandidate = Omit<ProcessedCandidate, 'type'> & {
   crypto_map_domain: string
   type: 'candidate_added'
-} & Establishment
+} & RawLocation
 
-type AddedEstablishment = Omit<ProcessedCandidate, 'type'> & {
+type AddedRawLocation = Omit<ProcessedCandidate, 'type'> & {
   crypto_map_domain: string
-  type: 'establishment_added'
-} & Establishment
+  type: 'location_added'
+} & RawLocation
 
-type EstablishmentDeleted = {
+type RawLocationDeleted = {
   reviewer: string
-  type: 'establishment_deleted'
-} & Establishment
+  type: 'location_deleted'
+} & RawLocation
 
-type GetEstablishment = {
+type GetRawLocation = {
   reviewer: string
   crypto_map_domain: string
-  type: 'establishment_info'
-} & Establishment
+  type: 'location_info'
+} & RawLocation
 
 type Input =
   & { dev: boolean }
@@ -63,11 +60,11 @@ type Input =
     | NewIssue
     | ProcessedCandidate
     | AddedCandidate
-    | AddedEstablishment
-    | EstablishmentDeleted
-    | EstablishmentDeletedViaIssue
+    | AddedRawLocation
+    | RawLocationDeleted
+    | RawLocationDeletedViaIssue
     | ApproveIssue
-    | GetEstablishment
+    | GetRawLocation
   )
 
 function cryptosToEmoji(cryptos: string[] = []) {
@@ -110,13 +107,13 @@ export function getMessageString(input: Input) {
   }
   else if (input.type === 'approve_issue') {
     pre
-      = `:unamused: Deleting establishment from the database :thinking_face:... Triggered by <@${input.reviewer}>. ${
+      = `:unamused: Deleting Location from the database :thinking_face:... Triggered by <@${input.reviewer}>. ${
         getCryptoMapLink(input.name, input.crypto_map_domain, input.uuid)
       }.`
   }
-  else if (input.type === 'establishment_deleted_issue') {
+  else if (input.type === 'location_deleted_issue') {
     pre
-      = `:unamused: Deleted establishment from the database. Triggered by <@${input.reviewer}>.`
+      = `:unamused: Deleted Location from the database. Triggered by <@${input.reviewer}>.`
   }
   else if (input.type === 'approved') {
     pre
@@ -130,16 +127,16 @@ export function getMessageString(input: Input) {
       getCryptoMapLink(input.name, input.crypto_map_domain, input.uuid)
     }. Approved by <@${input.reviewer}>.`
   }
-  else if (input.type === 'establishment_added') {
-    pre = `:new: Added new establishment. ${
+  else if (input.type === 'location_added') {
+    pre = `:new: Added new Location. ${
       getCryptoMapLink(input.name, input.crypto_map_domain, input.uuid)
     }. Added by <@${input.reviewer}>.`
   }
-  else if (input.type === 'establishment_deleted') {
+  else if (input.type === 'location_deleted') {
     pre
-      = `:put_litter_in_its_place: Deleted establishment from the :cryptomap: Crypto Map. Triggered by <@${input.reviewer}>.`
+      = `:put_litter_in_its_place: Deleted Location from the :cryptomap: Crypto Map. Triggered by <@${input.reviewer}>.`
   }
-  else if (input.type === 'establishment_info') {
+  else if (input.type === 'location_info') {
     pre = `:mag: ${
       getCryptoMapLink(input.name, input.crypto_map_domain, input.uuid)
     }.`
@@ -155,7 +152,7 @@ export function getMessageString(input: Input) {
     let socialMedia = `:selfie: \`${
       input.gmaps ? 'Google Maps' : input.instagram ? 'Instagram' : 'Facebook'
     }\``
-    socialMedia += (input.gmaps_place_id ? ` (\`${input.gmaps_place_id}\`)` : '')
+    socialMedia += (input.gmaps ? ` (\`${input.gmaps}\`)` : '')
     const socialMediaLink = input.gmaps
       ? `:gmaps: <${url}|Google Maps>`
       : input.instagram
@@ -176,17 +173,17 @@ export function getMessageString(input: Input) {
 
   if (
     input.type === 'candidate_added'
-    || input.type === 'establishment_deleted'
-    || input.type === 'establishment_added' || input.type === 'new_issue'
+    || input.type === 'location_deleted'
+    || input.type === 'location_added' || input.type === 'new_issue'
     || input.type === 'ignore_issue' || input.type === 'approve_issue'
-    || input.type === 'establishment_deleted_issue'
-    || input.type === 'establishment_info'
+    || input.type === 'location_deleted_issue'
+    || input.type === 'location_info'
   ) {
     const address
       = `:round_pushpin: ${input.address} (\`${input.lat}, ${input.lng}\`)`
     const rating = `:star: ${input.rating?.toFixed(2)}`
     const category = `:diamond_shape_with_a_dot_inside: ${input.category} (${
-      input.gmapstype?.join(', ')
+      input.gmaps_types.join(', ')
     })`
     const provider = input.provider
       ? `:factory: Provider: ${input.provider}\t\t`
@@ -198,7 +195,7 @@ export function getMessageString(input: Input) {
 
     if (!input.provider) {
       text
-        += ':mega: *We don\'t have the crypto information about this establishment*.\n This means that it is shown in the Crypto Map, but there is no information about the cryptos that it accepts/sells nor the provider.\n> :bulb:*Consider removing this establishment from the Crypto Map using the `/delete` command*.'
+        += ':mega: *We don\'t have the crypto information about this Location*.\n This means that it is shown in the Crypto Map, but there is no information about the cryptos that it accepts/sells nor the provider.\n> :bulb:*Consider removing this Location from the Crypto Map using the `/delete` command*.'
     }
   }
 

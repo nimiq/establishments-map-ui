@@ -1,11 +1,15 @@
-import { DefineWorkflow, Schema } from 'deno-slack-sdk/mod.ts'
-import { CreateEstablishmentRaw } from '../functions/create_establishment_raw.ts'
+import {
+  DefineWorkflow,
+  Schema,
+} from 'https://deno.land/x/deno_slack_sdk@2.2.0/mod.ts'
+import { CreateRawLocation } from '../functions/create_raw_location.ts'
 import { SendContext } from '../functions/send_context.ts'
+import { Currency } from '../../types/index.ts'
 
-const CreateAddEstablishmenRawWorkflow = DefineWorkflow({
-  callback_id: 'add_establishment_raw',
-  title: 'Create an establishment without PlaceID',
-  description: 'Create an establishment setting all parameters manually',
+const CreateAddLocationRawWorkflow = DefineWorkflow({
+  callback_id: 'add_location_wf',
+  title: 'Add location manually',
+  description: 'It will add it to the database immediately',
   input_parameters: {
     properties: {
       interactivity: {
@@ -19,24 +23,11 @@ const CreateAddEstablishmenRawWorkflow = DefineWorkflow({
   },
 })
 
-// This step will make the workflow break.
-// It would be nice to fix it, so we don't have to hardcode the constants.
-const CURRENCIES = [
-  'BTC',
-  'NIM',
-  'ETH',
-  'LTC',
-  'DASH',
-  'XMR',
-  'XRP',
-  'LBTC',
-]
-
-const formData = CreateAddEstablishmenRawWorkflow.addStep(
+const formData = CreateAddLocationRawWorkflow.addStep(
   Schema.slack.functions.OpenForm,
   {
-    title: 'Add manually a Location',
-    interactivity: CreateAddEstablishmenRawWorkflow.inputs.interactivity,
+    title: 'Add location manually',
+    interactivity: CreateAddLocationRawWorkflow.inputs.interactivity,
     submit_label: 'Create',
     description:
       'Create a new location given the data. The information will be published immediately.',
@@ -44,34 +35,34 @@ const formData = CreateAddEstablishmenRawWorkflow.addStep(
       elements: [{
         name: 'name',
         title: 'Name',
-        description: 'The name of the establishment',
+        description: 'The name of the location',
         type: Schema.types.string,
       }, {
         name: 'address',
         title: 'Address',
-        description: 'The address of the establishment',
+        description: 'The address of the location',
         type: Schema.types.string,
       }, {
         name: 'lng',
         title: 'Longitude',
         description:
-          'The longitude of the establishment. Use a pin in Google Maps to get it. San Jose\'s longitude is -84.089013',
+          'The longitude of the location. Use a pin in Google Maps to get it. San Jose\'s longitude is -84.089013',
         type: Schema.types.number,
       }, {
         name: 'lat',
         title: 'Latitude',
         description:
-          'The latitude of the establishment. Use a pin in Google Maps to get it. San Jose\'s latitude is 9.934739',
+          'The latitude of the location. Use a pin in Google Maps to get it. San Jose\'s latitude is 9.934739',
         type: Schema.types.number,
       }, {
         name: 'rating',
         title: 'Rating',
-        description: 'The rating of the establishment',
+        description: 'The rating of the location',
         type: Schema.types.number,
       }, {
         name: 'category',
         title: 'Category',
-        description: 'The category of the establishment',
+        description: 'The category of the location',
         type: Schema.types.string,
         enum: [
           'cash',
@@ -91,23 +82,26 @@ const formData = CreateAddEstablishmenRawWorkflow.addStep(
         name: 'instagram',
         title: 'Instagram',
         description:
-          'The username in Instagram of the establishment. What follows the @ in the URL',
+          'The username in Instagram of the location. What follows the @ in the URL',
         type: Schema.types.string,
       }, {
         name: 'facebook',
         title: 'Facebook',
         description:
-          'The username in facebook of the establishment. What follows you see after facebook.com/',
+          'The username in facebook of the location. What follows you see after facebook.com/',
         type: Schema.types.string,
       }, {
         name: 'accepts',
-        title: 'Currencies that the establishment accepts',
+        title: 'Currencies that the location accepts',
         type: Schema.types.array,
         items: {
           type: Schema.types.string,
-          enum: CURRENCIES,
+          // I would like to know if it possible to fetch this from the database
+          // But it seems that the only option is to have the formData as first
+          // step of the workflow
+          enum: Object.values(Currency),
         },
-        description: 'The list of cryptos that the establishment accepts',
+        description: 'The list of cryptos that the location accepts',
       }, {
         name: 'environment',
         title: 'Environment',
@@ -129,15 +123,15 @@ const formData = CreateAddEstablishmenRawWorkflow.addStep(
   },
 )
 
-const establishmentStep = CreateAddEstablishmenRawWorkflow.addStep(
-  CreateEstablishmentRaw,
+const locationStep = CreateAddLocationRawWorkflow.addStep(
+  CreateRawLocation,
   {
+    name: formData.outputs.fields.name,
     address: formData.outputs.fields.address,
     category: formData.outputs.fields.category,
     accepts: formData.outputs.fields.accepts,
     lat: formData.outputs.fields.lat,
     lng: formData.outputs.fields.lng,
-    name: formData.outputs.fields.name,
     facebook: formData.outputs.fields.facebook,
     instagram: formData.outputs.fields.instagram,
     rating: formData.outputs.fields.rating,
@@ -145,15 +139,14 @@ const establishmentStep = CreateAddEstablishmenRawWorkflow.addStep(
   },
 )
 
-CreateAddEstablishmenRawWorkflow.addStep(
+CreateAddLocationRawWorkflow.addStep(
   SendContext,
   {
-    establishment: establishmentStep.outputs.establishment,
+    location: locationStep.outputs.location,
     environment: formData.outputs.fields.environment,
-    reviewer:
-      CreateAddEstablishmenRawWorkflow.inputs.interactivity.interactor.id,
-    type: 'establishment_added',
+    reviewer: CreateAddLocationRawWorkflow.inputs.interactivity.interactor.id,
+    type: 'location_added',
   },
 )
 
-export default CreateAddEstablishmenRawWorkflow
+export default CreateAddLocationRawWorkflow

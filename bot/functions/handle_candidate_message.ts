@@ -1,5 +1,10 @@
-import { DefineFunction, Schema, SlackFunction } from 'deno-slack-sdk/mod.ts'
-import { getMessageString } from '../util/message_establishment.ts'
+import {
+  DefineFunction,
+  Schema,
+  SlackFunction,
+} from 'https://deno.land/x/deno_slack_sdk@2.2.0/mod.ts'
+import { getMessageString } from '../util/message_location.ts'
+import type { Currency } from '../../types/database.ts'
 
 export const HandleCandidateMessage = DefineFunction({
   callback_id: 'handle_candidate_message',
@@ -11,7 +16,7 @@ export const HandleCandidateMessage = DefineFunction({
     properties: {
       name: {
         type: Schema.types.string,
-        description: 'The name of the establishment',
+        description: 'The name of the location',
       },
       place_id: {
         type: Schema.types.string,
@@ -22,7 +27,7 @@ export const HandleCandidateMessage = DefineFunction({
         items: {
           type: Schema.types.string,
         },
-        description: 'The list of cryptos that the establishment accepts',
+        description: 'The list of cryptos that the location accepts',
       },
       environment: {
         type: Schema.types.string,
@@ -51,16 +56,8 @@ export default SlackFunction(
   async ({ inputs, env, client }) => {
     const { name, place_id, accepts, environment } = inputs
     const dev = environment === 'Test'
-    const text = getMessageString({
-      type: 'new_candidate',
-      accepts,
-      dev,
-      name,
-      gmaps: `https://www.google.com/maps/place/?q=place_id:${place_id}`,
-    })
-    const channel = dev
-      ? env.SLACK_CHANNEL_ID_TEST
-      : env.SLACK_CHANNEL_ID
+    const text = getMessageString({ type: 'new_candidate', accepts: accepts as Currency[], dev, name, gmaps: `https://www.google.com/maps/place/?q=place_id:${place_id}` })
+    const channel = dev ? env.SLACK_CHANNEL_ID_TEST : env.SLACK_CHANNEL_ID
     await client.chat.postMessage({
       channel,
       text,
@@ -154,16 +151,8 @@ export default SlackFunction(
     const { accepts, environment, name } = body.function_data.inputs
     const dev = environment === 'Test'
     const type = approved ? 'approved' : 'rejected'
-    const text = getMessageString({
-      type,
-      accepts,
-      dev,
-      name,
-      reviewer,
-    })
-    const channel = dev
-      ? env.SLACK_CHANNEL_ID_TEST
-      : env.SLACK_CHANNEL_ID
+    const text = getMessageString({ type, accepts: accepts as Currency[], dev, name, reviewer })
+    const channel = dev ? env.SLACK_CHANNEL_ID_TEST : env.SLACK_CHANNEL_ID
 
     await client.chat.update({
       channel,

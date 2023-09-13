@@ -1,13 +1,13 @@
-import type { Trigger } from 'deno-slack-api/types.ts'
-import { TriggerTypes } from 'deno-slack-api/mod.ts'
-import type HandleCandidateWorkflow from '../workflows/handle_candidate.ts'
+import type { Trigger } from 'https://deno.land/x/deno_slack_sdk@2.2.0/types.ts'
+import { TriggerTypes } from 'https://deno.land/x/deno_slack_api@2.1.1/mod.ts'
+import HandleCandidateWorkflow from '../workflows/handle_candidate.ts'
 
 const trigger: Trigger<typeof HandleCandidateWorkflow.definition> = {
   type: TriggerTypes.Webhook,
   name: 'Handle Candidate',
   description:
     'Sends a message in the notification channel with the new candidate info and asks for verification',
-  workflow: '#/workflows/handle_candidate',
+  workflow: `#/workflows/${HandleCandidateWorkflow.definition.callback_id}`,
   inputs: {
     gmapsPlaceId: {
       value: '{{data.gmapsPlaceId}}',

@@ -1,13 +1,13 @@
-import type { Trigger } from 'deno-slack-api/types.ts'
-import { TriggerTypes } from 'deno-slack-api/mod.ts'
-import type HandleIssueWorkflow from '../workflows/handle_issue.ts'
+import type { Trigger } from 'https://deno.land/x/deno_slack_sdk@2.2.0/types.ts'
+import { TriggerTypes } from 'https://deno.land/x/deno_slack_api@2.1.1/mod.ts'
+import HandleIssueWorkflow from '../workflows/handle_issue.ts'
 
 const trigger: Trigger<typeof HandleIssueWorkflow.definition> = {
   type: TriggerTypes.Webhook,
   name: 'Handle Issue',
   description:
     'Sends a message in the notification channel with the new candidate info and asks for verification',
-  workflow: '#/workflows/handle_issue',
+  workflow: `#/workflows/${HandleIssueWorkflow.definition.callback_id}`,
   inputs: {
     uuid: {
       value: '{{data.uuid}}',
