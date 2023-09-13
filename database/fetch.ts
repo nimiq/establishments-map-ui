@@ -19,7 +19,7 @@ export async function fetchDb<T, FnName extends DbReadFunction | DbWriteFunction
   const body = isWriteOperation ? parameters : undefined
 
   const requiredHeaders = { ...HEADERS, apikey }
-  const headers = isWriteOperation ? { ...requiredHeaders, Authorization: `Bearer ${token}` } : requiredHeaders
+  const headers = token ? { ...requiredHeaders, Authorization: `Bearer ${token}` } : requiredHeaders
 
   /* eslint-disable no-console */
   console.group(`🔍 Database ${method} "${url.pathname.split('/').pop()}${url.search}"`)

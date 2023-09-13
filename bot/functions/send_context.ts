@@ -18,6 +18,10 @@ export const SendContext = DefineFunction({
         type: LocationType,
         description: 'Name of the location',
       },
+      stats: {
+        type: Schema.types.object,
+        description: 'Stats of the database',
+      },
       reviewer: {
         type: Schema.slack.types.user_id,
       },
@@ -31,6 +35,7 @@ export const SendContext = DefineFunction({
           'location_deleted',
           'location_added',
           'location_info',
+          'stats',
           'info',
         ],
       },
@@ -78,6 +83,16 @@ export default SlackFunction(
             ? env.CRYPTO_MAP_DOMAIN_TEST
             : env.CRYPTO_MAP_DOMAIN,
         })
+        break
+      case 'stats':
+        text = `:cryptomap: Crypto Map Statistics :bar_chart:
+
+Message triggered by <@${inputs.reviewer!}>.
+
+        \`\`\`
+${JSON.stringify(inputs.stats, null, 2)}
+        \`\`\`
+        `
         break
       case 'info':
         text = `:cryptomap: Crypto Map Bot Help :cryptomap:

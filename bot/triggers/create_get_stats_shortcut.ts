@@ -3,13 +3,13 @@ import {
   TriggerContextData,
   TriggerTypes,
 } from 'https://deno.land/x/deno_slack_api@2.1.1/mod.ts'
-import GetLocationInfoWorkflow from '../workflows/get_location_info.ts'
+import GetStatsInfoWorkflow from '../workflows/get_stats_info.ts'
 
-const createDeleteLocationShortcut: Trigger<typeof GetLocationInfoWorkflow.definition> = {
+const createDeleteLocationShortcut: Trigger<typeof GetStatsInfoWorkflow.definition> = {
   type: TriggerTypes.Shortcut,
-  name: 'Get Location info',
-  description: 'Get Location info with a uuid',
-  workflow: `#/workflows/${GetLocationInfoWorkflow.definition.callback_id}`,
+  name: 'Get Stats',
+  description: 'Get Stats from the database',
+  workflow: `#/workflows/${GetStatsInfoWorkflow.definition.callback_id}`,
   inputs: {
     interactivity: {
       value: TriggerContextData.Shortcut.interactivity,

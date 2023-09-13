@@ -10,7 +10,7 @@ import { getDbArgs } from '../util/db-args.ts'
 import { LocationType } from '../types/location.ts'
 
 export const GetLocation = DefineFunction({
-  callback_id: 'get_location',
+  callback_id: 'get_location_info',
   title: 'Get location',
   description: 'Gets the location given any of its params.',
   source_file: 'functions/get_location.ts',
@@ -31,7 +31,7 @@ export const GetLocation = DefineFunction({
     properties: {
       location: {
         type: LocationType,
-        description: 'The location',
+        description: 'The location instance',
       },
     },
     required: ['location'],

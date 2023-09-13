@@ -4,8 +4,9 @@ import CreateAddLocationPlaceIdWorkflow from './workflows/add_location_place_id.
 import CreateAddLocationRawWorkflow from './workflows/add_location_manually.ts'
 import DeleteLocationWorkflow from './workflows/delete_location.ts'
 import GetLocationInfoWorkflow from './workflows/get_location_info.ts'
-import HandleCandidateWorkflow from './workflows/handle_candidate.ts'
+import GetStatsWorkflow from './workflows/get_stats_info.ts'
 import HandleIssueWorkflow from './workflows/handle_issue.ts'
+import HandleCandidateWorkflow from './workflows/handle_candidate.ts'
 import ShowHelpWorkflow from './workflows/show_help.ts'
 
 export default Manifest({
@@ -15,15 +16,13 @@ export default Manifest({
   workflows: [
     CreateAddLocationPlaceIdWorkflow,
     CreateAddLocationRawWorkflow,
+    GetStatsWorkflow,
     DeleteLocationWorkflow,
     GetLocationInfoWorkflow,
     HandleCandidateWorkflow,
     HandleIssueWorkflow,
     ShowHelpWorkflow,
   ],
-  // functions: [
-  //   CreateLocationWithPlaceId, CreateRawLocation, DeleteLocation, GetLocation, HandleCandidateMessage, HandleIssueMessage, SendContext, UpdateContextMessage, VerifyCaptcha,
-  // ],
   outgoingDomains: [
     'www.google.com',
     'mycbdmurjytbdahjljoh.supabase.co',
