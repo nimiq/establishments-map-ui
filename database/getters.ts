@@ -10,7 +10,7 @@ export const CURRENCIES = Object.values(Currency)
 export const CATEGORIES = Object.values(Category)
 export const PROVIDERS = Object.values(Provider)
 
-export async function getLocations(dbArgs: DatabaseAuthArgs, bbox: BoundingBox, parseLocations: (l: Location) => Location = l => l): Promise<Location[]> {
+export async function getLocations(dbArgs: DatabaseArgs | DatabaseAuthArgs, bbox: BoundingBox, parseLocations: (l: Location) => Location = l => l): Promise<Location[]> {
   const params = new URLSearchParams()
   Object.entries(bbox).forEach(([key, value]) => params.append(key.toLocaleLowerCase(), value.toString()))
   const locations = await fetchDb<Location[]>(DbReadFunction.GetLocations, dbArgs, params.toString()) ?? []
