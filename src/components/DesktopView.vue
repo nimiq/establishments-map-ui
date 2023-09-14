@@ -31,7 +31,7 @@ const openSuggestions = ref(false)
       <InteractionBar @open="openSuggestions = $event" />
       <DesktopList :singles="singlesInView" :clusters="clustersInView" :list-is-shown="isListShown" />
     </div>
-    <Button bg-color="white" class="mt-6 shadow" @click="isListShown = !isListShown">
+    <Button bg-color="white" size="lg" class="mt-6 shadow" @click="isListShown = !isListShown">
       <template v-if="firstLocationsLoaded" #icon>
         <IconChevronDown :class="{ 'rotate-180': isListShown }" class="transition-transform delay-500" />
       </template>

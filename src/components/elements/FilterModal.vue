@@ -70,29 +70,17 @@ function applyFilters() {
 
 <template>
   <div>
-    <template v-if="isMobile">
-      <Button bg-color="white" size="lg" @click="openModal">
-        <template #icon>
-          <FilterIcon class="w-6 h-6 text-space" />
-        </template>
-        <template v-if="nFilters > 0" #badge>
-          {{ nFilters }}
-        </template>
-      </Button>
-    </template>
-    <template v-else>
-      <Button bg-color="white" size="md" @click="openModal">
-        <template #icon>
-          <FilterIcon class="text-space w-4.5 h-4.5" />
-        </template>
-        <template #label>
-          {{ $t('Filters') }}
-        </template>
-        <template v-if="nFilters > 0" #badge>
-          {{ nFilters }}
-        </template>
-      </Button>
-    </template>
+    <Button bg-color="white" size="lg" class="max-desktop:px-0" @click="openModal">
+      <template #icon>
+        <FilterIcon class="w-6 h-4.5 text-space" />
+      </template>
+      <template v-if="!isMobile" #label>
+        {{ $t('Filters') }}
+      </template>
+      <template v-if="nFilters > 0" #badge>
+        {{ nFilters }}
+      </template>
+    </Button>
     <TransitionRoot appear :show="isOpen" as="template">
       <Dialog as="div" class="relative z-20" @close="closeModal({ shouldClearFilters: false })">
         <TransitionChild
