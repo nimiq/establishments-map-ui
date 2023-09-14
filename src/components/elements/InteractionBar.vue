@@ -52,7 +52,7 @@ const showHint = computed(() => shouldShowSearchBoxHint.value && useBreakpoints(
     <img src="@/assets/logo.svg" :alt="$t('Crypto Map logo')" class="h-[22px]">
     <SearchBox
       :autocomplete="querySearch" :suggestions="suggestions" :status="status" class="flex-1 w-full " rounded-full
-      combobox-options-classes="rounded-t-0 rounded-b-2xl desktop:w-[320px] desktop:top-[88px] desktop:left-6 max-desktop:w-full max-desktop:!left-[24px] max-desktop:!top-[78px]" size="sm"
+      combobox-options-classes="rounded-t-0 rounded-b-2xl desktop:w-[320px] desktop:top-[88px] desktop:left-6 max-desktop:w-full max-desktop:!top-[78px]" size="sm"
       :placeholder="$t('Search Map')" @selected="onSelect" @open="$emit('open', $event)"
     />
     <CryptoMapModal />

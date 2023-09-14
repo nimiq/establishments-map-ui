@@ -143,7 +143,7 @@ function handlePopoverOpen(isOpen: boolean, location: Location) {
         <ReuseTemplate :location="location" class="transition-shadow rounded-sm" />
       </PopoverTrigger>
       <PopoverPortal :key="popoverKey">
-        <PopoverContent side="right" :side-offset="5" class="rounded-lg shadow" @open-auto-focus.prevent>
+        <PopoverContent side="right" :side-offset="5" class="rounded-lg shadow" :collision-padding="8" sticky="always" @open-auto-focus.prevent>
           <Card :location="location" :progress="1" :class="location.photo ? 'max-w-xs' : 'max-w-sm'" />
           <PopoverArrow class="w-4 h-2" :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg[0]) : 'white'}`" />
 

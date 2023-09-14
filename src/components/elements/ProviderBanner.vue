@@ -51,6 +51,7 @@ const isMobile = useBreakpoints(screens).smaller('md')
               class="max-w-xs p-4 space-y-2 text-white rounded-sm shadow z-100 bg-gradient-space"
               :side-offset="4"
               :align-offset="40"
+              :collision-padding="8"
               :side="isMobile ? 'top' : 'right'"
             >
               <div>
@@ -71,8 +72,7 @@ const isMobile = useBreakpoints(screens).smaller('md')
                   </template>
                 </Button>
 
-                <!-- The use of -ml-3 it is a hack to position it centered -->
-                <TooltipArrow class=" fill-space" size="10" :class="!isMobile && '-ml-3'" />
+                <TooltipArrow class=" fill-space" size="10" />
 
                 <!-- TODO Once this is fixed https://github.com/radix-vue/radix-vue/issues/353 use custom arrow -->
                 <!-- <TooltipArrow as-child>
