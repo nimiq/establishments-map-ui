@@ -1,9 +1,9 @@
 import { CATEGORIES } from 'database'
-import { Category, Currency, type Location, LocationLink, Provider } from 'types'
+import { Category, Criptocity, Currency, type Location, LocationLink, Provider } from 'types'
 import { providersAssets } from '../provider-assets'
 import { translateCategory } from '@/translations'
 
-type ExtraFields = Pick<Location, 'isAtm' | 'isDark' | 'isLight' | 'provider' | 'category' | 'category_label' | 'providerLabel' | 'providerTooltip' | 'theme' | 'bg' | 'hasBottomBanner' | 'sells' | 'url' | 'linkTo'>
+type ExtraFields = Pick<Location, 'isAtm' | 'isDark' | 'isLight' | 'provider' | 'category' | 'category_label' | 'providerLabel' | 'providerTooltip' | 'theme' | 'bg' | 'hasBottomBanner' | 'sells' | 'url' | 'linkTo' | 'criptocity'>
 export function getExtra(provider: Provider, sells: Currency[] = [], linkTo: LocationLink = LocationLink.GMaps): ExtraFields {
   const assets = providersAssets[provider]
   if (!assets)
@@ -33,6 +33,7 @@ export function getExtra(provider: Provider, sells: Currency[] = [], linkTo: Loc
     sells,
     url,
     linkTo,
+    criptocity: Criptocity.None,
   }
 }
 

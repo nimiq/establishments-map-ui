@@ -22,7 +22,6 @@ export async function fetchDb<T, FnName extends DbReadFunction | DbWriteFunction
   const headers = token ? { ...requiredHeaders, Authorization: `Bearer ${token}` } : requiredHeaders
 
   /* eslint-disable no-console */
-  console.group(`🔍 Database ${method} "${url.pathname.split('/').pop()}${url.search}"`)
   const response = await fetch(url, { method, headers, body }).catch(error => `Error ${method} ${url.href}: ${error}`)
 
   if (typeof response === 'string') {
@@ -42,6 +41,7 @@ export async function fetchDb<T, FnName extends DbReadFunction | DbWriteFunction
 
   const data: T = await response.json()
 
+  console.group(`🔍 Database ${method} "${url.pathname.split('/').pop()}${url.search}"`)
   console.log(data)
   console.groupEnd()
   /* eslint-enable no-console */

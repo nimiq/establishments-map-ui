@@ -10,10 +10,20 @@ export const CURRENCIES = Object.values(Currency)
 export const CATEGORIES = Object.values(Category)
 export const PROVIDERS = Object.values(Provider)
 
+// Maximum number of rows from the database
+const MAX_N_ROWS = 1000
+
 export async function getLocations(dbArgs: DatabaseArgs | DatabaseAuthArgs, bbox: BoundingBox, parseLocations: (l: Location) => Location = l => l): Promise<Location[]> {
   const params = new URLSearchParams()
   Object.entries(bbox).forEach(([key, value]) => params.append(key.toLocaleLowerCase(), value.toString()))
-  const locations = await fetchDb<Location[]>(DbReadFunction.GetLocations, dbArgs, params.toString()) ?? []
+  let page = 0
+  const locations: Location[] = []
+  while (locations.length % MAX_N_ROWS === 0) {
+    params.set('page_num', page.toString())
+    const newLocations = await fetchDb<Location[]>(DbReadFunction.GetLocations, dbArgs, params.toString()) ?? []
+    locations.push(...newLocations)
+    page++
+  }
   return locations.map(parseLocations)
 }
 

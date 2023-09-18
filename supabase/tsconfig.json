@@ -1,7 +1,7 @@
 {
   "extends": "..",
   "compilerOptions": {
-    "lib": ["dom", "esnext"],
+    "lib": ["esnext"],
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",

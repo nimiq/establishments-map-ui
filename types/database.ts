@@ -53,6 +53,12 @@ export enum Provider {
   Edenia = 'Edenia',
 }
 
+export enum Cryptocity {
+  Mannheim = 'Mannheim',
+  SanJose = 'San Jose',
+  None = 'None',
+}
+
 export interface DatabaseArgs {
   url: string
   apikey: string
@@ -94,6 +100,7 @@ export interface InsertLocationsClustersSetParamsItem {
 export interface InsertLocationsClustersSetParams {
   zoom_level: number
   items: InsertLocationsClustersSetParamsItem[]
+  cryptocity?: Cryptocity
 }
 
 // ------ Return types --------

@@ -65,6 +65,9 @@ export function useAutocomplete() {
   // If we search just for new candidates, we don't need to search in the database
   // and we just search locations in Google
   async function querySearch(query: string, justNewCandidates = false) {
+    // eslint-disable-next-line no-console
+    console.group(`🔍 Autocomplete "${query}"`)
+
     status.value = AutocompleteStatus.Loading
     if (!query) {
       suggestions.value = []
@@ -74,6 +77,12 @@ export function useAutocomplete() {
     const result = justNewCandidates
       ? await Promise.allSettled([autocompleteGoogle(query, GoogleAutocompleteFor.Location)])
       : await Promise.allSettled([autocompleteDatabase(query), autocompleteGoogle(query, GoogleAutocompleteFor.Regions)])
+
+    /* eslint-disable no-console */
+    console.log(`Got ${result.length} results`)
+    console.log(result)
+    console.groupEnd()
+    /* eslint-enable no-console */
 
     if (result.every(r => r.status === 'rejected')) {
       status.value = AutocompleteStatus.Error
@@ -91,7 +100,6 @@ export function useAutocomplete() {
   }
 
   const debouncer = useDebounceFn((query: string, justNewCandidates: boolean) => querySearch(query, justNewCandidates), 400)
-
   return {
     status,
     suggestions,
