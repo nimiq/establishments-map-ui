@@ -4,6 +4,7 @@ export function useCaptcha() {
   let loaded = false
 
   async function getToken(): Promise<string> {
+    // TODO: Add grecaptcha.ready() to prevent race condition
     return await grecaptcha.execute(recapthaKey, { action: 'submit' })
   }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, useSlots } from 'vue'
+import { computed, ref, useSlots } from 'vue'
 import Button from '@/components/atoms/Button.vue'
 import ArrowLeftIcon from '@/components/icons/icon-arrow-left.vue'
 import ArrowLinkIcon from '@/components/icons/icon-arrow-link.vue'
@@ -20,7 +20,7 @@ const props = defineProps({
   },
 })
 
-const { getToken, loadRecaptcha, removeRecaptcha } = useCaptcha()
+const { getToken } = useCaptcha()
 
 enum FormState {
   Initial = 'initial',
@@ -33,14 +33,6 @@ const state = ref<FormState>(FormState.Initial)
 const disabled = computed(
   () => [FormState.Loading, FormState.Success].includes(state.value) || props.disabled,
 )
-
-onMounted(() => {
-  loadRecaptcha()
-})
-
-onUnmounted(() => {
-  removeRecaptcha()
-})
 
 async function onSubmit() {
   if (disabled.value)

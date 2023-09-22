@@ -72,6 +72,7 @@ export enum DbWriteFunction {
   DeleteLocation = 'delete_location_by_uuid',
   InsertLocationsClustersSet = 'insert_locations_clusters_set',
   FlushClustersTable = 'flush_clusters_table',
+  AuthAnonUser = 'auth_anon_user',
 }
 
 export enum DbReadFunction {

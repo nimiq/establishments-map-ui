@@ -1,6 +1,8 @@
 // eslint-disable no-console
+import type { CaptchaUuid } from 'types'
 import type { DatabaseArgs, DatabaseAuthArgs, DbReadFunction } from '../types/database.ts'
 import { DbWriteFunction } from '../types/database.ts'
+import { authAnonUser } from './functions.ts'
 
 const HEADERS = {
   'Content-Type': 'application/json',
@@ -9,15 +11,35 @@ const HEADERS = {
 
 export async function fetchDb<T, FnName extends DbReadFunction | DbWriteFunction = any>(fnName: FnName, { apikey, url: baseUrl, token }: DatabaseArgs, parameters: string = ''): Promise<T | undefined> {
   const isWriteOperation = Object.values(DbWriteFunction).includes(fnName as DbWriteFunction)
-  if (isWriteOperation && !token)
+  if (isWriteOperation && !token && fnName !== DbWriteFunction.AuthAnonUser)
     throw new Error('Missing token for write operation. Make sure to call getAuth first to retrieve the token.')
+
+  if (!isWriteOperation) {
+    // Check if we are on the browser and have access to cookies
+    const isBrowser = !!globalThis.document
+    if (isBrowser) {
+      // TODO: improve performance by caching the captcha_uuid in memory
+      const captcha_uuid = getCaptchaUUIDFromLocalStorage()
+
+      if (captcha_uuid) {
+        parameters += `&captcha_uuid=${captcha_uuid}`
+      }
+      else {
+        const res = await authAnonUser({ apikey, url: baseUrl }) as { uuid: string; max_age: number } | undefined
+        if (res?.uuid) {
+          localStorage.setItem('captcha_uuid', JSON.stringify({ uuid: res.uuid, expiration_date: new Date(Date.now() + res.max_age * 1000).toISOString() }))
+          parameters += `&captcha_uuid=${res.uuid}`
+        }
+      }
+    }
+  }
 
   const method = isWriteOperation ? 'POST' : 'GET'
 
   const url = new URL(`${baseUrl}/rest/v1/rpc/${fnName}`)
   url.search = !isWriteOperation ? parameters : ''
-  const body = isWriteOperation ? parameters : undefined
 
+  const body = isWriteOperation ? parameters : undefined
   const requiredHeaders = { ...HEADERS, apikey }
   const headers = token ? { ...requiredHeaders, Authorization: `Bearer ${token}` } : requiredHeaders
 
@@ -64,4 +86,19 @@ export async function getAuth({ url, apikey, auth: { email, password } }: Databa
   // eslint-disable-next-line no-console
   console.log(`Fetching token from ${urlAuth.href}. Token: ${!!data.access_token}`)
   return data.access_token
+}
+
+function getCaptchaUUIDFromLocalStorage() {
+  const value = localStorage.getItem('captcha_uuid')
+  if (!value)
+    return undefined
+
+  const object = JSON.parse(value) as CaptchaUuid
+  if (object.expiration_date > new Date().toISOString()) {
+    return object.uuid
+  }
+  else {
+    localStorage.removeItem('captcha_uuid')
+    return undefined
+  }
 }

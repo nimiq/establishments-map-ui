@@ -1,7 +1,10 @@
-import type { DatabaseAuthArgs, InsertLocationsClustersSetParams, InsertWithPlaceIdResponse, Location, RawLocation } from '../types/index.ts'
+import type { DatabaseArgs, DatabaseAuthArgs, InsertLocationsClustersSetParams, InsertWithPlaceIdResponse, Location, RawLocation } from '../types/index.ts'
 import type { InsertWithPlaceIdArgs } from '../types/database.ts'
 import { DbWriteFunction } from '../types/database.ts'
 import { fetchDb, getAuth } from './fetch.ts'
+import { useCaptcha } from '@/composables/useCaptcha'
+
+const { getToken } = useCaptcha()
 
 async function insertTokenIntoAuth(dbArgs: DatabaseAuthArgs) {
   return dbArgs.token ? { ...dbArgs } : { ...dbArgs, token: await getAuth(dbArgs) }
@@ -25,4 +28,10 @@ export async function insertLocationsClusterSet(dbArgs: DatabaseAuthArgs, data: 
 
 export async function flushClusterTable(dbArgs: DatabaseAuthArgs) {
   return await fetchDb<Location>(DbWriteFunction.FlushClustersTable, await insertTokenIntoAuth(dbArgs))
+}
+
+export async function authAnonUser(dbArgs: DatabaseArgs) {
+  const g_token = await getToken()
+  // console.log('g_token', g_token)
+  return await fetchDb(DbWriteFunction.AuthAnonUser, dbArgs, JSON.stringify({ g_token }))
 }

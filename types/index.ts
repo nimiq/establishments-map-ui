@@ -18,3 +18,8 @@ export interface Filters {
   categories: Category[]
   currencies: Currency[]
 }
+
+export interface CaptchaUuid {
+  uuid: string
+  expiration_date: string
+}
