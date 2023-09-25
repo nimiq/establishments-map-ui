@@ -132,7 +132,7 @@ if (isIOs) {
     scrollendTimeout = undefined
   }
 
-  function scrollHandler(event: Event) {
+  function scrollHandler() {
     // As soon as scrolling starts, we unset the max-height to allow all cards to fully display
     maxUlHeight.value = 'unset'
 

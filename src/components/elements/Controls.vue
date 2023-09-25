@@ -39,14 +39,17 @@ async function setBrowserPosition() {
 <template>
   <div class="flex flex-col gap-y-4">
     <PopoverRoot v-if="zoom >= 13 && cryptocitiesInView.length > 0">
-      <PopoverTrigger class="!w-8 !h-8 shadow bg-white rounded-full p-1.5" :aria-label="$t('Information about this Cryptocity')"><CryptocityIcon /></PopoverTrigger>
+      <PopoverTrigger class="!w-8 !h-8 shadow bg-white rounded-full p-1.5" data-cryptocity-card :aria-label="$t('Information about this Cryptocity')"><CryptocityIcon /></PopoverTrigger>
       <PopoverPortal>
         <PopoverContent
           side="bottom" :side-offset="-32" class="will-change-[transform,opacity] animate-slideUpAndFade mr-6"
           @close-auto-focus.prevent @interact-outside.prevent
         >
-          <PopoverClose class="rounded-full outline-none cursor-default" :aria-label="$t('Close')"><CrossIcon /></PopoverClose>
-          <CryptocityCard :cryptocity="cryptocitiesInView[0]!" :show-description="true" />
+          <CryptocityCard :cryptocity="cryptocitiesInView[0]!" :show-description="true">
+            <template #close>
+              <PopoverClose class="w-6 h-6 p-1 ml-auto transition rounded-full text-space bg-space/10" :aria-label="$t('Close')"><CrossIcon /></PopoverClose>
+            </template>
+          </CryptocityCard>
         </PopoverContent>
       </PopoverPortal>
     </PopoverRoot>

@@ -32,6 +32,13 @@ function onClusterClick(center: Point, proposedZoom: number) {
   const newZoom = proposedZoom < 13 ? Math.max(proposedZoom, zoom.value + 3) : proposedZoom
   setPosition({ center, zoom: newZoom })
 }
+
+function onCryptocityClick(center: Point) {
+  const cardTrigger = (document.querySelector('[data-cryptocity-card]') as HTMLElement)
+  if (cardTrigger)
+    cardTrigger.click()
+  setPosition({ center, zoom: 13 })
+}
 </script>
 
 <template>
@@ -41,9 +48,11 @@ function onClusterClick(center: Point, proposedZoom: number) {
     </div>
   </DefineCluster>
 
-  <DefineCryptocity v-slot="{ list }">
+  <DefineCryptocity v-slot="{ list, cryptocity: { centroid } }">
     <div
-      class="absolute top-0 z-0 grid p-1 bg-white rounded-full shadow cursor-pointer clickable-sm aspect-square place-content-center" :style="`width: ${list?.diameter || 32}px; --index: ${list?.index}`" :class="list && 'transition-transform scale-[0.85] translate-x-[calc(var(--index)*12px)] group-hover:scale-100 group-hover:translate-x-[calc(100%*var(--index)+var(--index)*8px)]'"
+      v-if="zoom <= 14"
+      class="absolute top-0 z-0 grid p-1 bg-white rounded-full shadow cursor-pointer clickable-sm aspect-square place-content-center"
+      :style="`width: ${list?.diameter || 32}px; --index: ${list?.index}`" :class="list && 'transition-transform scale-[0.85] translate-x-[calc(var(--index)*12px)] group-hover:scale-100 group-hover:translate-x-[calc(100%*var(--index)+var(--index)*8px)]'" @click="onCryptocityClick(centroid)"
     >
       <CryptocityIcon
         class="w-full"

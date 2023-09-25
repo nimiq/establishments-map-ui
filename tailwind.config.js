@@ -62,8 +62,7 @@ module.exports = {
         },
         cryptocity: {
           '0%': { opacity: 0, transform: 'translateX(0) scale(0)' },
-          '40%': { opacity: 1, transform: 'translateX(18px) scale(0.85)' },
-          '100%': { transform: 'translateX(12px) scale(0.85)' },
+          '100%': { opacity: 1, transform: 'translateX(12px) scale(0.85)' },
         },
       },
       animation: {
@@ -72,7 +71,7 @@ module.exports = {
         slideUpAndFade: 'slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
         slideRightAndFade: 'slideRightAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
         fade: `fade 300ms ${tailwindTheme.transitionTimingFunction.DEFAULT}`,
-        cryptocity: `cryptocity 1.5s ${tailwindTheme.transitionTimingFunction.DEFAULT}`,
+        cryptocity: `cryptocity 300ms ${tailwindTheme.transitionTimingFunction.DEFAULT}`,
       },
     },
   },

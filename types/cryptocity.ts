@@ -3,7 +3,6 @@ import type { BoundingBox, Point } from './index.ts'
 
 export enum Cryptocity {
   SanJose = 'San Jose',
-  SanJose2 = 'San Jose2',
 }
 
 export interface CryptocityData {
@@ -13,6 +12,7 @@ export interface CryptocityData {
   url: string
   centroid: Point
   boundingBox: BoundingBox
+  count: number
 }
 
 export type CryptocityMarker = Map<number /* id of the cluster OR -1 not attached  */, CryptocityData[]>

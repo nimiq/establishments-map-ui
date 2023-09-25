@@ -2,6 +2,7 @@
 import type { CryptocityData } from 'types'
 import type { PropType } from 'vue'
 import CryptocityIcon from '@/components/icons/icon-cryptocity.vue'
+import Button from '@/components/atoms/Button.vue'
 
 defineProps({
   cryptocity: {
@@ -36,9 +37,12 @@ defineEmits({
       <CryptocityIcon class="w-[31px] h-[27px]" />
       <div>
         <h3 class="text-base text-space">{{ cryptocity.name }}</h3>
-        <span class="text-sm text-space/60">{{ $tc('{count} locations', 100) }}</span>
+        <span class="block w-24 h-3 text-sm leading-[1] rounded-sm text-space/60 bg-space/[0.15]" :class="cryptocity.count === -1 && 'animate-pulse'">
+          <template v-if="cryptocity.count > 0 ">{{ $tc('{count} locations', cryptocity.count) }}</template>
+        </span>
       </div>
-      <!-- <component :is="icon" class="text-[#C9CAD3] p-1 w-6 h-6 ml-auto transition hover:bg-space/10 focus-visible:bg-space/10 rounded-full" data-cryptocity-trigger @click="$emit('iconClick', $event)" /> -->
+
+      <slot class="ml-auto" name="close" />
     </div>
     <div
       class="grid transition-[grid-template-rows] grid-cols-[mEin(290px,calc(100vh-48px))] duration-300" :class="{
