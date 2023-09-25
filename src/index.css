@@ -35,3 +35,5 @@ body {
 .scroll-grey::-webkit-scrollbar-track {
   background-color: #3b4c6a33;
 }
+
+.grecaptcha-badge { visibility: hidden; }

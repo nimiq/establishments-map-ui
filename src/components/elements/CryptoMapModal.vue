@@ -31,11 +31,10 @@ function _onLanguagesChange(language: string) {
     </template>
 
     <template #content>
-      <p class="[text-wrap:pretty]">
-        {{
-          $t('This app is brought to you by Nimiq, only places that are verified by Google are accepted for this map.')
-        }}
-      </p>
+      <i18n-t class="[text-wrap:pretty]" tag="p" keypath="This app is brought to you by Nimiq. It is protected by reCAPTCHA and the Google {privacyPolicy} and {termsOfService} apply.">
+        <template #privacyPolicy><a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="underline">{{ $t('Privacy Policy') }}</a></template>
+        <template #termsOfService><a href="https://policies.google.com/terms" target="_blank" rel="noopener" class="underline">{{ $t('Terms of Service') }}</a></template>
+      </i18n-t>
 
       <div class="flex items-center justify-between mt-8">
         <Button bg="sky" href="/location/add">
