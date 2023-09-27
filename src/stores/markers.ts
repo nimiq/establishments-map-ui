@@ -24,32 +24,28 @@ export const useMarkers = defineStore('markers', () => {
   - Before re-clustering, we check for existing data matching the current zoom, bounding box, and filters.
   - If a match is found, we reuse stored clusters; otherwise, new clusters are computed and stored.
   */
-  const { payload: memoized, alreadyExists } = useExpiringStorage('memoized_clusters_locations',
+  const { payload: memoized, alreadyExists } = useExpiringStorage('memoized_markers',
     {
       expiresIn: 7 * 24 * 60 * 60 * 1000,
       getValue: () => new Map<LocationClusterParams, LocationClusterSet>(),
       serializer: {
         read: (str) => {
           const obj = JSON.parse(str)
-          const { value, expires } = obj
-          const map = new Map<LocationClusterParams, LocationClusterSet>()
-          for (const key in obj) {
+          const value = new Map<LocationClusterParams, LocationClusterSet>()
+          for (const key in obj.value) {
             const { zoom, categories, currencies } = JSON.parse(key)
-            map.set({ zoom, categories, currencies }, obj[key])
+            value.set({ zoom, categories, currencies }, obj[key])
           }
-          return { value, expires } as ExpiringValue<Map<LocationClusterParams, LocationClusterSet>>
+          return { value, expires: obj.expires }
         },
         write: (value: ExpiringValue<Map<LocationClusterParams, LocationClusterSet>>) => {
           const obj: Record<string, LocationClusterSet> = {}
           for (const [key, val] of value.value.entries())
             obj[JSON.stringify(key)] = val
-          return JSON.stringify(obj)
+          return JSON.stringify({ value: obj, expires: value.expires })
         },
       },
     })
-
-  if (alreadyExists)
-    loaded.value = alreadyExists
 
   /**
    * The clusters and singles are computed from the memoized clusters and singles. For each zoom level and each filter combination,
@@ -155,6 +151,9 @@ export const useMarkers = defineStore('markers', () => {
     loaded.value = true
   }
 
+  if (alreadyExists)
+    cluster()
+
   return {
     memoized,
     cluster,
@@ -163,6 +162,6 @@ export const useMarkers = defineStore('markers', () => {
     clustersInView,
     singlesInView,
     needsToUpdate,
-    loaded: computed(() => alreadyExists || singles.value.length > 0 || clusters.value.length > 0),
+    loaded,
   }
 })

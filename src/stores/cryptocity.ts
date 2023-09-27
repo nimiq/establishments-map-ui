@@ -68,11 +68,25 @@ export const useCryptocity = defineStore('cryptocities', () => {
 
   const loadCryptocitiesDebouncer = useDebounceFn(loadCryptocities, 600)
 
+  const CRYPTOCITY_MIN_ZOOM = 7
+  const CRYPTOCITY_MIN_OPACITY = 0.01
+  const CRYPTOCITY_MAX_ZOOM = 21
+  const CRYPTOCITY_MAX_OPACITY = 0.17
+
+  function linearRegression(x: number): number {
+    if (x < CRYPTOCITY_MIN_ZOOM || x > CRYPTOCITY_MAX_ZOOM)
+      return 0
+
+    const m = (CRYPTOCITY_MIN_OPACITY - CRYPTOCITY_MAX_OPACITY) / (CRYPTOCITY_MAX_ZOOM - CRYPTOCITY_MIN_ZOOM)
+    const b = CRYPTOCITY_MAX_OPACITY - m * CRYPTOCITY_MIN_ZOOM
+    return m * x + b
+  }
+
   watch(clustersInView, async () => {
     if (!boundingBox.value || !map.value)
       return
     loadCryptocitiesDebouncer(boundingBox.value, zoom.value, map.value)
-    const fillOpacity = zoom.value >= 10 && zoom.value <= 18 ? -0.02625 * zoom.value + 0.49083 : 0
+    const fillOpacity = linearRegression(zoom.value)
     map.value.data.setStyle({ fillColor: 'rgb(31 35 72)', fillOpacity, strokeWeight: 0 })
   })
 

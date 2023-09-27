@@ -62,7 +62,8 @@ const defaultSerializer: Serializer<ExpiringValue<any>> = {
  * @param getValue the function to get the value. It will run when the storage is empty and once the storage expires
  * @returns
  */
-export function useExpiringStorage<T>(key: string, options: UseExpiringStorageSyncOptions<T> | UseExpiringStorageAsyncOptions<T>) {
+export function useExpiringStorage<T>(_key: string, options: UseExpiringStorageSyncOptions<T> | UseExpiringStorageAsyncOptions<T>) {
+  const key = `cryptomap__${_key}`
   const { expiresIn, autoRefresh = true, serializer = defaultSerializer as Serializer<ExpiringValue<T>> } = options
   if (!(options as UseExpiringStorageSyncOptions<T>).getValue && !(options as UseExpiringStorageAsyncOptions<T>).getAsyncValue)
     throw new Error('Either getValue or getAsyncValue must be provided')
@@ -110,7 +111,7 @@ export function useExpiringStorage<T>(key: string, options: UseExpiringStorageSy
       stored.value = await getValue()
   }
 
-  const remainingTime = alreadyExists && storedValue.value ? new Date(storedValue.expires).getTime() - Date.now() : expiresIn
+  const remainingTime = (alreadyExists && !!storedValue.value && storedValue.expires) ? new Date(storedValue.expires).getTime() - Date.now() : expiresIn
   refreshData(remainingTime)
   return {
     payload: computed(() => stored.value),
