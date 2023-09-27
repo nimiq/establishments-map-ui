@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-import { flushClusterTable, insertLocationsClusterSet } from '../../../database/functions.ts'
+import { authenticateUser } from '../../../database/auth.ts'
+import { flushMarkersTable, insertMarkers } from '../../../database/functions.ts'
 import { getLocations } from '../../../database/getters.ts'
 import { algorithm, computeCluster } from '../../../shared/compute-cluster.ts'
-import type { DatabaseAuthArgs, InsertLocationsClustersSetParamsItem } from '../../../types/database.ts'
+import type { InsertLocationsClustersSetParamsItem } from '../../../types/database.ts'
 import type { BoundingBox, Cluster, Location } from '../../../types/index.ts'
-import { getAuth } from '../../../database/fetch.ts'
 
 async function cluster() {
   const url = Deno.env.get('SUPABASE_URL')
@@ -18,27 +18,15 @@ async function cluster() {
     throw new Error('Missing environment variables')
   }
 
-  const dbArgs: DatabaseAuthArgs = {
-    apikey,
-    url,
-    auth: {
-      email,
-      password,
-    },
-    token: '',
-  }
+  const dbArgs = await authenticateUser({ apikey, url, auth: { email, password } })
 
   console.log('Flushing cluster table...')
-  await flushClusterTable(dbArgs)
+  await flushMarkersTable(dbArgs)
 
   const boundingBox: BoundingBox = { neLat: 90, neLng: 180, swLat: -90, swLng: -180 }
 
-  dbArgs.token = await getAuth(dbArgs)
-  if (!dbArgs.token)
-    throw new Error('Failed to get auth token')
-  console.log('Got auth token')
-
   const locations = await getLocations(dbArgs, boundingBox)
+  console.log(`Found ${locations.length} locations`)
 
   const minZoom = Number(Deno.env.get('MIN_ZOOM')) || 3
   const maxZoom = Number(Deno.env.get('MAX_ZOOM')) || 14
@@ -54,10 +42,7 @@ async function cluster() {
     const res = computeCluster(algorithm(radii[zoom]), locations, { zoom, boundingBox })
     const singles: InsertLocationsClustersSetParamsItem[] = (res.singles as Location[])
       .map(({ lng, lat, uuid }) => ({ lat, lng, count: 1, locationUuid: uuid }))
-    promises.push(insertLocationsClusterSet(dbArgs, {
-      zoom_level: zoom,
-      items: singles.concat(res.clusters as Cluster[]),
-    }))
+    promises.push(insertMarkers(dbArgs, { zoom_level: zoom, items: singles.concat(res.clusters as Cluster[]) }))
     console.log(`Added ${res.clusters.length} clusters and ${singles.length} singles at zoom level ${zoom}`)
   }
 

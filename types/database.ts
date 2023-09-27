@@ -83,25 +83,37 @@ export interface DatabaseAuthenticateUserArgs extends DatabaseArgs {
 // Functions that both anon and auth users can call.
 // - If user is anon, it is required to pass a captchaToken
 // - If user is auth, it is required to pass a authToken
-export enum AnonDbFunction {
+export enum AnonReadDbFunction {
   GetLocations = 'get_locations',
   GetLocation = 'get_location_by_uuid',
   SearchLocations = 'search_locations',
-  GetLocationsClustersSet = 'get_locations_clusters_set',
-  GetMaxZoom = 'get_max_zoom_computed_clusters_in_server',
-  GetStats = 'get_stats',
+  GetMarkers = 'get_markers',
+  GetMaxZoom = 'get_max_zoom_computed_markers_in_server',
   GetCryptocityPolygon = 'get_cryptocity_polygon',
+}
+
+export enum AnonWriteDbFunction {
   AuthAnonUser = 'auth_anon_user',
 }
 
+export type AnonDbFunction = typeof AnonReadDbFunction | typeof AnonWriteDbFunction
+export const anonDbFunctions: AnonDbFunction = Object.assign({}, AnonReadDbFunction, AnonWriteDbFunction)
+
 // Functions that only auth users can call. These functions require an authToken.
-export enum AuthDbFunction {
+export enum AuthWriteDbFunction {
   UpsertRawLocation = 'upsert_location',
   UpsertLocationsWithGMaps = 'upsert_locations_with_gmaps_api',
   DeleteLocation = 'delete_location_by_uuid',
-  InsertLocationsClustersSet = 'insert_locations_clusters_set',
-  FlushClustersTable = 'flush_clusters_table',
+  InsertMarkers = 'insert_markers',
+  FlushMarkersTable = 'flush_markers_table',
 }
+
+export enum AuthReadDbFunction {
+  GetStats = 'get_stats', // TODO Add check in backend
+}
+
+export type AuthDbFunction = typeof AuthReadDbFunction | typeof AuthWriteDbFunction
+export const authDbFunctions: AuthDbFunction = Object.assign({}, AuthReadDbFunction, AuthWriteDbFunction)
 
 export interface InsertLocationsClustersSetParamsItem {
   lat: number

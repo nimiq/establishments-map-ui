@@ -1,7 +1,10 @@
-import type { DatabaseArgs, DatabaseAuthArgs, DatabaseAuthenticateUserArgs } from 'types'
-import { AnonDbFunction, DatabaseUser } from 'types'
+import type { DatabaseArgs, DatabaseAuthArgs, DatabaseAuthenticateUserArgs } from '../types/index.ts'
+import { AnonWriteDbFunction, DatabaseUser } from '../types/index.ts'
 
-export async function authenticateUser({ url, apikey, auth: { email, password } }: DatabaseAuthenticateUserArgs): Promise<DatabaseAuthArgs> {
+export async function authenticateUser(dbArgs: DatabaseAuthenticateUserArgs | DatabaseAuthArgs): Promise<DatabaseAuthArgs> {
+  if ('user' in dbArgs && dbArgs.user === DatabaseUser.Authenticated)
+    return dbArgs
+  const { url, apikey, auth: { email, password } } = dbArgs as DatabaseAuthenticateUserArgs
   const urlAuth = new URL(`${url}/auth/v1/token?grant_type=password`)
   const headers = { apikey }
   const body = JSON.stringify({ email, password })
@@ -19,7 +22,7 @@ export async function authenticateUser({ url, apikey, auth: { email, password } 
 }
 
 export async function authenticateAnonUser({ apikey, url }: DatabaseArgs, captchaToken: string): Promise<string> {
-  const urlAuth = new URL(`${url}/rest/v1/rpc/${AnonDbFunction.AuthAnonUser}`)
+  const urlAuth = new URL(`${url}/rest/v1/rpc/${AnonWriteDbFunction.AuthAnonUser}`)
   const body = JSON.stringify({ g_token: captchaToken })
   const response = await fetch(urlAuth, { method: 'POST', headers: { apikey, 'Content-Type': 'application/json' }, body }).catch(error => `Error POST ${urlAuth.href}: ${error}`)
   if (typeof response === 'string') {

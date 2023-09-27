@@ -6,11 +6,11 @@ import {
   SlackFunction,
 } from 'https://deno.land/x/deno_slack_sdk@2.2.0/mod.ts'
 import { addLocation } from '../../database/functions.ts'
-import { getDbAuthArgs } from '../util/db-args.ts'
 import type { RawLocation } from '../../types/location.ts'
 import { LocationType } from '../types/location.ts'
-import { Cryptocity, Provider } from '../../types/database.ts'
+import { Provider } from '../../types/database.ts'
 import type { Category, Currency } from '../../types/database.ts'
+import { getDbAuthUserArgs } from '../util/db-args.ts'
 
 export const CreateRawLocation = DefineFunction({
   callback_id: 'create_raw_location',
@@ -99,10 +99,9 @@ export default SlackFunction(
       facebook: inputs.facebook,
       instagram: inputs.instagram,
       gmaps_types: [],
-      cryptocity: Cryptocity.None,
     }
     const res = await addLocation(
-      getDbAuthArgs(env, inputs.environment === 'Test'),
+      await getDbAuthUserArgs(env, inputs.environment === 'Test'),
       locationInput,
     )
     console.log(`Added ${JSON.stringify(res)}`)

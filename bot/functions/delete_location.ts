@@ -6,7 +6,7 @@ import {
   SlackFunction,
 } from 'https://deno.land/x/deno_slack_sdk@2.2.0/mod.ts'
 import { deleteLocation } from '../../database/functions.ts'
-import { getDbAuthArgs } from '../util/db-args.ts'
+import { getDbAuthUserArgs } from '../util/db-args.ts'
 import { LocationType } from '../types/location.ts'
 
 export const DeleteLocation = DefineFunction({
@@ -43,8 +43,8 @@ export default SlackFunction(
   DeleteLocation,
   async ({ inputs, env }) => {
     const res = await deleteLocation(
-      getDbAuthArgs(env, inputs.environment === 'Test'),
-      inputs.uuid,
+      await getDbAuthUserArgs(env, inputs.environment === 'Test'),
+      inputs.uuid!,
     )
     console.log(`Deleted ${JSON.stringify(res)}`)
     return !res || typeof res === 'string'

@@ -1,24 +1,26 @@
 // eslint-disable no-console
-import type { AnonDbFunction, DatabaseAnonArgs, DatabaseAuthArgs } from '../types/database.ts'
-import { AuthDbFunction, DatabaseUser } from '../types/database.ts'
+import type { AnonDbFunction, AuthDbFunction, DatabaseAnonArgs, DatabaseAuthArgs } from '../types/database.ts'
+import { AnonWriteDbFunction, AuthWriteDbFunction, DatabaseUser, authDbFunctions } from '../types/database.ts'
 
 const HEADERS: HeadersInit = {
   'Content-Type': 'application/json',
   'Accept': 'application/json',
 }
 
+const writeOperations = [...Object.values(AnonWriteDbFunction), ...Object.values(AuthWriteDbFunction)]
+
 type Parameters = { query: URLSearchParams; body?: undefined } | { query?: undefined; body: object }
-export async function fetchDb<T, FnName extends AuthDbFunction | AnonDbFunction = any>(fnName: FnName, dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, params?: Parameters): Promise<T | undefined> {
+export async function fetchDb<T, FnName extends AnonDbFunction | AuthDbFunction = any>(fnName: FnName, dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, params?: Parameters): Promise<T | undefined> {
   const { apikey, url: baseUrl, user } = dbArgs
 
-  if (Object.values(AuthDbFunction).includes(fnName as AuthDbFunction) && user === DatabaseUser.Anonymous)
+  if (Object.values(authDbFunctions).includes(fnName as AuthDbFunction) && user === DatabaseUser.Anonymous)
     throw new Error(`The function ${fnName} requires an authenticated user.`)
   if (user === DatabaseUser.Anonymous && !dbArgs.captchaToken)
     throw new Error('Missing captcha token for anon user.')
   else if (user === DatabaseUser.Authenticated && !dbArgs.authToken)
     throw new Error('Missing token for authenticated user. Make sure to call getAuth first to retrieve the token.')
 
-  const method = params?.body ? 'POST' : 'GET'
+  const method = writeOperations.includes(fnName as any) ? 'POST' : 'GET'
   const url = new URL(`${baseUrl}/rest/v1/rpc/${fnName}`)
   url.search = params?.query?.toString() ?? ''
   if (user === DatabaseUser.Anonymous)
@@ -36,7 +38,8 @@ export async function fetchDb<T, FnName extends AuthDbFunction | AnonDbFunction 
   }
 
   if (!response.ok) {
-    console.error(`Error fetching database: ${response.status} ${response.statusText}. Response ${JSON.stringify(response)}`)
+    const data: T = await response.json()
+    console.error(`Error fetching database: ${response.status} ${response.statusText}. Response ${JSON.stringify(response)}. Data ${JSON.stringify(data)}`)
     return undefined
   }
 

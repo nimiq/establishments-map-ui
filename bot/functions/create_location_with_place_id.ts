@@ -6,7 +6,7 @@ import {
   SlackFunction,
 } from 'https://deno.land/x/deno_slack_sdk@2.2.0/mod.ts'
 import { addLocationWithPlaceId } from '../../database/functions.ts'
-import { getDbAuthArgs } from '../util/db-args.ts'
+import { getDbAuthUserArgs } from '../util/db-args.ts'
 import { LocationType } from '../../types/location.ts'
 import type { Currency } from '../../types/database.ts'
 import { Provider } from '../../types/database.ts'
@@ -57,7 +57,7 @@ export default SlackFunction(
   CreateLocationWithPlaceId,
   async ({ inputs, env }) => {
     const res = await addLocationWithPlaceId(
-      getDbAuthArgs(env, inputs.environment === 'Test'),
+      await getDbAuthUserArgs(env, inputs.environment === 'Test'),
       [{ accepts: inputs.accepts as Currency[], sells: inputs.sells as Currency[], place_id: inputs.place_id, provider: Provider.DefaultShop }],
     )
     console.log(`Created location with PlaceID ${JSON.stringify(res)}`)

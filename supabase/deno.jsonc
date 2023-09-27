@@ -15,8 +15,8 @@
   },
   "lock": false,
   "tasks": {
-    "cluster:dev": "deno run --allow-read --allow-net ./functions/generate-locations-clusters-set/index.ts --import-map supabase/import_map.json --allow-env=SUPABASE_URL,SUPABASE_ANON_KEY",
-    "cluster:deploy": "npx supabase functions deploy generate-locations-clusters-set --import-map supabase/import_map.json",
+    "cluster:dev": "deno run --allow-read --allow-net ./functions/compute-markers/index.ts --import-map supabase/import_map.json --allow-env=SUPABASE_URL,SUPABASE_ANON_KEY",
+    "cluster:deploy": "npx supabase functions deploy compute-markers --import-map supabase/import_map.json",
     "og:dev": "npx supabase functions serve og-image --no-verify-jwt --env-file .env --import-map supabase/import_map.json",
     "og:deploy": "npx supabase functions deploy og-image --no-verify-jw --import-map supabase/import_map.json"
   }

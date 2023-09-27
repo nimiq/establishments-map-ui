@@ -6,7 +6,7 @@ import {
   SlackFunction,
 } from 'https://deno.land/x/deno_slack_sdk@2.2.0/mod.ts'
 import { getLocation } from '../../database/getters.ts'
-import { getDbArgs } from '../util/db-args.ts'
+import { getDbAuthUserArgs } from '../util/db-args.ts'
 import { LocationType } from '../types/location.ts'
 
 export const GetLocation = DefineFunction({
@@ -42,8 +42,8 @@ export default SlackFunction(
   GetLocation,
   async ({ inputs, env }) => {
     const res = await getLocation(
-      getDbArgs(env, inputs.environment === 'Test'),
-      inputs.uuid,
+      await getDbAuthUserArgs(env, inputs.environment === 'Test'),
+      inputs.uuid!,
       l => l,
     )
     console.log(`Fetched location ${JSON.stringify(res)}`)

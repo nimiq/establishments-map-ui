@@ -5,8 +5,8 @@ import {
   Schema,
   SlackFunction,
 } from 'https://deno.land/x/deno_slack_sdk@2.2.0/mod.ts'
+import { getDbAuthUserArgs } from '../util/db-args.ts'
 import { getStats } from '../../database/getters.ts'
-import { getDbAuthArgs } from '../util/db-args.ts'
 
 export const GetStats = DefineFunction({
   callback_id: 'get_stats',
@@ -36,7 +36,7 @@ export const GetStats = DefineFunction({
 export default SlackFunction(
   GetStats,
   async ({ inputs, env }) => {
-    const res = await getStats(getDbAuthArgs(env, inputs.environment === 'Test'))
+    const res = await getStats(await getDbAuthUserArgs(env, inputs.environment === 'Test'))
     console.log(`Fetched stats ${JSON.stringify(res)}`)
     return !res || typeof res === 'string'
       ? { error: JSON.stringify(res) }

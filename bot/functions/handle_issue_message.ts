@@ -154,7 +154,7 @@ export default SlackFunction(
     console.log(
       `The user ${reviewer} chose ${action.value}. So,${
         action.value === 'delete_location' ? 'deleted' : 'ignored'
-      } the location ${body.function_data.inputs.location.uuid}`,
+      } the location ${body.function_data.inputs.location?.uuid}`,
     )
     const type = action.value === 'delete_location'
       ? 'approve_issue'
