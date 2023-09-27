@@ -24,7 +24,7 @@ export const useMarkers = defineStore('markers', () => {
   - Before re-clustering, we check for existing data matching the current zoom, bounding box, and filters.
   - If a match is found, we reuse stored clusters; otherwise, new clusters are computed and stored.
   */
-  const { payload: memoized, alreadyExists } = useExpiringStorage('memoized_markers',
+  const { payload: memoized } = useExpiringStorage('memoized_markers',
     {
       expiresIn: 7 * 24 * 60 * 60 * 1000,
       getValue: () => new Map<LocationClusterParams, LocationClusterSet>(),
@@ -150,9 +150,6 @@ export const useMarkers = defineStore('markers', () => {
 
     loaded.value = true
   }
-
-  if (alreadyExists)
-    cluster()
 
   return {
     memoized,

@@ -75,7 +75,7 @@ export function useExpiringStorage<T>(_key: string, options: UseExpiringStorageS
   const alreadyExists = !!storedValue && !hasExpired(storedValue.expires)
 
   // eslint-disable-next-line no-console
-  console.log(`useExpiringStorage ${key}: ${alreadyExists ? '♻️ Reusing value' : `🛎️ Needs to create a new one. ${'getAsyncValue' in options ? 'Use `await init()` before reading payload.' : ''}`}`)
+  console.log(`%cuseExpiringStorage ${key}: ${alreadyExists ? '♻️ Reusing value' : `🛎️ Needs to create a new one. ${'getAsyncValue' in options ? 'Use `await init()` before reading payload.' : ''}`}`, 'font-family:monospace; font-size: 11px')
 
   let initialValue: T | undefined
   if (alreadyExists)
@@ -116,6 +116,5 @@ export function useExpiringStorage<T>(_key: string, options: UseExpiringStorageS
   return {
     payload: computed(() => stored.value),
     init,
-    alreadyExists,
   }
 }

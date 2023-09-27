@@ -47,7 +47,7 @@ export async function fetchDb<T, FnName extends AuthDbFunction | AnonDbFunction 
 
   const data: T = await response.json()
 
-  console.group(`🔍 Database ${method} "${url.pathname.split('/').pop()}${url.search}"`)
+  console.group(`%c🔍 Database ${method} "${url.pathname.split('/').pop()}${url.search}"`, 'font-family:monospace; font-size: 11px')
   console.log(data)
   console.groupEnd()
   /* eslint-enable no-console */
