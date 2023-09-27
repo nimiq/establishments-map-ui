@@ -4,7 +4,7 @@ import { defineStore, storeToRefs } from 'pinia'
 import { addBBoxToArea, bBoxIsWithinArea, bBoxesIntersect, distanceInPx } from 'shared'
 import type { BoundingBox, Cryptocity, CryptocityMarker, CryptocityMemoized } from 'types'
 import { computed, ref, watch } from 'vue'
-import { useCluster } from './cluster'
+import { useMarkers } from './markers'
 import { useMap } from './map'
 import { cryptocitiesData } from '@/assets-dev/cryptocities-assets.ts'
 import { getAnonDatabaseArgs } from '@/shared'
@@ -12,7 +12,7 @@ import { getAnonDatabaseArgs } from '@/shared'
 export const useCryptocity = defineStore('cryptocities', () => {
   const { map, boundingBox, zoom, latInPx, lngInPx } = storeToRefs(useMap())
 
-  const { clustersInView } = storeToRefs(useCluster())
+  const { clustersInView } = storeToRefs(useMarkers())
 
   const cryptocities = useLocalStorage('cryptocities', cryptocitiesData)
 

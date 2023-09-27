@@ -14,7 +14,7 @@ import CrossIcon from '@/components/icons/icon-cross.vue'
 import FilterIcon from '@/components/icons/icon-filter.vue'
 import { useFilters } from '@/stores/filters'
 import { translateCategory, translateCurrency } from '@/translations'
-import { useCluster } from '@/stores/cluster'
+import { useMarkers } from '@/stores/markers'
 
 const isOpen = ref(false)
 const isMobile = useBreakpoints(screens).smaller('md')
@@ -42,7 +42,7 @@ const nFilters = computed(() => {
 function updateFilters() {
   filtersStore.setSelectedCategories(unappliedFiltersCategories.value)
   filtersStore.setSelectedCurrencies(unappliedFiltersCurrencies.value)
-  useCluster().cluster()
+  useMarkers().cluster()
 }
 
 function clearFilters() {

@@ -8,11 +8,11 @@ import InteractionBar from '@/components/elements/InteractionBar.vue'
 import MobileList from '@/components/elements/MobileList.vue'
 import TheMapInstance from '@/components/elements/TheMapInstance.vue'
 import { useApp } from '@/stores/app'
-import { useCluster } from '@/stores/cluster'
+import { useMarkers } from '@/stores/markers'
 import { useLocations } from '@/stores/locations'
 
 const { isListShown } = storeToRefs(useApp())
-const { singlesInView, clustersInView } = storeToRefs(useCluster())
+const { singlesInView, clustersInView } = storeToRefs(useMarkers())
 
 // TODO: Only show list when user searched for something
 // watch(firstLocationsLoaded, () => {

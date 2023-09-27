@@ -13,11 +13,8 @@ async function _useCaptcha() {
     return await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'idle' })
   }
 
-  async function getCaptchaUuid() {
-    return await authenticateAnonUser(DATABASE_ARGS, await getCaptchaToken())
-  }
-
-  const { payload: captchaToken } = await useExpiringStorage('captcha_token_uuid', getCaptchaUuid, { expiresIn: CAPTCHA_TOKEN_VALIDITY })
+  const { payload: captchaToken, init } = useExpiringStorage('captcha_token_uuid', { expiresIn: CAPTCHA_TOKEN_VALIDITY, getAsyncValue: async () => authenticateAnonUser(DATABASE_ARGS, await getCaptchaToken()) })
+  await init()
 
   // const loadRecaptcha = () => {
   //   if (loaded)

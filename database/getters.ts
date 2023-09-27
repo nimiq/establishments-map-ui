@@ -61,5 +61,5 @@ export async function getClusterMaxZoom(dbArgs: DatabaseAuthArgs | DatabaseAnonA
 }
 
 export async function getCryptocityPolygon(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, city: Cryptocity): Promise<FeatureCollection | undefined> {
-  return await fetchDb<FeatureCollection>(AnonDbFunction.GetCryptocityPolygon, dbArgs, { body: { query: new URLSearchParams({ city }) } })
+  return await fetchDb<FeatureCollection>(AnonDbFunction.GetCryptocityPolygon, dbArgs, { query: new URLSearchParams({ city }) })
 }

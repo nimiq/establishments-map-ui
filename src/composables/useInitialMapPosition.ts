@@ -17,7 +17,7 @@ async function selectAndOpenCard(uuid: string) {
   if (location) {
     // We set the locations in the store, and then we show the card
     // https://github.com/nimiq/crypto-map/commit/45b8cdf2e7aabba6039d69043190b8357950736d#r126800610
-    (await import ('@/stores/cluster')).useCluster().singles = [location]
+    (await import ('@/stores/markers')).useMarkers().singles = [location]
     const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
     await sleep(500) // We need to wait for the marker to be rendered in the right position to avoid CLS
     ;(document.querySelector(`[data-trigger-uuid="${uuid}"]`) as HTMLElement)?.click()

@@ -4,8 +4,8 @@ import type { BoundingBox, EstimatedMapPosition, MapPosition, Point } from 'type
 import { computed, ref, shallowRef, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { GoogleMap } from 'vue3-google-map'
-import { useCluster } from './cluster'
 import { useLocations } from './locations'
+import { useMarkers } from './markers'
 
 export const useMap = defineStore('map', () => {
   const mapInstance = shallowRef<typeof GoogleMap>()
@@ -30,7 +30,7 @@ export const useMap = defineStore('map', () => {
       replace: true,
     })
   }, 300, { maxWait: 2000 })
-  const clusterDebouncer = useDebounceFn(() => useCluster().cluster(), 300, { maxWait: 2000 })
+  const clusterDebouncer = useDebounceFn(() => useMarkers().cluster(), 300, { maxWait: 2000 })
 
   function boundsToBox(bounds: google.maps.LatLngBounds) {
     const { lat: swLat, lng: swLng } = bounds.getSouthWest().toJSON()
@@ -55,7 +55,7 @@ export const useMap = defineStore('map', () => {
 
     // If we don't have the item in the memoized map, we need to update the clusters
     // If we have it, getMemoized will update the active value
-    if (useCluster().needsToUpdate())
+    if (useMarkers().needsToUpdate())
       clusterDebouncer()
   }
 

@@ -10,7 +10,7 @@ import { useAutocomplete } from '@/composables/useAutocomplete'
 import { useMap } from '@/stores/map'
 import { useLocations } from '@/stores/locations'
 import { useApp } from '@/stores/app'
-import { useCluster } from '@/stores/cluster'
+import { useMarkers } from '@/stores/markers'
 
 defineEmits({
   open: (value: boolean) => value,
@@ -18,7 +18,7 @@ defineEmits({
 
 const { querySearch, status, suggestions } = useAutocomplete()
 
-const { singles } = storeToRefs(useCluster())
+const { singles } = storeToRefs(useMarkers())
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 async function onSelect(suggestion?: Suggestion) {
