@@ -1,2 +1,2 @@
-export * from './compute-cluster.ts'
+export * from './compute-markers.ts'
 export * from './geo-utils.ts'

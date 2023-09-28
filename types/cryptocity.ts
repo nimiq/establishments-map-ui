@@ -1,20 +1,23 @@
-import type { MultiPolygon } from '@turf/helpers'
-import type { BoundingBox, Point } from './index.ts'
+import type { FeatureCollection, MultiPolygon } from '@turf/helpers'
 
 export enum Cryptocity {
   SanJose = 'San Jose',
 }
 
-export interface CryptocityData {
-  cryptocity: Cryptocity
-  name: string
-  description: string[]
-  url: string
-  centroid: Point
-  boundingBox: BoundingBox
-  count: number
+// Information that we get from the database
+export interface CryptocityDatabase {
+  city: Cryptocity
+  lng: number
+  lat: number
+  shape: FeatureCollection<MultiPolygon>
+  locationsCount: number
 }
 
-export type CryptocityMarker = Map<number /* id of the cluster OR -1 not attached  */, CryptocityData[]>
+// Information that we get from the assets
+export interface CryptocityUI {
+  name: string // This is the name we use in the UI. Not the same as city.
+  description: string[]
+  url: string
+}
 
-export interface CryptocityMemoized { area: MultiPolygon; markers: CryptocityMarker }
+export interface CryptocityData extends CryptocityDatabase, CryptocityUI {}

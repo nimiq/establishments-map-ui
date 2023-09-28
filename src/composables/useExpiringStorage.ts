@@ -18,12 +18,6 @@ interface UseExpiringStorageBaseOptions<T> {
    * @default true
    */
   autoRefresh?: boolean
-
-  /**
-   * The serializer to use
-   * @default { read: JSON.parse, write: JSON.stringify }
-   */
-  serializer?: Serializer<ExpiringValue<T>>
 }
 
 interface UseExpiringStorageSyncOptions<T> extends UseExpiringStorageBaseOptions<T> {
@@ -31,7 +25,7 @@ interface UseExpiringStorageSyncOptions<T> extends UseExpiringStorageBaseOptions
    * If provided, it will be used to get the value when the storage is empty and once the storage expires
    * @default undefined
    */
-  getValue?: () => T
+  defaultValue?: T
 }
 
 interface UseExpiringStorageAsyncOptions<T> extends UseExpiringStorageBaseOptions<T> {
@@ -48,11 +42,10 @@ interface UseExpiringStorageAsyncOptions<T> extends UseExpiringStorageBaseOption
 }
 
 const storage = globalThis.localStorage
+
 const hasExpired = (expiryDate: string) => new Date(expiryDate).getTime() <= Date.now()
-const defaultSerializer: Serializer<ExpiringValue<any>> = {
-  read: JSON.parse,
-  write: JSON.stringify,
-}
+
+const halfDay = 12 * 60 * 60 * 1000
 
 /**
  * Returns a storage that expires after the given date
@@ -64,13 +57,17 @@ const defaultSerializer: Serializer<ExpiringValue<any>> = {
  */
 export function useExpiringStorage<T>(_key: string, options: UseExpiringStorageSyncOptions<T> | UseExpiringStorageAsyncOptions<T>) {
   const key = `cryptomap__${_key}`
-  const { expiresIn, autoRefresh = true, serializer = defaultSerializer as Serializer<ExpiringValue<T>> } = options
-  if (!(options as UseExpiringStorageSyncOptions<T>).getValue && !(options as UseExpiringStorageAsyncOptions<T>).getAsyncValue)
+  const { expiresIn, autoRefresh = true } = options
+  if (!(options as UseExpiringStorageSyncOptions<T>).defaultValue && !(options as UseExpiringStorageAsyncOptions<T>).getAsyncValue)
     throw new Error('Either getValue or getAsyncValue must be provided')
 
-  const isAsync = 'getAsyncValue' in options
-  const getValue = isAsync ? (options as UseExpiringStorageAsyncOptions<T>).getAsyncValue! : (options as UseExpiringStorageSyncOptions<T>).getValue!
+  const serializer: Serializer<ExpiringValue<T>> = {
+    read: str => JSON.parse(str),
+    write: obj => JSON.stringify(obj),
+  }
 
+  const isAsync = 'getAsyncValue' in options
+  const getValue = isAsync ? (options as UseExpiringStorageAsyncOptions<T>).getAsyncValue! : () => (options as UseExpiringStorageSyncOptions<T>).defaultValue as T
   const storedValue = storage.getItem(key) ? serializer.read(storage.getItem(key)!) as ExpiringValue<T> : undefined
   const alreadyExists = !!storedValue && !hasExpired(storedValue.expires)
 
@@ -93,12 +90,13 @@ export function useExpiringStorage<T>(_key: string, options: UseExpiringStorageS
   }, { immediate: true, deep: true })
 
   async function refreshData(expiresIn: number) {
-    if (autoRefresh) {
+    if (autoRefresh && expiresIn < halfDay) { // Only refresh if flag is on and the expires in is less than 12 hours.
       setTimeout(async () => {
         // eslint-disable-next-line no-console
-        console.log(`LocalStorage ${key}: ♻️ Refreshing value`)
+        console.log(`LocalStorage ${key}: ♻️ Refreshing value. Expires in ${expiresIn}ms`)
         stored.value = await getValue()
         refreshData(expiresIn)
+        throw new Error('Refreshed')
       }, expiresIn)
     }
   }

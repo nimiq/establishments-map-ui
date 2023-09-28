@@ -37,8 +37,8 @@ defineEmits({
       <CryptocityIcon class="w-[31px] h-[27px]" />
       <div>
         <h3 class="text-base text-space">{{ cryptocity.name }}</h3>
-        <span class="block w-24 h-3 text-sm leading-[1] rounded-sm text-space/60 bg-space/[0.15]" :class="cryptocity.count === -1 && 'animate-pulse'">
-          <template v-if="cryptocity.count > 0 ">{{ $tc('{count} locations', cryptocity.count) }}</template>
+        <span class="block w-24 h-3 text-sm leading-[1] rounded-sm text-space/60 bg-space/[0.15]">
+          <template v-if="cryptocity.locationsCount > 0 ">{{ $tc('{count} locations', cryptocity.locationsCount) }}</template>
         </span>
       </div>
 

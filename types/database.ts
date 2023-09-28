@@ -13,7 +13,9 @@ likely we also need to update things in the UI, so not really a downside!
     -> And so on
  */
 
+import type { Cryptocity, CryptocityDatabase } from './cryptocity.ts'
 import type { RawLocation } from './location.ts'
+import type { BoundingBox, Markers } from './map.ts'
 
 export enum Category {
   CarsBikes = 'cars_bikes',
@@ -89,6 +91,7 @@ export enum AnonReadDbFunction {
   SearchLocations = 'search_locations',
   GetMarkers = 'get_markers',
   GetMaxZoom = 'get_max_zoom_computed_markers_in_server',
+  GetCryptocities = 'get_cryptocities',
   GetCryptocityPolygon = 'get_cryptocity_polygon',
 }
 
@@ -115,43 +118,21 @@ export enum AuthReadDbFunction {
 export type AuthDbFunction = typeof AuthReadDbFunction | typeof AuthWriteDbFunction
 export const authDbFunctions: AuthDbFunction = Object.assign({}, AuthReadDbFunction, AuthWriteDbFunction)
 
-export interface InsertLocationsClustersSetParamsItem {
-  lat: number
-  lng: number
-  count: number
-  locationUuid?: string // If count is 1
-  expansionZoom?: number // If count is greater 1
+export interface Args {
+  [AnonReadDbFunction.GetMarkers]: { zoom: number; boundingBox: BoundingBox }
+  [AnonReadDbFunction.GetCryptocities]: { boundingBox: BoundingBox; excludedCities: Cryptocity[] }
+  [AuthWriteDbFunction.UpsertLocationsWithGMaps]: Partial<RawLocation> & { accepts: RawLocation['accepts']; place_id?: string }[]
+  [AuthWriteDbFunction.InsertMarkers]: { zoom_level: number; items: InsertMarkersItem[] }
 }
 
-export interface InsertLocationsClustersSetParams {
-  zoom_level: number
-  items: InsertLocationsClustersSetParamsItem[]
+export interface Returns {
+  [AnonReadDbFunction.GetCryptocities]: CryptocityDatabase[]
+  [AnonReadDbFunction.GetMarkers]: Markers
+  [AuthReadDbFunction.GetStats]: { cryptos: number; locations: number; providers: number; providers_count: Record<Provider, number>; crypto_sells_combinations: Record<string, number>; crypto_accepts_combinations: Record<string, number> }
+  [AuthWriteDbFunction.UpsertLocationsWithGMaps]: { added: RawLocation[]; multiples: object[][]; errors: { input: Args[AuthWriteDbFunction.UpsertLocationsWithGMaps]; error: string; apiUrl: string }[] }
+  [AnonWriteDbFunction.AuthAnonUser]: { uuid: string; max_age: number }
 }
 
-// ------ Return types --------
-
-export interface DatabaseStatistics {
-  cryptos: number
-  locations: number
-  providers: number
-  providers_count: Record<Provider, number>
-  crypto_sells_combinations: Record<string, number>
-  crypto_accepts_combinations: Record<string, number>
-}
-
-export interface InsertWithPlaceIdArgs extends Partial<RawLocation> {
-  accepts: RawLocation['accepts']
-  place_id?: string
-}
-
-// The return structure of the PL/pgSQL function.
-export interface InsertWithPlaceIdResponse {
-  added: RawLocation[]
-  multiples: object[][]
-  errors: { input: InsertWithPlaceIdArgs; error: string; apiUrl: string }[]
-}
-
-export interface AuthAnonUserResponse {
-  uuid: string
-  max_age: number
-}
+export type InsertMarkersItem =
+  { lat: number; lng: number }
+  & /* Single */ ({ count: 1; locationUuid?: string } | /* Clusters */ { count: number; expansionZoom: number; cryptocities?: Cryptocity[] })

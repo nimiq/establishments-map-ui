@@ -1,5 +1,5 @@
 import type { FeatureCollection } from '@turf/helpers'
-import type { BoundingBox, ComputedClusterSet, DatabaseAnonArgs, DatabaseAuthArgs, DatabaseAuthenticateUserArgs, DatabaseStatistics, Location, Suggestion } from '../types/index.ts'
+import type { Args, BoundingBox, DatabaseAnonArgs, DatabaseAuthArgs, DatabaseAuthenticateUserArgs, Location, Returns, Suggestion } from '../types/index.ts'
 import { AnonReadDbFunction, AuthReadDbFunction, Category, Cryptocity, Currency, Provider } from '../types/index.ts'
 import { fetchDb } from './fetch.ts'
 import { authenticateUser } from './auth.ts'
@@ -44,9 +44,13 @@ export async function searchLocations(dbArgs: DatabaseAuthArgs | DatabaseAnonArg
   return await fetchDb<Omit<Suggestion, 'type'>[]>(AnonReadDbFunction.SearchLocations, dbArgs, { query }) ?? []
 }
 
-export async function getClusters(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, { neLat, neLng, swLat, swLng }: BoundingBox, zoom: number, parseLocation: (l: Location) => Location = l => l): Promise<ComputedClusterSet> {
+export async function getMarkers(
+  dbArgs: DatabaseAuthArgs | DatabaseAnonArgs,
+  { boundingBox: { neLat, neLng, swLat, swLng }, zoom }: Args[AnonReadDbFunction.GetMarkers],
+  parseLocation: (l: Location) => Location = l => l,
+): Promise<Returns[AnonReadDbFunction.GetMarkers]> {
   const query = new URLSearchParams({ nelat: neLat.toString(), nelng: neLng.toString(), swlat: swLat.toString(), swlng: swLng.toString(), zoom_level: zoom.toString() })
-  const res = await fetchDb<ComputedClusterSet>(AnonReadDbFunction.GetMarkers, dbArgs, { query })
+  const res = await fetchDb<Returns[AnonReadDbFunction.GetMarkers]>(AnonReadDbFunction.GetMarkers, dbArgs, { query })
   return {
     clusters: res?.clusters ?? [],
     singles: res?.singles.map(parseLocation) ?? [],
@@ -57,7 +61,7 @@ export async function getClusters(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, {
  * The maximum zoom level at which the clusters are computed in the database.
  * If the user zooms in more than this, the clusters will be computed in the client.
  */
-export async function getClusterMaxZoom(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs): Promise<number> {
+export async function getClusterMaxZoom(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs) {
   return await fetchDb<number>(AnonReadDbFunction.GetMaxZoom, dbArgs) ?? -1 // FIXME: Show error to user instead of using -1
 }
 
@@ -65,6 +69,12 @@ export async function getCryptocityPolygon(dbArgs: DatabaseAuthArgs | DatabaseAn
   return await fetchDb<FeatureCollection>(AnonReadDbFunction.GetCryptocityPolygon, dbArgs, { query: new URLSearchParams({ city }) })
 }
 
+export async function getCryptocities(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, { boundingBox: { neLat, neLng, swLat, swLng }, excludedCities }: Args[AnonReadDbFunction.GetCryptocities]) {
+  const query = new URLSearchParams({ nelat: neLat.toString(), nelng: neLng.toString(), swlat: swLat.toString(), swlng: swLng.toString() })
+  excludedCities.forEach(city => query.append('excluded_cities', city))
+  return await fetchDb<Returns[AnonReadDbFunction.GetCryptocities]>(AnonReadDbFunction.GetCryptocities, dbArgs, { query })
+}
+
 export async function getStats(dbArgs: DatabaseAuthArgs | DatabaseAuthenticateUserArgs) {
-  return await fetchDb<DatabaseStatistics>(AuthReadDbFunction.GetStats, await authenticateUser(dbArgs))
+  return await fetchDb<Returns[AuthReadDbFunction.GetStats]>(AuthReadDbFunction.GetStats, await authenticateUser(dbArgs))
 }

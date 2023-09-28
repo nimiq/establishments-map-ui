@@ -10,10 +10,10 @@ import MinusIcon from '@/components/icons/icon-minus.vue'
 import CrossIcon from '@/components/icons/icon-cross.vue'
 import PlusIcon from '@/components/icons/icon-plus.vue'
 import { useGeoIp } from '@/composables/useGeoLocation'
-import { useCryptocity } from '@/stores/cryptocity'
+import { useCryptocities } from '@/stores/cryptocities'
 import { useMap } from '@/stores/map'
 
-const { cryptocitiesInView } = storeToRefs(useCryptocity())
+const { cryptocitiesInView } = storeToRefs(useCryptocities())
 const { zoom } = storeToRefs(useMap())
 
 const isGeolocationLoading = ref(false)

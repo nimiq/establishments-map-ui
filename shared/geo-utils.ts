@@ -1,11 +1,11 @@
 import bboxPolygon from '@turf/bbox-polygon'
-import type { MultiPolygon } from '@turf/helpers'
+import type { Feature, MultiPolygon } from '@turf/helpers'
 import { featureCollection, multiPolygon, point } from '@turf/helpers'
 import pointsWithinPolygon from '@turf/points-within-polygon'
 import union from '@turf/union'
 import intersect from '@turf/intersect'
 import booleanWithin from '@turf/boolean-within'
-import type { BoundingBox, Point } from '../types/index.ts'
+import { type BoundingBox, Cryptocity, type Point } from '../types/index.ts'
 
 /**
  * Returns a GeoJSON Point from a location. You can pass an object like a Location which will be stored as a property of the point
@@ -46,15 +46,15 @@ export const toMultiPolygon = (bbox: BoundingBox) => multiPolygon(toPolygon(bbox
  * Since bounding boxes can cross the antimeridian, we need to check if any of the polygons created by toPolygon
  * is within the multipolygon
  */
-export function bBoxIsWithinArea(bbox: BoundingBox, multiPoly?: MultiPolygon) {
-  return !multiPoly ? false : toPolygon(bbox).some(p => booleanWithin(p, multiPoly))
+export function bBoxIsWithinArea(bbox: BoundingBox, area?: Feature) {
+  return !area ? false : toPolygon(bbox).some(p => booleanWithin(p, area))
 }
 
 /**
  * Adds a polygon (from a bounding box) to a multipolygon
  */
-export function addBBoxToArea(bbox: BoundingBox, multiPoly?: MultiPolygon) {
-  return !multiPoly ? toMultiPolygon(bbox).geometry : union(multiPoly, toMultiPolygon(bbox))?.geometry as MultiPolygon || multiPoly
+export function addBBoxToArea(bbox: BoundingBox, area?: Feature<MultiPolygon>) {
+  return !area ? toMultiPolygon(bbox) : union(area, toMultiPolygon(bbox)) as Feature<MultiPolygon> || area
 }
 
 /**
@@ -82,6 +82,15 @@ export function bBoxesIntersect(bbox1: BoundingBox, bbox2: BoundingBox) {
   return polygon1.some(p1 => polygon2.some(p2 => intersect(p1, p2)))
 }
 
+export function euclideanDistance({ lat: y1, lng: x1 }: Point, { lat: y2, lng: x2 }: Point) {
+  return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+}
+
+// TODO MAybe useless funciton
 export function distanceInPx({ lat: y1, lng: x1 }: Point, { lat: y2, lng: x2 }: Point, { lngInPx, latInPx }: { lngInPx: number; latInPx: number }) {
   return Math.sqrt(((x2 - x1) * lngInPx) ** 2 + ((y2 - y1) * latInPx) ** 2)
+}
+
+export const cryptocitiesCentroids: Record<Cryptocity, Point & { city: Cryptocity }> = {
+  [Cryptocity.SanJose]: { lat: 9.935, lng: -84.102, city: Cryptocity.SanJose },
 }

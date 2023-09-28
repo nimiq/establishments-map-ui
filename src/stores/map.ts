@@ -12,8 +12,8 @@ export const useMap = defineStore('map', () => {
   const map = computed(() => mapInstance.value?.map as google.maps.Map | undefined)
   const center = ref(map.value?.getCenter()?.toJSON() as Point | undefined)
   const zoom = ref(map.value?.getZoom() ?? 3)
-  const boundingBox = ref<BoundingBox | undefined>()
-  const lngInPx = ref(0)
+  const boundingBox = ref<BoundingBox>()
+  const lngInPx = ref(0) // TODO Remove this?
   const latInPx = ref(0)
 
   const router = useRouter()

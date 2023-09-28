@@ -1,4 +1,4 @@
-import type { MultiPolygon } from '@turf/helpers'
+import type { Feature, MultiPolygon } from '@turf/helpers'
 import { useRouteQuery } from '@vueuse/router'
 import { getLocations as getDbLocations, getLocation } from 'database'
 import { defineStore } from 'pinia'
@@ -14,7 +14,7 @@ export const useLocations = defineStore('locations', () => {
   const { filterLocations } = useFilters()
 
   // Reduce redundant database fetches by reusing fetched locations by tracking the areas explored by the user
-  const visitedAreas = ref<MultiPolygon>()
+  const visitedAreas = ref<Feature<MultiPolygon>>()
 
   const locationsMap = shallowReactive(new Map<string, Location>())
   const locations = computed(() => [...locationsMap.values()])
