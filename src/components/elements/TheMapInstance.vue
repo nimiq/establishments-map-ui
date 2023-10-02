@@ -55,9 +55,9 @@ const isDark = useDark()
       :class="isDark ? 'bg-space' : 'bg-white'"
     >
       <img :src="`logo-horizontal-${isDark ? 'dark' : 'light'}.svg`" loading="eager" :alt="$t('Crypto Map logo')" class="animate-fade">
-      <i18n-t class="absolute inset-x-0 w-screen px-4 text-xs md:text-center bottom-4 text-white/50" tag="div" keypath="This site is protected by reCAPTCHA and the Google {privacyPolicy} and {termsOfService} apply.">
-        <template #privacyPolicy><a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="underline text-white/60">{{ $t('Privacy Policy') }}</a></template>
-        <template #termsOfService><a href="https://policies.google.com/terms" target="_blank" rel="noopener" class="underline text-white/60">{{ $t('Terms of Service') }}</a></template>
+      <i18n-t class="absolute inset-x-0 w-screen px-4 text-xs md:text-center bottom-4 text-space/80 dark:text-white/50" tag="div" keypath="This site is protected by reCAPTCHA and the Google {privacyPolicy} and {termsOfService} apply.">
+        <template #privacyPolicy><a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="underline text-space/80 dark:text-white/60">{{ $t('Privacy Policy') }}</a></template>
+        <template #termsOfService><a href="https://policies.google.com/terms" target="_blank" rel="noopener" class="underline text-space/80 dark:text-white/60">{{ $t('Terms of Service') }}</a></template>
       </i18n-t>
     </div>
   </transition>

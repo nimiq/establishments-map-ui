@@ -23,7 +23,8 @@ const { setPosition } = useMap()
 const router = useRouter()
 const route = useRoute()
 
-function onCryptocityClick({ lat, lng, name, showCardAtZoom }: CryptocityData) {
+function onCryptocityClick() {
+  const { lat, lng, name, showCardAtZoom } = cryptocity.value as CryptocityData
   const cardTrigger = (document.querySelector('[data-cryptocity-card]') as HTMLElement)
   if (cardTrigger)
     cardTrigger.click()
@@ -35,7 +36,7 @@ function onCryptocityClick({ lat, lng, name, showCardAtZoom }: CryptocityData) {
 <template>
   <div
     class="grid p-1 bg-white rounded-full shadow cursor-pointer group/city clickable-sm aspect-square place-content-center"
-    @click="onCryptocityClick(cryptocity)"
+    @click="onCryptocityClick()"
   >
     <div class="absolute inset-0 duration-400 transition-[background-color] rounded-full group-hover/city:bg-space/[0.06] group-focus-visible/city:bg-space/[0.06]" />
     <CryptocityIcon class="w-full" />

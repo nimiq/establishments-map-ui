@@ -37,10 +37,12 @@ const separator = h('hr', { class: 'w-full h-px my-8 bg-space/10' })
           <slot name="title" />
         </DialogTitle>
         <DialogDescription v-if="hasSlot('description')" as="div" class="[&>*:not(hr)]:px-6 [&>*:not(hr)]:md:px-10 text-base text-space/60">
+          <!-- eslint-disable-next-line vue/attribute-hyphenation -->
           <slot name="description" :Separator="separator" />
         </DialogDescription>
 
         <div v-if="hasSlot('content')" class="[&>*:not(hr)]:px-6 [&>*:not(hr)]:md:px-10">
+          <!-- eslint-disable-next-line vue/attribute-hyphenation -->
           <slot name="content" :Separator="separator" />
         </div>
 

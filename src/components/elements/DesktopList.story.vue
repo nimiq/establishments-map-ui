@@ -24,7 +24,7 @@ const listIsShown = ref(true)
             <InteractionBar />
             <DesktopList :singles="Object.values(locations)" :clusters="[]" :list-is-shown="listIsShown" />
           </div>
-          <Button bg-color="white" class="mt-6" @click="listIsShown = !listIsShown">
+          <Button bg-color="white" class="mt-6 border border-[#e9e9ed]" @click="listIsShown = !listIsShown">
             <template #icon>
               <IconChevronDown :class="{ 'rotate-180': listIsShown }" class="transition-transform delay-500" />
             </template>

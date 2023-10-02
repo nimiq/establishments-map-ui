@@ -17,7 +17,7 @@ defineEmits({ close: () => true })
 
 <template>
   <div
-    class="p-6 transition-all duration-300 bg-white shadow cursor-default rounded-t-md desktop:rounded-md ring-white/20 ring-1 ring-offset-1 ring-offset-white/10 desktop:max-w-xs"
+    class="p-6 transition-all duration-300 bg-white shadow cursor-default rounded-t-md desktop:rounded-md border border-[#e9e9ed] desktop:max-w-xs"
     @pointerdown.capture.stop.prevent
     @dblclick.capture.stop.prevent
   >

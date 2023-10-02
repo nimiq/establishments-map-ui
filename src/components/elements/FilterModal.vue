@@ -66,7 +66,7 @@ function applyFilters() {
 <template>
   <Modal @close="closeModal({ shouldClearFilters: false })">
     <template #trigger>
-      <Button bg-color="white" class="max-desktop:px-0" v-bind="$attrs">
+      <Button bg-color="white" class="max-desktop:px-0 border border-[#e9e9ed]" v-bind="$attrs">
         <template #icon>
           <FilterIcon class="w-4 text-space" />
         </template>

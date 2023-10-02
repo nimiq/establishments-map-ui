@@ -55,7 +55,7 @@ async function setBrowserPosition() {
       :open="cryptocityCardOpen"
       @update:open="$router.push({ query: { ...$route.query, cryptocity: $event ? cryptocityControl.name : undefined } })"
     >
-      <PopoverTrigger class="animate-scale !w-8 !h-8 shadow bg-white rounded-full p-1.5" data-cryptocity-card :aria-label="$t('Information about this Cryptocity')"><CryptocityIcon /></PopoverTrigger>
+      <PopoverTrigger class="border border-[#e9e9ed] animate-scale !w-8 !h-8 shadow bg-white rounded-full p-1.5" data-cryptocity-card :aria-label="$t('Information about this Cryptocity')"><CryptocityIcon /></PopoverTrigger>
       <PopoverPortal>
         <PopoverContent
           align="end" side="bottom" :side-offset="-32" class="max-desktop:-mb-[72px] max-desktop:w-screen will-change-[transform,opacity] animate-slideUpAndFade"
@@ -68,7 +68,7 @@ async function setBrowserPosition() {
 
     <Button
       v-if="browserPositionIsSupported"
-      class="!w-8 !h-8 shadow"
+      class="!w-8 !h-8 shadow border border-[#e9e9ed]"
       :disabled="geolocatingUserBrowser" bg-color="white" :aria-label="$t('Show your location')"
       :title="$t('Show your location')"
       @click="setBrowserPosition"
@@ -78,7 +78,7 @@ async function setBrowserPosition() {
       </template>
     </Button>
 
-    <div class="flex flex-col bg-white rounded-full shadow max-desktop:hidden">
+    <div class="flex flex-col bg-white rounded-full shadow max-desktop:hidden border border-[#e9e9ed]">
       <Button bg-color="white" class="!w-8 !h-8 rounded-b-0" @click="useMap().increaseZoom">
         <template #icon>
           <PlusIcon class="w-5" />

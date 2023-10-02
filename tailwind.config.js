@@ -5,6 +5,7 @@ export const DESKTOP_LAYOUT = 'md'
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   preflight: false,
   content: [
     './index.html',

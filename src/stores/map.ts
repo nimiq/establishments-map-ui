@@ -1,4 +1,4 @@
-import { useDebounceFn, useWindowSize } from '@vueuse/core'
+import { useDebounceFn } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import type { BoundingBox, EstimatedMapPosition, MapPosition, Point } from 'types'
 import { computed, ref, shallowRef, watch } from 'vue'
@@ -13,8 +13,6 @@ export const useMap = defineStore('map', () => {
   const center = ref(map.value?.getCenter()?.toJSON() as Point | undefined)
   const zoom = ref(map.value?.getZoom() ?? 3)
   const boundingBox = ref<BoundingBox>()
-  const lngInPx = ref(0) // TODO Remove this?
-  const latInPx = ref(0)
 
   const router = useRouter()
   const route = useRoute()
@@ -38,8 +36,6 @@ export const useMap = defineStore('map', () => {
     return { swLat, swLng, neLat, neLng }
   }
 
-  const { height, width } = useWindowSize()
-
   function onBoundsChanged() {
     const bounds = map.value?.getBounds()
     if (!bounds)
@@ -47,9 +43,6 @@ export const useMap = defineStore('map', () => {
 
     const { neLat, neLng, swLat, swLng } = boundsToBox(bounds)
     boundingBox.value = { neLat, neLng, swLat, swLng }
-
-    latInPx.value = height.value / (neLat - swLat)
-    lngInPx.value = width.value / (neLng - swLng)
 
     updateRouteDebouncer()
 
@@ -125,8 +118,5 @@ export const useMap = defineStore('map', () => {
     decreaseZoom,
 
     goToPlaceId,
-
-    latInPx,
-    lngInPx,
   }
 })

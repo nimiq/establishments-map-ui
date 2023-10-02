@@ -27,11 +27,11 @@ const openSuggestions = ref(false)
   <aside class="absolute flex flex-col max-w-xs bottom-6 top-6 left-6 h-max pointer-events-none [&>*]:pointer-events-auto">
     <!-- This element if for the shadow in the header. We cannot use a normal shadow because the use of mask-image restrict us of using shadows -->
     <div class="absolute inset-0 shadow rounded-2xl pointer-events-none h-[calc(64px+(88px*var(--search-box-hint)))]" />
-    <div class="duration-75 bg-white shadow-header transition-border-radius" :class="openSuggestions && !isListShown ? 'rounded-t-2xl' : 'rounded-2xl'" style="mask-image: linear-gradient(white, white);">
+    <div class="duration-75 bg-white border border-[#e9e9ed] shadow-header transition-border-radius" :class="openSuggestions && !isListShown ? 'rounded-t-2xl' : 'rounded-2xl'" style="mask-image: linear-gradient(white, white);">
       <InteractionBar @open="openSuggestions = $event" />
       <DesktopList :singles="singlesInView" :clusters="clustersInView" :list-is-shown="isListShown" />
     </div>
-    <Button bg-color="white" class="mt-6 shadow" @click="isListShown = !isListShown">
+    <Button bg-color="white" class="mt-6 shadow border border-[#e9e9ed]" @click="isListShown = !isListShown">
       <template #icon><IconChevronDown :class="{ 'rotate-180': isListShown }" class="w-2.5 transition-transform delay-500" /></template>
       <template #label>{{ $t(isListShown ? 'Hide list' : 'Show list') }}</template>
     </Button>

@@ -86,11 +86,6 @@ export function euclideanDistance({ lat: y1, lng: x1 }: Point, { lat: y2, lng: x
   return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 }
 
-// TODO MAybe useless funciton
-export function distanceInPx({ lat: y1, lng: x1 }: Point, { lat: y2, lng: x2 }: Point, { lngInPx, latInPx }: { lngInPx: number; latInPx: number }) {
-  return Math.sqrt(((x2 - x1) * lngInPx) ** 2 + ((y2 - y1) * latInPx) ** 2)
-}
-
 export const cryptocitiesCentroids: Record<Cryptocity, Point & { city: Cryptocity }> = {
   [Cryptocity.SanJose]: { lat: 9.935, lng: -84.102, city: Cryptocity.SanJose },
 }
