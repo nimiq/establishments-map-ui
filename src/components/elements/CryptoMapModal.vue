@@ -14,8 +14,8 @@ function _onLanguagesChange(language: string) {
 
 <template>
   <Modal>
-    <template #trigger="{ openModal }">
-      <Button bg-color="transparent" size="md" @click="openModal">
+    <template #trigger>
+      <Button bg-color="transparent" size="md" class="!p-0">
         <template #icon>
           <GearIcon class="text-space/30 w-4.5 h-4.5" />
         </template>
@@ -23,21 +23,23 @@ function _onLanguagesChange(language: string) {
     </template>
 
     <template #pre-title>
-      <CryptoMapIcon class="h-8" />
+      <CryptoMapIcon class="h-6" />
     </template>
 
     <template #title>
       {{ $t('Crypto Map') }}
     </template>
 
-    <template #content>
+    <template #description>
       <i18n-t class="[text-wrap:pretty]" tag="p" keypath="This app is brought to you by Nimiq. It is protected by reCAPTCHA and the Google {privacyPolicy} and {termsOfService} apply.">
         <template #privacyPolicy><a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="underline">{{ $t('Privacy Policy') }}</a></template>
         <template #termsOfService><a href="https://policies.google.com/terms" target="_blank" rel="noopener" class="underline">{{ $t('Terms of Service') }}</a></template>
       </i18n-t>
+    </template>
 
+    <template #content>
       <div class="flex items-center justify-between mt-8">
-        <Button bg="sky" href="/location/add">
+        <Button bg-color="sky" gradient href="/location/add">
           <template #label>
             {{ $t('Add Crypto location') }}
           </template>
