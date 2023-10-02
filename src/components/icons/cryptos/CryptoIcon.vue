@@ -77,12 +77,12 @@ const isMobile = useBreakpoints(screens).smaller('md')
           </h4>
 
           <p class="mt-2 text-sm text-white/60">
-            {{ $t('Pay in BTC and many other currencies with the GoCrypto app and its Binance integration.') }}
+            {{ $t('Binance Pay is a cryptocurrency payment service that empowers users to pay with crypto at shops and establishments supporting Binance Pay.') }}
           </p>
 
           <div class="flex items-end justify-end gap-x-1.5" :title="$t('BTC and 49 more')">
             <BtcIcon :class="css" class="w-6" />
-            <span class="text-sm font-bold text-white/50">+49</span>
+            <span class="text-sm font-bold text-white/50">50+</span>
           </div>
 
           <PopoverArrow class="fill-space" size="8" />
