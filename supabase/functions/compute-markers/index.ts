@@ -9,13 +9,6 @@ import type { BoundingBox } from '../../../types/index.ts'
 import { cryptocitiesCentroids } from '../../../shared/index.ts'
 import { euclideanDistance } from '../../../shared/geo-utils.ts'
 
-// DB_AUTH_EMAIL="jeff@nimiq.com"
-// DB_AUTH_PASSWORD="Cr-UN#=zZ##a2!F"
-// MIN_ZOOM=3
-// MAX_ZOOM=14
-// SUPABASE_URL=https://mycbdmurjytbdahjljoh.supabase.co
-// SUPABASE_ANON_KEY=
-
 async function cluster() {
   const url = Deno.env.get('SUPABASE_URL')
   const apikey = Deno.env.get('SUPABASE_ANON_KEY')
