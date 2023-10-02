@@ -56,9 +56,12 @@ const isMobile = useBreakpoints(screens).smaller('md')
     <XrpIcon v-else-if="crypto === Currency.XRP" :class="css" />
     <DashIcon v-else-if="crypto === Currency.DASH" :class="css" />
     <XlmIcon v-else-if="crypto === Currency.XLM" :class="css" />
-    <LBtcIcon v-else-if="crypto === Currency.LBTC" :class="css" />
     <UsdcIcon v-else-if="crypto === Currency.USDC_on_POLYGON" :class="css" />
     <BchIcon v-else-if="crypto === Currency.BCH" :class="css" />
+    <div v-else-if="crypto === Currency.LBTC" class="relative">
+      <BtcIcon :class="css" />
+      <LBtcIcon class="absolute w-4 -right-1 -bottom-1" />
+    </div>
     <PopoverRoot v-else-if="crypto === Currency.BINANCE_PAY">
       <PopoverTrigger>
         <div class="relative">
