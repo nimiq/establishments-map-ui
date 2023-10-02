@@ -4,7 +4,7 @@ import { authenticateUser } from '../../../database/auth.ts'
 import { flushMarkersTable, insertMarkers } from '../../../database/functions.ts'
 import { getLocations } from '../../../database/getters.ts'
 import { algorithm, computeMarkers } from '../../../shared/compute-markers.ts'
-import type { InsertLocationsClustersSetParamsItem } from '../../../types/database.ts'
+import type { Args, AuthWriteDbFunction } from '../../../types/database.ts'
 import type { BoundingBox } from '../../../types/index.ts'
 import { cryptocitiesCentroids } from '../../../shared/index.ts'
 import { euclideanDistance } from '../../../shared/geo-utils.ts'
@@ -44,12 +44,12 @@ async function cluster() {
   for (let zoom = minZoom; zoom <= maxZoom; zoom++) {
     const { singles, clusters: locationClusters } = computeMarkers(algorithm(radii[zoom]), locations, { zoom, boundingBox })
 
-    const singlesToAdd: InsertLocationsClustersSetParamsItem[] = singles.map(({ lng, lat, uuid }) => ({ lat, lng, count: 1, locationUuid: uuid }))
+    const singlesToAdd: Args[AuthWriteDbFunction.InsertMarkers]['items'] = singles.map(({ lng, lat, uuid }) => ({ lat, lng, count: 1, locationUuid: uuid }))
 
     const clustersWithCryptocurrencies = [...locationClusters, ...cryptocities]
     const { singles: singlesItems, clusters: cryptocitiesClustered } = computeMarkers(algorithm(140), clustersWithCryptocurrencies, { zoom, boundingBox })
 
-    const singlesCryptocities: InsertLocationsClustersSetParamsItem[] = (singlesItems.filter(c => 'city' in c) as typeof cryptocities)
+    const singlesCryptocities: Args[AuthWriteDbFunction.InsertMarkers]['items'] = (singlesItems.filter(c => 'city' in c) as typeof cryptocities)
       .map(({ lng, lat, city }) => ({ lat, lng, count: 1, cryptocities: [city] }))
 
     cryptocitiesClustered.filter(c => c.count > 1).forEach((c) => {
