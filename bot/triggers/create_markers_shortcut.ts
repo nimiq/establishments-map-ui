@@ -3,13 +3,13 @@ import {
   TriggerContextData,
   TriggerTypes,
 } from 'https://deno.land/x/deno_slack_api@2.1.1/mod.ts'
-import PostClusterWorkflow from '../workflows/post_cluster.ts'
+import PostMarkersWorkflow from '../workflows/post_markers.ts'
 
-const PostClusterShortcut: Trigger<typeof PostClusterWorkflow.definition> = {
+const PostMarkersShortcut: Trigger<typeof PostMarkersWorkflow.definition> = {
   type: TriggerTypes.Shortcut,
-  name: 'Cluster',
-  description: 'Run the cluster algorithm',
-  workflow: `#/workflows/${PostClusterWorkflow.definition.callback_id}`,
+  name: 'Markers',
+  description: 'Run the markers algorithm',
+  workflow: `#/workflows/${PostMarkersWorkflow.definition.callback_id}`,
   inputs: {
     interactivity: {
       value: TriggerContextData.Shortcut.interactivity,
@@ -17,4 +17,4 @@ const PostClusterShortcut: Trigger<typeof PostClusterWorkflow.definition> = {
   },
 }
 
-export default PostClusterShortcut
+export default PostMarkersShortcut

@@ -122,7 +122,7 @@ export const authDbFunctions: AuthDbFunction = Object.assign({}, AuthReadDbFunct
 export interface Args {
   [AnonReadDbFunction.GetMarkers]: { zoom: number; boundingBox: BoundingBox }
   [AnonReadDbFunction.GetCryptocities]: { boundingBox: BoundingBox; excludedCities: Cryptocity[] }
-  [AuthWriteDbFunction.UpsertLocationsWithGMaps]: Partial<RawLocation> & { accepts: RawLocation['accepts']; place_id?: string }[]
+  [AuthWriteDbFunction.UpsertLocationsWithGMaps]: (Partial<RawLocation> & { accepts: RawLocation['accepts']; place_id?: string })[]
   [AuthWriteDbFunction.InsertMarkers]: { zoom_level: number; items: InsertMarkersItem[] }
 }
 
