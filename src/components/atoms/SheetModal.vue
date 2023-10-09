@@ -168,7 +168,6 @@ function onCardDrag(progress: number) {
     marginBottom: `${(1 - (progress >= 0 ? progress : progress * -6)) * props.initialGapToScreen}px`,
     borderBottomRightRadius: `${radius}px`,
     borderBottomLeftRadius: `${radius}px`,
-    width: `${window.innerWidth - (1 - Math.max(progress, 0)) * 40}px`,
   }
 }
 watch(() => props.progress, onCardDrag, { immediate: true })
@@ -190,7 +189,7 @@ onBeforeUnmount(() => {
 
 <template>
   <article
-    ref="container" class="absolute h-full touch-pan-x sheet-transition will-change-auto min-h-fit" :style="style"
+    ref="container" class="sheet-modal absolute h-full touch-pan-x sheet-transition will-change-auto min-h-fit" :style="style"
     @pointerdown="onStart" @pointermove="onMove" @pointerup="onEnd" @pointercancel="onCancel"
   >
     <slot name="dragger" />
@@ -198,7 +197,11 @@ onBeforeUnmount(() => {
   </article>
 </template>
 
-<style>
+<style scoped>
+.sheet-modal {
+  width: 100vw;
+}
+
 .sheet-transition {
   transition: margin-bottom var(--duration), margin-left var(--duration), width var(--duration), border-bottom-right-radius var(--duration), border-bottom-left-radius var(--duration), height var(--duration);
 }

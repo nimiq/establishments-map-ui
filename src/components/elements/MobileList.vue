@@ -176,15 +176,23 @@ if (isIOs) {
     :style="`--spacing: ${(1 - Math.max(progress, 0)) * INITIAL_GAP_TO_SCREEN}px; background-size: 100% 184px;--tw-gradient-from: rgb(31 35 72 / ${0.2 * Math.min((1 + progress * 2), 1)}) var(--tw-gradient-from-position); --initial-gap-to-screen: ${INITIAL_GAP_TO_SCREEN}px; max-height: ${maxUlHeight};`"
   >
     <li
-      v-for="location in locations" :key="location.uuid" ref="cards"
+      v-for="(location, index) in locations" :key="location.uuid" ref="cards"
 
-      class="relative shrink-0 snap-center first:pl-[var(--spacing)] last:pr-[var(--spacing)] pointer-events-auto"
+      class="relative shrink-0 snap-center pointer-events-auto"
       :data-card-uuid="location.uuid"
     >
       <SheetModal
-        :max-height="location.photo ? 363 : 179" :initial-border-radius="8"
-        :initial-gap-to-screen="INITIAL_GAP_TO_SCREEN" class="relative w-full rounded-t-lg" :progress="progress"
-        @update:progress="progress = $event" @close-list="() => $emit('closeList')"
+        class="relative w-full rounded-t-lg px-[calc(var(--spacing)/2)]"
+        :progress="progress"
+        :max-height="location.photo ? 363 : 179"
+        :initial-border-radius="8"
+        :initial-gap-to-screen="INITIAL_GAP_TO_SCREEN"
+        :class="{
+          'pl-[var(--spacing)]': index === 0,
+          'pr-[var(--spacing)]': index === locations.length - 1,
+        }"
+        @update:progress="progress = $event"
+        @close-list="() => $emit('closeList')"
       >
         <template #dragger>
           <div class="relative">
