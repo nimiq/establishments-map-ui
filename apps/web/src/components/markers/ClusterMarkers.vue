@@ -4,7 +4,7 @@ import type { Cluster } from 'types'
 import type { PropType } from 'vue'
 import { CustomMarker } from 'vue3-google-map'
 import { useBreakpoints } from '@vueuse/core'
-import { screens } from 'tailwindcss-nimiq-theme'
+import { breakpointsTailwind } from '@vueuse/core'
 import { OnClickOutside } from '@vueuse/components'
 import CryptocityMarker from './CryptocityMarker.vue'
 import { useMap } from '@/stores/map'
@@ -18,7 +18,7 @@ defineProps({
 
 const { setPosition } = useMap()
 const { zoom } = storeToRefs(useMap())
-const isMobile = useBreakpoints(screens).smaller('md')
+const isMobile = useBreakpoints(breakpointsTailwind).smaller('md')
 
 function setExpansionCluster(id: number, open: '0' | '1') {
   (document.querySelector(`[data-cluster-id="${id}"]`) as HTMLElement).style.setProperty('--expanded', open)

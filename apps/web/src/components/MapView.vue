@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useBreakpoints } from '@vueuse/core'
-import { screens } from 'tailwindcss-nimiq-theme'
+import { breakpointsTailwind } from '@vueuse/core'
 import DesktopView from '@/components/DesktopView.vue'
 import MobileView from '@/components/MobileView.vue'
 
-const isMobile = useBreakpoints(screens).smaller('md')
+const isMobile = useBreakpoints(breakpointsTailwind).smaller('md')
 </script>
 
 <template>

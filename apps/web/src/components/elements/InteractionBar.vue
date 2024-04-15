@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type Suggestion, SuggestionType } from 'types'
 import { useBreakpoints } from '@vueuse/core'
-import { screens } from 'tailwindcss-nimiq-theme'
+import { breakpointsTailwind } from '@vueuse/core'
 import { computed, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 import SearchBox from '@/components/atoms/SearchBox.vue'
@@ -44,7 +44,7 @@ async function onSelect(suggestion?: Suggestion) {
 }
 
 const { shouldShowSearchBoxHint } = storeToRefs(useApp())
-const showHint = computed(() => shouldShowSearchBoxHint.value && useBreakpoints(screens).greaterOrEqual('md').value)
+const showHint = computed(() => shouldShowSearchBoxHint.value && useBreakpoints(breakpointsTailwind).greaterOrEqual('md').value)
 </script>
 
 <template>

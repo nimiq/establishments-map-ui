@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useBreakpoints } from '@vueuse/core'
-import { screens } from 'tailwindcss-nimiq-theme'
 import type { Location } from 'types'
 import LocationSocialButton from '@/components/elements/LocationSocialButton.vue'
 import CryptoList from '@/components/atoms/CryptoList.vue'
@@ -8,10 +7,11 @@ import BasicInfo from '@/components/cards/location/BasicInfoLocation.vue'
 import CardBg from '@/components/cards/location/LocationCardBg.vue'
 import Banner from '@/components/elements/Banner.vue'
 import CardDotsMenu from '@/components/cards/location/LocationCardDotsMenu.vue'
+import { breakpointsTailwind } from '@vueuse/core'
 
 defineProps<{ location: Location, progress: number }>()
 
-const isMobile = useBreakpoints(screens).smaller('md')
+const isMobile = useBreakpoints(breakpointsTailwind).smaller('md')
 
 function arrayEquals(arrA: string[], arrB: string[]): boolean {
   return arrA.length === arrB.length && arrA.every((value, index) => value === arrB[index])

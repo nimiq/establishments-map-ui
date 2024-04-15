@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { Currency } from 'types'
 import { useBreakpoints } from '@vueuse/core'
-import { screens } from 'tailwindcss-nimiq-theme'
+import { breakpointsTailwind } from '@vueuse/core'
 import { Popover } from 'radix-vue/namespaced'
 import BtcIcon from '@/components/icons/cryptos/icon-btc.vue'
 import DashIcon from '@/components/icons/cryptos/icon-dash.vue'
@@ -34,7 +34,7 @@ const needBg = [Currency.ETH, Currency.XRP, Currency.XLM].includes(props.crypto)
 
 const css: string = needBg ? 'ring-1 rounded-full ring-space/10' : ''
 
-const isMobile = useBreakpoints(screens).smaller('md')
+const isMobile = useBreakpoints(breakpointsTailwind).smaller('md')
 </script>
 
 <template>

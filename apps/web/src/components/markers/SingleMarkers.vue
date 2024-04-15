@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createReusableTemplate, useBreakpoints } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
-import { screens } from 'tailwindcss-nimiq-theme'
+import { breakpointsTailwind } from '@vueuse/core'
 import type { Location } from 'types'
 import type { PropType } from 'vue'
 import { computed, defineAsyncComponent, ref } from 'vue'
@@ -35,7 +35,7 @@ const CategoryIcon = defineAsyncComponent(
 // as in the mobile version, but without the Popover
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{ location: Location }>()
 
-const { smaller } = useBreakpoints(screens)
+const { smaller } = useBreakpoints(breakpointsTailwind)
 const DESKTOP_LAYOUT = 'md' // FIXME This is suppose to be the same value as in the tailwind config
 const isMobile = smaller(DESKTOP_LAYOUT)
 

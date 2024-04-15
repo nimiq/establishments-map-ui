@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { Popover } from 'radix-vue/namespaced'
 import { useBreakpoints } from '@vueuse/core'
-import { screens } from 'tailwindcss-nimiq-theme'
+import { breakpointsTailwind } from '@vueuse/core'
 import type { Location } from 'types'
 import CardBg from '@/components/cards/location/LocationCardBg.vue'
 import Button from '@/components/atoms/Button.vue'
@@ -20,7 +20,7 @@ defineProps({
   },
 })
 
-const isMobile = useBreakpoints(screens).smaller('md')
+const isMobile = useBreakpoints(breakpointsTailwind).smaller('md')
 
 // For the banner Nimiq Pay, the label should be Nimiq Pay
 function handleProviderPlaceholder({banner, provider}: Location) {

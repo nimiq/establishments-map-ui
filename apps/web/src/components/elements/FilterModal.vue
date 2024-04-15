@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { computed, ref, watchEffect } from 'vue'
 import { useBreakpoints } from '@vueuse/core'
-import { screens } from 'tailwindcss-nimiq-theme'
+import { breakpointsTailwind } from '@vueuse/core'
 import { CATEGORIES, CURRENCIES } from 'database'
 import type { Category, Currency } from 'types'
 import Button from '@/components/atoms/Button.vue'
@@ -16,7 +16,7 @@ import { useMarkers } from '@/stores/markers'
 import Modal from '@/components/atoms/Modal.vue'
 
 const open = ref(false)
-const isMobile = useBreakpoints(screens).smaller('md')
+const isMobile = useBreakpoints(breakpointsTailwind).smaller('md')
 
 const filtersStore = useFilters()
 const { selectedCategories, selectedCurrencies } = storeToRefs(filtersStore)
