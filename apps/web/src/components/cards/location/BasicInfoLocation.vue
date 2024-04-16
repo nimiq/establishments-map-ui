@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { LocationLink, type Location } from 'types'
-import LocationSocialButton from '@/components/elements/LocationSocialButton.vue'
 
 withDefaults(defineProps<{ location: Location, progress: number }>(), { progress: 0 })
 </script>

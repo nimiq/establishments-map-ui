@@ -144,11 +144,11 @@ msgstr ""
 msgid "Describe the issue"
 msgstr ""
 
-#: src/components/elements/Banner.vue:53
+#: src/components/elements/Banner.vue:46
 msgid "Download on App Store"
 msgstr ""
 
-#: src/components/elements/Banner.vue:56
+#: src/components/elements/Banner.vue:49
 msgid "Download on Play Store"
 msgstr ""
 
@@ -218,7 +218,7 @@ msgstr ""
 msgid "Kurant enables users to easily purchase cryptocurrencies through a network of ATMs."
 msgstr ""
 
-#: src/components/elements/Banner.vue:46
+#: src/components/elements/Banner.vue:40
 msgid "Learn more"
 msgstr ""
 
