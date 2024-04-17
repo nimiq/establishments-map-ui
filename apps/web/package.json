@@ -29,7 +29,7 @@
     "@vueuse/core": "^10.9.0",
     "@vueuse/math": "^10.9.0",
     "@vueuse/router": "^10.9.0",
-    "nimiq-css": "^0.0.73",
+    "nimiq-css": "^0.0.78",
     "pinia": "^2.1.7",
     "radix-vue": "^1.7.0",
     "vue": "^3.4.21",
@@ -61,6 +61,7 @@
     "unocss-preset-animations": "^1.0.2",
     "vite": "^5.2.8",
     "vite-plugin-checker": "^0.6.4",
+    "vite-plugin-vue-devtools": "^7.0.27",
     "vue-tsc": "^2.0.13",
     "webpack-i18n-tools": "github:nimiq/webpack-i18n-tools"
   }

@@ -32,7 +32,7 @@ const props = defineProps({
 
 const needBg = [Currency.ETH, Currency.XRP, Currency.XLM].includes(props.crypto)
 
-const css: string = needBg ? 'ring-1 rounded-full ring-space/10' : ''
+const css: string = needBg ? 'rounded-full ring-neutral-100' : ''
 
 const isMobile = useBreakpoints(breakpointsTailwind).smaller('md')
 </script>

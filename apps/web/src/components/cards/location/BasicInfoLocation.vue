@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { LocationLink, type Location } from 'types'
 
-withDefaults(defineProps<{ location: Location, progress: number }>(), { progress: 0 })
+withDefaults(defineProps<{ location: Location, progress?: number }>(), { progress: 0 })
 </script>
 
 <template>

@@ -28,7 +28,7 @@ const [DefineCryptoList, ReuseCryptoList] = createReusableTemplate<{ cryptosToDi
 
 <template>
   <DefineCryptoList v-slot="{ cryptosToDisplay, n }">
-    <ul v-if="cryptosToDisplay.length > 0" flex="~ items-center gap-x-8" p-4 bg-neutral-0 rounded-full w-max ring="1.5 neutral/10" absolute bottom-0 z-20 shadow translate-y="1/2">
+    <ul v-if="cryptosToDisplay.length > 0" flex="~ items-center gap-x-8" p-4 bg-neutral-0 rounded-full w-max ring-neutral-100 absolute bottom-0 z-20 translate-y="1/2">
       <li v-for="c in cryptosToDisplay " :key="c">
         <div text-24 :class="getCurrencyIcon(c)" :title="c" />
       </li>

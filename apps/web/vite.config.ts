@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 // import { checker } from 'vite-plugin-checker'
+import VueDevTools from 'vite-plugin-vue-devtools'
 
 // @ts-expect-error webpack-i18n-tools does currently not expose types
 import poLoader from 'webpack-i18n-tools/loader/rollup'
@@ -17,6 +18,7 @@ export default defineConfig({
     poLoader(),
     poOptimizer(),
     vue({ script: { defineModel: true } }),
+    VueDevTools(),
     // checker({ vueTsc: true, typescript: true }), // Waiting for https://github.com/fi3ework/vite-plugin-checker/issues/306#issuecomment-1995606874
     UnoCSS(),
   ],

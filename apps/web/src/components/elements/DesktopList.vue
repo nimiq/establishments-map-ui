@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import type { Cluster, Location } from 'types'
-import { type PropType, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
 import BasicInfo from '@/components/cards/location/BasicInfoLocation.vue'
 import CardBg from '@/components/cards/location/LocationCardBg.vue'
@@ -9,20 +9,7 @@ import IconCactusDesert from '@/components/icons/icon-cactus-desert.vue'
 import { useLocations } from '@/stores/locations'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
-const props = defineProps({
-  singles: {
-    type: Array as PropType<Location[]>,
-    required: true,
-  },
-  clusters: {
-    type: Array as PropType<Cluster[]>,
-    required: true,
-  },
-  listIsShown: {
-    type: Boolean,
-    default: true,
-  },
-})
+const props = defineProps<{singles: Location[], clusters: Cluster[], listIsShown: boolean}>()
 
 let uuidClickedInList: string | undefined
 
@@ -58,9 +45,9 @@ watch(selectedUuid, (uuid) => {
     :min-item-size="99"
     list-tag="ul"
     item-tag="li"
-    class="overflow-auto scroll-space transition-[height] will-change-[height]"
-    :class="listIsShown ? 'h-[calc(100vh-10.5rem-var(--search-box-hint)*88px)]' : 'h0'"
-    item-class="relative overflow-hidden border-space/10 border-t-xs group/card [&_[data-rings]]:-rotate-90"
+    of-auto transition-height will-change-height
+    :style="{ height: listIsShown ? 'calc(100vh - 10.5rem - var(--search-box-hint) * 90px)' : '0' }"
+    item-class="relative of-hidden ring-neutral-100 border-t-1 group/card [&_[data-rings]]:-rotate-90"
   >
     <template #default="{ item: location, active }">
       <DynamicScrollerItem
@@ -69,21 +56,21 @@ watch(selectedUuid, (uuid) => {
         :active="active"
       >
         <button
-          class="w-full px6 py5 text-left bg-$bg-1 hocus:bg-$bg-2 transition-colors"
+          w-full px-24 py-20 text-left bg="$bg-1 hocus:$bg-2" transition-colors
           :style="{
             '--bg-1': location.isAtm && location.isDark ? location.bg[0] : 'white',
             '--bg-2': location.isAtm && location.isDark && location.bg[1] ? location.bg[1] : '#f4f4f6',
           }"
           @click="onLocationClicked(location)"
         >
-          <CardBg v-if="location.isAtm" :location="location" :with-gradient="false" class="translate-y-1" />
+          <CardBg v-if="location.isAtm" :location="location" :with-gradient="false" translate-y-1 />
           <BasicInfo :location="location" />
         </button>
       </DynamicScrollerItem>
     </template>
 
     <template v-if="clusters.length" #after>
-      <div class="px6 py5 text-14 font-semibold border-space/10 border-t-xs text-space/50">
+      <div px-24 py-20 text-14 font-semibold ring-neutral-100>
         {{ $tc('+ {count} grouped', clusters.reduce((sum, cluster) => sum + cluster.count, 0)) }}
       </div>
     </template>
@@ -91,7 +78,7 @@ watch(selectedUuid, (uuid) => {
   <div
     v-else
     class="flex flex-col items-center justify-center gap6 px4 transition-height will-change-height"
-    :class="listIsShown ? 'h-[calc(100vh-10.5rem-var(--search-box-hint)*88px)]' : 'h0'"
+    :style="{ height: listIsShown ? 'calc(100vh - 10.5rem - var(--search-box-hint) * 90px)' : '0' }"
   >
     <IconCactusDesert />
     <span class="text-16 text-center text-space font-regular" :class="!listIsShown && 'h0'">

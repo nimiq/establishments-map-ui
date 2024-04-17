@@ -61,7 +61,7 @@ function onClusterClick({ expansionZoom, lat, lng }: Cluster) {
         @pointerout="!isMobile && c.cryptocities.length > 0 ? setExpansionCluster(c.id, '0') : undefined"
       >
         <li relative z-10>
-          <div grid="~ place-content-center" text="14 neutral-0" bg="neutral hover:neutral-900" ring="1.5 neutral/10" transition-colors font-bold rounded-full shadow cursor-pointer aspect-square max-desktop:clickable :style="`width: ${c.diameter}px; font-size: clamp(14px, ${0.14 * c.count + 4}px, 18px)`"
+          <div grid="~ place-content-center" text="14 neutral-0" bg="neutral hover:neutral-900" ring-neutral-100 transition-colors font-bold rounded-full shadow cursor-pointer aspect-square max-desktop:clickable :style="`width: ${c.diameter}px; font-size: clamp(14px, ${0.14 * c.count + 4}px, 18px)`"
             @pointerdown="isMobile && c.cryptocities.length > 0 ? toggleClusterExpansion(c) : onClusterClick(c)"
           >
             {{ c.count < 1000 ? c.count : '999+' }}

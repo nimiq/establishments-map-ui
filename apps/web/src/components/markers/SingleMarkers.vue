@@ -79,21 +79,21 @@ function handlePopoverOpen(isOpen: boolean, location: Location) {
     <div flex="~ items-center gap-8" max-w-176 group>
       <div
         v-if="isAtm"
-        size-32 grid="~ place-content-center" ring="1.5 neutral-0" bg="[var(--bg-1)] hocus:[var(--bg02)]" transition-colors max-desktop:clickable
+        size-32 grid="~ place-content-center" ring-neutral-0 bg="[var(--bg-1)] hocus:[var(--bg02)]" transition-colors max-desktop:clickable
         :style="{ '--bg-1': bg[0], '--bg-2': bg[1] }"
       >
         {{ $t('ATM') }}
       </div>
       <div
         v-else-if="showCategoryIcon"
-        size-32 grid="~ place-content-center" ring="1.5 neutral-0" shadow transition-colors max-desktop:clickable
+        size-32 grid="~ place-content-center" ring-neutral-0 shadow transition-colors max-desktop:clickable
         :class="uuid === selectedUuid ? 'bg-blue' : 'bg-neutral group-hocus:bg-blue-1100'"
       >
         <div :class="getCategoryIcon(category)" text-28 />
       </div>
       <div
         v-else
-        ring="2 neutral-0" text="12 neutral-0" size-12 transition-colors rounded-full shadow max-desktop:clickable
+        ring-neutral-0 text="12 neutral-0" size-12 transition-colors rounded-full shadow max-desktop:clickable
         :class="uuid === selectedUuid ? 'bg-blue' : 'bg-neutral group-hocus:bg-blue-1100'"
       />
 
