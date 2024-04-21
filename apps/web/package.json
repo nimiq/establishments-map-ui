@@ -57,7 +57,6 @@
     "types": "workspace:*",
     "typescript": "5.3.3",
     "unocss": "^0.59.2",
-    "unocss-preset-animations": "^1.0.2",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0",
     "unplugin-vue-router": "^0.8.6",

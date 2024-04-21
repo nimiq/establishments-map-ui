@@ -7,11 +7,6 @@ const props = defineProps<{singles: Location[], clusters: Cluster[], listIsShown
 
 let uuidClickedInList: string | undefined
 
-function onLocationClicked({ uuid }: Location) {
-  uuidClickedInList = uuid
-  ;(document.querySelector(`[data-trigger-uuid="${uuid}"]`) as HTMLElement)?.click()
-}
-
 const scroller = ref<DynamicScroller>()
 
 const { selectedUuid } = storeToRefs(useLocations())
@@ -39,7 +34,7 @@ watch(selectedUuid, (uuid) => {
     :min-item-size="99"
     list-tag="ul"
     item-tag="li"
-    of-auto transition-height will-change-height duration-300
+    of-auto transition-height will-change-height duration-300 max-w-320
     :style="{ height: listIsShown ? 'calc(100vh - 10.5rem - var(--search-box-hint) * 88px)' : '0' }"
     item-class="relative of-hidden ring-neutral-100 border-t-1 group/card [&_[data-rings]]:-rotate-90"
     :data-state="listIsShown ? 'open' : 'closed'"
@@ -56,7 +51,7 @@ watch(selectedUuid, (uuid) => {
             '--bg-1': location.isAtm && location.isDark ? location.bg[0] : 'rgb(var(--nq-neutral-0))',
             '--bg-2': location.isAtm && location.isDark && location.bg[1] ? location.bg[1] : 'rgb(var(--nq-neutral-100))'
           }"
-          @click="onLocationClicked(location)"
+          @click="useLocations().goToLocation(location.uuid, { open: true })"
         >
           <LocationCardBg v-if="location.isAtm" :location="location" :with-gradient="false" translate-y-1 />
           <BasicInfoLocation :location="location" />
@@ -73,7 +68,7 @@ watch(selectedUuid, (uuid) => {
   <div
     v-else
     flex="~ col items-center justify-center gap-24" px-20 transition-height will-change-height 
-    duration-300
+    duration-300 max-w-320 of-hidden
     :style="{ height: listIsShown ? 'calc(100vh - 10.5rem - var(--search-box-hint) * 88px)' : '0' }"
   >
     <div i-nimiq:icons-lg-cactus text-80 op-80 />

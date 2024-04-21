@@ -1,9 +1,10 @@
 import { presetNimiq } from 'nimiq-css'
 import { defineConfig, presetAttributify, presetUno, presetIcons } from 'unocss'
 import { presetRemToPx } from '@unocss/preset-rem-to-px'
-import presetAnimations from 'unocss-preset-animations'
 import { Provider } from 'types'
 
+const reItem = /^select-(\w+):/
+const variantsRE = /^(scrollbar(-track|-thumb)?):.+$/
 
 export default defineConfig({
   presets: [
@@ -26,25 +27,23 @@ export default defineConfig({
     }),
     presetRemToPx({ baseFontSize: 4 }),
     presetAttributify(),
-    presetAnimations(),
 
     {
       name: 'radix-variants',
       variants: [
         (matcher) => {
-          if (!matcher.startsWith('item-'))
+          if (!matcher.startsWith('select-'))
             return matcher
-          const re = /^item-(\w+):/
-          const match = matcher.match(re)
+          const match = matcher.match(reItem)
           if (!match)
             return matcher
           return {
-            matcher: matcher.replace(re, ''),
-            selector: s => `[data-state="${match[1]}"]:is(${s}, & ${s})`,
+            matcher: matcher.replace(reItem, ''),
+            selector: s => `[select][data-state="${match[1]}"] ${s}`,
           }
         },
       ]
-    },
+    }, 
   ],
   theme: {
     breakpoints: {
@@ -54,11 +53,31 @@ export default defineConfig({
   // TODO Move to nimiq-css?
   variants: [
     (matcher) => {
-      if (!matcher.startsWith('hocus:'))
+      if (!matcher.startsWith('hocus'))
+        return matcher
+
+      return {
+        matcher: matcher.replace(matcher.startsWith('hocus:') ? 'hocus:' : 'hocus', ''),
+        selector: s => `${s}:hover, ${s}:focus-visible`,
+      }
+    },
+    (matcher) => {
+      if (!matcher.startsWith('group-hocus'))
         return matcher
       return {
-        matcher: matcher.replace(/^hocus:/, ''),
-        selector: s => `${s}:hover, ${s}:focus-visible`,
+        matcher: matcher.replace(matcher.startsWith('group-hocus:') ? 'group-hocus:' : 'group-hocus', ''),
+        selector: s => `:is(.group,[group]):is(:hover,:focus-visible) ${s}`,
+      }
+    },
+
+    // https://github.com/unpreset/unocss-preset-scrollbar/blob/main/src/index.ts#L143C7-L155C9
+    (matcher) => {
+      if (!variantsRE.test(matcher))
+        return
+      const variant = matcher.replace(variantsRE, '$1')
+      return {
+        matcher: matcher.slice(variant.length + 1),
+        selector: (s) => `${s}::-webkit-${variant}`,
       }
     },
   ],

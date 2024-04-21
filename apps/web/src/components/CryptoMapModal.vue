@@ -20,10 +20,8 @@ watch(lang, () => setLanguage(lang.value))
     </template>
 
     <template #description>
-      <i18n-t
-        class="text-pretty" tag="p"
-        keypath="This app is brought to you by Nimiq. It is protected by reCAPTCHA and the Google {privacyPolicy} and {termsOfService} apply."
-      >
+      <i18n-t class="text-pretty" tag="p"
+        keypath="This app is brought to you by Nimiq. It is protected by reCAPTCHA and the Google {privacyPolicy} and {termsOfService} apply.">
         <template #privacyPolicy>
           <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" underline text-neutral-800>
             {{ $t('Privacy Policy') }}
@@ -39,26 +37,7 @@ watch(lang, () => setLanguage(lang.value))
 
     <template #content>
       <div flex="~ items-center justify-between" mt-32>
-        <NestedModal>
-          <template #trigger>
-            <button pill-blue pill-sm>
-                {{ $t('Add Crypto location') }}
-            </button>
-          </template>
-          <template #title>
-            Lo
-          </template>
-          <template #description>
-            jj
-          </template>
-          <template #content>
-            Your content
-          </template>
-        </NestedModal>
-        <!-- <a href="/location/add" pill-blue pill-sm>
-            {{ $t('Add Crypto location') }}
-        </a> -->
-
+        <NewCandidate />
         <TriangleSelector v-model:selected="lang" :options="SUPPORTED_LANGUAGES" />
       </div>
     </template>

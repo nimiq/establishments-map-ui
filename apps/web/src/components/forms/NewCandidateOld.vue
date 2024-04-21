@@ -47,7 +47,7 @@ async function onSubmit(captcha: string) {
         :label="$t('Select Cryptocurrency')" :options="CURRENCIES" :placeholder="$t('Select Cryptocurrency')"
       >
         <template #option="{ option: currency }">
-          <CryptoIcon :crypto="currency" size="sm" bg="white" />
+          <!-- <CryptoIcon :crypto="currency" size="sm" bg="white" /> -->
           <span>{{ translateCurrency(currency) }}</span>
         </template>
         <template #after-options>

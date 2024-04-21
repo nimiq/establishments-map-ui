@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { detectLanguage, setLanguage } from './i18n/i18n-setup'
 import MapView from '@/components/MapView.vue'
 
-const NewCandidate = () => import('@/components/forms/NewCandidate.vue')
+const NewCandidate = () => import('@/components/forms/NewCandidateOld.vue')
 const ReportLocation = () => import('@/components/forms/ReportLocation.vue')
 
 export const router = createRouter({
@@ -11,14 +11,12 @@ export const router = createRouter({
     {
       path: '/location/add',
       name: 'add_location',
-      component: NewCandidate,
-      meta: { transition: 'slide-left' },
+      redirect: '?modal=crypto-map_add-location',
     },
     {
       path: '/location/report',
       name: 'report_location',
-      component: ReportLocation,
-      meta: { transition: 'slide-left' },
+      redirect: '?modal=report-location',
     },
     {
       path: '/@:lat(-?\\d+.?\\d+?),:lng(-?\\d+.?\\d+?),:zoom(\\d+)z',

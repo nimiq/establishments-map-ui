@@ -1,20 +1,10 @@
 <script setup lang="ts">
-import { createReusableTemplate, useBreakpoints } from '@vueuse/core'
-import { storeToRefs } from 'pinia'
-import { breakpointsTailwind } from '@vueuse/core'
+import { breakpointsTailwind } from '@vueuse/core';
 import type { Location } from 'types'
-import type { PropType } from 'vue'
-import { computed, ref } from 'vue'
 import { CustomMarker } from 'vue3-google-map'
-import { Popover } from 'radix-vue/namespaced'
-import { useMap } from '@/stores/map'
-import { useLocations } from '@/stores/locations'
-import { useApp } from '@/stores/app'
-import LocationCard from '@/components/cards/location/LocationCard.vue'
-import { getCategoryIcon } from '../../composables/useIcon'
 
 // TODO Async components loading does not work
-// const { PopoverArrow, PopoverAnchor, PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } = defineAsyncComponent(() => import('radix-vue'))
+// const { Popoverrrow, PopoverAnchor, PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } = defineAsyncComponent(() => import('radix-vue'))
 
 defineProps({
   singles: {
@@ -28,7 +18,7 @@ const { isListShown } = storeToRefs(useApp())
 const showSingleName = computed(() => zoom.value >= 11)
 const showCategoryIcon = computed(() => zoom.value >= 13)
 
-// Since the Desktop requires a Popover, we need to create a reusable template where the trigger is the same component
+// Since the Desktop requires a Popover we need to create a reusable template where the trigger is the same component
 // as in the mobile version, but without the Popover
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{ location: Location }>()
 
@@ -87,21 +77,21 @@ function handlePopoverOpen(isOpen: boolean, location: Location) {
       <div
         v-else-if="showCategoryIcon"
         size-32 grid="~ place-content-center" ring-neutral-0 shadow transition-colors max-desktop:clickable
-        :class="uuid === selectedUuid ? 'bg-blue' : 'bg-neutral group-hocus:bg-blue-1100'"
+        :class="uuid === selectedUuid ? 'bg-blue' : 'bg-neutral group-hover:bg-blue-1100'"
       >
         <div :class="getCategoryIcon(category)" text-28 />
       </div>
       <div
         v-else
         ring-neutral-0 text="12 neutral-0" size-12 transition-colors rounded-full shadow max-desktop:clickable
-        :class="uuid === selectedUuid ? 'bg-blue' : 'bg-neutral group-hocus:bg-blue-1100'"
+        :class="uuid === selectedUuid ? 'bg-blue' : 'bg-neutral group-hover:bg-blue-1100'"
       />
 
-      <!-- <PopoverAnchor class="mx-1" /> -->
+      <!-- <Popovernchor class="mx-1" /> -->
       <span
         v-if="!isAtm && showSingleName"
         flex-1 :text="`16 left ${uuid===selectedUuid ? 'blue' : 'neutral group-hocus:blue-1100'}`" font-bold lh-none select-none relative max-desktop:clickable
-        class="transition-[color,-webkit-text-stroke] [-webkit-text-stroke:_3px_white] before:content-[attr(data-outline)] before:absolute before:[-webkit-text-stroke:0]"
+        class="transition-color transition--webkit-text-stroke"
         :class="[{ invisible: !isMobile && uuid === selectedUuid }]"
         :data-outline="name"
       >
@@ -117,27 +107,27 @@ function handlePopoverOpen(isOpen: boolean, location: Location) {
   >
     <ReuseTemplate v-if="isMobile" :location="location" @click="selectedUuid = location.uuid" />
 
-    <Popover.Root v-else @update:open="(isOpen: boolean) => handlePopoverOpen(isOpen, location)">
-      <Popover.Anchor
+    <PopoverRoot v-else @update:open="(isOpen: boolean) => handlePopoverOpen(isOpen, location)">
+      <PopoverAnchor
         class="absolute h-full pointer-events-none -left-1"
-        :class="location.isAtm || showCategoryIcon ? 'w-10' : 'w-5'"
+        :class="location.isAtm || showCategoryIcon ? 'w10' : 'w5'"
       />
-      <Popover.Trigger :aria-label="$t('See location details')" class="cursor-pointer" :data-trigger-uuid="location.uuid">
+      <PopoverTrigger :aria-label="$t('See location details')" class="cursor-pointer" :data-trigger-uuid="location.uuid">
         <ReuseTemplate :location="location" class="transition-shadow rounded-sm" />
-      </Popover.Trigger>
-      <Popover.Portal :key="popoverKey">
-        <Popover.Content
+      </PopoverTrigger>
+      <PopoverPortal :key="popoverKey">
+        <PopoverContent
           side="right" :side-offset="5" class="rounded-lg shadow" :collision-padding="8" sticky="always"
           @open-auto-focus.prevent
         >
-          <LocationCard :location="location" :progress="1" :class="location.photo ? 'max-w-320' : 'max-w-384'" />
-          <Popover.Arrow
-            class="w-4 h-2"
+          <LocationCard :location="location" :progress="1" :class="location.photo ? 'max-w320' : 'max-w384'" />
+          <PopoverArrow
+            class="w4 h2"
             :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg[0]) : 'white'}`"
           />
 
           <!-- TODO Once this is fixed https://github.com/radix-vue/radix-vue/issues/353 use custom arrow -->
-          <!-- <PopoverArrow as-child>
+          <!-- <Popoverrrow as-child>
             <svg
               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 10" class="relative h-3 w-max left-2"
               :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg[0]) : 'white'}`"
@@ -147,10 +137,10 @@ function handlePopoverOpen(isOpen: boolean, location: Location) {
                 d="M12.63 1.83 8.27 8.25A4 4 0 0 1 4.97 10h17.8a4 4 0 0 1-3.3-1.75L15.1 1.83a1.5 1.5 0 0 0-2.48 0z"
               />
             </svg>
-          </PopoverArrow> -->
-        </Popover.Content>
-      </Popover.Portal>
-    </Popover.Root>
+          </Popoverrrow> -->
+        </PopoverContent>
+      </PopoverPortal>
+    </PopoverRoot>
   </CustomMarker>
 
   <template v-if="zoom > 15">
@@ -159,7 +149,7 @@ function handlePopoverOpen(isOpen: boolean, location: Location) {
       :key="e" :options="{ position, anchorPoint: 'CENTER' }"
     >
       <div
-        class="grid w-12 h-12 p-2 text-4xl bg-white rounded-full shadow aspect-square place-content-center"
+        class="grid w12 h12 p2 text-4xl bg-white rounded-full shadow aspect-square place-content-center"
         title="1 out of 3"
       >
         {{ e }}

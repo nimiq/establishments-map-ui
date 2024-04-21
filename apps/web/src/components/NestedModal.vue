@@ -10,10 +10,9 @@ const slots = useSlots()
     </DialogTrigger>
     <DialogPortal>
       <Transition name="nested">
-        <DialogContent fixed bottom-0 desktop="top-1/2 left-1/2 translate--1/2" z-100 h-max max-h-85dvh w-512
-          max-w-full py-32 rounded-md z-20 of-y-auto ring="1.5 neutral-50" shadow-lg bg-neutral-0 data-nested
+        <DialogContent fixed bottom-0 desktop="top-1/2 left-1/2 translate--1/2" z-100 h-max max-h-85dvh w-512 max-w-full
+          py-32 rounded-md z-20 of-y-auto ring="1.5 neutral-50" shadow-lg bg-neutral-0 will-change-transform data-nested
           rounded="t-8 desktop:8">
-
           <DialogTitle v-if="slots.title" px-24 desktop:px-40 mb-8 text-18 font-bold text-neutral lh-none as="h2">
             <slot name="title" />
           </DialogTitle>
@@ -33,7 +32,7 @@ const slots = useSlots()
 </template>
 
 <style>
-/* https://github.com/nimiq/wallet/blob/master/src/components/modals/Modal.vue */
+/* https://github.com/nimiq/wallet/blob/a88d34bfa16930adbfd52baaa5b0809c38c5c365/src/components/modals/Modal.vue */
 
 .nested-enter-active {
   transition: transform 650ms cubic-bezier(.3, 1, 0.2, 1);
@@ -45,22 +44,8 @@ const slots = useSlots()
 
 .nested-enter-from,
 .nested-leave-to {
-  /**
-     * 100% is the height of the nested
-     * 100vh is the height of the viewport
-     *
-     * To adapt the animation distance to the screen height (because we don't want the nested to only
-     * animate part of the way on larger screens, or ultra-fast on smaller screens), we calculate the
-     * distance between the top of the nested to the top of the viewport [(100vh - 100%) / 2] and add
-     * the height of the nested to it [+ 100%]. Then we just turn it around into a negative distance
-     * [-1 *] so it animates from and to the top, and we add a little extra [1.1 = +10%] so the easing
-     * doesn't stop at the top of the viewport.
-     */
-  /* transform: translate3D(0, calc(-1.1 * ((100vh - 100%) / 2 - 50%)), 0); */
   --un-translate-y: calc(-1.1 * (100vh / 2) - 100%);
 
-  @media (max-width: 700px) {
-    /* transform: translate3D(0, 100%, 0); */
-  }
+  @media (max-width: 700px) {}
 }
 </style>

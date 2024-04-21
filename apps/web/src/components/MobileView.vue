@@ -1,33 +1,18 @@
 <script setup lang="ts">
 const { isListShown } = storeToRefs(useApp())
 const { singlesInView } = storeToRefs(useMarkers())
-
-// TODO: Only show list when user searched for something
-// watch(firstLocationsLoaded, () => {
-//   if (firstLocationsLoaded.value)
-//     isListShown.value = true
-// })
-
 const { selectedUuid } = storeToRefs(useLocations())
+
 watch(selectedUuid, (uuid) => {
   if (uuid)
     isListShown.value = true
 }, { immediate: true })
-
-// const { zoom } = storeToRefs(useMap())
-// const { maxZoomFromServer } = storeToRefs(useMarkers())
 </script>
 
 <template>
-  <div class="flex flex-col supports-[height:100dvh]:h-[100dvh] h-screen">
+  <div flex="~ col" h="screen 100dvh">
     <InteractionBar />
-    <TheMapInstance class="flex-1" />
-    <!-- Shadow -->
-    <!-- <div
-      :class="{ 'translate-y-0 delay-100 duration-500 opacity-20': isListShown, 'translate-y-full duration-500 opacity-0': !isListShown }"
-      class="absolute bottom-0 w-full h-[184px] transition-[transform,opacity] will-change-transform pointer-events-none bg-gradient-to-t from-space to-space/0"
-    /> -->
-    <!-- <FilterModal v-if="maxZoomFromServer < zoom" class="absolute top-24 right-5" /> -->
+    <TheMapInstance flex-1 />
     <transition name="scale">
       <Controls v-if="singlesInView.length === 0 || !isListShown" class="absolute bottom-6 right-6" />
     </transition>

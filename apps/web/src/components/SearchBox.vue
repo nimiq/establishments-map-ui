@@ -7,10 +7,10 @@ watchOnce(q, useApp().hideSearchBoxHint)
 </script>
 
 <template>
-  <ComboboxRoot v-model:searchTerm="q" name="search-box">
+  <ComboboxRoot v-model:searchTerm="q">
     <ComboboxAnchor flex="~ items-center justify-between" relative>
-      <ComboboxInput :placeholder="$t('Search Map')" input-text rounded-full text-14 peer />
-      <div v-if="q === ''" i-nimiq:magnifying-glass absolute right-16 text="14 neutral/40 peer-focus-visible:blue" />
+      <ComboboxInput :placeholder="$t('Search Map')" input-text rounded-full text-14 peer w-full />
+      <div v-if="q === ''" i-nimiq:magnifying-glass absolute right-16 text="14 neutral-600 peer-focus-visible:blue" />
       <ComboboxCancel v-else i-nimiq:cross absolute right-16 text="10  neutral-700 peer-focus-visible:blue/80" />
     </ComboboxAnchor>
 

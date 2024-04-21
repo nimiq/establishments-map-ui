@@ -38,7 +38,7 @@ const slots = useSlots()
 </template>
 
 <style>
-/* https://github.com/nimiq/wallet/blob/master/src/components/modals/Modal.vue */
+/* https://github.com/nimiq/wallet/blob/a88d34bfa16930adbfd52baaa5b0809c38c5c365/src/components/modals/Modal.vue */
 
 .backdrop-enter-active {
   transition: opacity 650ms cubic-bezier(.3, 1, .2, 1);
@@ -77,7 +77,6 @@ const slots = useSlots()
   &:has(+ [data-nested][data-state="open"]) {
     --un-scale-x: 0.94;
     --un-scale-y: 0.94;
-    /* background-color: rgb(var(--nq-neutral-700)); */
     filter: brightness(0.75);
   }
 }

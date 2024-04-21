@@ -48,7 +48,7 @@ const [DefineCryptoList, ReuseCryptoList] = createReusableTemplate<{ cryptosToDi
 
     <div relative px-24 pt-20 pb-32>
       <BasicInfoLocation :location="location" :progress="progress" />
-      <CardDotsMenu v-if="progress === 1" :location="location" absolute top-20 right-4 />
+      <LocationCardDotsMenu v-if="progress === 1" :location absolute top-20 right-4 />
 
       <transition enter-active-class="transition duration-100 ease-out"
         enter-from-class="transform translate-y-3 opacity-0" enter-to-class="transform translate-y-0 opacity-100"
