@@ -7,6 +7,11 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AccordionContent: typeof import('radix-vue')['AccordionContent']
+    AccordionHeader: typeof import('radix-vue')['AccordionHeader']
+    AccordionItem: typeof import('radix-vue')['AccordionItem']
+    AccordionRoot: typeof import('radix-vue')['AccordionRoot']
+    AccordionTrigger: typeof import('radix-vue')['AccordionTrigger']
     Banner: typeof import('./components/Banner.vue')['default']
     BannerCircleLogo: typeof import('./components/icons/providers/BannerCircleLogo.vue')['default']
     BannerLogo: typeof import('./components/icons/providers/BannerLogo.vue')['default']
@@ -58,6 +63,7 @@ declare module 'vue' {
     DropdownMenuTrigger: typeof import('radix-vue')['DropdownMenuTrigger']
     Edenia: typeof import('./components/icons/providers/edenia.vue')['default']
     Entertainment: typeof import('./components/icons/categories/entertainment.vue')['default']
+    FAQ: typeof import('./components/FAQ.vue')['default']
     FilterModal: typeof import('./components/FilterModal.vue')['default']
     Food_drinks: typeof import('./components/icons/categories/food_drinks.vue')['default']
     FormContainer: typeof import('./components/forms/FormContainer.vue')['default']

@@ -14,7 +14,7 @@ withDefaults(defineProps<{ location: Location, progress?: number }>(), { progres
       </template>
     </h3>
 
-    <a  v-if="!location.photo && location.url && progress > 0.5" :href="location.url" pill-tertiary pill-sm arrow text-16 absolute w-52 text-24>
+    <a v-if="!location.photo && location.url && progress > 0.5" :href="location.url" pill-tertiary pill-sm arrow text-16 absolute w-52 text-24>
       <div v-if="location.linkTo === LocationLink.GMaps" i-logos:google-maps />
       <div v-if="location.linkTo === LocationLink.Facebook" i-logos:facebook />
       <div v-if="location.linkTo === LocationLink.Instagram" i-nimiq:logos-instagram />

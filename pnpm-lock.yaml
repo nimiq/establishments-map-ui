@@ -102,6 +102,9 @@ importers:
       '@types/node':
         specifier: ^20.12.7
         version: 20.12.7
+      '@unocss/core':
+        specifier: ^0.59.4
+        version: 0.59.4
       '@unocss/preset-mini':
         specifier: ^0.59.4
         version: 0.59.4
@@ -138,9 +141,6 @@ importers:
       unocss:
         specifier: ^0.59.2
         version: 0.59.2(postcss@8.4.38)(vite@5.2.8)
-      unocss-preset-animations:
-        specifier: ^1.0.2
-        version: 1.0.2(@unocss/preset-wind@0.59.2)(unocss@0.59.2)
       unplugin-auto-import:
         specifier: ^0.17.5
         version: 0.17.5(@vueuse/core@10.9.0)
@@ -3748,7 +3748,6 @@ packages:
 
   /@unocss/core@0.59.4:
     resolution: {integrity: sha512-bBZ1sgcAtezQVZ1BST9IS3jqcsTLyqKNjiIf7FTnX3DHpfpYuMDFzSOtmkZDzBleOLO/CtcRWjT0HwTSQAmV0A==}
-    dev: true
 
   /@unocss/extractor-arbitrary-variants@0.59.2:
     resolution: {integrity: sha512-v+1cdybFmi7sRUG8/B2vSVaBi/CgViithbiwjTjzeKETA5Cw/pWgk1Rf/MDu4jfux4MZ0+mLULm20HSUg0oXdg==}
@@ -3861,7 +3860,7 @@ packages:
     resolution: {integrity: sha512-2F1Q1pCfeG65GxPEhGQDZXXoZk38fX4o5LOYf35XkknhjQmkaeK76szVYXLDoyK30n9EiwXqoc0MdKrGjeCMUA==}
     engines: {node: '>=14'}
     dependencies:
-      '@unocss/core': 0.59.2
+      '@unocss/core': 0.59.4
       magic-string: 0.30.9
 
   /@unocss/rule-utils@0.59.4:
@@ -10470,16 +10469,6 @@ packages:
   /universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
-    dev: true
-
-  /unocss-preset-animations@1.0.2(@unocss/preset-wind@0.59.2)(unocss@0.59.2):
-    resolution: {integrity: sha512-AacFdOvHwvKZKqjn9/paKQ50LmU0qk4n6350/toQcSX3XEQIE7rTZwm/68Aag5jP2Z8M4Y8IvDf8Q7Qc0MNdTw==}
-    peerDependencies:
-      '@unocss/preset-wind': '>= 0.56.0 < 1'
-      unocss: '>= 0.56.0 < 1'
-    dependencies:
-      '@unocss/preset-wind': 0.59.2
-      unocss: 0.59.2(postcss@8.4.38)(vite@5.2.8)
     dev: true
 
   /unocss@0.59.2(postcss@8.4.38)(vite@5.2.8):

@@ -56,13 +56,9 @@ function handleProviderPlaceholder({banner, provider}: Location) {
               </a>
 
               <template v-if="location.bannerAppStore || location.bannerGooglePlay">
-                <div flex="~ items-center gap-24" mt-16>
-                  <a v-if="location.bannerAppStore" :href="location.bannerAppStore" target="_blank" rel="noopener noreferrer" flex-1>
-                    <img src="@/assets/app-store-badge.svg" :alt="$t('Download on App Store')" w-full />
-                  </a>
-                  <a v-if="location.bannerGooglePlay" :href="location.bannerGooglePlay" target="_blank" rel="noopener noreferrer" flex-1>
-                    <img src="@/assets/google-play-badge.svg" :alt="$t('Download on Play Store')" w-full />
-                  </a>
+                <div flex="~ items-center gap-24" mt-16 text-40>
+                  <a v-if="location.bannerAppStore" :href="location.bannerAppStore" target="_blank" rel="noopener noreferrer" flex-1 :aria-label="$t('Download on App Store')" i-nimiq:logos-download-app-store />
+                  <a v-if="location.bannerGooglePlay" :href="location.bannerGooglePlay" target="_blank" rel="noopener noreferrer" flex-1 :aria-label="$t('Download on Play Store')" i-nimiq:logos-download-google-play />
                 </div>
               </template>
               <PopoverArrow data-arrow fill-neutral desktop:relative size="10" />

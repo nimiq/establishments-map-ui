@@ -14,7 +14,8 @@ const slots = useSlots()
       </Transition>
       <Transition name="zoom">
         <DialogContent fixed bottom-0 desktop="top-1/2 left-1/2 translate--1/2" op-100 max-h-85dvh w-full max-w-512
-          py-32 z-20 of-y-auto ring="1.5 neutral-50" shadow-lg bg-neutral-0 rounded="t-8 desktop:8" h-max class="content">
+          py-32 z-20 of-y-auto ring="1.5 neutral-50" shadow-lg bg-neutral-0 rounded="t-8 desktop:8" h-max data-modal
+          @openAutoFocus.prevent>
           <div v-if="slots['pre-title']" px-24 desktop:px-40 mb-16>
             <slot name="pre-title" />
           </div>
@@ -57,7 +58,7 @@ const slots = useSlots()
 .zoom-leave-active {
   transition:
     opacity 250ms cubic-bezier(.4, 0, .2, 1),
-    transform 450ms var(--nq-ease);
+    transform 450ms ease-in;
 }
 
 .zoom-enter-from,
@@ -68,10 +69,14 @@ const slots = useSlots()
   --un-translate-y: calc(-50% - 0.5rem);
 }
 
-.content {
+[data-modal] {
   transition:
     transform 250ms cubic-bezier(.4, 0, .2, 1),
     filter 450ms cubic-bezier(.3, 0, 0, 1);
+
+  &:has(+ [data-nested][data-state="closed"]) {
+    transition-delay: 100ms;
+  }
 
   /* Radix will set all the modals in the root of the body */
   &:has(+ [data-nested][data-state="open"]) {

@@ -24,7 +24,7 @@ const slots = useSlots()
             <slot name="content" />
           </div>
 
-          <DialogClose :aria-label="$t('Close')" close-btn absolute right-16 top-16 text-28 />
+          <DialogClose :aria-label="i18n.t('Close')" close-btn absolute right-16 top-16 text-28 />
         </DialogContent>
       </Transition>
     </DialogPortal>

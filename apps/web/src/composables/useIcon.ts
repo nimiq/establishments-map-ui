@@ -3,16 +3,16 @@ import { Banner, Category, Currency, Provider } from "types";
 // @unocss-include
 
 const categoryIconCatalog: Record<Category, string> = {
-  [Category.CarsBikes]: 'front-car',
-  [Category.Cash]: 'cash',
-  [Category.ComputerElectronics]: 'screen-monitor',
-  [Category.Entertainment]: 'cinema-tickets',
-  [Category.FoodDrinks]: 'burger',
-  [Category.HealthBeauty]: 'health-cross',
-  [Category.HotelLodging]: 'bed',
-  [Category.LeisureActivities]: 'racket-sport',
-  [Category.Miscellaneous]: 'question-mark',
-  [Category.RestaurantBar]: 'fork-knife',
+  [Category.CarsBikes]: 'i-nimiq:front-car',
+  [Category.Cash]: 'i-nimiq:cash',
+  [Category.ComputerElectronics]: 'i-nimiq:screen-monitor',
+  [Category.Entertainment]: 'i-nimiq:cinema-tickets',
+  [Category.FoodDrinks]: 'i-nimiq:burger',
+  [Category.HealthBeauty]: 'i-nimiq:health-cross',
+  [Category.HotelLodging]: 'i-nimiq:bed',
+  [Category.LeisureActivities]: 'i-nimiq:racket-sport',
+  [Category.Miscellaneous]: 'i-nimiq:question-mark',
+  [Category.RestaurantBar]: 'i-nimiq:fork-knife',
   [Category.Shop]: 'i-nimiq:shopping-bag',
   [Category.SportsFitness]: 'i-nimiq:basketball',
 }

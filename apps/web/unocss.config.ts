@@ -3,7 +3,8 @@ import { defineConfig, presetAttributify, presetUno, presetIcons } from 'unocss'
 import { presetRemToPx } from '@unocss/preset-rem-to-px'
 import { Provider } from 'types'
 
-const reItem = /^select-(\w+):/
+const reRadix = /^r-(\w+)-(open|closed):/
+const reRadixHocus = /^r-(\w+)-hocus:/
 const variantsRE = /^(scrollbar(-track|-thumb)?):.+$/
 
 export default defineConfig({
@@ -11,6 +12,7 @@ export default defineConfig({
     presetUno({ attributifyPseudo: true }),
     presetNimiq({
       utilities: true,
+      typography: true,
       reset: 'tailwind'
     }),
     presetIcons({
@@ -32,18 +34,29 @@ export default defineConfig({
       name: 'radix-variants',
       variants: [
         (matcher) => {
-          if (!matcher.startsWith('select-'))
-            return matcher
-          const match = matcher.match(reItem)
-          if (!match)
-            return matcher
+          if (!matcher.startsWith('r-')) return matcher
+          const match = matcher.match(reRadix)
+          if (!match) return
+          const [_, ref, state] = match
           return {
-            matcher: matcher.replace(reItem, ''),
-            selector: s => `[select][data-state="${match[1]}"] ${s}`,
+            matcher: matcher.replace(reRadix, ''),
+            selector: s => `[${ref}][data-state="${state}"] ${s}`,
           }
         },
-      ]
-    }, 
+        (matcher) => {
+          if (!matcher.match(reRadixHocus)) return matcher
+          const match = matcher.match(reRadixHocus)
+          if (!match) return
+          const [_, ref] = match
+          return {
+            matcher: matcher.replace(reRadixHocus, ''),
+            selector: s => `[${ref}]:hover ${s}, [${ref}]:focus-visible ${s}`,
+          }
+        },
+      ],
+    },
+
+
   ],
   theme: {
     breakpoints: {

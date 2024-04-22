@@ -31,11 +31,11 @@ const [DefineCryptoList, ReuseCryptoList] = createReusableTemplate<{ cryptosToDi
     </ul>
   </DefineCryptoList>
 
-  <div relative rounded-12 duration="[var(--duration,0)]" group h-full select-none :class="{
+  <div relative rounded-12 duration="$duration,0" group h-full select-none :class="{
     'rounded-b-0': progress === 1 && isMobile,
     'of-hidden': isMobile,
     'select-auto': progress === 1 || !isMobile,
-  }" :style="`background: ${location.isAtm ? location.bg[0] : 'rgb(var(--nq-neutral-0,0))'}`">
+  }" :style="`background: ${location.isAtm ? location.bg[0] : 'rgb(var(--nq-neutral-0,0))'}`" animate-fade-in animate-duration-100>
     <LocationCardBg v-if="location.isAtm" :location="location" />
 
     <div v-if="location.photo && progress > 0" pt-6 px-5 transition-height duration="[--duration]"
