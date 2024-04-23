@@ -61,83 +61,47 @@ function handlePopoverOpen(isOpen: boolean, location: Location) {
   }
   selectedUuid.value = location.uuid
 }
-
 </script>
 
 <template>
   <DefineTemplate v-slot="{ location: { category, name, isAtm, bg, uuid } }">
     <div flex="~ items-center gap-8" max-w-176 group>
-      <div
-        v-if="isAtm"
-        size-32 grid="~ place-content-center" ring-neutral-0 bg="[var(--bg-1)] hocus:[var(--bg02)]" transition-colors max-desktop:clickable
-        :style="{ '--bg-1': bg[0], '--bg-2': bg[1] }"
-      >
+      <div v-if="isAtm" size-32 grid="~ place-content-center" ring-neutral-0 bg="[var(--bg-1)] hocus:[var(--bg02)]"
+        transition-colors max-desktop:clickable rounded-full :style="{ '--bg-1': bg[0], '--bg-2': bg[1] }">
         {{ $t('ATM') }}
       </div>
-      <div
-        v-else-if="showCategoryIcon"
-        size-32 grid="~ place-content-center" ring-neutral-0 shadow transition-colors max-desktop:clickable
-        :class="uuid === selectedUuid ? 'bg-blue' : 'bg-neutral group-hover:bg-blue-1100'"
-      >
-        <div :class="getCategoryIcon(category)" text-28 />
+      <div v-else-if="showCategoryIcon" size-32 p-6 ring-neutral-0 shadow transition-colors rounded-full
+        max-desktop:clickable :class="uuid === selectedUuid ? 'bg-blue' : 'bg-neutral group-hover:bg-blue-1100'">
+        <div :class="getCategoryIcon(category)" text="20 neutral-0" />
       </div>
-      <div
-        v-else
-        ring-neutral-0 text="12 neutral-0" size-12 transition-colors rounded-full shadow max-desktop:clickable
-        :class="uuid === selectedUuid ? 'bg-blue' : 'bg-neutral group-hover:bg-blue-1100'"
-      />
-
-      <!-- <Popovernchor class="mx-1" /> -->
-      <span
-        v-if="!isAtm && showSingleName"
-        flex-1 :text="`16 left ${uuid===selectedUuid ? 'blue' : 'neutral group-hocus:blue-1100'}`" font-bold lh-none select-none relative max-desktop:clickable
-        class="transition-color transition--webkit-text-stroke"
-        :class="[{ invisible: !isMobile && uuid === selectedUuid }]"
-        :data-outline="name"
-      >
+      <div v-else ring-neutral-0 text="12 neutral-0" size-12 transition-colors rounded-full shadow max-desktop:clickable
+        :class="uuid === selectedUuid ? 'bg-blue' : 'bg-neutral group-hover:bg-blue-1100'" />
+      <span v-if="!isAtm && showSingleName" flex-1
+        :text="`16 left ${uuid === selectedUuid ? 'blue' : 'neutral group-hocus:blue-1100'}`" font-bold lh-none
+        select-none relative max-desktop:clickable class="transition-color transition--webkit-text-stroke"
+        :class="[{ invisible: !isMobile && uuid === selectedUuid }]" :data-outline="name">
         {{ name }}
       </span>
     </div>
   </DefineTemplate>
 
-  <CustomMarker
-    v-for="location in singles" :key="location.uuid"
+  <CustomMarker v-for="location in singles" :key="location.uuid"
     :options="{ position: { lng: location.lng, lat: location.lat }, anchorPoint: showSingleName ? 'LEFT_CENTER' : 'CENTER' }"
-    data-custom-marker
-  >
+    data-custom-marker>
     <ReuseTemplate v-if="isMobile" :location="location" @click="selectedUuid = location.uuid" />
 
     <PopoverRoot v-else @update:open="(isOpen: boolean) => handlePopoverOpen(isOpen, location)">
-      <PopoverAnchor
-        class="absolute h-full pointer-events-none -left-1"
-        :class="location.isAtm || showCategoryIcon ? 'w10' : 'w5'"
-      />
-      <PopoverTrigger :aria-label="$t('See location details')" class="cursor-pointer" :data-trigger-uuid="location.uuid">
-        <ReuseTemplate :location="location" class="transition-shadow rounded-sm" />
+      <PopoverAnchor absolute h-full pointer-events-none left--4
+        :class="location.isAtm || showCategoryIcon ? 'w-10' : 'w-5'" />
+      <PopoverTrigger :aria-label="$t('See location details')" cursor-pointer :data-trigger-uuid="location.uuid">
+        <ReuseTemplate :location="location" transition-shadow rounded-4 />
       </PopoverTrigger>
       <PopoverPortal :key="popoverKey">
-        <PopoverContent
-          side="right" :side-offset="5" class="rounded-lg shadow" :collision-padding="8" sticky="always"
-          @open-auto-focus.prevent
-        >
-          <LocationCard :location="location" :progress="1" :class="location.photo ? 'max-w320' : 'max-w384'" />
-          <PopoverArrow
-            class="w4 h2"
-            :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg[0]) : 'white'}`"
-          />
+        <PopoverContent side="right" :side-offset="5" rounded-12 shadow :collision-padding="8" sticky="always"
+          @open-auto-focus.prevent>
+          <LocationCard :location="location" :progress="1" />
+          <PopoverArrow w-16 h-8 :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg[0]) : 'white'}`" />
 
-          <!-- TODO Once this is fixed https://github.com/radix-vue/radix-vue/issues/353 use custom arrow -->
-          <!-- <Popoverrrow as-child>
-            <svg
-              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 10" class="relative h-3 w-max left-2"
-              :style="`fill: ${location.isAtm ? extractColorFromBg(location.bg[0]) : 'white'}`"
-            >
-              <path
-                fill="currentColor"
-                d="M12.63 1.83 8.27 8.25A4 4 0 0 1 4.97 10h17.8a4 4 0 0 1-3.3-1.75L15.1 1.83a1.5 1.5 0 0 0-2.48 0z"
-              />
-            </svg>
-          </Popoverrrow> -->
         </PopoverContent>
       </PopoverPortal>
     </PopoverRoot>
@@ -146,12 +110,8 @@ function handlePopoverOpen(isOpen: boolean, location: Location) {
   <template v-if="zoom > 15">
     <CustomMarker
       v-for="({ position, e }) in [{ position: { lat: 10.455694, lng: -84.676981 }, e: '🦥' }, { position: { lat: 19.260062, lng: 98.904358 }, e: '🐘' }, { position: { lng: -73.528486, lat: 45.503334 }, e: '🦫' }]"
-      :key="e" :options="{ position, anchorPoint: 'CENTER' }"
-    >
-      <div
-        class="grid w12 h12 p2 text-4xl bg-white rounded-full shadow aspect-square place-content-center"
-        title="1 out of 3"
-      >
+      :key="e" :options="{ position, anchorPoint: 'CENTER' }">
+      <div grid="~ place-content-center" text-24 p-8 rounded-full bg-neutral-0 shadow aspect-square>
         {{ e }}
       </div>
     </CustomMarker>

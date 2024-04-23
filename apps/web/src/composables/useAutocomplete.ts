@@ -33,8 +33,8 @@ export function useAutocomplete({ autocomplete }: UseAutocompleteOptions) {
       status.value = AutocompleteStatus.Initial
       clearSuggestions()
     } else {
-      if(newValue !== '' && (oldValue === '') || (googleSuggestions.value.length === 0 && locationSuggestions.value.length === 0)) status.value = AutocompleteStatus.Loading
-      if(newValue === '' && oldValue !== '') status.value = AutocompleteStatus.Initial
+      if (newValue !== '' && (oldValue === '') || (googleSuggestions.value.length === 0 && locationSuggestions.value.length === 0)) status.value = AutocompleteStatus.Loading
+      if (newValue === '' && oldValue !== '') status.value = AutocompleteStatus.Initial
       querySearch()
     }
   })
@@ -77,7 +77,8 @@ export function useAutocomplete({ autocomplete }: UseAutocompleteOptions) {
     }
 
     const fn = searchForRegions ? 'getQueryPredictions' : 'getPlacePredictions'
-    await autocompleteService.value?.[fn](request, (predictions, status) => {
+
+    return await (autocompleteService.value?.[fn](request, (predictions, status) => {
       if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions)
         return
       googleSuggestions.value = predictions
@@ -87,7 +88,7 @@ export function useAutocomplete({ autocomplete }: UseAutocompleteOptions) {
           label: p.description,
           matchedSubstrings: p.matched_substrings,
         } satisfies GoogleSuggestion))
-    })
+    }))
   }
 
   async function autocompleteLocations() {
@@ -98,7 +99,7 @@ export function useAutocomplete({ autocomplete }: UseAutocompleteOptions) {
   // and we just search locations in Google
   async function _querySearch() {
     // eslint-disable-next-line no-console
-    console.group(`🔍 Autocomplete "${query}"`)
+    console.group(`🔍 Autocomplete "${query.value}"`)
 
     if (!query.value) {
       clearSuggestions()
@@ -113,9 +114,12 @@ export function useAutocomplete({ autocomplete }: UseAutocompleteOptions) {
     console.groupEnd()
     /* eslint-enable no-console */
 
-    if (result.every(r => r.status === 'rejected')) {
-      status.value = AutocompleteStatus.Error
+    if (result.some(r => r.status === 'rejected')) {
+      // status.value = AutocompleteStatus.Error
+      status.value = AutocompleteStatus.WithResults
+      googleSuggestions.value = [{ label: 'This is a test', placeId: '1', matchedSubstrings: [{ length: 0, offset: 1 }] }]
       return
+
     }
 
     status.value = googleSuggestions.value.length || locationSuggestions.value.length ? AutocompleteStatus.WithResults : AutocompleteStatus.NoResults

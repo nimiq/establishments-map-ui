@@ -1,68 +1,63 @@
 <script setup lang="ts">
-import { Location } from 'types';
+import { Issue, Location } from 'types'
+import { translateIssue } from '@/translations'
 defineProps<{ location: Location }>()
+const description = ref('')
+const issue = ref<Issue>()
 </script>
 
 <template>
-  <Modal>
+  <Modal name="report">
     <template #trigger>
       <slot name="trigger" />
     </template>
     <template #title>
       <div flex="~ gap-8 items-baseline" ml--6>
-        <div rounded-6 size-28 grid="~ place-content-center" bg-red-400>
+        <div rounded-6 size-28 grid="~ place-content-center" bg-red-400 aria-hidden>
           <div i-nimiq:flag text-red text-14 />
         </div>
         {{ $t('Report an issue') }}
       </div>
     </template>
+    <template #description>
+      <p>{{ $t('Tell us what\'s wrong with this location') }}</p>
+    </template>
     <template #content>
-      <div flex="~ gap-24" mt-32>
-        <img v-if="location.photo" :src="location.photo" max-w-128 rounded-4 />
-        <div h-96 flex="~ col">
+      <div flex="~" mt-32 mb-14>
+        <img v-if="location.photo" :src="location.photo" max-w-128 rounded-4 object-cover mr-24 min-w-32 />
+        <div h-max flex="~ col">
           <BasicInfoLocation :location />
           <ul v-if="location.accepts.length > 0" flex="~ items-center gap-x-8" bg-neutral-0 rounded-full
-            ring-neutral-100 mt-auto>
-            <li v-for="c in location.accepts " :key="c">
-              <div text-24 :class="getCurrencyIcon(c)" :title="c" />
-            </li>
+            ring-neutral-100 mt-16>
+            <li v-for="c in location.accepts " :key="c" text-24 :class="getCurrencyIcon(c)" :title="c" />
           </ul>
         </div>
+        <LocationExternalUrl :location ml-auto />
       </div>
-      <div>
-        <NestedModal>
-          <template #trigger>
-            <div flex="~ gap-4 items-center" text="neutral-800 14" mt-16>
-              <div i-nimiq:help op-80 text-12 />
-              <p>
-                {{ $t('Where is the data coming from?') }}
-              </p>
-            </div>
-          </template>
-          <template #title>
-            {{ $t('FAQ') }}
-          </template>
-          <template #content>
-            <FAQ />
-          </template>
-        </NestedModal>
-      </div>
+      <FAQ nested>
+        <template #trigger>
+          <div flex="~ gap-4 items-center" text="neutral-800 14" hocus:bg-neutral-200 transition-colors mx--6 px-6 py-2
+            rounded-4>
+            <div i-nimiq:help op-80 text-12 relative top--1 />
+            <p>{{ $t('Where is the data coming from?') }}</p>
+          </div>
+        </template>
+      </FAQ>
 
-      <hr mx-auto max-w-128 border-neutral-500 my-24>
-
-      <form action="">
-        <label for="name" text="14 neutral-900" font-200 mb-4 block>{{ $t('Find Location') }}</label>
-        <LocationSearchBox />
+      <form action="" mt-40>
+        <label for="name" text="14 neutral-900" font-200 mb-4 block>{{ $t('Select issue') }}</label>
+        <Select :options="Object.values(Issue)" :option-to-text="translateIssue" v-model:selected="issue" />
 
         <label for="name" text="14 neutral-900" font-200 mb-4 block mt-24>{{ $t('Describe the issue') }}</label>
-        <textarea :placeholder="$t('Write your problem here')" input-text rounded-4 text-neutral w-full resize-none max-h-128 style="field-sizing: content" />
+        <textarea :placeholder="$t('Write your problem here')" input-box text="14 neutral" resize-none min-h-64
+          v-model="description" style="field-sizing: content" />
 
-        <div flex="~ gap-16 justify-end" mt-32>
+        <div flex="~ gap-16 justify-end" mt-24>
           <DialogClose :aria-label="$t('Cancel')" pill-tertiary pill-sm>Cancel</DialogClose>
-          <button type="submit" disabled pill-blue pill-sm>{{ $t('Report Location') }}</button>
+          <button type="submit" :disabled="!description || !issue" pill-blue pill-sm>{{ $t('Report Location')
+            }}</button>
         </div>
       </form>
     </template>
   </Modal>
 </template>
-

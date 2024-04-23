@@ -54,8 +54,8 @@ importers:
         specifier: ^10.9.0
         version: 10.9.0(vue-router@4.3.0)(vue@3.4.21)
       nimiq-css:
-        specifier: ^0.0.81
-        version: 0.0.81(typescript@5.3.3)(unocss@0.59.2)(vite@5.2.8)
+        specifier: ^0.0.85
+        version: 0.0.85(typescript@5.3.3)(unocss@0.59.2)(vite@5.2.8)
       pinia:
         specifier: ^2.1.7
         version: 2.1.7(typescript@5.3.3)(vue@3.4.21)
@@ -102,9 +102,6 @@ importers:
       '@types/node':
         specifier: ^20.12.7
         version: 20.12.7
-      '@unocss/core':
-        specifier: ^0.59.4
-        version: 0.59.4
       '@unocss/preset-mini':
         specifier: ^0.59.4
         version: 0.59.4
@@ -8565,8 +8562,8 @@ packages:
     resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
     dev: true
 
-  /nimiq-css@0.0.81(typescript@5.3.3)(unocss@0.59.2)(vite@5.2.8):
-    resolution: {integrity: sha512-fGWcHaLvcyTOBZ5z6De+53WEipqg1CyJTrtw537mqHcfrXoudiENXQLhfydPMAn9qheV3K+STWdNgcmDgjdD9A==}
+  /nimiq-css@0.0.85(typescript@5.3.3)(unocss@0.59.2)(vite@5.2.8):
+    resolution: {integrity: sha512-37J77FFhDqWYB1HdR9NHeE/IeR+z/v2LCLqtYtw6rU97UWdoXqfyQyhm1iehkI9XXqws6vlE1Pkmv1zMIeuHNg==}
     engines: {node: '>=14'}
     peerDependencies:
       typescript: ^5.0.0

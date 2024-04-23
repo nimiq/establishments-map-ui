@@ -26,7 +26,7 @@ export default defineConfig({
     VueDevTools(),
     // checker({ vueTsc: true, typescript: true }), // Waiting for https://github.com/fi3ework/vite-plugin-checker/issues/306#issuecomment-1995606874
     UnoCSS(),
-    
+
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({
       imports: [
@@ -39,7 +39,7 @@ export default defineConfig({
       dirs: [
         'src/composables',
         'src/stores',
-        'src/i18n'
+        'src/i18n',
       ],
       vueTemplate: true,
     }),

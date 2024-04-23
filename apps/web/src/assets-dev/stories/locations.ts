@@ -1,7 +1,6 @@
 import { CATEGORIES } from 'database'
 import { Category, Currency, type Location, LocationLink, Provider } from 'types'
 import { getCardConfiguration } from '../banner-assets'
-import { translateCategory } from '@/translations'
 
 type ExtraFields = Pick<Location, 'isAtm' | 'isDark' | 'isLight' | 'provider' | 'category' | 'category_label' | 'sells' | 'url' | 'linkTo'> & ReturnType<typeof getCardConfiguration>
 export function getExtra(provider: Provider, sells: Currency[] = [], linkTo: LocationLink = LocationLink.GMaps): ExtraFields {

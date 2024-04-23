@@ -2,12 +2,12 @@
 import { breakpointsTailwind } from '@vueuse/core';
 import type { Location } from 'types'
 
-defineProps<{location: Location, isAtm: boolean}>()
+defineProps<{ location: Location, isAtm: boolean }>()
 
 const isMobile = useBreakpoints(breakpointsTailwind).smaller('md')
 
 // For the banner Nimiq Pay, the label should be Nimiq Pay
-function handleProviderPlaceholder({banner, provider}: Location) {
+function handleProviderPlaceholder({ banner, provider }: Location) {
   if (banner === 'Nimiq-Pay') return 'Nimiq Pay'
   return provider
 }
@@ -25,17 +25,14 @@ function handleProviderPlaceholder({banner, provider}: Location) {
         </template>
       </i18n-t>
 
-      <PopoverRoot :delay-duration="300">
+      <PopoverRoot>
         <PopoverTrigger>
           <div i-nimiq:info text="14 neutral-0/50 inverted:neutral/50" />
         </PopoverTrigger>
         <PopoverPortal>
           <!-- class="max-w320 p4 space-y-2 text-white rounded-sm shadow z-100 bg-gradient-space [&[data-side=right]_[data-arrow]]:right-1.5 [&[data-side=left]_[data-arrow]]:left-1.5" -->
-          <PopoverContent
-            as-child
-            max-w-320 p-16 text-neutral-0 rounded-6 shadow z-100 bg-gradient-neutral
-            :side-offset="4" :collision-padding="8" :side="isMobile ? 'top' : 'right'"
-          >
+          <PopoverContent as-child max-w-320 p-16 text-neutral-0 rounded-6 shadow z-100 bg-gradient-neutral
+            :side-offset="4" :collision-padding="8" :side="isMobile ? 'top' : 'right'">
             <div>
               <header flex="~ items-center justify-start gap-8">
                 <BannerCircleLogo :banner="location.banner" />
@@ -51,14 +48,19 @@ function handleProviderPlaceholder({banner, provider}: Location) {
                 {{ location.bannerTooltip }}
               </p>
 
-              <a v-if="location.bannerTooltipCta" :href="location.bannerTooltipCta" target="_blank" rel="noopener noreferrer" arrow un-text-neutral-600 block mt-12 before:op-80 flex="~ items-center">
+              <a v-if="location.bannerTooltipCta" :href="location.bannerTooltipCta" target="_blank"
+                rel="noopener noreferrer" arrow un-text-neutral-600 block mt-12 before:op-80 flex="~ items-center">
                 {{ $t('Learn more') }}
               </a>
 
               <template v-if="location.bannerAppStore || location.bannerGooglePlay">
                 <div flex="~ items-center gap-24" mt-16 text-40>
-                  <a v-if="location.bannerAppStore" :href="location.bannerAppStore" target="_blank" rel="noopener noreferrer" flex-1 :aria-label="$t('Download on App Store')" i-nimiq:logos-download-app-store />
-                  <a v-if="location.bannerGooglePlay" :href="location.bannerGooglePlay" target="_blank" rel="noopener noreferrer" flex-1 :aria-label="$t('Download on Play Store')" i-nimiq:logos-download-google-play />
+                  <a v-if="location.bannerAppStore" :href="location.bannerAppStore" target="_blank"
+                    rel="noopener noreferrer" flex-1 :aria-label="$t('Download on App Store')"
+                    i-nimiq:logos-download-app-store />
+                  <a v-if="location.bannerGooglePlay" :href="location.bannerGooglePlay" target="_blank"
+                    rel="noopener noreferrer" flex-1 :aria-label="$t('Download on Play Store')"
+                    i-nimiq:logos-download-google-play />
                 </div>
               </template>
               <PopoverArrow data-arrow fill-neutral desktop:relative size="10" />

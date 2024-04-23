@@ -9,6 +9,7 @@ declare global {
   const AutocompleteStatus: typeof import('./composables/useAutocomplete')['AutocompleteStatus']
   const DatabaseArgs: typeof import('types')['DatabaseArgs']
   const EffectScope: typeof import('vue')['EffectScope']
+  const FormState: typeof import('./composables/useForm')['FormState']
   const Location: typeof import('types')['Location']
   const SUPPORTED_LANGUAGES: typeof import('./i18n/i18n-setup')['SUPPORTED_LANGUAGES']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
@@ -201,6 +202,7 @@ declare global {
   const useFilters: typeof import('./stores/filters')['useFilters']
   const useFocus: typeof import('@vueuse/core')['useFocus']
   const useFocusWithin: typeof import('@vueuse/core')['useFocusWithin']
+  const useForm: typeof import('./composables/useForm')['useForm']
   const useFps: typeof import('@vueuse/core')['useFps']
   const useFullscreen: typeof import('@vueuse/core')['useFullscreen']
   const useGamepad: typeof import('@vueuse/core')['useGamepad']
@@ -334,6 +336,7 @@ declare module 'vue' {
     readonly Autocomplete: UnwrapRef<typeof import('./composables/useAutocomplete')['Autocomplete']>
     readonly AutocompleteStatus: UnwrapRef<typeof import('./composables/useAutocomplete')['AutocompleteStatus']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly FormState: UnwrapRef<typeof import('./composables/useForm')['FormState']>
     readonly SUPPORTED_LANGUAGES: UnwrapRef<typeof import('./i18n/i18n-setup')['SUPPORTED_LANGUAGES']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
@@ -525,6 +528,7 @@ declare module 'vue' {
     readonly useFilters: UnwrapRef<typeof import('./stores/filters')['useFilters']>
     readonly useFocus: UnwrapRef<typeof import('@vueuse/core')['useFocus']>
     readonly useFocusWithin: UnwrapRef<typeof import('@vueuse/core')['useFocusWithin']>
+    readonly useForm: UnwrapRef<typeof import('./composables/useForm')['useForm']>
     readonly useFps: UnwrapRef<typeof import('@vueuse/core')['useFps']>
     readonly useFullscreen: UnwrapRef<typeof import('@vueuse/core')['useFullscreen']>
     readonly useGamepad: UnwrapRef<typeof import('@vueuse/core')['useGamepad']>
@@ -651,6 +655,7 @@ declare module '@vue/runtime-core' {
     readonly Autocomplete: UnwrapRef<typeof import('./composables/useAutocomplete')['Autocomplete']>
     readonly AutocompleteStatus: UnwrapRef<typeof import('./composables/useAutocomplete')['AutocompleteStatus']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly FormState: UnwrapRef<typeof import('./composables/useForm')['FormState']>
     readonly SUPPORTED_LANGUAGES: UnwrapRef<typeof import('./i18n/i18n-setup')['SUPPORTED_LANGUAGES']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
@@ -842,6 +847,7 @@ declare module '@vue/runtime-core' {
     readonly useFilters: UnwrapRef<typeof import('./stores/filters')['useFilters']>
     readonly useFocus: UnwrapRef<typeof import('@vueuse/core')['useFocus']>
     readonly useFocusWithin: UnwrapRef<typeof import('@vueuse/core')['useFocusWithin']>
+    readonly useForm: UnwrapRef<typeof import('./composables/useForm')['useForm']>
     readonly useFps: UnwrapRef<typeof import('@vueuse/core')['useFps']>
     readonly useFullscreen: UnwrapRef<typeof import('@vueuse/core')['useFullscreen']>
     readonly useGamepad: UnwrapRef<typeof import('@vueuse/core')['useGamepad']>

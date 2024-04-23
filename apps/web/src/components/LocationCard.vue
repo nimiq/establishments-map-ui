@@ -21,7 +21,8 @@ const [DefineCryptoList, ReuseCryptoList] = createReusableTemplate<{ cryptosToDi
 
 <template>
   <DefineCryptoList v-slot="{ cryptosToDisplay, n }">
-    <ul v-if="cryptosToDisplay.length > 0" flex="~ items-center gap-x-8" p-4 bg-neutral-0 rounded-full w-max ring-neutral-100 absolute bottom-0 z-20 translate-y="1/2">
+    <ul v-if="cryptosToDisplay.length > 0" flex="~ items-center gap-x-8" p-4 bg-neutral-0 rounded-full w-max
+      ring-neutral-100 absolute bottom-0 z-20 translate-y="1/2">
       <li v-for="c in cryptosToDisplay " :key="c">
         <div text-24 :class="getCurrencyIcon(c)" :title="c" />
       </li>
@@ -31,11 +32,12 @@ const [DefineCryptoList, ReuseCryptoList] = createReusableTemplate<{ cryptosToDi
     </ul>
   </DefineCryptoList>
 
-  <div relative rounded-12 duration="$duration,0" group h-full select-none :class="{
+  <div relative rounded-12 duration="$duration,0" max-w-352 group h-full select-none :class="{
     'rounded-b-0': progress === 1 && isMobile,
     'of-hidden': isMobile,
     'select-auto': progress === 1 || !isMobile,
-  }" :style="`background: ${location.isAtm ? location.bg[0] : 'rgb(var(--nq-neutral-0,0))'}`" animate-fade-in animate-duration-100>
+  }" :style="`background: ${location.isAtm ? location.bg[0] : 'rgb(var(--nq-neutral-0,0))'}`" animate-fade-in
+    animate-duration-100>
     <LocationCardBg v-if="location.isAtm" :location="location" />
 
     <div v-if="location.photo && progress > 0" pt-6 px-5 transition-height duration="[--duration]"
@@ -71,17 +73,9 @@ const [DefineCryptoList, ReuseCryptoList] = createReusableTemplate<{ cryptosToDi
       </transition>
     </div>
 
-    <transition name="scale">
-      <a v-if="!location.photo && location.url && progress > 0.5" :href="location.url" pill-tertiary pill-sm arrow
-        bg-neutral-0 text-16 absolute w-52 text-24 top-16 right-16>
-        <div v-if="location.linkTo === LocationLink.GMaps" i-logos:google-maps />
-        <div v-if="location.linkTo === LocationLink.Facebook" i-logos:facebook />
-        <div v-if="location.linkTo === LocationLink.Instagram" i-nimiq:logos-instagram />
-      </a>
-    </transition>
-
-    <Banner v-if="progress > 0 && location.banner !== 'None'" :location="location" :is-atm="location.isAtm"
-      absolute max-desktop:w-screen :class="{ 'rounded-b-12': progress < 1 || !isMobile }" :style="{
+    <LocationExternalUrl :location v-if="!location.photo && location.url && progress > 0.5" absolute top-16 right-16 />
+    <Banner v-if="progress > 0 && location.banner !== 'None'" :location="location" :is-atm="location.isAtm" absolute
+      max-desktop:w-screen :class="{ 'rounded-b-12': progress < 1 || !isMobile }" :style="{
         backgroundColor: !location.isAtm ? location.bg[0] : 'transparent',
         opacity: progress / 0.8,
         bottom: `-${(1 - progress) * 70}px`, // the height is 54, we add 16px to delay the animation
@@ -90,26 +84,3 @@ const [DefineCryptoList, ReuseCryptoList] = createReusableTemplate<{ cryptosToDi
       }" />
   </div>
 </template>
-
-<style scoped>
-.scale-enter-active {
-  animation: icon-in 200ms ease-out;
-}
-
-.scale-leave-active {
-  animation: icon-in 150ms ease-in reverse;
-  opacity: 0;
-}
-
-@keyframes icon-in {
-  0% {
-    transform: scale(0.75);
-    opacity: 0;
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-</style>

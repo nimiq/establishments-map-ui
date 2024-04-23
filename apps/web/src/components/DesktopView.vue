@@ -17,7 +17,8 @@ const toggleList = useToggle(isListShown)
       <InteractionBar />
       <DesktopList :singles="singlesInView" :clusters="clustersInView" :list-is-shown="isListShown" />
     </div>
-    <button mt-12 pill-tertiary border-none pill-sm ring="1.5 neutral/3" z-10 flex="~ gap-8" @click="() => toggleList()">
+    <button mt-12 pill-tertiary border-none pill-sm ring="1.5 neutral/3" z-10 flex="~ gap-8"
+      @click="() => toggleList()">
       <div i-nimiq:chevron-down :class="{ 'rotate-180': isListShown }" text="10 op-70"
         transition="transform delay-500" />
       {{ $t(isListShown ? 'Hide list' : 'Show list') }}
@@ -25,6 +26,11 @@ const toggleList = useToggle(isListShown)
   </aside>
   <!-- <FilterModal v-if="maxZoomFromServer < zoom" absolute top-24 right-24 /> -->
   <Controls absolute bottom-24 right-24 />
+  <FAQ name="faq" absolute bottom-6 left-78 px-4 py-1 text-12 rounded-4 ghost-btn text-neutral font-bold bg-neutral-200>
+    <template #trigger>
+      FAQ
+    </template>
+  </FAQ>
 </template>
 
 <style scoped>
@@ -63,7 +69,7 @@ aside {
       mask-image: linear-gradient(white, white);
     }
 
-  /*
+    /*
   If the list is closed and there are suggestions, we need to remove the border-radius.
   We use double :has to make an AND gate
   in other words: If we have suggestions AND the list is closed.

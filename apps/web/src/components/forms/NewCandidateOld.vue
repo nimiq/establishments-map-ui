@@ -2,7 +2,7 @@
 import { CURRENCIES } from 'database'
 import type { Currency, Suggestion } from 'types'
 
-const { googleSuggestions: suggestions, status, query } = useAutocomplete({autocomplete: [Autocomplete.GoogleBussines]})
+const { googleSuggestions: suggestions, status, query } = useAutocomplete({ autocomplete: [Autocomplete.GoogleBussines] })
 
 const selectedCurrencies = ref<Currency[]>([])
 const selectedPlace = ref<Suggestion>()
@@ -35,17 +35,14 @@ async function onSubmit(captcha: string) {
       <a href="https://www.google.com/business/" target="_blank">{{ $t('Create Google Business profile') }}</a>
     </template>
     <template #form>
-      <SearchBox
-        :teleport="false"
-        :autocomplete="(query: string) => querySearch(query, true)" :suggestions="suggestions" :status="status" :label="$t('Find location')"
-        :placeholder="$t('Type the name of the location')" combobox-options-classes="w-[calc(100%+4px)] -left-0.5 top-unset rounded-sm"
-        bg-combobox="space" :allow-clean="false" @selected="(selectedPlace = $event)"
-      />
+      <SearchBox :teleport="false" :autocomplete="(query: string) => querySearch(query, true)"
+        :suggestions="suggestions" :status="status" :label="$t('Find location')"
+        :placeholder="$t('Type the name of the location')"
+        combobox-options-classes="w-[calc(100%+4px)] -left-0.5 top-unset rounded-sm" bg-combobox="space"
+        :allow-clean="false" @selected="(selectedPlace = $event)" />
 
-      <Select
-        v-model="selectedCurrencies" class="mt6"
-        :label="$t('Select Cryptocurrency')" :options="CURRENCIES" :placeholder="$t('Select Cryptocurrency')"
-      >
+      <Select v-model="selectedCurrencies" class="mt-6" :label="$t('Select Cryptocurrency')" :options="CURRENCIES"
+        :placeholder="$t('Select Cryptocurrency')">
         <template #option="{ option: currency }">
           <!-- <CryptoIcon :crypto="currency" size="sm" bg="white" /> -->
           <span>{{ translateCurrency(currency) }}</span>
