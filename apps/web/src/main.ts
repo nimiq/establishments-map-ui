@@ -10,13 +10,13 @@ import { router } from './router'
 setLanguage(detectLanguage())
 
 const app = createApp(App)
-const pinia = createPinia()
+app.use(router)
 
+const pinia = createPinia()
 pinia.use(({ store }) => {
   store.router = markRaw(router)
 })
 app.use(pinia)
-app.use(router)
 app.use(i18nRegistration)
 
 app.mount('#app')

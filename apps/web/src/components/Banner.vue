@@ -3,8 +3,6 @@ import type { Location } from 'types'
 
 defineProps<{ location: Location, isAtm: boolean }>()
 
-const { isMobile } = storeToRefs(useApp())
-
 // For the banner Nimiq Pay, the label should be Nimiq Pay
 function handleProviderPlaceholder({ banner, provider }: Location) {
   if (banner === 'Nimiq-Pay') return 'Nimiq Pay'

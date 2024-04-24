@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ModalName } from '@/router'
+import { ModalName } from './Modal.vue';
 import { Issue, Location } from 'types'
 import { translateIssue } from '@/translations'
 defineProps<{ location: Location }>()

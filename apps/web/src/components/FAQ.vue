@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ModalName } from '@/router';
+import { ModalName } from './Modal.vue';
 
 withDefaults(defineProps<{ nested?: boolean }>(), { nested: false })
 

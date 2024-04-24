@@ -1,5 +1,13 @@
+<script lang="ts">
+export enum ModalName {
+  CryptoMap = 'crypto-map',
+  Report = 'report',
+  FAQ = 'faq',
+  Candidate = 'candidate'
+}
+</script>
+
 <script setup lang="ts">
-import { ModalName } from '@/router';
 import { useRouteQuery } from '@vueuse/router';
 
 const props = withDefaults(defineProps<{ name: ModalName, nested?: boolean }>(), { nested: false })

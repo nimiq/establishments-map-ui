@@ -11,6 +11,7 @@ declare global {
   const DatabaseArgs: typeof import('types')['DatabaseArgs']
   const EffectScope: typeof import('vue')['EffectScope']
   const FormState: typeof import('./composables/useForm')['FormState']
+  const Layout: typeof import('./composables/useUI')['Layout']
   const Location: typeof import('types')['Location']
   const Modal: typeof import('./router')['Modal']
   const ModalName: typeof import('./router')['ModalName']
@@ -54,6 +55,8 @@ declare global {
   const getCurrencyIcon: typeof import('./composables/useIcon')['getCurrencyIcon']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
+  const getLayout: typeof import('./composables/useUI')['getLayout']
+  const getMapUiState: typeof import('./composables/useUI')['getMapUiState']
   const h: typeof import('vue')['h']
   const i18n: typeof import('./i18n/i18n-setup')['i18n']
   const i18nRegistration: typeof import('./i18n/i18n-setup')['i18nRegistration']
@@ -232,6 +235,7 @@ declare global {
   const useIntervalFn: typeof import('@vueuse/core')['useIntervalFn']
   const useKeyModifier: typeof import('@vueuse/core')['useKeyModifier']
   const useLastChanged: typeof import('@vueuse/core')['useLastChanged']
+  const useLayout: typeof import('./composables/useUI')['useLayout']
   const useLocalStorage: typeof import('@vueuse/core')['useLocalStorage']
   const useLocations: typeof import('./stores/locations')['useLocations']
   const useMagicKeys: typeof import('@vueuse/core')['useMagicKeys']
@@ -353,6 +357,7 @@ declare module 'vue' {
     readonly AutocompleteStatus: UnwrapRef<typeof import('./composables/useAutocomplete')['AutocompleteStatus']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly FormState: UnwrapRef<typeof import('./composables/useForm')['FormState']>
+    readonly Layout: UnwrapRef<typeof import('./composables/useUI')['Layout']>
     readonly SUPPORTED_LANGUAGES: UnwrapRef<typeof import('./i18n/i18n-setup')['SUPPORTED_LANGUAGES']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
@@ -385,13 +390,13 @@ declare module 'vue' {
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
-    readonly fillMarker: UnwrapRef<typeof import('./composables/useUI')['fillMarker']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getBannerIcon: UnwrapRef<typeof import('./composables/useIcon')['getBannerIcon']>
     readonly getCategoryIcon: UnwrapRef<typeof import('./composables/useIcon')['getCategoryIcon']>
     readonly getCurrencyIcon: UnwrapRef<typeof import('./composables/useIcon')['getCurrencyIcon']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
+    readonly getMapUiState: UnwrapRef<typeof import('./composables/useUI')['getMapUiState']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly i18n: UnwrapRef<typeof import('./i18n/i18n-setup')['i18n']>
     readonly i18nRegistration: UnwrapRef<typeof import('./i18n/i18n-setup')['i18nRegistration']>
@@ -404,7 +409,6 @@ declare module 'vue' {
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
-    readonly layout: UnwrapRef<typeof import('./composables/useUI')['layout']>
     readonly makeDestructurable: UnwrapRef<typeof import('@vueuse/core')['makeDestructurable']>
     readonly mapActions: UnwrapRef<typeof import('pinia')['mapActions']>
     readonly mapGetters: UnwrapRef<typeof import('pinia')['mapGetters']>
@@ -457,7 +461,6 @@ declare module 'vue' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
-    readonly showLocationName: UnwrapRef<typeof import('./composables/useUI')['showLocationName']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
@@ -562,6 +565,7 @@ declare module 'vue' {
     readonly useIntervalFn: UnwrapRef<typeof import('@vueuse/core')['useIntervalFn']>
     readonly useKeyModifier: UnwrapRef<typeof import('@vueuse/core')['useKeyModifier']>
     readonly useLastChanged: UnwrapRef<typeof import('@vueuse/core')['useLastChanged']>
+    readonly useLayout: UnwrapRef<typeof import('./composables/useUI')['useLayout']>
     readonly useLocalStorage: UnwrapRef<typeof import('@vueuse/core')['useLocalStorage']>
     readonly useLocations: UnwrapRef<typeof import('./stores/locations')['useLocations']>
     readonly useMagicKeys: UnwrapRef<typeof import('@vueuse/core')['useMagicKeys']>
@@ -675,6 +679,7 @@ declare module '@vue/runtime-core' {
     readonly AutocompleteStatus: UnwrapRef<typeof import('./composables/useAutocomplete')['AutocompleteStatus']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly FormState: UnwrapRef<typeof import('./composables/useForm')['FormState']>
+    readonly Layout: UnwrapRef<typeof import('./composables/useUI')['Layout']>
     readonly SUPPORTED_LANGUAGES: UnwrapRef<typeof import('./i18n/i18n-setup')['SUPPORTED_LANGUAGES']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
@@ -707,13 +712,13 @@ declare module '@vue/runtime-core' {
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
-    readonly fillMarker: UnwrapRef<typeof import('./composables/useUI')['fillMarker']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getBannerIcon: UnwrapRef<typeof import('./composables/useIcon')['getBannerIcon']>
     readonly getCategoryIcon: UnwrapRef<typeof import('./composables/useIcon')['getCategoryIcon']>
     readonly getCurrencyIcon: UnwrapRef<typeof import('./composables/useIcon')['getCurrencyIcon']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
+    readonly getMapUiState: UnwrapRef<typeof import('./composables/useUI')['getMapUiState']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly i18n: UnwrapRef<typeof import('./i18n/i18n-setup')['i18n']>
     readonly i18nRegistration: UnwrapRef<typeof import('./i18n/i18n-setup')['i18nRegistration']>
@@ -726,7 +731,6 @@ declare module '@vue/runtime-core' {
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
-    readonly layout: UnwrapRef<typeof import('./composables/useUI')['layout']>
     readonly makeDestructurable: UnwrapRef<typeof import('@vueuse/core')['makeDestructurable']>
     readonly mapActions: UnwrapRef<typeof import('pinia')['mapActions']>
     readonly mapGetters: UnwrapRef<typeof import('pinia')['mapGetters']>
@@ -779,7 +783,6 @@ declare module '@vue/runtime-core' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
-    readonly showLocationName: UnwrapRef<typeof import('./composables/useUI')['showLocationName']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
@@ -884,6 +887,7 @@ declare module '@vue/runtime-core' {
     readonly useIntervalFn: UnwrapRef<typeof import('@vueuse/core')['useIntervalFn']>
     readonly useKeyModifier: UnwrapRef<typeof import('@vueuse/core')['useKeyModifier']>
     readonly useLastChanged: UnwrapRef<typeof import('@vueuse/core')['useLastChanged']>
+    readonly useLayout: UnwrapRef<typeof import('./composables/useUI')['useLayout']>
     readonly useLocalStorage: UnwrapRef<typeof import('@vueuse/core')['useLocalStorage']>
     readonly useLocations: UnwrapRef<typeof import('./stores/locations')['useLocations']>
     readonly useMagicKeys: UnwrapRef<typeof import('@vueuse/core')['useMagicKeys']>

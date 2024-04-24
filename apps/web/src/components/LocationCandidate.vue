@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { GoogleSuggestion } from '@/composables/useAutocomplete';
-import { ModalName } from '@/router';
+import { ModalName } from './Modal.vue';
 import { Currency } from 'types';
 
 const selectedPlace = ref<GoogleSuggestion>()

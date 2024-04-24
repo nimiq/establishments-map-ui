@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { CustomMarker } from 'vue3-google-map'
 import { OnClickOutside } from '@vueuse/components';
-import { Cluster, Cryptocity } from 'types';
+import { Cluster } from 'types';
 
 const { setPosition } = useMap()
 const { zoom } = storeToRefs(useMap())
-const { isMobile } = storeToRefs(useApp())
 const { clusters } = storeToRefs(useMarkers())
 
 function setExpansionCluster(id: number, open: '0' | '1') {

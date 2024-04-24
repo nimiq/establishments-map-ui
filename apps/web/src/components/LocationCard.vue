@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { Currency, LocationLink, type Location } from 'types'
+import { Currency, type Location } from 'types'
 
 const props = defineProps<{ location: Location, progress: number }>()
-
-const { isMobile } = storeToRefs(useApp())
 
 function arrayEquals(arrA: string[], arrB: string[]): boolean {
   return arrA.length === arrB.length && arrA.every((value, index) => value === arrB[index])

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ModalName } from '@/router';
-
+import { ModalName } from './Modal.vue';
 const lang = ref(i18n.locale)
 watch(lang, () => setLanguage(lang.value))
 </script>

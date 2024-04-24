@@ -35,6 +35,7 @@ declare module 'vue' {
     ComboboxSeparator: typeof import('radix-vue')['ComboboxSeparator']
     ComboboxTrigger: typeof import('radix-vue')['ComboboxTrigger']
     ComboboxViewport: typeof import('radix-vue')['ComboboxViewport']
+    CompactView: typeof import('./components/CompactView.vue')['default']
     Computer_electronics: typeof import('./components/icons/categories/computer_electronics.vue')['default']
     Controls: typeof import('./components/Controls.vue')['default']
     copy: typeof import('./components/SingleMarkers copy.vue')['default']

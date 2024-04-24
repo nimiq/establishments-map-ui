@@ -3,14 +3,36 @@ import { useRouteQuery } from '@vueuse/router'
 
 export const isMobile = useBreakpoints(breakpointsTailwind).smaller('md')
 
-const { zoom } = storeToRefs(useMap())
-export const fillMarker = computed(() => zoom.value >= 13)
-export const showLocationName = computed(() => zoom.value >= 11)
+export function getMapUiState() {
+  const { zoom } = storeToRefs(useMap())
+  return {
+    fillMarker: computed(() => zoom.value >= 13),
+    showLocationName: computed(() => zoom.value >= 11),
+  }
+}
 
-enum UI {
+export enum Layout {
+  Default = 'default',
+
   // UI optimized for mobile devices, specially the Nimiq Pay App
   Compact = 'compact',
 }
 
-// By default layout is undefined => default layout
-export const layout = useRouteQuery<UI>('layout')
+export function useLayout() {
+  const layoutQuery = useRouteQuery<Layout | undefined>('layout', undefined, { route: useRoute() })
+
+  const MobileView = defineAsyncComponent(() => import('@/components/MobileView.vue'))
+  const DesktopView = defineAsyncComponent(() => import('@/components/DesktopView.vue'))
+  const CompactView = defineAsyncComponent(() => import('@/components/CompactView.vue'))
+
+  const component = computed(() => {
+    switch (layoutQuery.value) {
+      case Layout.Compact: return CompactView
+      default: return isMobile.value ? MobileView : DesktopView
+    }
+  })
+
+  return {
+    component
+  }
+}

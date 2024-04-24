@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { CustomMarker } from 'vue3-google-map'
-const { isMobile } = storeToRefs(useApp())
 const { singles } = storeToRefs(useMarkers())
 const { zoom } = storeToRefs(useMap())
 const SingleMarkersDesktop = defineAsyncComponent(() => import('./SingleMarkersDesktop.vue'))

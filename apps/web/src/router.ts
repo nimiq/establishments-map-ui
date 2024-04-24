@@ -1,13 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { detectLanguage, setLanguage } from './i18n/i18n-setup'
 import MapView from '@/components/MapView.vue'
+// import { ModalName } from './components/Modal.vue'
 
-export enum ModalName {
-  CryptoMap = 'crypto-map',
-  Report = 'report',
-  FAQ = 'faq',
-  Candidate = 'candidate'
-}
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -30,12 +25,11 @@ export const router = createRouter({
     {
       path: '/@:lat(-?\\d+.?\\d+?),:lng(-?\\d+.?\\d+?),:zoom(\\d+)z',
       component: MapView,
-      name: 'coords',
+      name: 'coords'
     },
     {
       path: '/',
-      component: MapView,
-      name: 'map',
+      component: MapView
     },
 
     // There is no 404 page, so redirect to the map

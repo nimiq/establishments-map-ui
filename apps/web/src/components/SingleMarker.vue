@@ -3,7 +3,7 @@ import { Location } from 'types';
 
 defineProps<{ location: Location }>()
 const { selectedUuid } = storeToRefs(useLocations())
-const { fillMarker, showLocationName } = storeToRefs(useMap())
+const { fillMarker, showLocationName } = getMapUiState()
 </script>
 
 <template>
