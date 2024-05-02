@@ -3,7 +3,7 @@ import { getLocations as getDbLocations, getLocation } from 'database'
 import { addBBoxToArea, bBoxIsWithinArea, getItemsWithinBBox } from 'geo'
 import type { BoundingBox, Location } from 'types'
 import { useRouteQuery } from '@vueuse/router'
-import { parseLocation } from '@/shared'
+import { parseLocation, getAnonDatabaseArgs } from '@/shared'
 
 export const useLocations = defineStore('locations', () => {
   // Reduce redundant database fetches by reusing fetched locations by tracking the areas explored by the user

@@ -1,7 +1,6 @@
 import { Location } from 'types'
 import { searchLocations } from 'database'
 import { getAnonDatabaseArgs } from '@/shared'
-import { useRouteQuery } from '@vueuse/router'
 
 
 export enum Autocomplete {

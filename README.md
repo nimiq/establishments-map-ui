@@ -40,17 +40,6 @@ and running!
 2. Run `pnpm i`
 3. Run `pnpm dev` to run the app or run `pnpm story:dev` to run histoire
 
-## Project structure
-
-The project is structured in a monorepo:
-
-- [`src`](src): The vue app.
-- [`types`](types): Shared types across the project.
-- [`shared`](shared): Shared functions across the project.
-- [`database`](database): Functions to interact with the database.
-- [`bot`](bot): A slack bot to manage the database.
-- [`supabase`](supabase): Edge Functions in Supabase.
-
 ### Database
 
 The `app` only can make read operations to the database, all read operations can
@@ -145,6 +134,26 @@ is that the amount of combinations of filters is too big, and we cannot store
 all the possible combinations in the database. We could use some strategies to
 mitigate this issue, but the amount of lines of code involved is too big, and
 the performance gain is not worth it.
+
+## Embed the map in an iframe
+
+You can embed the map in an iframe with the following code:
+
+```html
+<iframe src="https://map.nimiq.com/" width="100%" height="600" frameborder="0" style="border:0" allowfullscreen></iframe>
+```
+
+You can customize the app with some query parameters:
+
+| Parameter    | Description          | Example                                     | Comments                                                                           |
+| ------------ | -------------------- | ------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Map position | Position of the map  | `https://map.nimiq.com/@{lat},{lng},{zoom}` |
+| uuid         | UUID of the location | `https://map.nimiq.com/?uuid={uuid}`        | Don't use it with Map position if you don't know the coordinates of the location   |
+| Language     | Language of the app  | `https://map.nimiq.com/?lang={language}`    | Check [supported languages`](./apps/web/src/i18n/i18n-setup.ts)                    |
+| Layout       | Layout of the app    | `https://map.nimiq.com/?layout={layout}`    | Check [supported layouts](./apps/web/src/composables/useUI.ts)                     |
+| Modal        | Modal to show        | `https://map.nimiq.com/?modal={modal}`      | Check [supported modals](./apps/web/src/components/Modal.vue)                      |
+| Nested Modal | Nest modal to show   | `https://map.nimiq.com/?nested={nested}`    | Check [supported modals](./apps/web/src/components/Modal.vue). Use it with `modal` |
+| Search       | Search to show       | `https://map.nimiq.com/?search={search}`    |                                                                                    |
 
 ## 🏗️ Stack
 

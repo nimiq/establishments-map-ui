@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Currency, type Location } from 'types'
+import type { Location } from 'types'
 
 const props = defineProps<{ location: Location, progress: number }>()
 
@@ -12,29 +12,17 @@ const accepts = computed(() => props.location.accepts)
 const sells = computed(() => props.location.sells)
 const acceptToDisplay = computed(() => accepts.value.length <= max ? accepts.value : accepts.value.slice(0, max))
 const sellToDisplay = computed(() => sells.value.length <= max ? sells.value : sells.value.slice(0, max))
-
-const [DefineCryptoList, ReuseCryptoList] = createReusableTemplate<{ cryptosToDisplay: Currency[], n: number }>()
 </script>
 
 <template>
-  <DefineCryptoList v-slot="{ cryptosToDisplay, n }">
-    <ul v-if="cryptosToDisplay.length > 0" flex="~ items-center gap-x-8" p-4 bg-neutral-0 rounded-full w-max
-      ring-neutral-100 absolute bottom-0 z-20 translate-y="1/2">
-      <li v-for="c in cryptosToDisplay " :key="c">
-        <div text-24 :class="getCurrencyIcon(c)" :title="c" />
-      </li>
-      <li v-if="n > 0" pr-4 text="14 neutral-700">
-        +{{ n }}
-      </li>
-    </ul>
-  </DefineCryptoList>
-
-  <div relative rounded-12 duration="$duration,0" desktop:max-w-352 w-full group h-full select-none :class="{
-    'rounded-b-0': progress === 1 && isMobile,
+  <div relative rounded-t-12 duration="$duration,0" desktop:max-w-352 w-full group h-full select-none :class="{
     'of-hidden': isMobile,
     'select-auto': progress === 1 || !isMobile,
-  }" :style="`background: ${location.isAtm ? location.bg[0] : 'rgb(var(--nq-neutral-0,0))'}`" animate-fade-in
-    animate-duration-100>
+  }" :style="{
+    background: location.isAtm ? location.bg[0] : 'rgb(var(--nq-neutral-0,0))',
+    'border-bottom-left-radius': isMobile ? `calc((1 - ${progress}) * 12px)` : '12px',
+    'border-bottom-right-radius': isMobile ? `calc((1 - ${progress}) * 12px)` : '12px',
+  }" animate-fade-in animate-duration-100>
     <LocationCardBg v-if="location.isAtm" :location="location" />
 
     <div v-if="location.photo && progress > 0" pt-6 px-5 transition-height duration="[--duration]"
@@ -45,7 +33,7 @@ const [DefineCryptoList, ReuseCryptoList] = createReusableTemplate<{ cryptosToDi
         @load="($event.target as HTMLImageElement).classList.remove('animate-pulse')">
     </div>
 
-    <div relative px-24 pt-20 pb-32>
+    <div relative px-24 py-20 space-y-20>
       <BasicInfoLocation :location="location" :progress="progress" />
       <LocationCardDotsMenu v-if="progress === 1" :location absolute top-20 right-4 />
 
@@ -53,26 +41,33 @@ const [DefineCryptoList, ReuseCryptoList] = createReusableTemplate<{ cryptosToDi
         enter-from-class="transform translate-y-3 opacity-0" enter-to-class="transform translate-y-0 opacity-100"
         leave-active-class="transition duration-75 ease-out" leave-from-class="transform opacity-100"
         leave-to-class="transform translate-y-3 opacity-0">
-        <div
-          v-if="progress > 0.5 && location.accepts.length && location.sells.length && !arrayEquals(location.accepts, location.sells)"
-          grid="~ flow-col cols-[auto,auto] rows-[auto,1fr] gap-x-8 gap-y-4" w-max h-max relative z-20>
-          <h5 text="12 neutral-700">
-            {{ $t('Buy') }}
-          </h5>
-          <ReuseCryptoList :cryptosToDisplay="sellToDisplay" :n="location.sells.length - sellToDisplay.length" />
-          <h5 class="text-12 text-white/60">
-            {{ $t('Sell') }}
-          </h5>
-          <ReuseCryptoList :cryptosToDisplay="acceptToDisplay" :n="location.accepts.length - acceptToDisplay.length" />
-        </div>
-        <ReuseCryptoList v-else :cryptosToDisplay="acceptToDisplay"
-          :n="location.accepts.length - acceptToDisplay.length" />
+        <template
+          v-if="progress > 0.5 && location.accepts.length && location.sells.length && !arrayEquals(location.accepts, location.sells)">
+          <div
+            class="grid grid-flow-col grid-cols-[auto,auto] grid-rows-[auto,1fr] gap-y-1 gap-x-2 w-max h-max relative z-20">
+            <h5 class="text-xs text-white/60">
+              {{ $t('Buy') }}
+            </h5>
+            <CryptoList :cryptos-to-display="location.sells" :n="location.sells.length - sellToDisplay.length" />
+            <h5 class="text-xs text-white/60">
+              {{ $t('Sell') }}
+            </h5>
+            <CryptoList :cryptos-to-display="location.accepts" :n="location.accepts.length - acceptToDisplay.length" />
+          </div>
+        </template>
+        <template v-else>
+          <CryptoList :cryptos-to-display="[...new Set(location.accepts.concat(location.sells))]" relative z-20
+            :n="location.accepts.length - acceptToDisplay.length" />
+        </template>
       </transition>
     </div>
 
     <LocationExternalUrl :location v-if="!location.photo && location.url && progress > 0.5" absolute top-16 right-16 />
-    <Banner v-if="progress > 0 && location.banner !== 'None'" :location="location" :is-atm="location.isAtm" absolute
-      max-desktop:w-screen :class="{ 'rounded-b-12': progress < 1 || !isMobile }" :style="{
+
+    <!-- TODO Shadow mobile lsit -->
+
+    <Banner v-if="progress > 0 && location.banner !== 'None'" :location absolute max-desktop:w-screen mt--36
+      :class="{ 'rounded-b-12': !isMobile }" :style="{
         backgroundColor: !location.isAtm ? location.bg[0] : 'transparent',
         opacity: progress / 0.8,
         bottom: `-${(1 - progress) * 70}px`, // the height is 54, we add 16px to delay the animation

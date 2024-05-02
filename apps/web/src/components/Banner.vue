@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Location } from 'types'
 
-defineProps<{ location: Location, isAtm: boolean }>()
+defineProps<{ location: Location }>()
 
 // For the banner Nimiq Pay, the label should be Nimiq Pay
 function handleProviderPlaceholder({ banner, provider }: Location) {

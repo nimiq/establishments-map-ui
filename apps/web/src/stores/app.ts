@@ -1,6 +1,8 @@
 import { getTimestamps } from 'database'
 import type { AnyUserReadDbFunction, Returns } from 'types'
 import { DATABASE_ARGS } from '@/shared'
+import { useRouteQuery } from '@vueuse/router'
+import { setLanguage } from '@/i18n/i18n-setup'
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -9,6 +11,9 @@ export const useApp = defineStore('app', () => {
   const isListShown = ref(false)
   const mapLoaded = ref(false)
 
+  // Allow to change the language from the URI. Useful for iframe embeds
+  const lang = useRouteQuery<string>('lang')
+  watch(lang, setLanguage, { immediate: true })
 
   const route = useRoute()
 
