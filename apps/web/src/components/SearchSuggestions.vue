@@ -1,33 +1,6 @@
 <script setup lang="ts">
-import { AutocompleteStatus, GoogleSuggestion, LocationSuggestion, PredictionSubstring } from '@/composables/useAutocomplete';
-
+import { AutocompleteStatus, GoogleSuggestion, LocationSuggestion } from '@/composables/useAutocomplete';
 defineProps<{ status: AutocompleteStatus, googleSuggestions: GoogleSuggestion[], locationSuggestions: LocationSuggestion[] }>()
-
-function highlightMatches(str: string, matches: PredictionSubstring[]) {
-  // Split into unicode chars because match positions in google.maps.places.AutocompletePrediction["matched_substrings"]
-  // are based on unicode chars, as opposed to surrogate pairs of Javascript strings for Unicode chars on astral planes
-  // (see https://mathiasbynens.be/notes/javascript-unicode)
-  const parts = [...str]
-
-  // Sanitize potential html in input string to mitigate risk of XSS because the result will be fed to v-html. Note that
-  // this manipulation does not change indices/positions of our string parts (initial unicode characters).
-  for (let i = 0; i < parts.length; ++i) {
-    if (parts[i] === '<')
-      parts[i] = '&lt;'
-    else if (parts[i] === '>')
-      parts[i] = '&gt;'
-  }
-
-  // Make matches bold. Note that our manipulations do not change indices/positions of our string parts (initial unicode
-  // characters), thus we don't have to adapt match offsets of subsequent matches. Additionally, matches are probably
-  // not overlapping, but it would also not hurt.
-  for (const match of matches || []) {
-    parts[match.offset] = `<b>${parts[match.offset]}`
-    parts[match.offset + match.length - 1] = `${parts[match.offset + match.length - 1]}</b>`
-  }
-
-  return parts.join('')
-}
 </script>
 
 <template>

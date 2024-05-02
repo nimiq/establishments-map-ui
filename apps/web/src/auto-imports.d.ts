@@ -58,6 +58,7 @@ declare global {
   const getLayout: typeof import('./composables/useUI')['getLayout']
   const getMapUiState: typeof import('./composables/useUI')['getMapUiState']
   const h: typeof import('vue')['h']
+  const highlightMatches: typeof import('./composables/useAutocomplete')['highlightMatches']
   const i18n: typeof import('./i18n/i18n-setup')['i18n']
   const i18nRegistration: typeof import('./i18n/i18n-setup')['i18nRegistration']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
@@ -400,6 +401,7 @@ declare module 'vue' {
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getMapUiState: UnwrapRef<typeof import('./composables/useUI')['getMapUiState']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
+    readonly highlightMatches: UnwrapRef<typeof import('./composables/useAutocomplete')['highlightMatches']>
     readonly i18n: UnwrapRef<typeof import('./i18n/i18n-setup')['i18n']>
     readonly i18nRegistration: UnwrapRef<typeof import('./i18n/i18n-setup')['i18nRegistration']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
@@ -722,6 +724,7 @@ declare module '@vue/runtime-core' {
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getMapUiState: UnwrapRef<typeof import('./composables/useUI')['getMapUiState']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
+    readonly highlightMatches: UnwrapRef<typeof import('./composables/useAutocomplete')['highlightMatches']>
     readonly i18n: UnwrapRef<typeof import('./i18n/i18n-setup')['i18n']>
     readonly i18nRegistration: UnwrapRef<typeof import('./i18n/i18n-setup')['i18nRegistration']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>

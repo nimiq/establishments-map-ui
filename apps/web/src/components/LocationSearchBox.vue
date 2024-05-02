@@ -1,16 +1,15 @@
-<script setup lang="ts" generic="T extends AcceptableValue">
-import type { AcceptableValue } from 'radix-vue/dist/shared/types';
-defineProps<{ displayValue: (value: T) => string }>()
-const { q, status, googleSuggestions, highlightMatches } = useAutocomplete({ autocomplete: [Autocomplete.GoogleBussines] })
-const selected = defineModel<T>('selected')
+<script setup lang="ts">
+import { GoogleSuggestion } from '@/composables/useAutocomplete';
+
+const { query, status, googleSuggestions } = useAutocomplete({ autocomplete: [Autocomplete.GoogleBussines] })
+const selected = defineModel<GoogleSuggestion>('selected')
 </script>
 
 <template>
-  <ComboboxRoot v-model:searchTerm="q" v-model="selected" relative>
+  <ComboboxRoot v-model="selected" relative :display-value="v => v.label" @update:search-term="q => query = q">
     <ComboboxAnchor flex="~ items-center justify-between" relative>
-      <ComboboxInput :placeholder="$t('Search Map')" input-box rounded-6 text-14 peer pr-28
-        :value="selected && displayValue(selected)" />
-      <div v-if="q === ''" i-nimiq:magnifying-glass absolute right-8 text="14 neutral-600 peer-focus-visible:blue" />
+      <ComboboxInput :placeholder="$t('Search Map')" input-box rounded-6 text-14 peer pr-28 />
+      <div v-if="!query" i-nimiq:magnifying-glass absolute right-8 text="14 neutral-600 peer-focus-visible:blue" />
       <ComboboxCancel v-else i-nimiq:cross absolute right-8 text="10 neutral-700 peer-focus-visible:blue/80" />
     </ComboboxAnchor>
 

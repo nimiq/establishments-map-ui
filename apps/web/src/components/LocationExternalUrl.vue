@@ -5,8 +5,8 @@ defineProps<{ location: Location }>()
 </script>
 <template>
   <transition name="scale">
-    <a v-if="location.linkTo" :href="location.url" pill-tertiary arrow bg-neutral-0 px-8 py-6 un-text="15 neutral-800"
-      after:ml-3 target="_blank" rel="noopener noreferrer">
+    <a v-if="location.linkTo" :href="location.url" pill-tertiary arrow after:text-13 after:ml-3 bg-neutral-0 px-8 py-5
+      un-text="14 neutral-800" target="_blank" rel="noopener noreferrer">
       <div v-if="location.linkTo === LocationLink.GMaps" i-logos:google-maps />
       <div v-if="location.linkTo === LocationLink.Facebook" i-logos:facebook />
       <div v-if="location.linkTo === LocationLink.Instagram" i-nimiq:logos-instagram />

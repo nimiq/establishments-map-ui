@@ -31,7 +31,8 @@ function handleProviderPlaceholder({ banner, provider }: Location) {
             :side-offset="4" :collision-padding="8" :side="isMobile ? 'top' : 'right'">
             <div>
               <header flex="~ items-center justify-start gap-8">
-                <BannerCircleLogo :banner="location.banner" />
+                <div :class="getBannerIcon(location.banner)" text-24 />
+
                 <h4 font-semibold truncate text-16 text-neutral-400 lh-20>
                   {{ handleProviderPlaceholder(location) }}
                 </h4>

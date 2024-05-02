@@ -1,17 +1,7 @@
 <script setup lang="ts">
 import type { Location } from 'types'
 
-const props = defineProps<{ location: Location, progress: number }>()
-
-function arrayEquals(arrA: string[], arrB: string[]): boolean {
-  return arrA.length === arrB.length && arrA.every((value, index) => value === arrB[index])
-}
-
-const max = 3 // Max number of cryptos to display. If more, display a "+n" at the end
-const accepts = computed(() => props.location.accepts)
-const sells = computed(() => props.location.sells)
-const acceptToDisplay = computed(() => accepts.value.length <= max ? accepts.value : accepts.value.slice(0, max))
-const sellToDisplay = computed(() => sells.value.length <= max ? sells.value : sells.value.slice(0, max))
+defineProps<{ location: Location, progress: number }>()
 </script>
 
 <template>
@@ -34,37 +24,12 @@ const sellToDisplay = computed(() => sells.value.length <= max ? sells.value : s
     </div>
 
     <div relative px-24 py-20 space-y-20>
-      <BasicInfoLocation :location="location" :progress="progress" />
+      <BasicInfoLocation :location :progress />
       <LocationCardDotsMenu v-if="progress === 1" :location absolute top-20 right-4 />
-
-      <transition enter-active-class="transition duration-100 ease-out"
-        enter-from-class="transform translate-y-3 opacity-0" enter-to-class="transform translate-y-0 opacity-100"
-        leave-active-class="transition duration-75 ease-out" leave-from-class="transform opacity-100"
-        leave-to-class="transform translate-y-3 opacity-0">
-        <template
-          v-if="progress > 0.5 && location.accepts.length && location.sells.length && !arrayEquals(location.accepts, location.sells)">
-          <div
-            class="grid grid-flow-col grid-cols-[auto,auto] grid-rows-[auto,1fr] gap-y-1 gap-x-2 w-max h-max relative z-20">
-            <h5 class="text-xs text-white/60">
-              {{ $t('Buy') }}
-            </h5>
-            <CryptoList :cryptos-to-display="location.sells" :n="location.sells.length - sellToDisplay.length" />
-            <h5 class="text-xs text-white/60">
-              {{ $t('Sell') }}
-            </h5>
-            <CryptoList :cryptos-to-display="location.accepts" :n="location.accepts.length - acceptToDisplay.length" />
-          </div>
-        </template>
-        <template v-else>
-          <CryptoList :cryptos-to-display="[...new Set(location.accepts.concat(location.sells))]" relative z-20
-            :n="location.accepts.length - acceptToDisplay.length" />
-        </template>
-      </transition>
+      <CryptoList :location :progress />
     </div>
 
     <LocationExternalUrl :location v-if="!location.photo && location.url && progress > 0.5" absolute top-16 right-16 />
-
-    <!-- TODO Shadow mobile lsit -->
 
     <Banner v-if="progress > 0 && location.banner !== 'None'" :location absolute max-desktop:w-screen mt--36
       :class="{ 'rounded-b-12': !isMobile }" :style="{

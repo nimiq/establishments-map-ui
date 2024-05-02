@@ -51,11 +51,11 @@ const initialOpen = useRoute().query['modal'] === 'report'
 
           <ReportLocation :location>
             <template #trigger>
-              <DropdownMenuItem as="button" flex="~ items-center" px-14 py-8 text-red-1100 cursor-pointer w-full
+              <DropdownMenuItem as="button" flex="~ items-center" px-14 py-8 text-red cursor-pointer w-full
                 bg="hocus:red/20" rounded-2 animate-fade-in animate-duration-100 animate-delay-200 animate-both
                 @select.prevent>
                 <div i-nimiq:flag text-16 mr-12 />
-                <span text-16 font-semibold>{{ $t('Report') }}</span>
+                <span font-bold>{{ $t('Report') }}</span>
               </DropdownMenuItem>
             </template>
           </ReportLocation>

@@ -11,7 +11,7 @@ const selected = defineModel<T>('selected')
       <div aria-hidden i-nimiq:chevron-down ml-auto text="12 neutral-600" />
     </SelectTrigger>
     <SelectPortal>
-      <SelectContent position="popper" bg-gradient-neutral relative z-101
+      <SelectContent position="popper" bg-gradient-neutral relative z-500
         w="[calc(var(--radix-select-trigger-width)+3px)]" ml--1.5 inset-0 rounded-6 shadow text-neutral-200
         ring="1.5 neutral-500/6">
         <SelectViewport py-8>

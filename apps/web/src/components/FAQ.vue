@@ -5,15 +5,15 @@ withDefaults(defineProps<{ nested?: boolean }>(), { nested: false })
 
 const items = [
   {
-    title: 'Where the data comes from?',
+    title: 'How this data got here?',
     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc ultricies ultricies. Nullam nec purus nec nunc ultricies ultricies.'
   },
   {
-    title: 'How to report an issue?',
+    title: 'Can I a bussiness into the map?',
     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc ultricies ultricies. Nullam nec purus nec nunc ultricies ultricies.'
   },
   {
-    title: 'How to find a location?',
+    title: 'Something is wrong, how can I report it?',
     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc ultricies ultricies. Nullam nec purus nec nunc ultricies ultricies.'
   }
 ].map(({ title, content }, i) => ({ title, content, value: `q-${i}` }))

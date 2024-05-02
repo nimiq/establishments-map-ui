@@ -20,7 +20,7 @@ export function useForm({ url, body }: UseFormOptions) {
   const state = ref<FormState>(FormState.Initial)
   const disabled = computed(() => Object.values(body.value).some(isEmpty))
 
-  async function onSubmit() {
+  async function submit() {
     if (disabled.value)
       return
 
@@ -36,22 +36,12 @@ export function useForm({ url, body }: UseFormOptions) {
     state.value = FormState.Initial
   }
 
-  useInterval(5000, {
-    callback: () => {
-      // loop over states
-      const states = [FormState.Loading, FormState.Success]
-      const currentStateIndex = states.indexOf(state.value)
-      const nextStateIndex = currentStateIndex + 1
-      const nextState = states[nextStateIndex] || FormState.Initial
-      state.value = nextState
-    }
-  })
-
   return {
     state,
     disabled,
-    onSubmit,
+    submit,
     reset,
+    isSubmitted: computed(() => state.value !== FormState.Initial && state.value !== FormState.Loading),
     isSuccess: computed(() => state.value === FormState.Success),
     isError: computed(() => state.value === FormState.Error),
   }

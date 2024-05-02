@@ -15,7 +15,7 @@ const query = ref('')
       </ComboboxTrigger>
     </ComboboxAnchor>
     <ComboboxPortal>
-      <ComboboxContent position="popper" bg-gradient-neutral relative z-101
+      <ComboboxContent position="popper" bg-gradient-neutral relative z-300
         w="[calc(var(--radix-combobox-trigger-width)+3px)]" ml--1.5 inset-0 rounded-6 shadow text-neutral-200
         ring="1.5 neutral-500/6" max-h-280 of-auto>
         <ComboboxViewport py-8>
