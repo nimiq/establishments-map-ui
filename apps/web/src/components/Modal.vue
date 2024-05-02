@@ -30,12 +30,12 @@ onUnmounted(() => query.value = undefined)
     </DialogTrigger>
     <DialogPortal>
       <Transition name="backdrop">
-        <DialogOverlay v-if="!nested" bg-darkblue op-60 fixed inset-0 z-20 />
+        <DialogOverlay v-if="!nested" bg-darkblue op-60 fixed inset-0 z-200 />
       </Transition>
       <Transition :name="nested ? 'nested' : 'modal'">
-        <DialogContent :key="name" fixed bottom-0 desktop="top-1/2 left-1/2 translate--1/2" op-100 h-max max-h-85dvh
-          w-full max-w-512 py-32 z-20 of-y-auto ring="1.5 neutral-50" shadow-lg bg-neutral-0 rounded="t-8 desktop:8"
-          outline-none data-modal :data-nested="nested ? '' : undefined" @openAutoFocus.prevent>
+        <DialogContent :key="name" fixed bottom-0 transform desktop="top-1/2 left-1/2 translate--1/2" op-100 h-max
+          max-h-85dvh w-full desktop:max-w-512 py-32 z-200 of-y-auto ring="1.5 neutral-50" shadow-lg bg-neutral-0
+          rounded="t-8 desktop:8" outline-none data-modal :data-nested="nested ? '' : undefined" @openAutoFocus.prevent>
           <DialogTitle px-24 desktop:px-40 mb-8 text-18 font-bold text-neutral lh-none as="h2">
             <slot name="title" />
           </DialogTitle>
@@ -70,23 +70,43 @@ onUnmounted(() => query.value = undefined)
   opacity: 0;
 }
 
-.modal-enter-active,
-.modal-leave-active {
-  transition:
-    opacity 250ms cubic-bezier(.4, 0, .2, 1),
-    transform 100ms ease-in !important;
+
+@screen lt-desktop {
+
+  .modal-enter-active,
+  .modal-leave-active {
+    transition: transform 200ms ease-out;
+  }
+
+  .modal-enter-from,
+  .modal-leave-to {
+    --un-translate-y: 100%;
+  }
 }
 
-.modal-enter-from,
-.modal-leave-to {
-  opacity: 0;
-  --un-scale-x: 0.96;
-  --un-scale-y: 0.96;
-  --un-translate-y: calc(-50% - 0.5rem);
+@screen desktop {
+
+  .modal-enter-active,
+  .modal-leave-active {
+    transition:
+      opacity 250ms cubic-bezier(.4, 0, .2, 1),
+      transform 100ms var(--nq-ease);
+  }
+
+  .modal-enter-from,
+  .modal-leave-to {
+    opacity: 0;
+    --un-scale-x: 0.96;
+    --un-scale-y: 0.96;
+    --un-translate-y: calc(-50% - 0.5rem);
+  }
 }
 
-/* Radix will set all the modals in the root of the body. So we check if a sibling contains [data-nested] */
-[data-modal] {
+/*
+Radix will set all the modals in the root of the body. So we check if a sibling contains [data-nested]
+Only apply when the Vue Transition classes are not applied
+*/
+[data-modal]:not([data-nested]):not([class*="modal-"]) {
   transition:
     transform 400ms ease-out,
     filter 450ms cubic-bezier(.3, 0, 0, 1);
@@ -98,16 +118,34 @@ onUnmounted(() => query.value = undefined)
   }
 }
 
-.nested-enter-active {
-  transition: transform 650ms cubic-bezier(.3, 1, 0.2, 1);
+@screen desktop {
+  .nested-enter-active {
+    transition: transform 650ms cubic-bezier(.3, 1, 0.2, 1);
+  }
+
+  .nested-leave-active {
+    transition: transform 450ms cubic-bezier(0.3, 0, 0, 1);
+  }
+
+  .nested-enter-from,
+  .nested-leave-to {
+    --un-translate-y: calc(-1.1 * (100vh / 2) - 100%);
+  }
 }
 
-.nested-leave-active {
-  transition: transform 450ms cubic-bezier(0.3, 0, 0, 1);
-}
+@screen lt-desktop {
 
-.nested-enter-from,
-.nested-leave-to {
-  --un-translate-y: calc(-1.1 * (100vh / 2) - 100%);
+  .nested-enter-active {
+    transition: transform 350ms cubic-bezier(.3, 1, 0.2, 1);
+  }
+
+  .nested-leave-active {
+    transition: transform 250ms cubic-bezier(0.3, 0, 0, 1);
+  }
+
+  .nested-enter-from,
+  .nested-leave-to {
+    --un-translate-y: 100%;
+  }
 }
 </style>
