@@ -5,16 +5,23 @@ withDefaults(defineProps<{ nested?: boolean }>(), { nested: false })
 
 const items = [
   {
-    title: 'How this data got here?',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc ultricies ultricies. Nullam nec purus nec nunc ultricies ultricies.'
+    title: 'How is this data collected?',
+    content: 'Our data is automatically collected from a variety of sources and then processed to match locations using the Google Maps Place API. While we strive for accuracy, please note that due to the automated nature of data collection, the information may not always be completely accurate.'
   },
   {
-    title: 'Can I a bussiness into the map?',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc ultricies ultricies. Nullam nec purus nec nunc ultricies ultricies.'
+    title: 'How do I add a business to the map?',
+    content: 'If you know of a business that accepts cryptocurrency that should be on our map, you can submit using the "Gear" icon next to the search bar and then clicking "Add business". Our team will review your submission to ensure it meets our standards before adding it to the map.'
   },
   {
-    title: 'Something is wrong, how can I report it?',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc ultricies ultricies. Nullam nec purus nec nunc ultricies ultricies.'
+    title: 'I spotted an error. How can I report it?',
+    content: 'If you find any errors, such as a business that no longer accepts cryptocurrency or a location that no longer exists, please report it by opening the business information, then clicking on the options menu and then "Report". This will help us maintain accurate and trustworthy information for all users.'
+  },
+  {
+    title: 'Why is this page protected by reCAPTCHA?',
+    content: 'We use reCAPTCHA to protect our site from automated software and bots. This security measure helps us to ensure that interactions and submissions on our site are truly made by human users.'
+  }, {
+    title: 'What can I do if a location no longer accepts crypto?',
+    content: 'If you find that a listed location is no longer accepting cryptocurrency, please report it by opening the business information, then clicking on the options menu and then "Report". This will help us maintain accurate and trustworthy information for all users.'
   }
 ].map(({ title, content }, i) => ({ title, content, value: `q-${i}` }))
 

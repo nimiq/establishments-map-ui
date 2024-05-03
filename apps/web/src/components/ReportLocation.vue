@@ -65,7 +65,7 @@ const { disabled, submit, reset, isError, isSuccess, isSubmitted } = useForm({ u
             <div flex="~ gap-4 items-center" text="neutral-800 14" hocus:bg-neutral-200 transition-colors mx--6 px-6
               py-2 rounded-4>
               <div i-nimiq:help op-80 text-12 relative top--1 />
-              <p>{{ $t('How do we process the data?') }}</p>
+              <p>{{ $t('How is this data collected?') }}</p>
             </div>
           </template>
         </FAQ>

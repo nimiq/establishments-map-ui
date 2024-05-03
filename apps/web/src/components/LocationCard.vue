@@ -25,7 +25,7 @@ defineProps<{ location: Location, progress: number }>()
 
     <div relative px-24 py-20 space-y-20>
       <BasicInfoLocation :location :progress />
-      <LocationCardDotsMenu v-if="progress === 1" :location absolute top-20 right-4 />
+      <LocationCardDotsMenu v-if="progress === 1" :location absolute top-0 right-16 />
       <CryptoList :location :progress />
     </div>
 

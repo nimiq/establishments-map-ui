@@ -174,3 +174,11 @@ For the app:
   APIs, scalable PostgreSQL, and realtime subscriptions.
 - [Deno Slack SDK](https://github.com/slackapi/deno-slack-sdk) A Deno SDK for
   Slack's APIs.
+
+
+# TODO
+
+- [ ] Binance Pay
+- [ ] Tooltip in banner
+- [ ] Search desktop
+- [ ] Check all providers

@@ -14,7 +14,11 @@ const toggleList = useToggle(isListShown)
     <div absolute inset-0 shadow ring="1.5 neutral/3" pointer-events-none id="shadow"
       style="height: calc(66px + (88px * var(--search-box-hint)))" />
     <div w-max bg-neutral-0 id="wrapper">
-      <InteractionBar />
+      <InteractionBar>
+        <template #search>
+          <DesktopSearch />
+        </template>
+      </InteractionBar>
       <DesktopList :singles="singlesInView" :clusters="clustersInView" :list-is-shown="isListShown" />
     </div>
     <button mt-12 pill-tertiary border-none pill-sm ring="1.5 neutral/3" z-10 flex="~ gap-8"

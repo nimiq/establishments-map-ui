@@ -25,8 +25,8 @@ const { fillMarker, showLocationName } = getMapUiState()
     </div>
 
     <!-- Text -->
-    <span v-if="!location.isAtm && showLocationName" flex-1 class="text" relative transition-color
-      :data-outline="location.name">
+    <span v-if="!location.isAtm && showLocationName" class="text" :data-outline="location.name"
+      :class="{ invisible: !isMobile && location.uuid === selectedUuid }">
       {{ location.name }}
     </span>
   </div>
@@ -40,6 +40,15 @@ const { fillMarker, showLocationName } = getMapUiState()
 }
 
 .text {
-  --uno: text-16 text-left text-neutral group-data-[active]:text-blue group-hocus:text-blue-1100 font-bold lh-none select-none;
+  --uno: flex-1 relative select-none;
+  --uno: text-16 text-left text-neutral font-bold group-data-[active]:text-blue group-hocus:text-blue-1100 lh-none;
+  -webkit-text-stroke: 3px white;
+  transition: -webkit-text-stroke 0.3s, color 0.3s;
+
+  &::before {
+    content: attr(data-outline);
+    position: absolute;
+    -webkit-text-stroke: 0;
+  }
 }
 </style>

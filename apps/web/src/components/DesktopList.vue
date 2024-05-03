@@ -33,10 +33,11 @@ watch(selectedUuid, (uuid) => {
     :data-state="listIsShown ? 'open' : 'closed'">
     <template #default="{ item: location, active }">
       <DynamicScrollerItem :key="location.uuid" :item="location" :active="active">
-        <button w-full px-24 py-20 text-left bg="$bg-1 hocus:$bg-2" transition-colors :style="{
-          '--bg-1': location.isAtm && location.isDark ? location.bg[0] : 'rgb(var(--nq-neutral-0))',
-          '--bg-2': location.isAtm && location.isDark && location.bg[1] ? location.bg[1] : 'rgb(var(--nq-neutral-100))'
-        }" @click="useLocations().goToLocation(location.uuid, { open: true })">
+        <button w-full px-24 py-20 text-left bg="$bg-1 image-$bg-1 hocus:$bg-2 hocus:image-$bg-2" transition-colors
+          :style="{
+            '--bg-1': location.isAtm && location.isDark ? location.bg[0] : 'rgb(var(--nq-neutral-0))',
+            '--bg-2': location.isAtm && location.isDark && location.bg[1] ? location.bg[1] : 'rgb(var(--nq-neutral-100))'
+          }" @click="useLocations().goToLocation(location.uuid, { open: true })">
           <LocationCardBg v-if="location.isAtm" :location="location" :with-gradient="false" translate-y-1 />
           <BasicInfoLocation :location="location" />
         </button>

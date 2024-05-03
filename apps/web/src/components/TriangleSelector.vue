@@ -10,12 +10,17 @@ const options = computed(() => props.options.filter(option => option !== selecte
       <SelectValue flex="~ items-center gap-8" label text="14 neutral-900" as="div" />
     </SelectTrigger>
     <SelectPortal>
-      <SelectContent bg-gradient-neutral text-neutral-0 shadow rounded-6 bottom-0 drop-shadow relative side="bottom" position="item-aligned" py-6 animate-fade-in animate-duration-100 z-100 select>
+      <SelectContent bg-gradient-neutral text-neutral-0 shadow rounded-6 bottom-0 drop-shadow relative side="bottom"
+        position="item-aligned" py-6 animate-fade-in animate-duration-100 z-200 select>
         <SelectViewport>
-          <SelectItem v-for="option in options" :key="option" :value="option" px-12 py-4 cursor-pointer group outline="none hocus:none">
-            <SelectItemText label text="14 neutral-600/80 group-hocus:neutral-0" transition-colors flex="~ items-center justify-between gap-8">
+          <SelectItem v-for="option in options" :key="option" :value="option" px-12 py-4 cursor-pointer group
+            outline="none hocus:none">
+            <SelectItemText label text="14 neutral-600/80 group-hocus:neutral-0" transition-colors
+              flex="~ items-center justify-between gap-8">
               {{ option }}
-              <div aria-hidden i-nimiq:triangle-left text="7 r-select-closed:neutral-600 transparent group-hover:neutral-700" rotate="-90 r-select-hocus:0 r-select-open:0" duration-1000 group-hocus:scale-115 />
+              <div aria-hidden i-nimiq:triangle-left
+                text="7 r-select-closed:neutral-600 transparent group-hover:neutral-700"
+                rotate="-90 r-select-hocus:0 r-select-open:0" duration-1000 group-hocus:scale-115 />
             </SelectItemText>
           </SelectItem>
         </SelectViewport>

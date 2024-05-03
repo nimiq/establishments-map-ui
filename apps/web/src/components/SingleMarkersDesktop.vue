@@ -44,7 +44,6 @@ function handlePopoverOpen(isOpen: boolean, location: Location) {
   <CustomMarker v-for="location in singles" :key="location.uuid"
     :options="{ position: { lng: location.lng, lat: location.lat }, anchorPoint: showLocationName ? 'LEFT_CENTER' : 'CENTER' }"
     data-custom-marker>
-
     <PopoverRoot @update:open="(isOpen: boolean) => handlePopoverOpen(isOpen, location)">
       <PopoverAnchor absolute h-full w-28 pointer-events-none />
       <PopoverTrigger :aria-label="$t('See location details')" cursor-pointer :data-trigger-uuid="location.uuid">
@@ -53,7 +52,7 @@ function handlePopoverOpen(isOpen: boolean, location: Location) {
       <PopoverPortal :key="popoverKey">
         <Transition name="popover">
           <PopoverContent side="right" :side-offset="5" rounded-12 shadow :collision-padding="8" sticky="always"
-            @open-auto-focus.prevent>
+            @open-auto-focus.prevent ring="1.5 neutral/3">
             <LocationCard :location="location" :progress="1" />
             <PopoverArrow
               :style="{ color: location.isAtm ? extractColorFromBg(location.bg[0]) : 'rgb(var(--nq-neutral-0))' }"
