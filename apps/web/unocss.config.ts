@@ -1,9 +1,7 @@
 import { presetNimiq } from 'nimiq-css'
 import { defineConfig, presetAttributify, presetUno, presetIcons } from 'unocss'
 import { presetRemToPx } from '@unocss/preset-rem-to-px'
-import { Provider } from 'types'
 import transformerDirectives from '@unocss/transformer-directives'
-
 
 const reRadix = /^r-(\w+)-(open|closed):/
 const reRadixHocus = /^r-(\w+)-hocus:/

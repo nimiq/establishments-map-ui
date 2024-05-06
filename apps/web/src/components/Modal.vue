@@ -15,7 +15,7 @@ const emit = defineEmits<{ close: [] }>()
 
 // Keep state in the URL
 const query = useRouteQuery<ModalName | undefined>(props.nested ? 'nested' : 'modal')
-const open = defineModel('open')
+const open = defineModel<boolean>('open')
 open.value = query.value === props.name
 watch(open, v => {
   query.value = v ? props.name : undefined

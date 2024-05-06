@@ -35,15 +35,11 @@ msgstr ""
 msgid "Bluecode is a payment method that allows secure transactions directly through the smartphone."
 msgstr ""
 
-#: src/components/CryptoList.vue:21
-msgid "Buy"
-msgstr ""
-
-#: src/components/BasicInfoLocation.vue:20
+#: src/components/BasicInfoLocation.vue:21
 msgid "Buy & sell crypto"
 msgstr ""
 
-#: src/components/BasicInfoLocation.vue:23
+#: src/components/BasicInfoLocation.vue:24
 msgid "Buy crypto only"
 msgstr ""
 
@@ -104,12 +100,7 @@ msgstr ""
 msgid "Decrease zoom"
 msgstr ""
 
-#: src/components/TextAreaInput.vue:11
-#: src/components/TextAreaInput.vue:15
-msgid "Describe here"
-msgstr ""
-
-#: src/components/Banner.vue:44
+#: src/components/Banner.vue:45
 msgid "Download on App Store"
 msgstr ""
 
@@ -188,7 +179,7 @@ msgstr ""
 msgid "Kurant enables users to easily purchase cryptocurrencies through a network of ATMs."
 msgstr ""
 
-#: src/components/Banner.vue:38
+#: src/components/Banner.vue:39
 msgid "Learn more"
 msgstr ""
 
@@ -241,7 +232,7 @@ msgstr ""
 msgid "Oops, no businesses around here"
 msgstr ""
 
-#: src/components/MobileList.vue:38
+#: src/components/MobileList.vue:37
 msgid "Oops, no businesses around here."
 msgstr ""
 
@@ -253,7 +244,7 @@ msgstr ""
 msgid "Pay with {provider}"
 msgstr ""
 
-#: src/components/LocationCard.vue:16
+#: src/components/LocationCard.vue:17
 msgid "Picture of {name}"
 msgstr ""
 
@@ -273,7 +264,7 @@ msgstr ""
 msgid "Register with {provider}"
 msgstr ""
 
-#: src/components/LocationCardDotsMenu.vue:41
+#: src/components/LocationCardDotsMenu.vue:42
 msgid "Report"
 msgstr ""
 
@@ -316,15 +307,11 @@ msgstr ""
 msgid "Select issue"
 msgstr ""
 
-#: src/components/CryptoList.vue:25
-msgid "Sell"
-msgstr ""
-
-#: src/components/BasicInfoLocation.vue:22
+#: src/components/BasicInfoLocation.vue:23
 msgid "Sell crypto only"
 msgstr ""
 
-#: src/components/LocationCardDotsMenu.vue:16
+#: src/components/LocationCardDotsMenu.vue:17
 msgid "Share"
 msgstr ""
 
@@ -333,7 +320,7 @@ msgid "Shop"
 msgstr ""
 
 #: src/components/DesktopList.story.vue:13
-#: src/components/MobileList.vue:34
+#: src/components/MobileList.vue:33
 msgid "Show list"
 msgstr ""
 
@@ -412,6 +399,6 @@ msgstr ""
 msgid "You can add any location that has a Google Business Profile."
 msgstr ""
 
-#: src/components/MobileList.vue:38
+#: src/components/MobileList.vue:37
 msgid "Zoom in to see the list."
 msgstr ""

@@ -14,6 +14,7 @@ import poOptimizer from 'webpack-i18n-tools/optimizer/rollup'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
+// @ts-expect-error RadixVueResolver does currently not expose types
 import RadixVueResolver from 'radix-vue/resolver'
 
 
