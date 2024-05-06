@@ -54,8 +54,8 @@ importers:
         specifier: ^10.9.0
         version: 10.9.0(vue-router@4.3.0)(vue@3.4.21)
       nimiq-css:
-        specifier: ^0.0.86
-        version: 0.0.86(typescript@5.3.3)(unocss@0.59.2)(vite@5.2.8)
+        specifier: ^0.0.88
+        version: 0.0.88(typescript@5.3.3)(unocss@0.59.2)(vite@5.2.8)
       pinia:
         specifier: ^2.1.7
         version: 2.1.7(typescript@5.3.3)(vue@3.4.21)
@@ -8573,8 +8573,8 @@ packages:
     resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
     dev: true
 
-  /nimiq-css@0.0.86(typescript@5.3.3)(unocss@0.59.2)(vite@5.2.8):
-    resolution: {integrity: sha512-F+IB0mc/Kl6RFvu8Ae+GBkGEUwUBL+u2LxkVZzeQ1kNkXoYOx0TGulJD6s1BMVjTbome+ZHU/mVMXGGFjTZCdg==}
+  /nimiq-css@0.0.88(typescript@5.3.3)(unocss@0.59.2)(vite@5.2.8):
+    resolution: {integrity: sha512-CtRawvWl6elf96RgrgKvgDEtH3eFIN0rQ1Ddh0Lg0mXrsbBXP8cqPoAv8BYMxoM0QpQzDwTPdowASSGczKS54Q==}
     engines: {node: '>=14'}
     peerDependencies:
       typescript: ^5.0.0

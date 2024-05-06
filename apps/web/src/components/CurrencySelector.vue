@@ -2,7 +2,7 @@
 import { translateCurrency } from '@/translations'
 import { Currency } from 'types'
 const selected = defineModel<Currency[]>('selected')
-const options = Object.values(Currency)
+const options = Object.values(Currency).filter(c => c !== Currency.BINANCE_PAY)
 </script>
 
 <template>

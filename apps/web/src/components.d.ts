@@ -106,6 +106,11 @@ declare module 'vue' {
     TagsInputRoot: typeof import('radix-vue')['TagsInputRoot']
     TextAreaInput: typeof import('./components/TextAreaInput.vue')['default']
     TheMapInstance: typeof import('./components/TheMapInstance.vue')['default']
+    TooltipArrow: typeof import('radix-vue')['TooltipArrow']
+    TooltipContent: typeof import('radix-vue')['TooltipContent']
+    TooltipPortal: typeof import('radix-vue')['TooltipPortal']
+    TooltipRoot: typeof import('radix-vue')['TooltipRoot']
+    TooltipTrigger: typeof import('radix-vue')['TooltipTrigger']
     TriangleSelector: typeof import('./components/TriangleSelector.vue')['default']
     'TriangleSelector.story': typeof import('./components/TriangleSelector.story.vue')['default']
   }

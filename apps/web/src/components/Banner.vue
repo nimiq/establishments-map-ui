@@ -11,7 +11,7 @@ function handleProviderPlaceholder({ banner, provider }: Location) {
 </script>
 
 <template>
-  <footer class="relative flex items-center" :h="location.bannerLabel ? '64' : '36'">
+  <footer relative flex="~ items-center" :class="location.bannerLabel ? 'h-64' : 'h-36'">
     <LocationCardBg v-if="!location.isAtm && location.bannerLabel" :location="location" />
 
     <div v-if="location.bannerLabel" flex="~ items-center gap-8" pt-6 pl-24 pr-72 text-12>
@@ -27,11 +27,11 @@ function handleProviderPlaceholder({ banner, provider }: Location) {
           <div i-nimiq:info text="14 neutral-0/50 inverted:neutral/50" />
         </PopoverTrigger>
         <PopoverPortal>
-          <PopoverContent as-child max-w-320 p-16 text-neutral-0 rounded-6 shadow z-100 bg-gradient-neutral
-            :side-offset="4" :collision-padding="8" :side="isMobile ? 'top' : 'right'">
-            <div>
+          <PopoverContent as-child :side-offset="4" :collision-padding="8" :side="isMobile ? 'top' : 'right'">
+            <div max-w-320 p-16 text-neutral-0 rounded-6 shadow z-100 bg-gradient-neutral>
+
               <header flex="~ items-center justify-start gap-8">
-                <div :class="getBannerIcon(location.banner)" text-24 />
+                <div :class="getBannerIcon(location.banner)" text-24 shrink-0 />
 
                 <h4 font-semibold truncate text-16 text-neutral-400 lh-20>
                   {{ handleProviderPlaceholder(location) }}
@@ -60,12 +60,11 @@ function handleProviderPlaceholder({ banner, provider }: Location) {
                     i-nimiq:logos-download-google-play />
                 </div>
               </template>
-              <PopoverArrow data-arrow fill-neutral desktop:relative size="10" />
-
-              <PopoverArrow as-child>
-                <div w-16 h-8 i-nimiq:tooltip-triangle aria-hidden :style="`color: ${location.bg}`" />
-              </PopoverArrow>
             </div>
+
+            <PopoverArrow as-child>
+              <div w-16 h-8 i-nimiq:tooltip-triangle rotate-180 aria-hidden text-neutral />
+            </PopoverArrow>
           </PopoverContent>
         </PopoverPortal>
       </PopoverRoot>

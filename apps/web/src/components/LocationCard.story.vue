@@ -43,17 +43,14 @@ const progress = computed(() => {
         </select>
       </div>
 
-      <div v-if="progressState === 'custom'" class="flex flex-col px4 py4 gap-x-2">
+      <div v-if="progressState === 'custom'" class="flex flex-col px-4 py-4 gap-x-2">
         <label for="expanded">Custom Progress</label>
         <input id="customProgress" v-model="customProgress" name="customProgress" class="text-black" type="number">
       </div>
     </template>
 
     <Variant v-for="(l, i) in locations" :key="i" :title="l.provider" class="flex items-end h-full">
-      <LocationCard
-        :location="l" :progress="progressState === 'custom' ? customProgress : progress"
-        class="relative"
-      />
+      <LocationCard :location="l" :progress="progressState === 'custom' ? customProgress : progress" class="relative" />
     </Variant>
   </Story>
 </template>

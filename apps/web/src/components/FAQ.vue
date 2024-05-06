@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ModalName } from './Modal.vue';
 
-withDefaults(defineProps<{ nested?: boolean }>(), { nested: false })
+const props = withDefaults(defineProps<{ nested?: boolean, questions?: string[] }>(), { nested: false, questions: () => [] })
 
 const items = [
   {
@@ -23,13 +23,13 @@ const items = [
     title: 'What can I do if a location no longer accepts crypto?',
     content: 'If you find that a listed location is no longer accepting cryptocurrency, please report it by opening the business information, then clicking on the options menu and then "Report". This will help us maintain accurate and trustworthy information for all users.'
   }
-].map(({ title, content }, i) => ({ title, content, value: `q-${i}` }))
+].map(({ title, content }, i) => ({ title, content, value: `q-${i + 1}` }))
 
 // Keep state of the open questions in the URL
 const router = useRouter()
 const route = useRoute()
 const queryUrl: string | string[] = route.query.q || []
-const questionsOpen = ref<string[]>(Array.isArray(queryUrl) ? toValue(queryUrl) : [queryUrl])
+const questionsOpen = ref<string[]>(props.questions || (Array.isArray(queryUrl) ? toValue(queryUrl) : [queryUrl]))
 watch(questionsOpen, (v) => requestAnimationFrame(() => router.push({ query: { ...route.query, q: v.length > 0 ? v : undefined } })), { deep: true })
 onUnmounted(() => router.replace({ query: route.query, q: undefined }))
 </script>
@@ -45,23 +45,22 @@ onUnmounted(() => router.replace({ query: route.query, q: undefined }))
     <template #description>
       <i18n-t keypath="If you need more details, feel free to reach us on {telegram}" tag="p">
         <template #telegram>
-          <a href="https://t.me/nimiq" target="_blank" rel="noopener noreferrer" text-blue underline arrow>
-            Telegram
-          </a>
+          <a href="https://t.me/nimiq" target="_blank" rel="noopener noreferrer" text-blue underline arrow
+            text="Telegram" />
         </template>
       </i18n-t>
     </template>
     <template #content>
       <AccordionRoot v-model="questionsOpen" ml--16>
-        <AccordionItem v-for="{ content, title, value } in items" :key="value" :value mt="first:16 4">
-          <AccordionHeader>
-            <AccordionTrigger flex="~ gap-6 items-center" accordion>
+        <AccordionItem v-for="{ content, title, value } in items" :key="value" :value mt-16>
+          <AccordionHeader accordion>
+            <AccordionTrigger flex="~ gap-6 items-center" op="80 hocus:90 r-accordion-open:100" transition-opacity>
               <div i-nimiq:chevron-right text="10 neutral-700" r-accordion-open:rotate-90 delay-250 ease-out
                 duration-300 op="0 r-accordion-hocus:100 r-accordion-open:100" />
-              <h3 text-16>{{ title }}</h3>
+              <h3 text-16 lh-none>{{ title }}</h3>
             </AccordionTrigger>
           </AccordionHeader>
-          <AccordionContent of-hidden class="content" pl-16 text-14>
+          <AccordionContent of-hidden class="content" pl-16 pb-12 mt-4 text-14>
             <p>{{ content }}</p>
           </AccordionContent>
         </AccordionItem>

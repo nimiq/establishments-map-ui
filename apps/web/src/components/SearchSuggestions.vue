@@ -27,7 +27,7 @@ defineProps<{ status: AutocompleteStatus, googleSuggestions: GoogleSuggestion[],
 
         <ComboboxItem v-for="s in locationSuggestions" :key="s.uuid" :value="s" px-16 py-12 hocus:bg-neutral-100
           transition-colors cursor-pointer @click="() => useLocations().goToLocation(s.uuid, { open: true })">
-          <span class="block truncate" v-html="highlightMatches(s.name, s.matchedSubstrings)" />
+          <span block truncate v-html="highlightMatches(s.name, s.matchedSubstrings)" />
         </ComboboxItem>
       </ComboboxGroup>
       <ComboboxSeparator bg-neutral-100 h-2 my-12 />
@@ -39,7 +39,7 @@ defineProps<{ status: AutocompleteStatus, googleSuggestions: GoogleSuggestion[],
 
         <ComboboxItem v-for="s in googleSuggestions" :key="s.placeId" :value="s" px-16 py-12 hocus:bg-neutral-100
           transition-colors cursor-pointer @click="() => useMap().goToPlaceId(s.placeId)">
-          <span class="block truncate" v-html="highlightMatches(s.label, s.matchedSubstrings)" />
+          <span block truncate v-html="highlightMatches(s.label, s.matchedSubstrings)" />
         </ComboboxItem>
       </ComboboxGroup>
     </template>

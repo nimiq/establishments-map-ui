@@ -10,8 +10,9 @@ defineProps<{ location: Location, progress: number }>()
     'select-auto': progress === 1 || !isMobile,
   }" :style="{
     background: location.isAtm ? location.bg[0] : 'rgb(var(--nq-neutral-0,0))',
-    'border-bottom-left-radius': isMobile ? `calc((1 - ${progress}) * 12px)` : '12px',
-    'border-bottom-right-radius': isMobile ? `calc((1 - ${progress}) * 12px)` : '12px',
+    '--bottom-radius': isMobile ? `calc((1 - ${progress}) * 12px)` : '12px',
+    'border-bottom-left-radius': 'var(--bottom-radius)',
+    'border-bottom-right-radius': 'var(--bottom-radius)'
   }" animate-fade-in animate-duration-100>
     <LocationCardBg v-if="location.isAtm" :location="location" />
 
@@ -23,15 +24,15 @@ defineProps<{ location: Location, progress: number }>()
         @load="($event.target as HTMLImageElement).classList.remove('animate-pulse')">
     </div>
 
-    <div relative px-24 py-20 space-y-20>
+    <div relative px-24 py-20 space-y-20 :data-inverted="location.isDark && location.isAtm ? true : undefined">
       <BasicInfoLocation :location :progress />
       <LocationCardDotsMenu v-if="progress === 1" :location absolute top-0 right-16 />
       <CryptoList :location :progress />
     </div>
 
-    <LocationExternalUrl :location v-if="!location.photo && location.url && progress > 0.5" absolute top-16 right-16 />
+    <LocationExternalUrl :location v-if="location.photo && location.url && progress > 0.5" absolute top-16 right-16 />
 
-    <Banner v-if="progress > 0 && location.banner !== 'None'" :location absolute max-desktop:w-screen mt--36
+    <Banner v-if="progress > 0 && location.banner !== 'None'" :location absolute w-full mt--36
       :class="{ 'rounded-b-12': !isMobile }" :style="{
         backgroundColor: !location.isAtm ? location.bg[0] : 'transparent',
         opacity: progress / 0.8,

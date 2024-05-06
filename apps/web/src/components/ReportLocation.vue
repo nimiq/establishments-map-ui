@@ -60,7 +60,7 @@ const { disabled, submit, reset, isError, isSuccess, isSubmitted } = useForm({ u
           <LocationExternalUrl :location />
           <CryptoList :location />
         </div>
-        <FAQ nested>
+        <FAQ nested :questions="['q-1']">
           <template #trigger>
             <div flex="~ gap-4 items-center" text="neutral-800 14" hocus:bg-neutral-200 transition-colors mx--6 px-6
               py-2 rounded-4>
