@@ -30,8 +30,8 @@ export async function authenticateAnonUser({ apikey, url }: DatabaseArgs, captch
     throw new Error(response)
   }
   const data: { captcha_uuid: string } = await response.json()
-  if (!data || !data.captcha_uuid)
-    throw new Error('No captcha uuid found!')
+  // if (!data || !data.captcha_uuid)
+  //   throw new Error('No captcha uuid found!')
 
   /* eslint-disable no-console */
   console.group(`🔍 Database POST "${urlAuth.pathname.split('/').pop()}"`)
@@ -39,5 +39,5 @@ export async function authenticateAnonUser({ apikey, url }: DatabaseArgs, captch
   console.groupEnd()
   /* eslint-enable no-console */
 
-  return data.captcha_uuid
+  return data.captcha_uuid || ''
 }
