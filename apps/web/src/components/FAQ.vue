@@ -5,23 +5,20 @@ const props = withDefaults(defineProps<{ nested?: boolean, questions?: string[] 
 
 const items = [
   {
-    title: i18n.t('How is this data collected?'),
-    content: i18n.t('Our data is automatically collected from a variety of sources and then processed to match locations using the Google Maps Place API. While we strive for accuracy, please note that due to the automated nature of data collection, the information may not always be completely accurate.')
+    title: i18n.t('Data collection'),
+    content: i18n.t('Our data is gathered from various sources and processed to align with locations using the Google Maps Place API. Although we strive for accuracy, automated collection can sometimes result in errors.')
   },
   {
-    title: i18n.t('How do I add a business to the map?'),
-    content: i18n.t('If you know of a business that accepts cryptocurrency that should be on our map, you can submit using the "Gear" icon next to the search bar and then clicking "Add business". Our team will review your submission to ensure it meets our standards before adding it to the map.')
+    title: i18n.t('How to add a business'),
+    content: i18n.t('To add a business that accepts cryptocurrency to our map, click the "Gear" icon next to the search bar, then "Add business." We will review submissions to ensure compliance with our standards.')
   },
   {
-    title: i18n.t('I spotted an error. How can I report it?'),
-    content: i18n.t('If you find any errors, such as a business that no longer accepts cryptocurrency or a location that no longer exists, please report it by opening the business information, then clicking on the options menu and then "Report". This will help us maintain accurate and trustworthy information for all users.')
+    title: i18n.t('How to report errors'),
+    content: i18n.t('If you find any errors like e.g. a business that no longer accepts cryptocurrency or has changed locations, open the business information, select the options menu, and click "Report.')
   },
-  {
-    title: i18n.t('Why is this page protected by reCAPTCHA?'),
-    content: i18n.t('We use reCAPTCHA to protect our site from automated software and bots. This security measure helps us to ensure that interactions and submissions on our site are truly made by human users.')
-  }, {
-    title: i18n.t('What can I do if a location no longer accepts crypto?'),
-    content: i18n.t('If you find that a listed location is no longer accepting cryptocurrency, please report it by opening the business information, then clicking on the options menu and then "Report". This will help us maintain accurate and trustworthy information for all users.')
+ {
+    title: i18n.t('A business on the map does not accept crypto'),
+    content: i18n.t('If a business no longer accepts crypto, open the business information, go to the options menu, and click on "Report." This helps us keep our information accurate.')
   }
 ].map(({ title, content }, i) => ({ title, content, value: `q-${i + 1}` }))
 
