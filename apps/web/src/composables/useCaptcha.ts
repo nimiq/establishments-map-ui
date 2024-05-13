@@ -1,6 +1,4 @@
 import { authenticateAnonUser } from 'database'
-import { ref } from 'vue'
-import { useExpiringStorage } from '@/composables/useExpiringStorage'
 import { DATABASE_ARGS } from '@/shared'
 
 const CAPTCHA_TOKEN_VALIDITY = 10 * 60 * 1000 // 10 minutes for the captcha token

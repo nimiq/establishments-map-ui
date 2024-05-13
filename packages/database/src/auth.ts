@@ -21,7 +21,7 @@ export async function authenticateUser(dbArgs: DatabaseAuthenticateUserArgs | Da
   return { apikey, url, user: DatabaseUser.Authenticated, authToken: data.access_token }
 }
 
-export async function authenticateAnonUser({ apikey, url }: DatabaseArgs, captchaToken: string = "0000000000000000000"): Promise<string> {
+export async function authenticateAnonUser({ apikey, url }: DatabaseArgs, captchaToken: string = '0000000000000000000'): Promise<string> {
   const urlAuth = new URL(`${url}/rest/v1/rpc/${AnonWriteDbFunction.AuthAnonUser}`)
   const body = JSON.stringify({ g_token: captchaToken })
   const response = await fetch(urlAuth, { method: 'POST', headers: { apikey, 'Content-Type': 'application/json' }, body }).catch(error => `Error POST ${urlAuth.href}: ${error}`)

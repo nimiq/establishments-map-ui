@@ -11,7 +11,8 @@ watch(query, (newQuery, oldQuery) => {
 }, { once: true })
 
 function reset() {
-  if (query.value === '') return
+  if (query.value === '')
+    return
   query.value = ''
   open.value = false
 }
@@ -20,15 +21,21 @@ function reset() {
 <template>
   <Transition name="fade">
     <ComboboxRoot v-if="open" v-model:searchTerm="query" @update:model-value="reset">
-      <ComboboxAnchor flex="~ items-center justify-between" relative group border-b="1.5 neutral-500 focus-within:blue">
-        <ComboboxInput :placeholder="$t('Search Map')" order-2 auto-focus font-semibold input-box rounded-0 outline-none
-          shadow-none text-14 w-full py-16 pr-48 />
-        <ComboboxTrigger @click="open = false" :aria-label="$t('Go back')" arrow-back pl-16
-          text="16  neutral-700 group-focus-within:blue/80" />
-        <ComboboxCancel i-nimiq:cross absolute right-24 op-0 :class="query === '' ? 'op-0' : 'op-100'"
-          transition-opacity delay-500 text="10  neutral-700 group-focus-within:blue/80" />
+      <ComboboxAnchor flex="~ items-center justify-between" group relative border-b="1.5 neutral-500 focus-within:blue">
+        <ComboboxInput
+          :placeholder="$t('Search Map')"
+          auto-focus order-2 w-full rounded-0 py-16 pr-48 text-14 font-semibold shadow-none outline-none input-box
+        />
+        <ComboboxTrigger
+          :aria-label="$t('Go back')" pl-16 arrow-back text="16  neutral-700 group-focus-within:blue/80"
+          @click="open = false"
+        />
+        <ComboboxCancel
+          i-nimiq:cross absolute right-24 op-0 :class="query === '' ? 'op-0' : 'op-100'"
+          transition-opacity delay-500 text="10  neutral-700 group-focus-within:blue/80"
+        />
       </ComboboxAnchor>
-      <SearchSuggestions :status :googleSuggestions :locationSuggestions top-55 mt-16 />
+      <SearchSuggestions :status :google-suggestions :location-suggestions top-55 mt-16 />
     </ComboboxRoot>
   </Transition>
 </template>

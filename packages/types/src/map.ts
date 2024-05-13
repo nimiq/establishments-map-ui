@@ -1,5 +1,5 @@
 import type { Feature, MultiPolygon } from 'geojson'
-import type { Location } from './location.ts'
+import type { MapLocation } from './location.ts'
 import type { Cryptocity } from './cryptocity.ts'
 
 export interface BoundingBox {
@@ -47,7 +47,7 @@ export interface LocationClusterParams {
 
 export interface Markers {
   clusters: Cluster[]
-  singles: Location[]
+  singles: MapLocation[]
 }
 
 export interface MemoizedMarkers extends Markers {

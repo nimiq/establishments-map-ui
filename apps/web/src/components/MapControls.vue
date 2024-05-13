@@ -21,38 +21,47 @@ async function setBrowserPosition() {
 }
 
 function clearStorage() {
-  if (!import.meta.env.DEV) return
+  if (!import.meta.env.DEV)
+    return
   localStorage.clear()
-  document.cookie.split(';').forEach(function (c) {
-    document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/')
+  document.cookie.split(';').forEach((c) => {
+    document.cookie = c.replace(/^ +/, '').replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`)
   })
 }
 </script>
 
 <template>
   <div flex="~ col items-end gap-y-16">
-    <button size-32 shadow ring="1.5 neutral/3" rounded-full bg="neutral-0 hover:neutral-100" text-14
-      flex="~ items-center justify-center" v-if="browserPositionIsSupported" :disabled="geolocatingUserBrowser"
-      :aria-label="$t('Show your location')" :title="$t('Show your location')" @click="setBrowserPosition">
+    <button
+      v-if="browserPositionIsSupported" ring="1.5 neutral/3" bg="neutral-0 hover:neutral-100" size-32 rounded-full text-14
+      shadow flex="~ items-center justify-center" :disabled="geolocatingUserBrowser"
+      :aria-label="$t('Show your location')" :title="$t('Show your location')" @click="setBrowserPosition"
+    >
       <div i-nimiq:gps />
     </button>
 
-    <div flex="~ col" rounded-full shadow max-desktop:hidden w-32 ring="1.5 neutral/3" text-12>
-      <button size-32 rounded-t-full bg="neutral-0 hover:neutral-100" transition-colors
+    <div flex="~ col" ring="1.5 neutral/3" w-32 rounded-full text-12 shadow max-desktop:hidden>
+      <button
+        size-32 rounded-t-full bg="neutral-0 hover:neutral-100" transition-colors
         flex="~ justify-center items-center" :aria-label="$t('Increase zoom')" :title="$t('Increase zoom')"
-        @click="useMap().increaseZoom">
+        @click="useMap().increaseZoom"
+      >
         <div i-nimiq:plus />
       </button>
-      <hr self-stretch h-1 bg-neutral-100>
-      <button size-32 rounded-b-full bg="neutral-0 hover:neutral-100" transition-colors
+      <hr h-1 self-stretch bg-neutral-100>
+      <button
+        size-32 rounded-b-full bg="neutral-0 hover:neutral-100" transition-colors
         flex="~ justify-center items-center" :aria-label="$t('Decrease zoom')" :title="$t('Decrease zoom')"
-        @click="useMap().decreaseZoom">
+        @click="useMap().decreaseZoom"
+      >
         <div i-nimiq:minus />
       </button>
     </div>
 
-    <div v-if="isDev" class="absolute bottom-0 flex position right-48">
-      <button pill bg-gradient-red @click="clearStorage">Delete Storage</button>
+    <div v-if="isDev" class="position absolute bottom-0 right-48 flex">
+      <button bg-gradient-red pill @click="clearStorage">
+        Delete Storage
+      </button>
     </div>
   </div>
 </template>

@@ -7,7 +7,7 @@ import { locations } from '@/assets-dev/stories/locations'
   <Story title="Mobile List">
     <Variant title="Default">
       <div class="relative h-screen">
-        <img src="@/assets-dev/stories/map-new-york-square.png" alt="" class="object-cover h-full">
+        <img src="@/assets-dev/stories/map-new-york-square.png" alt="" class="h-full object-cover">
         <div class="absolute bottom-0 w-full">
           <MobileList :locations="Object.values(locations)" class="relative" />
         </div>

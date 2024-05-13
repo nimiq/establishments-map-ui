@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { GoogleSuggestion } from '@/composables/useAutocomplete';
-import { ModalName } from './Modal.vue';
-import { Currency } from 'types';
+import { ModalName } from './Modal.vue'
+import type { GoogleSuggestion } from '@/composables/useAutocomplete'
 
 const selectedPlace = ref<GoogleSuggestion>()
-const selectedCryptos = ref<Currency[]>([])
+const selectedCryptos = ref<typeof Currency[]>([])
 
 const open = ref(false)
 
@@ -25,8 +24,8 @@ const { disabled, state, submit, reset, isError, isSuccess, isSubmitted } = useF
     </template>
     <template #title>
       <div flex="~ gap-8 items-baseline" ml--6>
-        <div rounded-6 size-28 shrink-0 centered bg-neutral-400>
-          <div i-nimiq:landmark text-neutral text-14 />
+        <div centered size-28 shrink-0 rounded-6 bg-neutral-400>
+          <div i-nimiq:landmark text-14 text-neutral />
         </div>
         <template v-if="isSuccess">
           {{ $t('Thank you for submitting a new location to the Crypto Map!') }}
@@ -52,19 +51,23 @@ const { disabled, state, submit, reset, isError, isSuccess, isSubmitted } = useF
     </template>
     <template #content>
       <div v-if="!isSubmitted" mt-8 flex="~ col">
-        <a href="https://www.google.com/business/" target="_blank" rel="noopener noreferrer" arrow text-blue w-max
-          font-semibold>
+        <a
+          href="https://www.google.com/business/" target="_blank" rel="noopener noreferrer"
+          w-max text-blue font-semibold arrow
+        >
           {{ $t('Create Google Business profile') }}
         </a>
-        <form @submit.prevent="submit" mt-32>
-          <label for="name" text="14 neutral-900" font-200 mb-4 block>{{ $t('Find Location') }}</label>
+        <form mt-32 @submit.prevent="submit">
+          <label for="name" text="14 neutral-900" mb-4 block font-200>{{ $t('Find Location') }}</label>
           <LocationSearchBox v-model:selected="selectedPlace" />
 
-          <label for="name" text="14 neutral-900" font-200 mb-4 block mt-24>{{ $t('Select Cryptocurrency') }}</label>
+          <label for="name" text="14 neutral-900" mb-4 mt-24 block font-200>{{ $t('Select Cryptocurrency') }}</label>
           <CurrencySelector v-model:selected="selectedCryptos" />
 
           <div flex="~ gap-16 justify-end">
-            <DialogClose :aria-label="$t('Cancel')" pill-tertiary pill-sm>Cancel</DialogClose>
+            <DialogClose :aria-label="$t('Cancel')" pill-sm pill-tertiary>
+              Cancel
+            </DialogClose>
             <button type="submit" :disabled :loading="state === FormState.Loading" pill-sm pill-blue>
               {{ $t('Submit Location') }}
             </button>

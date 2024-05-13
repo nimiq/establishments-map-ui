@@ -17,7 +17,6 @@ import { VueRouterAutoImports } from 'unplugin-vue-router'
 // @ts-expect-error RadixVueResolver does currently not expose types
 import RadixVueResolver from 'radix-vue/resolver'
 
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -35,6 +34,15 @@ export default defineConfig({
         'pinia',
         '@vueuse/core',
         VueRouterAutoImports,
+        {
+          'vue3-google-maps': ['CustomMarker', 'GoogleMap'],
+          '@vueuse/router': ['useRouteQuery'],
+        },
+        {
+          from: 'types',
+          imports: ['MapLocation', 'Cluster', 'Cryptocity', 'CryptocityData', 'Currency', 'Provider'],
+          type: true,
+        },
       ],
       dts: 'src/auto-imports.d.ts',
       dirs: [
@@ -53,8 +61,8 @@ export default defineConfig({
       include: [/\.vue$/, /\.vue\?vue/],
       dts: 'src/components.d.ts',
       resolvers: [
-        RadixVueResolver()
-      ]
+        RadixVueResolver(),
+      ],
     }),
   ],
   resolve: {

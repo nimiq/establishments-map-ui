@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { CustomMarker } from 'vue3-google-map'
 const { singles } = storeToRefs(useMarkers())
 const { zoom } = storeToRefs(useMap())
 const SingleMarkersDesktop = defineAsyncComponent(() => import('./SingleMarkersDesktop.vue'))
@@ -7,8 +6,10 @@ const SingleMarkersDesktop = defineAsyncComponent(() => import('./SingleMarkersD
 
 <template>
   <SingleMarkersDesktop v-if="!isMobile" />
-  <CustomMarker v-else v-for="location in singles" :key="location.uuid"
-    :options="{ position: { lng: location.lng, lat: location.lat } }" data-custom-marker>
+  <CustomMarker
+    v-for="location in singles" v-else :key="location.uuid"
+    :options="{ position: { lng: location.lng, lat: location.lat } }" data-custom-marker
+  >
     <SingleMarker :location />
   </CustomMarker>
 
@@ -18,8 +19,9 @@ const SingleMarkersDesktop = defineAsyncComponent(() => import('./SingleMarkersD
   <template v-if="zoom > 15">
     <CustomMarker
       v-for="({ lat, lng, e }) in [{ lat: 10.455694, lng: -84.676981, e: '🦥' }, { lat: 19.260062, lng: 98.904358, e: '🐘' }, { lng: -73.528486, lat: 45.503334, e: '🦫' }]"
-      :key="e" :options="{ position: { lat, lng }, anchorPoint: 'CENTER' }">
-      <div centered text-24 p-8 rounded-full bg-neutral-0 shadow aspect-square>
+      :key="e" :options="{ position: { lat, lng }, anchorPoint: 'CENTER' }"
+    >
+      <div centered aspect-square rounded-full bg-neutral-0 p-8 text-24 shadow>
         {{ e }}
       </div>
     </CustomMarker>

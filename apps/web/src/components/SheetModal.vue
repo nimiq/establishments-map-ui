@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { TransitionPresets, useTransition } from '@vueuse/core'
+import { TransitionPresets } from '@vueuse/core'
 
 const props = defineProps<{ maxHeight: number, initialBorderRadius: number, initialGapToScreen: number }>()
 
-const progress = defineModel<number>('progress', {default:0})
+const emit = defineEmits({ closeList: () => true })
 
-const emit = defineEmits({ 'closeList': () => true })
+const progress = defineModel<number>('progress', { default: 0 })
 
 const containerHeight = ref(0)
 const initialHeight = computed(() => containerHeight.value)
@@ -168,8 +167,8 @@ onBeforeUnmount(() => {
 
 <template>
   <article
-    ref="container" absolute h-full touch-pan-x will-change-auto min-h-fit class="sheet-transition" :style="style"
-    @pointerdown="onStart" @pointermove="onMove" @pointerup="onEnd" @pointercancel="onCancel"
+    ref="container" absolute h-full min-h-fit touch-pan-x will-change-auto class="sheet-transition"
+    :style="style" @pointerdown="onStart" @pointermove="onMove" @pointerup="onEnd" @pointercancel="onCancel"
   >
     <slot name="dragger" />
     <slot />

@@ -1,8 +1,8 @@
 import { PROVIDERS } from 'database'
-import type { DatabaseAnonArgs, DatabaseArgs, Location } from 'types'
+import type { DatabaseAnonArgs, DatabaseArgs, MapLocation } from 'types'
 import { DatabaseUser, LocationLink, Provider, Theme } from 'types'
 import { getCardConfiguration } from './assets-dev/banner-assets'
-import { translateCategory } from './translations'
+import { translateCategory } from './i18n/translations'
 import { useApp } from './stores/app'
 
 const GOOGLE_MAPS_API = import.meta.env.VITE_GOOGLE_MAP_KEY
@@ -17,20 +17,21 @@ export async function getAnonDatabaseArgs(): Promise<DatabaseAnonArgs> {
   return { ...DATABASE_ARGS, captchaToken: useApp().captchaTokenUuid, user: DatabaseUser.Anonymous }
 }
 
-function getProvider({ provider, isAtm }: Location) {
+function getProvider({ provider, isAtm }: MapLocation) {
   const providerRoot = provider.split('/').at(0) as Provider // Some providers have a root and a subprovider. We don't care at the moment about the subprovider
   const isInvalidProvider = !providerRoot || !PROVIDERS.includes(providerRoot)
   if (isInvalidProvider) {
     const newProvider = isAtm ? Provider.DefaultAtm : Provider.DefaultShop
-    console.warn(`Invalid provider: '${provider}'. Setting ${newProvider} provider. Location: ${JSON.stringify(location)}`)
+    console.warn(`Invalid provider: '${provider}'. Setting ${newProvider} provider. MapLocation: ${JSON.stringify(location)}`)
     return newProvider
-  } else if (isAtm && providerRoot === Provider.DefaultShop) {
+  }
+  else if (isAtm && providerRoot === Provider.DefaultShop) {
     return Provider.DefaultAtm
   }
   return providerRoot
 }
 
-export function parseLocation(location: Location) {
+export function parseLocation(location: MapLocation) {
   const isAtm = location.sells.length > 0
 
   location.provider = getProvider(location)

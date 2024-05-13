@@ -7,9 +7,11 @@ const searchOpen = ref(false)
     <TheMapInstance flex-1 />
 
     <div absolute inset-x-24 top-24>
-      <button w-full shadow rounded-8 bg="neutral-0 hover:neutral-100" transition-colors
+      <button
+        bg="neutral-0 hover:neutral-100"
         flex="~ items-center justify-between" :aria-label="$t('Search')" :title="$t('Search')"
-        @click="searchOpen = true" px-16 py-8>
+        w-full rounded-8 px-16 py-8 shadow transition-colors @click="searchOpen = true"
+      >
         <span op-60>{{ $t('Search Crypto Map') }}</span>
         <div i-nimiq:magnifying-glass op-40 />
       </button>

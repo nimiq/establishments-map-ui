@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import type { MapLocation } from 'types'
 import { locations as defaultLocations } from '@/assets-dev/stories/locations'
 import { locations as locationsEdgeCases } from '@/assets-dev/stories/locations-edge-cases'
-import { Location } from 'types';
 
-const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{ locations: Location[] }>()
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{ locations: MapLocation[] }>()
 
 const listIsShown = ref(true)
 </script>
@@ -12,14 +12,15 @@ const listIsShown = ref(true)
   <Story>
     <DefineTemplate v-slot="{ locations }">
       <div class="relative h-screen">
-        <img src="@/assets-dev/stories/map-new-york-square.png" alt="" class="object-cover h-full">
+        <img src="@/assets-dev/stories/map-new-york-square.png" alt="" class="h-full object-cover">
         <div
-          class="absolute flex flex-col max-w-320 bottom-6 top-6 left-6 h-max pointer-events-none [&>*]:pointer-events-auto">
-          <div class="bg-white shadow-header rounded-2xl" style="mask-image: linear-gradient(white, white);">
+          class="pointer-events-none absolute bottom-6 left-6 top-6 h-max max-w-320 flex flex-col [&>*]:pointer-events-auto"
+        >
+          <div class="shadow-header rounded-2xl bg-white" style="mask-image: linear-gradient(white, white);">
             <InteractionBar />
             <DesktopList :singles="Object.values(locations)" :clusters="[]" :list-is-shown="listIsShown" />
           </div>
-          <button pill-blue @click="listIsShown = !listIsShown" class="mt-6">
+          <button pill-blue class="mt-6" @click="listIsShown = !listIsShown">
             {{ listIsShown ? $t('Hide list') : $t('Show list') }}
           </button>
         </div>

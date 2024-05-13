@@ -1,5 +1,5 @@
 import type { LocationQuery, RouteParams } from 'vue-router'
-import type { Location, MapPosition } from 'types'
+import type { MapPosition } from 'types'
 import { useWindowSize } from '@vueuse/core'
 import { useMap } from '@/stores/map'
 
@@ -42,7 +42,7 @@ function getPixelCoords(lat: number, lng: number, zoom: number) {
   return { x: pixelX, y: pixelY }
 }
 
-function isPointInViewport({ center: { lat: mapLat, lng: mapLng }, zoom }: MapPosition, { lat, lng }: Location) {
+function isPointInViewport({ center: { lat: mapLat, lng: mapLng }, zoom }: MapPosition, { lat, lng }: MapLocation) {
   const { height, width } = useWindowSize()
   const centerCoords = getPixelCoords(mapLat, mapLng, zoom)
   const pointCoords = getPixelCoords(lat, lng, zoom)

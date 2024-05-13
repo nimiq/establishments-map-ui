@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { ModalName } from './Modal.vue';
-import { Issue, Location } from 'types'
-import { translateIssue } from '@/translations'
-defineProps<{ location: Location }>()
+import { Issue } from 'types'
+import { ModalName } from './Modal.vue'
+
+defineProps<{ location: MapLocation }>()
+
 const description = ref('')
 const issue = ref<Issue>()
-const { selectedUuid, } = storeToRefs(useLocations())
+const { selectedUuid } = storeToRefs(useLocations())
 
 const open = ref(false)
 
 const body = computed(() => ({
-  uuid: selectedUuid,
+  uuid: selectedUuid.value,
   reason: description.value,
   reason_id: issue.value,
   dev: import.meta.env.DEV,
@@ -20,14 +21,14 @@ const { disabled, submit, reset, isError, isSuccess, isSubmitted } = useForm({ u
 </script>
 
 <template>
-  <Modal :name="ModalName.Report" v-model:open="open">
+  <Modal v-model:open="open" :name="ModalName.Report">
     <template #trigger>
       <slot name="trigger" />
     </template>
     <template #title>
       <div flex="~ gap-8 items-baseline" ml--6>
-        <div rounded-6 size-28 shrink-0 centered bg-red-400 aria-hidden>
-          <div i-nimiq:flag text-red text-14 />
+        <div aria-hidden centered size-28 shrink-0 rounded-6 bg-red-400>
+          <div i-nimiq:flag text-14 text-red />
         </div>
         <template v-if="isSuccess">
           {{ $t('Thank you for reporting this issue') }}
@@ -50,38 +51,45 @@ const { disabled, submit, reset, isError, isSuccess, isSubmitted } = useForm({ u
       <template v-else>
         {{ $t('Tell us what\'s wrong with this location') }}
       </template>
-
     </template>
     <template #content>
       <template v-if="!isSubmitted">
-        <div grid="~ cols-[128px_auto_1fr] row-[auto_1fr] gap-x-16 gap-y-8 items-center" mt-32 mb-14 relative group>
-          <img v-if="location.photo" :src="location.photo" size-full rounded-4 object-cover grid-row-span-2 />
+        <div grid="~ cols-[128px_auto_1fr] row-[auto_1fr] gap-x-16 gap-y-8 items-center" group relative mb-14 mt-32>
+          <img v-if="location.photo" :src="location.photo" grid-row-span-2 size-full rounded-4 object-cover>
           <BasicInfoLocation :location grid-col-span-2 />
-          <LocationExternalUrl :location self-start justify-self-end mt--6 />
+          <LocationExternalUrl :location :class="!location.photo ? `self-start justify-self-end mt--6` : ''" />
           <CryptoList :location />
         </div>
         <FAQ nested :questions="['q-1']">
           <template #trigger>
-            <div flex="~ gap-4 items-center" text="neutral-800 14" hocus:bg-neutral-200 transition-colors mx--6 px-6
-              py-2 rounded-4>
-              <div i-nimiq:help op-80 text-12 relative top--1 />
+            <div
+              flex="~ gap-4 items-center" text="neutral-800 14"
+              mx--6 rounded-4 px-6 py-2 transition-colors hocus:bg-neutral-200
+            >
+              <div i-nimiq:help relative top--1 text-12 op-80 />
               <p>{{ $t('How is this data collected?') }}</p>
             </div>
           </template>
         </FAQ>
 
-        <form @submit.prevent="submit" mt-40>
-          <label for="name" text="14 neutral-900" font-200 mb-4 block>{{ $t('Select issue') }}</label>
-          <Select :options="Object.values(Issue)" :display-value="translateIssue" v-model:selected="issue" />
+        <form mt-40 @submit.prevent="submit">
+          <label for="name" text="14 neutral-900" mb-4 block font-200>{{ $t('Select issue') }}</label>
+          <Select v-model:selected="issue" :options="Object.values(Issue)" :display-value="translateIssue" />
 
-          <label for="name" text="14 neutral-900" font-200 mb-4 block mt-24>{{ $t('Describe the issue') }}</label>
-          <textarea :placeholder="$t('Write your problem here')" input-box text="14 neutral" resize-none min-h-64
-            v-model="description" style="field-sizing: content" />
+          <label for="name" text="14 neutral-900" mb-4 mt-24 block font-200>{{ $t('Describe the issue') }}</label>
+          <textarea
+            v-model="description" :placeholder="$t('Write your problem here')" text="14 neutral" min-h-64 resize-none
+            input-box style="field-sizing: content"
+          />
 
           <div flex="~ gap-16 justify-end" mt-24>
-            <DialogClose :aria-label="$t('Cancel')" pill-tertiary pill-sm>Cancel</DialogClose>
-            <button type="submit" :disabled="disabled" pill-sm pill-blue>{{ $t('Report Location')
-              }}</button>
+            <DialogClose :aria-label="$t('Cancel')" pill-sm pill-tertiary>
+              Cancel
+            </DialogClose>
+            <button type="submit" :disabled="disabled" pill-sm pill-blue>
+              {{ $t('Report Location')
+              }}
+            </button>
           </div>
         </form>
       </template>

@@ -1,7 +1,5 @@
-import { Location } from 'types'
 import { searchLocations } from 'database'
 import { getAnonDatabaseArgs } from '@/shared'
-
 
 export enum Autocomplete {
   GoogleBussines = 'establishment',
@@ -17,9 +15,9 @@ export enum AutocompleteStatus {
   Error = 'error',
 }
 
-export type PredictionSubstring = { length: number, offset: number }
-export type LocationSuggestion = Pick<Location, 'uuid' | 'name'> & { matchedSubstrings: PredictionSubstring[] }
-export type GoogleSuggestion = { label: string, placeId: string, matchedSubstrings: PredictionSubstring[] }
+export interface PredictionSubstring { length: number, offset: number }
+export type LocationSuggestion = Pick<MapLocation, 'uuid' | 'name'> & { matchedSubstrings: PredictionSubstring[] }
+export interface GoogleSuggestion { label: string, placeId: string, matchedSubstrings: PredictionSubstring[] }
 
 interface UseAutocompleteOptions {
   autocomplete: Autocomplete[]
@@ -37,16 +35,20 @@ export function useAutocomplete({ autocomplete }: UseAutocompleteOptions) {
   const initialQuery = Array.isArray(route.query[queryName]) ? route.query[queryName][0] : route.query[queryName] || ''
   const query = ref(initialQuery)
   watch(query, (newValue, oldValue) => {
-    if (newValue === oldValue) return
+    if (newValue === oldValue)
+      return
 
     router.replace({ query: { ...route.query, [queryName]: newValue !== '' ? newValue : undefined } })
 
     if (!query.value) {
       status.value = AutocompleteStatus.Initial
       clearSuggestions()
-    } else {
-      if (newValue !== '' && (oldValue === '') || (googleSuggestions.value.length === 0 && locationSuggestions.value.length === 0)) status.value = AutocompleteStatus.Loading
-      if (newValue === '' && oldValue !== '') status.value = AutocompleteStatus.Initial
+    }
+    else {
+      if ((newValue !== '' && oldValue === '') || (googleSuggestions.value.length === 0 && locationSuggestions.value.length === 0))
+        status.value = AutocompleteStatus.Loading
+      if (newValue === '' && oldValue !== '')
+        status.value = AutocompleteStatus.Initial
       querySearch()
     }
   }, { immediate: true })
@@ -70,8 +72,10 @@ export function useAutocomplete({ autocomplete }: UseAutocompleteOptions) {
     const types = []
     const searchForBusinnesses = autocomplete.includes(Autocomplete.GoogleBussines)
     const searchForRegions = autocomplete.includes(Autocomplete.GoogleRegions)
-    if (searchForBusinnesses) types.push(Autocomplete.GoogleBussines)
-    if (searchForRegions) types.push(Autocomplete.GoogleRegions)
+    if (searchForBusinnesses)
+      types.push(Autocomplete.GoogleBussines)
+    if (searchForRegions)
+      types.push(Autocomplete.GoogleRegions)
 
     if (!types.length) {
       googleSuggestions.value = []
@@ -131,7 +135,6 @@ export function useAutocomplete({ autocomplete }: UseAutocompleteOptions) {
       status.value = AutocompleteStatus.WithResults
       googleSuggestions.value = [{ label: 'This is a test', placeId: '1', matchedSubstrings: [{ length: 0, offset: 1 }] }]
       return
-
     }
 
     status.value = googleSuggestions.value.length || locationSuggestions.value.length ? AutocompleteStatus.WithResults : AutocompleteStatus.NoResults

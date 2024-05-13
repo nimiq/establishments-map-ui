@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { Location, LocationLink } from 'types';
+import { LocationLink } from 'types'
 
-defineProps<{ location: Location }>()
+defineProps<{ location: MapLocation }>()
 </script>
+
 <template>
   <transition name="scale">
-    <a v-if="location.linkTo" :href="location.url" pill-tertiary arrow after:text-13 after:ml-3 bg-neutral-0 px-8 py-5
-      un-text="14 neutral-800" target="_blank" rel="noopener noreferrer">
+    <a
+      v-if="location.linkTo" :href="location.url" bg-neutral-0 px-8 py-5 arrow pill-tertiary after:ml-3 after:text-13
+      un-text="14 neutral-800" target="_blank" rel="noopener noreferrer"
+    >
       <div v-if="location.linkTo === LocationLink.GMaps" i-logos:google-maps />
       <div v-if="location.linkTo === LocationLink.Facebook" i-logos:facebook />
       <div v-if="location.linkTo === LocationLink.Instagram" i-nimiq:logos-instagram />

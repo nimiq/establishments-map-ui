@@ -7,18 +7,25 @@ export {}
 declare global {
   const Autocomplete: typeof import('./composables/useAutocomplete')['Autocomplete']
   const AutocompleteStatus: typeof import('./composables/useAutocomplete')['AutocompleteStatus']
+  const C: typeof import('types')['C']
+  const Currency: typeof import('types')['Currency']
+  const CustomMarker: typeof import('vue3-google-maps')['CustomMarker']
   const DATABASE_ARGS: typeof import('./shared')['DATABASE_ARGS']
   const DatabaseArgs: typeof import('types')['DatabaseArgs']
   const EffectScope: typeof import('vue')['EffectScope']
   const FormState: typeof import('./composables/useForm')['FormState']
+  const GoogleMap: typeof import('vue3-google-maps')['GoogleMap']
   const Layout: typeof import('./composables/useUI')['Layout']
   const Location: typeof import('types')['Location']
+  const MapLocation: typeof import('types')['MapLocation']
   const Modal: typeof import('./router')['Modal']
   const ModalName: typeof import('./router')['ModalName']
+  const Provider: typeof import('types')['Provider']
   const SUPPORTED_LANGUAGES: typeof import('./i18n/i18n-setup')['SUPPORTED_LANGUAGES']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
+  const c: typeof import('types')['c']
   const computed: typeof import('vue')['computed']
   const computedAsync: typeof import('@vueuse/core')['computedAsync']
   const computedEager: typeof import('@vueuse/core')['computedEager']
@@ -44,6 +51,7 @@ declare global {
   const definePage: typeof import('unplugin-vue-router/runtime')['definePage']
   const defineStore: typeof import('pinia')['defineStore']
   const detectLanguage: typeof import('./i18n/i18n-setup')['detectLanguage']
+  const e: typeof import('types')['e']
   const eagerComputed: typeof import('@vueuse/core')['eagerComputed']
   const effectScope: typeof import('vue')['effectScope']
   const extendRef: typeof import('@vueuse/core')['extendRef']
@@ -78,6 +86,7 @@ declare global {
   const mapStores: typeof import('pinia')['mapStores']
   const mapWritableState: typeof import('pinia')['mapWritableState']
   const markRaw: typeof import('vue')['markRaw']
+  const n: typeof import('types')['n']
   const nextTick: typeof import('vue')['nextTick']
   const onActivated: typeof import('vue')['onActivated']
   const onBeforeMount: typeof import('vue')['onBeforeMount']
@@ -104,6 +113,7 @@ declare global {
   const provideLocal: typeof import('@vueuse/core')['provideLocal']
   const queryName: typeof import('./composables/useAutocomplete')['queryName']
   const querySearchName: typeof import('./composables/useAutocomplete')['querySearchName']
+  const r: typeof import('types')['r']
   const reactify: typeof import('@vueuse/core')['reactify']
   const reactifyObject: typeof import('@vueuse/core')['reactifyObject']
   const reactive: typeof import('vue')['reactive']
@@ -121,6 +131,7 @@ declare global {
   const resolveRef: typeof import('@vueuse/core')['resolveRef']
   const resolveUnref: typeof import('@vueuse/core')['resolveUnref']
   const router: typeof import('./router')['router']
+  const searchLocations: typeof import('database')['searchLocations']
   const setActivePinia: typeof import('pinia')['setActivePinia']
   const setLanguage: typeof import('./i18n/i18n-setup')['setLanguage']
   const setMapStoreSuffix: typeof import('pinia')['setMapStoreSuffix']
@@ -141,15 +152,16 @@ declare global {
   const toRef: typeof import('vue')['toRef']
   const toRefs: typeof import('vue')['toRefs']
   const toValue: typeof import('vue')['toValue']
-  const translateCategory: typeof import('./translations')['translateCategory']
-  const translateCurrency: typeof import('./translations')['translateCurrency']
-  const translateIssue: typeof import('./translations')['translateIssue']
+  const translateCategory: typeof import('./i18n/translations')['translateCategory']
+  const translateCurrency: typeof import('./i18n/translations')['translateCurrency']
+  const translateIssue: typeof import('./i18n/translations')['translateIssue']
   const triggerRef: typeof import('vue')['triggerRef']
   const tryOnBeforeMount: typeof import('@vueuse/core')['tryOnBeforeMount']
   const tryOnBeforeUnmount: typeof import('@vueuse/core')['tryOnBeforeUnmount']
   const tryOnMounted: typeof import('@vueuse/core')['tryOnMounted']
   const tryOnScopeDispose: typeof import('@vueuse/core')['tryOnScopeDispose']
   const tryOnUnmounted: typeof import('@vueuse/core')['tryOnUnmounted']
+  const u: typeof import('types')['u']
   const unref: typeof import('vue')['unref']
   const unrefElement: typeof import('@vueuse/core')['unrefElement']
   const until: typeof import('@vueuse/core')['until']
@@ -278,6 +290,7 @@ declare global {
   const useRefHistory: typeof import('@vueuse/core')['useRefHistory']
   const useResizeObserver: typeof import('@vueuse/core')['useResizeObserver']
   const useRoute: typeof import('vue-router/auto')['useRoute']
+  const useRouteQuery: typeof import('@vueuse/router')['useRouteQuery']
   const useRouter: typeof import('vue-router/auto')['useRouter']
   const useScreenOrientation: typeof import('@vueuse/core')['useScreenOrientation']
   const useScreenSafeArea: typeof import('@vueuse/core')['useScreenSafeArea']
@@ -345,12 +358,16 @@ declare global {
   const watchTriggerable: typeof import('@vueuse/core')['watchTriggerable']
   const watchWithFilter: typeof import('@vueuse/core')['watchWithFilter']
   const whenever: typeof import('@vueuse/core')['whenever']
+  const y: typeof import('types')['y']
 }
 // for type re-export
 declare global {
   // @ts-ignore
   export type { Component, ComponentPublicInstance, ComputedRef, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, VNode, WritableComputedRef } from 'vue'
   import('vue')
+  // @ts-ignore
+  export type { MapLocation, Cluster, Cryptocity, CryptocityData, Currency, Provider } from 'types'
+  import('types')
 }
 // for vue template auto import
 import { UnwrapRef } from 'vue'
@@ -359,8 +376,10 @@ declare module 'vue' {
   interface ComponentCustomProperties {
     readonly Autocomplete: UnwrapRef<typeof import('./composables/useAutocomplete')['Autocomplete']>
     readonly AutocompleteStatus: UnwrapRef<typeof import('./composables/useAutocomplete')['AutocompleteStatus']>
+    readonly CustomMarker: UnwrapRef<typeof import('vue3-google-maps')['CustomMarker']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly FormState: UnwrapRef<typeof import('./composables/useForm')['FormState']>
+    readonly GoogleMap: UnwrapRef<typeof import('vue3-google-maps')['GoogleMap']>
     readonly Layout: UnwrapRef<typeof import('./composables/useUI')['Layout']>
     readonly SUPPORTED_LANGUAGES: UnwrapRef<typeof import('./i18n/i18n-setup')['SUPPORTED_LANGUAGES']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
@@ -476,6 +495,9 @@ declare module 'vue' {
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>
     readonly toRefs: UnwrapRef<typeof import('vue')['toRefs']>
     readonly toValue: UnwrapRef<typeof import('vue')['toValue']>
+    readonly translateCategory: UnwrapRef<typeof import('./i18n/translations')['translateCategory']>
+    readonly translateCurrency: UnwrapRef<typeof import('./i18n/translations')['translateCurrency']>
+    readonly translateIssue: UnwrapRef<typeof import('./i18n/translations')['translateIssue']>
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
     readonly tryOnBeforeMount: UnwrapRef<typeof import('@vueuse/core')['tryOnBeforeMount']>
     readonly tryOnBeforeUnmount: UnwrapRef<typeof import('@vueuse/core')['tryOnBeforeUnmount']>
@@ -609,6 +631,7 @@ declare module 'vue' {
     readonly useRefHistory: UnwrapRef<typeof import('@vueuse/core')['useRefHistory']>
     readonly useResizeObserver: UnwrapRef<typeof import('@vueuse/core')['useResizeObserver']>
     readonly useRoute: UnwrapRef<typeof import('vue-router/auto')['useRoute']>
+    readonly useRouteQuery: UnwrapRef<typeof import('@vueuse/router')['useRouteQuery']>
     readonly useRouter: UnwrapRef<typeof import('vue-router/auto')['useRouter']>
     readonly useScreenOrientation: UnwrapRef<typeof import('@vueuse/core')['useScreenOrientation']>
     readonly useScreenSafeArea: UnwrapRef<typeof import('@vueuse/core')['useScreenSafeArea']>
@@ -682,8 +705,10 @@ declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     readonly Autocomplete: UnwrapRef<typeof import('./composables/useAutocomplete')['Autocomplete']>
     readonly AutocompleteStatus: UnwrapRef<typeof import('./composables/useAutocomplete')['AutocompleteStatus']>
+    readonly CustomMarker: UnwrapRef<typeof import('vue3-google-maps')['CustomMarker']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly FormState: UnwrapRef<typeof import('./composables/useForm')['FormState']>
+    readonly GoogleMap: UnwrapRef<typeof import('vue3-google-maps')['GoogleMap']>
     readonly Layout: UnwrapRef<typeof import('./composables/useUI')['Layout']>
     readonly SUPPORTED_LANGUAGES: UnwrapRef<typeof import('./i18n/i18n-setup')['SUPPORTED_LANGUAGES']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
@@ -799,6 +824,9 @@ declare module '@vue/runtime-core' {
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>
     readonly toRefs: UnwrapRef<typeof import('vue')['toRefs']>
     readonly toValue: UnwrapRef<typeof import('vue')['toValue']>
+    readonly translateCategory: UnwrapRef<typeof import('./i18n/translations')['translateCategory']>
+    readonly translateCurrency: UnwrapRef<typeof import('./i18n/translations')['translateCurrency']>
+    readonly translateIssue: UnwrapRef<typeof import('./i18n/translations')['translateIssue']>
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
     readonly tryOnBeforeMount: UnwrapRef<typeof import('@vueuse/core')['tryOnBeforeMount']>
     readonly tryOnBeforeUnmount: UnwrapRef<typeof import('@vueuse/core')['tryOnBeforeUnmount']>
@@ -932,6 +960,7 @@ declare module '@vue/runtime-core' {
     readonly useRefHistory: UnwrapRef<typeof import('@vueuse/core')['useRefHistory']>
     readonly useResizeObserver: UnwrapRef<typeof import('@vueuse/core')['useResizeObserver']>
     readonly useRoute: UnwrapRef<typeof import('vue-router/auto')['useRoute']>
+    readonly useRouteQuery: UnwrapRef<typeof import('@vueuse/router')['useRouteQuery']>
     readonly useRouter: UnwrapRef<typeof import('vue-router/auto')['useRouter']>
     readonly useScreenOrientation: UnwrapRef<typeof import('@vueuse/core')['useScreenOrientation']>
     readonly useScreenSafeArea: UnwrapRef<typeof import('@vueuse/core')['useScreenSafeArea']>

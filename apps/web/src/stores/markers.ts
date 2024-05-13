@@ -1,6 +1,6 @@
 import { getClusterMaxZoom, getMarkers } from 'database'
 import { CLUSTERS_MAX_ZOOM, addBBoxToArea, algorithm, bBoxIsWithinArea, computeMarkers, getItemsWithinBBox, toMultiPolygon } from 'geo'
-import type { Cluster, Location, LocationClusterParams, Markers, MemoizedMarkers } from 'types'
+import type { Cluster, LocationClusterParams, MapLocation, Markers, MemoizedMarkers } from 'types'
 import { getAnonDatabaseArgs, parseLocation } from '@/shared'
 
 export const useMarkers = defineStore('markers', () => {
@@ -28,7 +28,7 @@ export const useMarkers = defineStore('markers', () => {
    */
   const clusters = shallowRef<Cluster[]>([])
   const clustersInView = computed(() => boundingBox.value ? getItemsWithinBBox(clusters.value, boundingBox.value) : [])
-  const singles = shallowRef<Location[]>([])
+  const singles = shallowRef<MapLocation[]>([])
   const singlesInView = computed(() => boundingBox.value ? getItemsWithinBBox(singles.value, boundingBox.value) : [])
 
   function getIndex({ zoom, categories, currencies }: LocationClusterParams) {
@@ -87,7 +87,7 @@ export const useMarkers = defineStore('markers', () => {
     return res
   }
 
-  function setMarkers(newSingles: Location[], newClusters: Cluster[]) {
+  function setMarkers(newSingles: MapLocation[], newClusters: Cluster[]) {
     singles.value = newSingles
     clusters.value = newClusters
     attachedCryptocities.value = newClusters.flatMap(c => c.cryptocities)

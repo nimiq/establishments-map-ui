@@ -6,14 +6,16 @@ const toggleList = useToggle(isListShown)
 </script>
 
 <template>
-  <TheMapInstance w-screen h-screen />
+  <TheMapInstance h-screen w-screen />
   <!-- Shadow -->
-  <div id="shadow-left" absolute inset-0 max-w-368 pointer-events-none bg-gradient-to-r from-neutral to-transparent />
-  <aside absolute max-w-384 inset-24 right-initial h-max pointer-events-none children:pointer-events-auto flex="~ col">
+  <div id="shadow-left" pointer-events-none absolute inset-0 max-w-368 from-neutral to-transparent bg-gradient-to-r />
+  <aside pointer-events-none absolute inset-24 right-initial h-max max-w-384 children:pointer-events-auto flex="~ col">
     <!-- This element if for the shadow in the header. We cannot use a normal shadow because the use of mask-image restrict us of using shadows -->
-    <div absolute inset-0 shadow ring="1.5 neutral/3" pointer-events-none id="shadow"
-      style="height: calc(66px + var(--dynamic-block, 0) * 88px)" />
-    <div w-max bg-neutral-0 id="wrapper">
+    <div
+      id="shadow" ring="1.5 neutral/3" pointer-events-none absolute inset-0 shadow
+      style="height: calc(66px + var(--dynamic-block, 0) * 88px)"
+    />
+    <div id="wrapper" w-max bg-neutral-0>
       <InteractionBar>
         <template #search>
           <DesktopSearch />
@@ -21,15 +23,19 @@ const toggleList = useToggle(isListShown)
       </InteractionBar>
       <DesktopList :singles="singlesInView" :clusters="clustersInView" :list-is-shown="isListShown" />
     </div>
-    <button mt-12 pill-tertiary border-none pill-sm ring="1.5 neutral/3" z-10 flex="~ gap-8"
-      @click="() => toggleList()">
-      <div i-nimiq:chevron-down :class="{ 'rotate-180': isListShown }" text="10 op-70"
-        transition="transform delay-500" />
+    <button
+      ring="1.5 neutral/3" z-10 mt-12 border-none pill-sm pill-tertiary flex="~ gap-8"
+      @click="() => toggleList()"
+    >
+      <div
+        i-nimiq:chevron-down :class="{ 'rotate-180': isListShown }" text="10 op-70"
+        transition="transform delay-500"
+      />
       {{ $t(isListShown ? 'Hide list' : 'Show list') }}
     </button>
   </aside>
   <MapControls absolute bottom-24 right-24 />
-  <FAQ name="faq" absolute bottom-6 left-78 px-4 py-1 text-12 rounded-4 ghost-btn text-neutral font-bold bg-neutral-200>
+  <FAQ name="faq" absolute bottom-6 left-78 rounded-4 bg-neutral-200 px-4 py-1 text-12 text-neutral font-bold ghost-btn>
     <template #trigger>
       FAQ
     </template>

@@ -1,7 +1,7 @@
 import { getTimestamps } from 'database'
 import type { AnyUserReadDbFunction, Returns } from 'types'
-import { DATABASE_ARGS } from '@/shared'
 import { useRouteQuery } from '@vueuse/router'
+import { DATABASE_ARGS } from '@/shared'
 import { setLanguage } from '@/i18n/i18n-setup'
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))

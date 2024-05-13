@@ -1,5 +1,4 @@
 import { breakpointsTailwind } from '@vueuse/core'
-import { useRouteQuery } from '@vueuse/router'
 
 export const isMobile = useBreakpoints(breakpointsTailwind).smaller('md')
 
@@ -18,7 +17,6 @@ export function useUIParams() {
   const showCryptocityBanner = computed(() => !!cryptocityBanner.value)
 
   watch([showCryptocityBanner, showSearchBoxHint], ([v1, v2]) => document.documentElement.style.setProperty(cssVar, v1 || v2 ? '1' : '0'), { immediate: true })
-
 
   return {
     fillMarker: computed(() => zoom.value >= 13),
@@ -52,6 +50,6 @@ export function useLayout() {
   })
 
   return {
-    component
+    component,
   }
 }

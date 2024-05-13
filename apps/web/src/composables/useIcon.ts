@@ -1,4 +1,5 @@
-import { Banner, Category, Currency, Provider } from "types";
+import type { Banner } from 'types'
+import { Category, Currency, Provider } from 'types'
 
 // @unocss-include
 
@@ -19,7 +20,7 @@ const categoryIconCatalog: Record<Category, string> = {
 
 export function getCategoryIcon(category: Category) {
   const iconName = categoryIconCatalog[category]
-  return iconName;
+  return iconName
 }
 
 const cryptoIconCategory: Partial<Record<Currency, string>> = {
@@ -37,7 +38,7 @@ const cryptoIconCategory: Partial<Record<Currency, string>> = {
 
 export function getCurrencyIcon(currency: Currency) {
   const iconName = cryptoIconCategory[currency]
-  return iconName;
+  return iconName
 }
 
 const bannerIconCategory: Record<Banner, string> = {
@@ -47,11 +48,11 @@ const bannerIconCategory: Record<Banner, string> = {
   [Provider.Kurant]: 'i-providers:kurant',
   [Provider.NAKA]: 'i-providers:naka',
   'Nimiq-Pay': 'i-nimiq:logos-nimiq-pay-vertical',
-  DefaultAtm: 'i-providers:default-atm',
-  None: '',
+  'DefaultAtm': 'i-providers:default-atm',
+  'None': '',
 }
 
 export function getBannerIcon(provider: Banner) {
   const iconName = bannerIconCategory[provider]
-  return iconName;
+  return iconName
 }

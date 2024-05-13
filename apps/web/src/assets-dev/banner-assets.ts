@@ -1,6 +1,5 @@
 import { Provider, Theme } from 'types'
-import type { Banner, Location } from 'types'
-import { i18n } from '@/i18n/i18n-setup'
+import type { Banner, MapLocation } from 'types'
 
 // A dummy implementation of i18n.t that simply passes through the translation key. For usage for bannerLabels, for
 // which the actual translation is happening in i18n-t in ProviderBanner, and for which a pre-translation here via the
@@ -17,7 +16,7 @@ const i18nKeyPassThrough = {
 // for bannerLabel is happening in i18n-t in ProviderBanner, and bannerTooltip is defined as a getter to not be
 // constant but re-computed on language changes. bannerLabel can include a {provider} placeholder which gets handled
 // in i18n-t in ProviderBanner.
-type BannerConfiguration = Pick<Location, 'bg' | 'theme' | 'bannerLabel' | 'bannerTooltip' | 'bannerTooltipCta' | 'bannerTooltipLabel' | 'bannerGooglePlay' | 'bannerAppStore'>
+type BannerConfiguration = Pick<MapLocation, 'bg' | 'theme' | 'bannerLabel' | 'bannerTooltip' | 'bannerTooltipCta' | 'bannerTooltipLabel' | 'bannerGooglePlay' | 'bannerAppStore'>
 const cardConfiguration: Record<Banner, BannerConfiguration> = {
   'None': {
     bg: ['rgb(var(--nq-neutral-0))', undefined],
@@ -120,7 +119,7 @@ const bannerMap: Record<Provider, Banner> = {
   [Provider.BitcoinJungle]: 'None',
 }
 
-export function getCardConfiguration(provider: Provider): typeof cardConfiguration[Banner] & Pick<Location, 'banner'> {
+export function getCardConfiguration(provider: Provider): typeof cardConfiguration[Banner] & Pick<MapLocation, 'banner'> {
   const banner = bannerMap[provider]
   return { banner, ...cardConfiguration[banner] }
 }

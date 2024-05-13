@@ -3,13 +3,11 @@ export enum ModalName {
   CryptoMap = 'crypto-map',
   Report = 'report',
   FAQ = 'faq',
-  Candidate = 'candidate'
+  Candidate = 'candidate',
 }
 </script>
 
 <script setup lang="ts">
-import { useRouteQuery } from '@vueuse/router';
-
 const props = withDefaults(defineProps<{ name: ModalName, nested?: boolean }>(), { nested: false })
 const emit = defineEmits<{ close: [] }>()
 
@@ -17,9 +15,10 @@ const emit = defineEmits<{ close: [] }>()
 const query = useRouteQuery<ModalName | undefined>(props.nested ? 'nested' : 'modal')
 const open = defineModel<boolean>('open')
 open.value = query.value === props.name
-watch(open, v => {
+watch(open, (v) => {
   query.value = v ? props.name : undefined
-  if (!v) emit('close')
+  if (!v)
+    emit('close')
 })
 onUnmounted(() => query.value = undefined)
 </script>
@@ -31,16 +30,18 @@ onUnmounted(() => query.value = undefined)
     </DialogTrigger>
     <DialogPortal>
       <Transition name="backdrop">
-        <DialogOverlay v-if="!nested" bg-darkblue op-60 fixed inset-0 z-200 />
+        <DialogOverlay v-if="!nested" fixed inset-0 z-200 bg-darkblue op-60 />
       </Transition>
       <Transition :name="nested ? 'nested' : 'modal'">
-        <DialogContent :key="name" fixed bottom-0 transform desktop="top-1/2 left-1/2 translate--1/2" op-100 h-max
-          max-h-85dvh w-full desktop:max-w-512 py-32 z-200 of-y-auto ring="1.5 neutral-50" shadow-lg bg-neutral-0
-          rounded="t-8 desktop:8" outline-none data-modal :data-nested="nested ? '' : undefined" @openAutoFocus.prevent>
-          <DialogTitle px-24 desktop:px-40 mb-8 text-18 font-bold text-neutral lh-none as="h2">
+        <DialogContent
+          :key="name" desktop="top-1/2 left-1/2 translate--1/2"
+          ring="1.5 neutral-50"
+          rounded="t-8 desktop:8" data-modal fixed bottom-0 z-200 h-max max-h-85dvh w-full transform of-y-auto bg-neutral-0 py-32 op-100 shadow-lg outline-none desktop:max-w-512 :data-nested="nested ? '' : undefined" @open-auto-focus.prevent
+        >
+          <DialogTitle mb-8 px-24 text-18 text-neutral font-bold lh-none desktop:px-40 as="h2">
             <slot name="title" />
           </DialogTitle>
-          <DialogDescription block px-24 desktop:px-40 text-neutral-800>
+          <DialogDescription block px-24 text-neutral-800 desktop:px-40>
             <slot name="description" />
           </DialogDescription>
 
@@ -48,7 +49,7 @@ onUnmounted(() => query.value = undefined)
             <slot name="content" />
           </div>
 
-          <DialogClose :aria-label="$t('Close')" close-btn absolute right-16 top-16 text-28 />
+          <DialogClose :aria-label="$t('Close')" absolute right-16 top-16 text-28 close-btn />
         </DialogContent>
       </Transition>
     </DialogPortal>
@@ -70,7 +71,6 @@ onUnmounted(() => query.value = undefined)
 .backdrop-leave-to {
   opacity: 0;
 }
-
 
 @screen lt-desktop {
 

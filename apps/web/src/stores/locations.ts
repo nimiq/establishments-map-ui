@@ -1,26 +1,26 @@
 import type { Feature, MultiPolygon } from 'geojson'
 import { getLocations as getDbLocations, getLocation } from 'database'
 import { addBBoxToArea, bBoxIsWithinArea, getItemsWithinBBox } from 'geo'
-import type { BoundingBox, Location } from 'types'
+import type { BoundingBox, MapLocation } from 'types'
 import { useRouteQuery } from '@vueuse/router'
-import { parseLocation, getAnonDatabaseArgs } from '@/shared'
+import { getAnonDatabaseArgs, parseLocation } from '@/shared'
 
 export const useLocations = defineStore('locations', () => {
   // Reduce redundant database fetches by reusing fetched locations by tracking the areas explored by the user
   const visitedAreas = ref<Feature<MultiPolygon>>()
 
   const { payload: locationsMap } = useExpiringStorage('locations', {
-    defaultValue: {} as Record<string, Location>,
+    defaultValue: {} as Record<string, MapLocation>,
     expiresIn: 7 * 24 * 60 * 60 * 1000,
     timestamp: useApp().timestamps?.locations,
   })
   const locations = computed(() => Object.values(locationsMap.value))
 
-  function setLocations(locations: Location[]) {
+  function setLocations(locations: MapLocation[]) {
     locations.forEach(location => locationsMap.value[location.uuid] = location)
   }
 
-  async function getLocations(boundingBox: BoundingBox): Promise<Location[]> {
+  async function getLocations(boundingBox: BoundingBox): Promise<MapLocation[]> {
     if (bBoxIsWithinArea(boundingBox, visitedAreas.value)) {
       // We already have scanned this area, no need to fetch from the database
       return getItemsWithinBBox(locations.value, boundingBox) // Filter locations by bounding box

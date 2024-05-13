@@ -1,5 +1,5 @@
 import type { FeatureCollection } from 'geojson'
-import type { Args, BoundingBox, DatabaseAnonArgs, DatabaseArgs, DatabaseAuthArgs, DatabaseAuthenticateUserArgs, Location, Returns } from '../../types/src/index.ts'
+import type { Args, BoundingBox, DatabaseAnonArgs, DatabaseArgs, DatabaseAuthArgs, DatabaseAuthenticateUserArgs, MapLocation, Returns } from '../../types/src/index.ts'
 import { AnonReadDbFunction, AnyUserReadDbFunction, AuthReadDbFunction, Category, Cryptocity, Currency, DatabaseUser, Provider } from '../../types/src/index.ts'
 import { fetchDb } from './fetch.ts'
 import { authenticateUser } from './auth.ts'
@@ -16,23 +16,23 @@ export const CRYPTOCITIES = Object.values(Cryptocity)
 // Maximum number of rows from the database
 const MAX_N_ROWS = 1000
 
-export async function getLocations(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, { neLat, neLng, swLat, swLng }: BoundingBox, parseLocations: (l: Location) => Location = l => l): Promise<Location[]> {
+export async function getLocations(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, { neLat, neLng, swLat, swLng }: BoundingBox, parseLocations: (l: MapLocation) => MapLocation = l => l): Promise<MapLocation[]> {
   const query = new URLSearchParams({ nelat: neLat.toString(), nelng: neLng.toString(), swlat: swLat.toString(), swlng: swLng.toString() })
   let page = 1
-  const locations: Location[] = []
+  const locations: MapLocation[] = []
   do {
     query.set('page_num', (page++).toString())
-    locations.push(...await fetchDb<Location[]>(AnonReadDbFunction.GetLocations, dbArgs, { query }) ?? [])
+    locations.push(...await fetchDb<MapLocation[]>(AnonReadDbFunction.GetLocations, dbArgs, { query }) ?? [])
   } while (locations.length > 0 && locations.length % MAX_N_ROWS === 0)
   return locations.map(parseLocations)
 }
 
-export async function getLocation(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, uuid: string, parseLocation: (l: Location) => Location): Promise<Location | undefined> {
+export async function getLocation(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, uuid: string, parseLocation: (l: MapLocation) => MapLocation): Promise<MapLocation | undefined> {
   const query = new URLSearchParams()
   query.append('location_uuid', uuid)
-  const location = await fetchDb<Location>(AnonReadDbFunction.GetLocation, dbArgs, { query })
+  const location = await fetchDb<MapLocation>(AnonReadDbFunction.GetLocation, dbArgs, { query })
   if (!location) {
-    console.warn(`Location ${uuid} not found`)
+    console.warn(`MapLocation ${uuid} not found`)
     return undefined
   }
   return parseLocation(location)
@@ -41,15 +41,15 @@ export async function getLocation(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, u
 export async function searchLocations(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, queryInput: string) {
   const query = new URLSearchParams()
   query.append('p_query', queryInput)
-  type AutocompleteDatabase = {label: string,id:string,matchedSubstrings:{ length: number, offset: number }[]}[]
+  type AutocompleteDatabase = { label: string, id: string, matchedSubstrings: { length: number, offset: number }[] }[]
   const res = await fetchDb<AutocompleteDatabase>(AnonReadDbFunction.SearchLocations, dbArgs, { query }) ?? []
-  return res.map(r => ({name: r.label, matchedSubstrings: r.matchedSubstrings, uuid: r.id}))
+  return res.map(r => ({ name: r.label, matchedSubstrings: r.matchedSubstrings, uuid: r.id }))
 }
 
 export async function getMarkers(
   dbArgs: DatabaseAuthArgs | DatabaseAnonArgs,
   { boundingBox: { neLat, neLng, swLat, swLng }, zoom }: Args[AnonReadDbFunction.GetMarkers],
-  parseLocation: (l: Location) => Location = l => l,
+  parseLocation: (l: MapLocation) => MapLocation = l => l,
 ): Promise<Returns[AnonReadDbFunction.GetMarkers]> {
   const query = new URLSearchParams({ nelat: neLat.toString(), nelng: neLng.toString(), swlat: swLat.toString(), swlng: swLng.toString(), zoom_level: zoom.toString() })
   const res = await fetchDb<Returns[AnonReadDbFunction.GetMarkers]>(AnonReadDbFunction.GetMarkers, dbArgs, { query })

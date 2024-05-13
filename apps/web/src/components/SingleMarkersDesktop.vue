@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import type { Location } from 'types'
-import { CustomMarker } from 'vue3-google-map'
-
 const { singles } = storeToRefs(useMarkers())
 
 const { zoom } = storeToRefs(useMap())
@@ -16,7 +13,7 @@ function extractColorFromBg(bg: string) {
 }
 
 const popoverKey = ref(0)
-function handlePopoverOpen(isOpen: boolean, location: Location) {
+function handlePopoverOpen(isOpen: boolean, location: MapLocation) {
   if (!isOpen) {
     selectedUuid.value = undefined
     return
@@ -41,23 +38,28 @@ function handlePopoverOpen(isOpen: boolean, location: Location) {
 </script>
 
 <template>
-  <CustomMarker v-for="location in singles" :key="location.uuid"
+  <CustomMarker
+    v-for="location in singles" :key="location.uuid"
     :options="{ position: { lng: location.lng, lat: location.lat }, anchorPoint: showLocationName ? 'LEFT_CENTER' : 'CENTER' }"
-    data-custom-marker>
+    data-custom-marker
+  >
     <PopoverRoot @update:open="(isOpen: boolean) => handlePopoverOpen(isOpen, location)">
-      <PopoverAnchor absolute h-full w-28 pointer-events-none />
+      <PopoverAnchor pointer-events-none absolute h-full w-28 />
       <PopoverTrigger :aria-label="$t('See location details')" cursor-pointer :data-trigger-uuid="location.uuid">
-        <SingleMarker :location transition-shadow rounded-4 />
+        <SingleMarker :location rounded-4 transition-shadow />
       </PopoverTrigger>
       <PopoverPortal :key="popoverKey">
         <Transition name="popover">
-          <PopoverContent side="right" :side-offset="5" rounded-12 shadow :collision-padding="8" sticky="always"
-            @open-auto-focus.prevent ring="1.5 neutral/3">
+          <PopoverContent
+            side="right" :side-offset="5" rounded-12 shadow :collision-padding="8" sticky="always"
+            ring="1.5 neutral/3" @open-auto-focus.prevent
+          >
             <LocationCard :location="location" :progress="1" />
             <PopoverArrow
               :style="{ color: location.isAtm ? extractColorFromBg(location.bg[0]) : 'rgb(var(--nq-neutral-0))' }"
-              as-child rotate-180 right-1>
-              <div w-16 h-8 i-nimiq:tooltip-triangle />
+              as-child right-1 rotate-180
+            >
+              <div i-nimiq:tooltip-triangle h-8 w-16 />
             </PopoverArrow>
           </PopoverContent>
         </Transition>

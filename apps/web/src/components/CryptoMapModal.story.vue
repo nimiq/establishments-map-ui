@@ -4,7 +4,7 @@ import CryptoMapModal from './CryptoMapModal.vue'
 
 <template>
   <Story title="Crypto Map Modal">
-    <div class="grid w-full py32 bg-white place-content-center">
+    <div class="grid w-full place-content-center bg-white py32">
       <CryptoMapModal />
     </div>
   </Story>

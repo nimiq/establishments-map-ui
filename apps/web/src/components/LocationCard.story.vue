@@ -27,7 +27,7 @@ const progress = computed(() => {
     <template #controls>
       <div flex="~ flex-col gap-x-8" p-16>
         <label for="expanded" class="select-none">Progress State</label>
-        <select v-model="progressState" class="text-black bg-transparent bg-snow">
+        <select v-model="progressState" class="bg-snow bg-transparent text-black">
           <option name="expanded" value="expanded" class="text-black">
             Expanded
           </option>
@@ -43,13 +43,13 @@ const progress = computed(() => {
         </select>
       </div>
 
-      <div v-if="progressState === 'custom'" class="flex flex-col px-4 py-4 gap-x-2">
+      <div v-if="progressState === 'custom'" class="flex flex-col gap-x-2 px-4 py-4">
         <label for="expanded">Custom Progress</label>
         <input id="customProgress" v-model="customProgress" name="customProgress" class="text-black" type="number">
       </div>
     </template>
 
-    <Variant v-for="(l, i) in locations" :key="i" :title="l.provider" class="flex items-end h-full">
+    <Variant v-for="(l, i) in locations" :key="i" :title="l.provider" class="h-full flex items-end">
       <LocationCard :location="l" :progress="progressState === 'custom' ? customProgress : progress" class="relative" />
     </Variant>
   </Story>

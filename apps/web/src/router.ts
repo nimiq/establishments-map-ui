@@ -8,11 +8,11 @@ export const router = createRouter({
     {
       path: '/@:lat(-?\\d+.?\\d+?),:lng(-?\\d+.?\\d+?),:zoom(\\d+)z',
       component: MapView,
-      name: 'coords'
+      name: 'coords',
     },
     {
       path: '/',
-      component: MapView
+      component: MapView,
     },
 
     // There is no 404 page, so redirect to the map

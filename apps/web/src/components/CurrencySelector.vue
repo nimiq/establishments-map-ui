@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { translateCurrency } from '@/translations'
 import { Currency } from 'types'
-const selected = defineModel<Currency[]>('selected')
+
+defineModel<Currency[]>('selected')
 const options = Object.values(Currency).filter(c => c !== Currency.BINANCE_PAY)
 </script>
 
@@ -12,10 +12,12 @@ const options = Object.values(Currency).filter(c => c !== Currency.BINANCE_PAY)
       <span>{{ translateCurrency(option) }}</span>
     </template>
   </MultiSelector>
-  <TagsInputRoot :model-value="selected" delimiter="" flex="~ gap-8 items-center wrap" mt-6 min-h-26 mb-8 rounded-8>
-    <TagsInputItem v-for="item in selected" :key="item" :value="item" w-max bg-neutral-200 font-bold rounded-2 pl-8 pr-4
-      py-4 text-12 flex="~ gap-x-6 items-center" class="has-[button:hover]:bg-red/15 has-[button:hover]:text-red-1100"
-      transition-colors>
+  <TagsInputRoot :model-value="selected" delimiter="" flex="~ gap-8 items-center wrap" mb-8 mt-6 min-h-26 rounded-8>
+    <TagsInputItem
+      v-for="item in selected" :key="item" :value="item" flex="~ gap-x-6 items-center"
+      class="has-[button:hover]:bg-red/15 has-[button:hover]:text-red-1100" w-max rounded-2 bg-neutral-200 py-4 pl-8
+      pr-4 text-12 font-bold transition-colors
+    >
       <TagsInputItemText>{{ translateCurrency(item) }}</TagsInputItemText>
       <TagsInputItemDelete p-4>
         <div i-nimiq:cross text-8 />

@@ -109,7 +109,7 @@ application) to level 14. When the user explores the map at a zoom level between
 
 When fetching data for the clusters, there may be locations that are not in the
 cluster set, so the request for the clusters will return an object like
-`{ singles: Location[], clusters: Cluster[] }`.
+`{ singles: MapLocation[], clusters: Cluster[] }`.
 
 This solution works well when the zoom level is between 3 and 14. However, the
 higher the zoom level, the more clusters we will have but the less computation

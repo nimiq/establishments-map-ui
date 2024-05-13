@@ -120,7 +120,6 @@ export const useMap = defineStore('map', () => {
 
   // Whether to show content inside the marker
 
-
   return {
     map,
     mapInstance,
