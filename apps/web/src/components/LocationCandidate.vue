@@ -15,7 +15,8 @@ const body = computed(() => ({
   dev: import.meta.env.DEV,
 }))
 const url = import.meta.env.VITE_SLACK_NEW_CANDIDATE_URL
-const { disabled, state, submit, reset, isError, isSuccess, isSubmitted } = useForm({ url, body })
+const disabled = computed(() => !selectedPlace.value || !selectedCryptos.value.length)
+const { state, submit, reset, isError, isSuccess, isSubmitted } = useForm({ url, body })
 </script>
 
 <template>

@@ -10,22 +10,10 @@ interface UseFormOptions {
   body: ComputedRef<Record<string, any>>
 }
 
-function isEmpty(value: any) {
-  if (Array.isArray(value))
-    return value.length === 0
-  if (typeof value === 'object')
-    return Object.keys(value).length === 0
-  return !value
-}
-
 export function useForm({ url, body }: UseFormOptions) {
   const state = ref<FormState>(FormState.Initial)
-  const disabled = computed(() => Object.values(body.value).some(isEmpty))
 
   async function submit() {
-    if (disabled.value)
-      return
-
     state.value = FormState.Loading
 
     const bodyStr = JSON.stringify({ ...body.value, captcha: await useCaptcha().getCaptchaToken() })
@@ -40,7 +28,6 @@ export function useForm({ url, body }: UseFormOptions) {
 
   return {
     state,
-    disabled,
     submit,
     reset,
     isSubmitted: computed(() => state.value !== FormState.Initial && state.value !== FormState.Loading),
