@@ -1,5 +1,5 @@
-import { type ConfigurableWindow, type MaybeRefOrGetter, defaultWindow, unrefElement, useScroll } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { type ConfigurableWindow, defaultWindow } from '@vueuse/core'
+import type { MaybeRefOrGetter } from 'vue'
 
 export type UseCarouselOptions = ConfigurableWindow & {
   columnGap?: number

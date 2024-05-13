@@ -3,7 +3,6 @@ import type { Category, Currency } from './database.ts'
 export * from './database.ts'
 export * from './map.ts'
 export * from './location.ts'
-export * from './autocomplete.ts'
 export * from './cryptocity.ts'
 
 export enum Issue {

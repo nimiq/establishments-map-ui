@@ -1,66 +1,38 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { detectLanguage, setLanguage } from './i18n/i18n-setup'
 import MapView from '@/components/MapView.vue'
-import './index.css'
-
-const NewCandidate = () => import('@/components/forms/NewCandidate.vue')
-const ReportLocation = () => import('@/components/forms/ReportLocation.vue')
 
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
-    {
-      path: '/location/add',
-      name: 'add_location',
-      component: NewCandidate,
-      meta: { transition: 'slide-left' },
-    },
-    {
-      path: '/location/report',
-      name: 'report_location',
-      component: ReportLocation,
-      meta: { transition: 'slide-left' },
-    },
     {
       path: '/@:lat(-?\\d+.?\\d+?),:lng(-?\\d+.?\\d+?),:zoom(\\d+)z',
       component: MapView,
       name: 'coords',
     },
     {
-      // Old route for location. We redirect to the new route with UUIDs as query params.
-      path: '/establishment/:uuid',
-      component: MapView,
-      name: 'old_location_detail',
-    },
-    {
       path: '/',
       component: MapView,
-      name: 'map',
     },
+
+    // There is no 404 page, so redirect to the map
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
 })
 
 // This router navigation guard is to prevent switching to the new route before the language file finished loading.
 // If there are any routes which do not require translations, they can be skipped here.
-router.beforeResolve((to, from, next) => {
-  setLanguage(detectLanguage()).then(() => next())
+router.beforeResolve(async (_to, _from, next) => {
+  await setLanguage(detectLanguage())
+  next()
 })
 
 // Validate UUIDs in route params
-router.beforeEach((to, from, next) => {
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+router.beforeEach((to, _from, next) => {
   const uuidQueryParam = to.query.uuid
   if (uuidQueryParam && typeof uuidQueryParam === 'string' && !uuidRegex.test(uuidQueryParam))
     next('/')
-  else
-    next(true)
-})
-
-// Redirect old location detail route to new route which uses UUIDs as query params
-router.beforeEach((to, from, next) => {
-  if (to.name === 'old_location_detail' && to.params.uuid)
-    next({ name: 'map', query: { uuid: to.params.uuid } })
   else
     next(true)
 })

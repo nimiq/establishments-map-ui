@@ -1,6 +1,5 @@
 import type { Serializer } from '@vueuse/core'
 import type { Ref } from 'vue'
-import { computed, ref, watch } from 'vue'
 
 export interface ExpiringValue<T> {
   value: T
@@ -60,22 +59,22 @@ const hasExpired = (expiryDate: string) => new Date(expiryDate).getTime() <= Dat
 // }
 
 function getStoredValue<T>(key: string, serializer: Serializer<ExpiringValue<T>>): ExpiringValue<T> | undefined {
-  const cookie = getCookieValue(key);
-  return cookie ? serializer.read(cookie) as ExpiringValue<T> : undefined;
+  const cookie = getCookieValue(key)
+  return cookie ? serializer.read(cookie) as ExpiringValue<T> : undefined
 }
 
 function getCookieValue(key: string): string | null {
-  const b = document.cookie.match('(^|;)\\s*' + key + '\\s*=\\s*([^;]+)');
-  return b?.pop() ?? null;
+  const b = document.cookie.match(`(^|;)\\s*${key}\\s*=\\s*([^;]+)`)
+  return b?.pop() ?? null
 }
 
 function setCookie(key: string, value: string, expiresIn: number) {
-  const expires = new Date(Date.now() + expiresIn).toUTCString();
-  document.cookie = `${key}=${value}; expires=${expires}; path=/`;
+  const expires = new Date(Date.now() + expiresIn).toUTCString()
+  document.cookie = `${key}=${value}; expires=${expires}; path=/`
 }
 
 function deleteCookie(key: string) {
-  document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+  document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`
 }
 
 /**
@@ -122,7 +121,7 @@ export function useExpiringStorage<T>(_key: string, options: UseExpiringStorageS
   // Write the value to the storage
   watch(stored, (newValue) => {
     // storage.setItem(key, serializer.write({ value: newValue, expires: new Date(Date.now() + expiresIn).toISOString(), timestamp }))
-    setCookie(key, serializer.write({ value: newValue, expires: new Date(Date.now() + expiresIn).toISOString(), timestamp }), expiresIn);
+    setCookie(key, serializer.write({ value: newValue, expires: new Date(Date.now() + expiresIn).toISOString(), timestamp }), expiresIn)
   }, { immediate: true, deep: true })
 
   const refreshData = async (remainingTime: number) => {

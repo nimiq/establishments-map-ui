@@ -8,5 +8,6 @@
   "deno.unstable": true,
   "deno.suggest.imports.hosts": {
     "https://deno.land": false
-  }
+  },
+  "editor.formatOnSave": true
 }

@@ -4,7 +4,7 @@
   "type": "module",
   "version": "2.0.4",
   "private": true,
-  "packageManager": "pnpm@8.7.4",
+  "packageManager": "pnpm@9.1.0",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev --no-cache --continue",
@@ -21,7 +21,7 @@
     "eslint": "^8.56.0",
     "eslint-config": "^0.3.0",
     "lint-staged": "15.2.2",
-    "turbo": "^1.12.4"
+    "turbo": "^1.13.3"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

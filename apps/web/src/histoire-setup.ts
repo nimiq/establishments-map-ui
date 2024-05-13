@@ -2,7 +2,8 @@ import { defineSetupVue3 } from '@histoire/plugin-vue'
 import { createPinia } from 'pinia'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import { detectLanguage, i18nRegistration, setLanguage } from './i18n/i18n-setup'
-import './index.css'
+import './style.css'
+import 'virtual:uno.css'
 import { router } from './router'
 
 // load and set the initial language

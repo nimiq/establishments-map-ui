@@ -22,9 +22,9 @@ export enum LocationLink {
 }
 
 // The different Banner designs
-export type Banner = Provider.Bluecode | Provider.CryptopaymentLink | Provider.Edenia | Provider.Kurant | Provider.NAKA | 'Nimiq-Pay' | Provider.DefaultAtm | 'None'
+export type Banner = Provider.Bluecode | Provider.CryptopaymentLink | Provider.Edenia | Provider.Kurant | Provider.NAKA | Provider.Edenia | 'Nimiq-Pay' | Provider.DefaultAtm | 'None'
 
-export interface Location extends RawLocation {
+export interface MapLocation extends RawLocation {
   category_label: string
 
   // Given the social media fields, we can generate just one link
@@ -36,12 +36,11 @@ export interface Location extends RawLocation {
   theme: Theme
   bg: [string /* primary color */, string | undefined /* Active for atm */]
 
-  
   // Quick getters
   isAtm: boolean
   isDark: boolean
   isLight: boolean
-  
+
   // Banner: The design of the banner can be a provider or a Nimiq-Pay banner for specific providers.
   banner: Banner
   bannerLabel?: string
@@ -68,4 +67,5 @@ export interface RawLocation {
   facebook?: string
   gmaps?: string
   gmaps_types: string[]
+  cryptocity: string
 }

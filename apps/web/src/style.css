@@ -1,0 +1,12 @@
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition:
+    opacity 250ms cubic-bezier(.4, 0, .2, 1),
+    margin-left 450ms var(--nq-ease);
+}
+
+.slide-left-enter-from,
+.slide-left-leave-to {
+  opacity: 0;
+  margin-left: 0.25rem;
+}

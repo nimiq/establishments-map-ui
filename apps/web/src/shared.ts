@@ -1,8 +1,8 @@
 import { PROVIDERS } from 'database'
-import type { DatabaseAnonArgs, DatabaseArgs, Location } from 'types'
+import type { DatabaseAnonArgs, DatabaseArgs, MapLocation } from 'types'
 import { DatabaseUser, LocationLink, Provider, Theme } from 'types'
 import { getCardConfiguration } from './assets-dev/banner-assets'
-import { translateCategory } from './translations'
+import { translateCategory } from './i18n/translations'
 import { useApp } from './stores/app'
 
 const GOOGLE_MAPS_API = import.meta.env.VITE_GOOGLE_MAP_KEY
@@ -17,16 +17,24 @@ export async function getAnonDatabaseArgs(): Promise<DatabaseAnonArgs> {
   return { ...DATABASE_ARGS, captchaToken: useApp().captchaTokenUuid, user: DatabaseUser.Anonymous }
 }
 
-export function parseLocation(location: Location) {
+function getProvider({ provider, isAtm }: MapLocation) {
+  const providerRoot = provider.split('/').at(0) as Provider // Some providers have a root and a subprovider. We don't care at the moment about the subprovider
+  const isInvalidProvider = !providerRoot || !PROVIDERS.includes(providerRoot)
+  if (isInvalidProvider) {
+    const newProvider = isAtm ? Provider.DefaultAtm : Provider.DefaultShop
+    console.warn(`Invalid provider: '${provider}'. Setting ${newProvider} provider. MapLocation: ${JSON.stringify(location)}`)
+    return newProvider
+  }
+  else if (isAtm && providerRoot === Provider.DefaultShop) {
+    return Provider.DefaultAtm
+  }
+  return providerRoot
+}
+
+export function parseLocation(location: MapLocation) {
   const isAtm = location.sells.length > 0
 
-  if (!location.provider || !PROVIDERS.includes(location.provider)) {
-    console.warn(`Unknown provider: '${location.provider}'. Setting ${location.provider} provider. Location: ${JSON.stringify(location)}`)
-    location.provider = isAtm ? Provider.DefaultAtm : Provider.DefaultShop
-  }
-  else if (isAtm && location.provider === Provider.DefaultShop) {
-    location.provider = Provider.DefaultAtm
-  }
+  location.provider = getProvider(location)
 
   // If the photo is not a URL, then it's a reference to Google Maps
   const hasPhotoUrl = location.photo?.startsWith('http')
