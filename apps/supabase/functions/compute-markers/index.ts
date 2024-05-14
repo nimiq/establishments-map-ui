@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-import { authenticateUser } from 'database@workspace:*'
-import { flushMarkersTable, insertMarkers } from '../../../../database/functions.js'
-import { getCryptocities, getLocations } from '../../../../database/getters.js'
-import { algorithm, computeMarkers } from '../../../../shared/compute-markers.js'
-import { euclideanDistance } from '../../../../shared/geo-utils.js'
+import { authenticateUser } from '../../../../packages/database/src/index.ts'
+import { flushMarkersTable, insertMarkers } from '../../../../packages/database/src/index.ts'
+import { getCryptocities, getLocations } from '../../../../packages/database/src/index.ts'
+import { algorithm, computeMarkers, euclideanDistance } from '../../../../packages/geo/src/index.ts'
 import type { Args, AuthWriteDbFunction, InsertMarkersSingleCryptocity } from '../../../../packages/types/src/database.ts'
 import type { BoundingBox } from '../../../../packages/types/src/index.ts'
 
@@ -89,3 +88,5 @@ serve(async () => {
     })
   }
 })
+
+markers()
