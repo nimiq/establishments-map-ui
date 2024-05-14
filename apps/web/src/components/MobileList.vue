@@ -149,13 +149,18 @@ if (isIOs) {
     }
   }, { immediate: true })
 }
+
+function close() {
+  isListShown.value = false
+  selectedUuid.value = undefined
+}
 </script>
 
 <template>
   <transition enter-from-class="translate-y-[110%] opacity-0" leave-to-class="translate-y-[110%] opacity-0"
     enter-active-class="transition duration-300" leave-active-class="transition duration-300">
-    <ul v-if="locations.length > 0" ref="scrollRoot" absolute bottom-0 w-full flex="~ items-end gap-x-3" of-x-auto
-      snap="x mandatory"
+    <ul v-if="locations.length > 0 && isListShown" ref="scrollRoot" absolute bottom-0 w-full flex="~ items-end gap-x-3"
+      of-x-auto snap="x mandatory"
       bg="gradient-to-t gradient-from-neutral/20 gradient-to-neutral/0 bottom no-repeat [size:100%_184px]" :class="{
         'pointer-events-none': !isIOs,
       }"
@@ -163,8 +168,7 @@ if (isIOs) {
       <li v-for="location in locations" :key="location.uuid" ref="cards" first:pl="$spacing" last:pr="$spacing"
         pointer-events-auto relative shrink-0 snap-center :data-card-uuid="location.uuid">
         <SheetModal v-model:progress="progress" :max-height="location.photo ? 363 : 179" :initial-border-radius="8"
-          @close-list="isListShown = false; selectedUuid = undefined;" :initial-gap-to-screen="INITIAL_GAP_TO_SCREEN"
-          relative w-full rounded-t-lg>
+          @close="close" :initial-gap-to-screen="INITIAL_GAP_TO_SCREEN" relative w-full rounded-t-lg>
           <template #dragger>
             <div relative>
               <hr absolute inset-x-0 z-10 mx-auto ml-auto mt-8 h-4 w-128 border-0 rounded-full :class="[

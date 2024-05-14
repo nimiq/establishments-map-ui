@@ -3,7 +3,7 @@ import { TransitionPresets } from '@vueuse/core'
 
 const props = defineProps<{ maxHeight: number, initialBorderRadius: number, initialGapToScreen: number }>()
 
-const emit = defineEmits({ closeList: () => true })
+const emit = defineEmits({ close: () => true })
 
 const progress = defineModel<number>('progress', { default: 0 })
 
@@ -87,10 +87,10 @@ function onEnd(event: PointerEvent) {
 
       // Close list if dragged down fast enough
       if (progress.value < 0 && speedY > 0.8)
-        emit('closeList')
+        emit('close')
 
       if (progress.value < -0.5)
-        emit('closeList')
+        emit('close')
     }
   }
 }
@@ -107,6 +107,7 @@ function onCancel(event: PointerEvent) {
 
 function close() {
   progress.value = 0
+  emit('close')
 }
 
 function open(smooth = false) {
@@ -166,10 +167,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <article
-    ref="container" absolute h-full min-h-fit touch-pan-x will-change-auto class="sheet-transition"
-    :style="style" @pointerdown="onStart" @pointermove="onMove" @pointerup="onEnd" @pointercancel="onCancel"
-  >
+  <article ref="container" absolute h-full min-h-fit touch-pan-x will-change-auto class="sheet-transition"
+    :style="style" @pointerdown="onStart" @pointermove="onMove" @pointerup="onEnd" @pointercancel="onCancel">
     <slot name="dragger" />
     <slot />
   </article>
