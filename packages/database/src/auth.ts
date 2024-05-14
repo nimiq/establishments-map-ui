@@ -31,7 +31,7 @@ export async function authenticateAnonUser({ apikey, url }: DatabaseArgs, captch
   }
   const data: { captcha_uuid: string } = await response.json()
   if (!data || !data.captcha_uuid)
-    data.captcha_uuid = crypto.randomUUID()
+    data.captcha_uuid = new String(Math.random()).slice(2, 8)
   //   throw new Error('No captcha uuid found!')
 
   /* eslint-disable no-console */
