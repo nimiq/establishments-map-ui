@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { MapLocation } from 'types'
+import { ModalName } from './Modal.vue'
 
 const props = defineProps<{ location: MapLocation }>()
 
@@ -12,7 +13,7 @@ const { share, isSupported: shareIsSupported } = useShare({
 const { copy, isSupported: copyIsSupported, copied } = useClipboard({ source: url, copiedDuring: 3000 })
 
 // We show the report location modal if the query parameter 'modal' is set to 'report-location'
-const initialOpen = useRoute().query.modal === 'report'
+const initialOpen = useRoute().query.modal === ModalName.Report
 </script>
 
 <template>

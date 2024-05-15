@@ -10,17 +10,19 @@ export enum ModalName {
 <script setup lang="ts">
 const props = withDefaults(defineProps<{ name: ModalName, nested?: boolean }>(), { nested: false })
 const emit = defineEmits<{ close: [] }>()
+const open = defineModel<boolean>('open')
 
 // Keep state in the URL
-const query = useRouteQuery<ModalName | undefined>(props.nested ? 'nested' : 'modal')
-const open = defineModel<boolean>('open')
-open.value = query.value === props.name
+const route = useRoute()
+const router = useRouter()
+const queryName = props.nested ? 'nested' : 'modal'
+open.value = route.query[queryName] === props.name
 watch(open, (v) => {
-  query.value = v ? props.name : undefined
+  requestAnimationFrame(() => router.replace({ query: { ...route.query, [queryName]: v ? props.name : undefined } }))
   if (!v)
     emit('close')
 })
-onUnmounted(() => query.value = undefined)
+onUnmounted(() => router.replace({ query: { ...route.query, [queryName]: undefined } }))
 </script>
 
 <template>
