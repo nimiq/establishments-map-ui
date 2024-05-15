@@ -6,7 +6,7 @@ withDefaults(defineProps<{ location: MapLocation, withGradient?: boolean }>(), {
 
 <template>
   <template v-if="!location.isAtm">
-    <div v-if="withGradient" rounded="$bottom-radius"
+    <div v-if="withGradient" inert rounded="$bottom-radius"
       bg="[radial-gradient(100%_75.78%_at_100%_100%,#ffffff_0%,rgba(255,255,255,0)_100%)]" aria-hidden
       pointer-events-none absolute right-0 top-0 h-full w-full op-20 />
     <div v-bind="$attrs" pointer-events-none absolute bottom-0 right-0 z-20 h-full w-full of-hidden>
@@ -22,7 +22,7 @@ withDefaults(defineProps<{ location: MapLocation, withGradient?: boolean }>(), {
   </template>
 
   <template v-if="location.isAtm">
-    <div v-if="withGradient" bg="[radial-gradient(100%_75.78%_at_100%_0%,#ffffff_0%,rgba(255,255,255,0)_100%)]"
+    <div v-if="withGradient" inert bg="[radial-gradient(100%_75.78%_at_100%_0%,#ffffff_0%,rgba(255,255,255,0)_100%)]"
       pointer-events-none absolute right-0 top-0 h-full w-full op-20 />
     <div v-bind="$attrs" pointer-events-none absolute bottom-0 right-0 z-20 h-full w-full of-hidden>
       <div aria-hidden i-ring:atm absolute bottom-16 right-16 size-59 />
