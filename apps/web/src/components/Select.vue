@@ -15,7 +15,7 @@ const selected = defineModel<T>('selected')
     <SelectPortal>
       <SelectContent
         position="popper"
-        w="[calc(var(--radix-select-trigger-width)+3px)]" relative inset-0 z-500 ml--1.5 rounded-6 text-neutral-200 shadow bg-gradient-neutral
+        w="[calc(var(--radix-select-trigger-width)+3px)]" relative inset-0 z-500 ml--1.5 rounded-6 text-neutral-200 bg-gradient-neutral shadow
         ring="1.5 neutral-500/6"
       >
         <SelectViewport py-8>

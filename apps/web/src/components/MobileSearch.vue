@@ -24,7 +24,7 @@ function reset() {
       <ComboboxAnchor flex="~ items-center justify-between" group relative border-b="1.5 neutral-500 focus-within:blue">
         <ComboboxInput
           :placeholder="$t('Search Map')"
-          auto-focus order-2 w-full rounded-0 py-16 pr-48 text-14 font-semibold shadow-none outline-none input-box
+          input-box auto-focus order-2 w-full rounded-0 py-16 pr-48 text-14 font-semibold shadow-none outline-none
         />
         <ComboboxTrigger
           :aria-label="$t('Go back')" pl-16 arrow-back text="16  neutral-700 group-focus-within:blue/80"

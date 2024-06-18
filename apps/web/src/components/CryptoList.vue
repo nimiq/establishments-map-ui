@@ -39,7 +39,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{ cryptosToDispla
           </PopoverTrigger>
           <PopoverPortal>
             <PopoverContent
-              z-200 max-w-320 rounded-6 p-16 text-white shadow bg-gradient-neutral ring="1.5 neutral/3"
+              z-200 max-w-320 rounded-6 p-16 text-white bg-gradient-neutral shadow ring="1.5 neutral/3"
               :side="isMobile ? 'top' : 'right'" :collision-padding="8" :side-offset="6"
             >
               <h4 font-semibold lh-none text="15 neutral-100">

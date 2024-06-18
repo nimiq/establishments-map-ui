@@ -196,12 +196,12 @@ function close() {
       </li>
     </ul>
     <button
-      v-else-if="!isListShown" translate-x="-50%" absolute bottom-24 shadow pill-sm pill-tertiary left="50%"
+      v-else-if="!isListShown" translate-x="-50%" pill-sm absolute bottom-24 pill-tertiary shadow left="50%"
       @click="isListShown = true"
     >
       {{ $t('Show list') }}
     </button>
-    <button v-else translate-x="-50%" absolute bottom-24 text-orange shadow pill-sm pill-tertiary left="50%">
+    <button v-else translate-x="-50%" pill-sm absolute bottom-24 text-orange pill-tertiary shadow left="50%">
       {{
         clustersInView.length > 0 ? $t('Zoom in to see the list.') : $t('Oops, no businesses around here.')
       }}

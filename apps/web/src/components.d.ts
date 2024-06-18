@@ -104,5 +104,6 @@ declare module 'vue' {
     TheMapInstance: typeof import('./components/TheMapInstance.vue')['default']
     TriangleSelector: typeof import('./components/TriangleSelector.vue')['default']
     'TriangleSelector.story': typeof import('./components/TriangleSelector.story.vue')['default']
+    UserLocationMarker: typeof import('./components/UserLocationMarker.vue')['default']
   }
 }

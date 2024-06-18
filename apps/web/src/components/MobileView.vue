@@ -15,7 +15,7 @@ watch(selectedUuid, (uuid) => {
   <div flex="~ col" h="screen 100dvh">
     <InteractionBar>
       <template #search>
-        <button flex="~ justify-between items-center" group flex-1 rounded-full input-box @click="searchOpen = true">
+        <button flex="~ justify-between items-center" input-box group flex-1 rounded-full @click="searchOpen = true">
           <span text="neutral-700 group-hocus:$color">{{ $t('Search Map') }}</span>
           <div i-nimiq:magnifying-glass absolute right-16 text="14 neutral-600 group-hocus:$color" />
         </button>

@@ -28,8 +28,8 @@ const initialOpen = useRoute().query.modal === ModalName.Report
     <DropdownMenuPortal>
       <Transition name="slide-left">
         <DropdownMenuContent
-          flex="~ col" :side-offset="0" absolute right--10 top--24 z-200 min-w-152 select-none
-          rounded-6 p-4 shadow bg-gradient-neutral
+          flex="~ col" :side-offset="0"
+          absolute right--10 top--24 z-200 min-w-152 select-none rounded-6 p-4 bg-gradient-neutral shadow
         >
           <DropdownMenuItem
             v-if="shareIsSupported" flex="~ items-center" bg="hocus:neutral-0/10"

@@ -20,7 +20,7 @@ const { state, submit, reset, isError, isSuccess, isSubmitted } = useForm({ url,
 </script>
 
 <template>
-  <Modal v-model:open="open" nested :name="ModalName.Candidate" pill-sm pill-blue>
+  <Modal v-model:open="open" :name="ModalName.Candidate" pill-sm nested pill-blue>
     <template #trigger>
       {{ $t('Add Crypto location') }}
     </template>
@@ -76,7 +76,7 @@ const { state, submit, reset, isError, isSuccess, isSubmitted } = useForm({ url,
           </div>
         </form>
       </div>
-      <button v-else mt-32 pill-sm pill-blue @click="isError ? reset() : (open = false)">
+      <button v-else pill-sm mt-32 pill-blue @click="isError ? reset() : (open = false)">
         {{ isError ? $t('Try again') : $t('Back to the Map') }}
       </button>
     </template>

@@ -9,7 +9,7 @@ const selected = defineModel<GoogleSuggestion>('selected')
 <template>
   <ComboboxRoot v-model="selected" relative :display-value="v => v.label" @update:search-term="q => query = q">
     <ComboboxAnchor flex="~ items-center justify-between" relative>
-      <ComboboxInput :placeholder="$t('Search Map')" peer rounded-6 pr-32 text-14 input-box />
+      <ComboboxInput :placeholder="$t('Search Map')" peer input-box rounded-6 pr-32 text-14 />
       <div v-if="!query" i-nimiq:magnifying-glass absolute right-8 text="14 neutral-600 peer-focus-visible:blue" />
       <ComboboxCancel v-else i-nimiq:cross absolute right-8 text="10 neutral-700 peer-focus-visible:blue/80" />
     </ComboboxAnchor>

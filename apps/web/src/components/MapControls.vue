@@ -33,8 +33,8 @@ function clearStorage() {
 <template>
   <div flex="~ col items-end gap-y-16">
     <button
-      v-if="browserPositionIsSupported" ring="1.5 neutral/3" bg="neutral-0 hover:neutral-100" size-32 rounded-full text-14
-      shadow flex="~ items-center justify-center" :disabled="geolocatingUserBrowser"
+      v-if="browserPositionIsSupported" ring="1.5 neutral/3" bg="neutral-0 hover:neutral-100" size-32 rounded-full
+      text-14 shadow flex="~ items-center justify-center" :disabled="geolocatingUserBrowser"
       :aria-label="$t('Show your location')" :title="$t('Show your location')" @click="setBrowserPosition"
     >
       <div i-nimiq:gps />

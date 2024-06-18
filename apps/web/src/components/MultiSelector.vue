@@ -6,7 +6,7 @@ const query = ref('')
 
 <template>
   <ComboboxRoot v-model="selected" v-model:search-term="query" :multiple relative>
-    <ComboboxAnchor group relative p-0 input-box>
+    <ComboboxAnchor group input-box relative p-0>
       <ComboboxInput
         :placeholder="$t('Select an option')" w-full
         rounded-6 bg-neutral-0 px-14 py-4.5 text="14 group-hocus:placeholder:blue" @keydown.enter.prevent
@@ -22,7 +22,7 @@ const query = ref('')
       <ComboboxContent
         position="popper"
         w="[calc(var(--radix-combobox-trigger-width)+3px)]"
-        ring="1.5 neutral-500/6" relative inset-0 z-300 ml--1.5 max-h-280 of-auto rounded-6 text-neutral-200 shadow bg-gradient-neutral
+        ring="1.5 neutral-500/6" relative inset-0 z-300 ml--1.5 max-h-280 of-auto rounded-6 text-neutral-200 bg-gradient-neutral shadow
       >
         <ComboboxViewport py-8>
           <ComboboxEmpty px-14 py-4.5>

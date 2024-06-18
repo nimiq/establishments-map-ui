@@ -48,8 +48,8 @@ importers:
         specifier: ^10.9.0
         version: 10.9.0(vue-router@4.3.2(vue@3.4.27(typescript@5.3.3)))(vue@3.4.27(typescript@5.3.3))
       nimiq-css:
-        specifier: ^0.0.89
-        version: 0.0.89(typescript@5.3.3)(unocss@0.59.4(postcss@8.4.38)(rollup@4.14.2)(vite@5.2.11(@types/node@20.12.11)(terser@5.27.2)))(vite@5.2.11(@types/node@20.12.11)(terser@5.27.2))
+        specifier: ^0.0.103
+        version: 0.0.103(typescript@5.3.3)(unocss@0.59.4(postcss@8.4.38)(rollup@4.14.2)(vite@5.2.11(@types/node@20.12.11)(terser@5.27.2)))(vite@5.2.11(@types/node@20.12.11)(terser@5.27.2))
       pinia:
         specifier: ^2.1.7
         version: 2.1.7(typescript@5.3.3)(vue@3.4.27(typescript@5.3.3))
@@ -4236,8 +4236,8 @@ packages:
   next-tick@1.1.0:
     resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
 
-  nimiq-css@0.0.89:
-    resolution: {integrity: sha512-tr77c6oHuFGo2wgjgzSsXrnldFasBzGi/tmqur+Zx4AGEMYcBiSggZqQt9PUADL7D3SkOcRIBKq73b9idgtWbQ==}
+  nimiq-css@0.0.103:
+    resolution: {integrity: sha512-0aZc5yoXreClBYWxxPcN80NLeQo60kIMCEUiWcYvfYuA4iCgoxELdmogQE0eh8tQksKd13tAcQ3VipzQC5aYrw==}
     engines: {node: '>=14'}
     peerDependencies:
       typescript: ^5.0.0
@@ -11394,7 +11394,7 @@ snapshots:
 
   next-tick@1.1.0: {}
 
-  nimiq-css@0.0.89(typescript@5.3.3)(unocss@0.59.4(postcss@8.4.38)(rollup@4.14.2)(vite@5.2.11(@types/node@20.12.11)(terser@5.27.2)))(vite@5.2.11(@types/node@20.12.11)(terser@5.27.2)):
+  nimiq-css@0.0.103(typescript@5.3.3)(unocss@0.59.4(postcss@8.4.38)(rollup@4.14.2)(vite@5.2.11(@types/node@20.12.11)(terser@5.27.2)))(vite@5.2.11(@types/node@20.12.11)(terser@5.27.2)):
     dependencies:
       '@unocss/reset': 0.59.0-beta.1
       ts-cssjson: 3.0.1
