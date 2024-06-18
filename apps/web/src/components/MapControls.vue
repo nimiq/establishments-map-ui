@@ -17,7 +17,11 @@ async function setBrowserPosition() {
     return
   }
   isGeolocationLoading.value = false
-  useMap().setPosition(browserPosition)
+  if (browserPosition.accuracy)
+    useMap().setPosition(browserPosition)
+  else
+    /* eslint-disable-next-line no-alert */
+    alert('Could not get your location.')
 }
 
 function clearStorage() {

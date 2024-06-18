@@ -15,7 +15,6 @@ interface GeoIpResponse {
 function _useGeoIp() {
   const ipPositionError = ref()
   const ipPosition = ref<EstimatedMapPosition>()
-  const browserPosition = ref<EstimatedMapPosition>()
 
   async function geolocateIp() {
     const url = new URL('https://geoip.nimiq-network.com:8443/v1/locate')
@@ -45,34 +44,26 @@ function _useGeoIp() {
     immediate: false,
   })
   const geolocatingUserBrowser = ref(false)
-
-  // Recursive function to get the user's location.
-  // It will locate user after user has given permission.
-  // It won't resolve until 2 seconds have passed or the accuracy is better than 1000m.
-  const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-  const MAX_WAIT = 5000
-  const INTERVAL = 500
-  async function geolocateUserViaBrowser(): Promise<EstimatedMapPosition> {
-    geolocatingUserBrowser.value = true
-    resumeGeolocation()
-
-    let maxTries = MAX_WAIT / INTERVAL
-    while (maxTries--) {
-      await sleep(INTERVAL)
-      // The default accuracy value is 0
-      if (browserCoords.value.accuracy > 0 && browserCoords.value.accuracy < 1000)
-        break
-    }
-
-    geolocatingUserBrowser.value = false
-    browserPosition.value = {
+  const browserPosition = computed<EstimatedMapPosition>(() => {
+    return {
       center: {
         lat: browserCoords.value.latitude,
         lng: browserCoords.value.longitude,
       },
       accuracy: browserCoords.value.accuracy,
     }
+  })
 
+  // Recursive function to get the user's location.
+  // It will locate user after user has given permission.
+  // It won't resolve until 15 seconds have passed or the accuracy is better than 1000m.
+  const MAX_WAIT = 15000
+  async function geolocateUserViaBrowser(): Promise<EstimatedMapPosition> {
+    geolocatingUserBrowser.value = true
+    resumeGeolocation()
+
+    await until(browserPosition).toMatch(x => x.accuracy > 0, { timeout: MAX_WAIT })
+    geolocatingUserBrowser.value = false
     return browserPosition.value
   }
 
