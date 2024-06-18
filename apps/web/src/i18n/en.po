@@ -27,7 +27,7 @@ msgstr ""
 msgid "ATM"
 msgstr ""
 
-#: src/components/LocationCandidate.vue:57
+#: src/components/LocationCandidate.vue:59
 msgid "Back to the Map"
 msgstr ""
 
@@ -35,7 +35,7 @@ msgstr ""
 msgid "Binance Pay"
 msgstr ""
 
-#: src/components/CryptoList.vue:24
+#: src/components/CryptoList.vue:28
 msgid ""
 "Binance Pay is a cryptocurrency payment service that empowers users to pay with crypto at shops and\n"
 "                establishments supporting Binance Pay."
@@ -45,11 +45,11 @@ msgstr ""
 msgid "Bluecode is a payment method that allows secure transactions directly through the smartphone."
 msgstr ""
 
-#: src/components/CryptoList.vue:29
+#: src/components/CryptoList.vue:33
 msgid "BTC +50"
 msgstr ""
 
-#: src/components/CryptoList.vue:54
+#: src/components/CryptoList.vue:61
 msgid "Buy"
 msgstr ""
 
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Buy crypto only"
 msgstr ""
 
-#: src/components/LocationCandidate.vue:47
+#: src/components/LocationCandidate.vue:49
 msgid "Cancel"
 msgstr ""
 
@@ -73,12 +73,12 @@ msgstr ""
 msgid "Cash"
 msgstr ""
 
-#: src/components/LocationCardDotsMenu.vue:10
+#: src/components/LocationCardDotsMenu.vue:11
 msgid "Check out {locationName} on Nimiq's Crypto Map"
 msgstr ""
 
 #: src/components/CryptocityCard.vue:16
-#: src/components/Modal.vue:27
+#: src/components/Modal.vue:28
 msgid "Close"
 msgstr ""
 
@@ -90,7 +90,7 @@ msgstr ""
 msgid "Computer & Electronics"
 msgstr ""
 
-#: src/components/LocationCandidate.vue:37
+#: src/components/LocationCandidate.vue:39
 msgid "Create Google Business profile"
 msgstr ""
 
@@ -161,7 +161,7 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: src/components/LocationCandidate.vue:40
+#: src/components/LocationCandidate.vue:42
 msgid "Find Location"
 msgstr ""
 
@@ -250,7 +250,7 @@ msgstr ""
 msgid "NAKA is a global payment network that enables merchants to accept crypto payments."
 msgstr ""
 
-#: src/components/CryptoList.vue:19
+#: src/components/CryptoList.vue:23
 msgid "NAKA supports Binance Pay"
 msgstr ""
 
@@ -275,7 +275,7 @@ msgstr ""
 msgid "Oops, no businesses around here"
 msgstr ""
 
-#: src/components/MobileList.vue:36
+#: src/components/MobileList.vue:48
 msgid "Oops, no businesses around here."
 msgstr ""
 
@@ -291,7 +291,7 @@ msgstr ""
 msgid "Pay with {provider}"
 msgstr ""
 
-#: src/components/LocationCard.vue:17
+#: src/components/LocationCard.vue:22
 msgid "Picture of {name}"
 msgstr ""
 
@@ -302,7 +302,7 @@ msgid "Powered by {provider}"
 msgstr ""
 
 #: src/components/CryptoMapModal.vue:23
-#: src/components/TheMapInstance.vue:10
+#: src/components/TheMapInstance.vue:16
 msgid "Privacy Policy"
 msgstr ""
 
@@ -346,7 +346,7 @@ msgstr ""
 msgid "Select an option"
 msgstr ""
 
-#: src/components/LocationCandidate.vue:43
+#: src/components/LocationCandidate.vue:45
 msgid "Select Cryptocurrency"
 msgstr ""
 
@@ -354,7 +354,7 @@ msgstr ""
 msgid "Select issue"
 msgstr ""
 
-#: src/components/CryptoList.vue:58
+#: src/components/CryptoList.vue:65
 msgid "Sell"
 msgstr ""
 
@@ -371,7 +371,7 @@ msgid "Shop"
 msgstr ""
 
 #: src/components/DesktopList.story.vue:14
-#: src/components/MobileList.vue:32
+#: src/components/MobileList.vue:44
 msgid "Show list"
 msgstr ""
 
@@ -387,7 +387,7 @@ msgstr ""
 msgid "Spend {CriptocityPoints} at unique locations in this area."
 msgstr ""
 
-#: src/components/LocationCard.vue:27
+#: src/components/LocationCard.vue:33
 msgid "Spend Cryptocity points here"
 msgstr ""
 
@@ -400,12 +400,12 @@ msgstr ""
 msgid "Start typing..."
 msgstr ""
 
-#: src/components/LocationCandidate.vue:51
+#: src/components/LocationCandidate.vue:53
 msgid "Submit Location"
 msgstr ""
 
 #: src/components/CryptoMapModal.vue:28
-#: src/components/TheMapInstance.vue:14
+#: src/components/TheMapInstance.vue:22
 msgid "Terms of Service"
 msgstr ""
 
@@ -433,7 +433,7 @@ msgstr ""
 msgid "This may take a few days to process. Keep an eye out for changes to the location in the Crypto Map."
 msgstr ""
 
-#: src/components/TheMapInstance.vue:7
+#: src/components/TheMapInstance.vue:10
 msgid "This site is protected by reCAPTCHA and the Google {privacyPolicy} and {termsOfService} apply."
 msgstr ""
 
@@ -441,7 +441,7 @@ msgstr ""
 msgid "To add a business that accepts cryptocurrency to our map, click the \"Gear\" icon next to the search bar, then \"Add business.\" We will review submissions to ensure compliance with our standards."
 msgstr ""
 
-#: src/components/LocationCandidate.vue:57
+#: src/components/LocationCandidate.vue:59
 msgid "Try again"
 msgstr ""
 
@@ -466,6 +466,6 @@ msgstr ""
 msgid "You can add any location that has a Google Business Profile."
 msgstr ""
 
-#: src/components/MobileList.vue:36
+#: src/components/MobileList.vue:48
 msgid "Zoom in to see the list."
 msgstr ""
