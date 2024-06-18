@@ -19,10 +19,10 @@ const { browserPositionIsSupported, browserPosition } = useGeoIp()
 
   <!-- User Position Marker -->
   <CustomMarker
-    v-if="browserPositionIsSupported && browserPosition && browserPosition.accuracy < 1000"
+    v-if="browserPositionIsSupported && browserPosition && browserPosition.accuracy < 1000 && browserPosition.accuracy > 0"
     :options="{ position: { lng: browserPosition.center.lng, lat: browserPosition.center.lat } }" data-custom-marker
   >
-    <UserLocationMarker :accuracy="browserPosition.accuracy" />
+    <UserLocationMarker :accuracy="browserPosition.accuracy" :zoom />
   </CustomMarker>
 
   <!-- Looks like you are about to find something interesting... -->
