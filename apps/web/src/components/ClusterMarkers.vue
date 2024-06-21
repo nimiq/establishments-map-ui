@@ -72,7 +72,7 @@ function onCryptocityClick(cryptocityName: Cryptocity) {
         <li relative z-10>
           <button
             text="14 neutral-0 dark:white/80" bg="neutral dark:blue hover:neutral-900" ring="1.5 neutral/10"
-            centered aspect-square cursor-pointer rounded-full font-bold transition-colors shadow
+            centered aspect-square cursor-pointer rounded-full font-bold shadow transition-colors
             :style="`width: ${c.diameter}px; font-size: clamp(14px, ${0.14 * c.count + 4}px, 18px)`"
             @pointerdown="e => onPointerDown(e, c)"
           >

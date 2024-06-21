@@ -28,7 +28,7 @@ function handleProviderPlaceholder({ banner, provider }: MapLocation) {
         <PopoverPortal>
           <Transition name="slide-left">
             <PopoverContent as-child :side-offset="4" :collision-padding="8" :side="isMobile ? 'top' : 'right'">
-              <div z-100 max-w-320 rounded-6 p-16 text-neutral-0 bg-gradient-neutral shadow>
+              <div z-100 max-w-320 rounded-6 p-16 text-neutral-0 shadow bg-gradient-neutral>
                 <header flex="~ items-center justify-start gap-8">
                   <div :class="getBannerIcon(location.banner)" shrink-0 text-24 />
 

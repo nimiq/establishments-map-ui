@@ -10,7 +10,7 @@ const searchOpen = ref(false)
       <button
         bg="neutral-0 hover:neutral-100"
         flex="~ items-center justify-between" :aria-label="$t('Search')" :title="$t('Search')"
-        w-full rounded-8 px-16 py-8 transition-colors shadow @click="searchOpen = true"
+        w-full rounded-8 px-16 py-8 shadow transition-colors @click="searchOpen = true"
       >
         <span op-60>{{ $t('Search Crypto Map') }}</span>
         <div i-nimiq:magnifying-glass op-40 />

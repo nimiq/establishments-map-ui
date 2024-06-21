@@ -80,7 +80,7 @@ const { submit, reset, isError, isSuccess, isSubmitted } = useForm({ url, body }
           <label for="name" text="14 neutral-900" mb-4 mt-24 block font-200>{{ $t('Describe the issue') }}</label>
           <textarea
             v-model="description" :placeholder="$t('Write your problem here')" text="14 neutral"
-            input-box min-h-64 resize-none style="field-sizing: content"
+            min-h-64 resize-none input-box style="field-sizing: content"
           />
 
           <div flex="~ gap-16 justify-end" mt-24>
@@ -94,7 +94,7 @@ const { submit, reset, isError, isSuccess, isSubmitted } = useForm({ url, body }
           </div>
         </form>
       </template>
-      <button v-else pill-sm mt-32 pill-blue @click="isError ? reset() : (open = false)">
+      <button v-else mt-32 pill-sm pill-blue @click="isError ? reset() : (open = false)">
         {{ isError ? $t('Try again') : $t('Back to the Map') }}
       </button>
     </template>

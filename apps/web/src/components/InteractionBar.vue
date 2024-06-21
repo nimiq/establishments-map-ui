@@ -42,7 +42,7 @@ const { cryptocityBanner, showSearchBoxHint } = useUIParams()
                     {{ $t('The initiative for crypto-friendly cities.') }}
                   </p>
                   <a
-                    :href="cryptocityBanner.url" target="_blank" pill-sm mt-12 transition-colors
+                    :href="cryptocityBanner.url" target="_blank" mt-12 transition-colors pill-sm
                     bg-image="$nq-blue-on-dark-gradient hocus:$nq-blue-on-light-gradient-darkened"
                   >
                     {{ $t('Learn more') }}

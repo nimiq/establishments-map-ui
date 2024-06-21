@@ -38,7 +38,7 @@ onUnmounted(() => router.replace({ query: { ...route.query, [queryName]: undefin
         <DialogContent
           :key="name" desktop="top-1/2 left-1/2 translate--1/2" ring="1.5 neutral-50"
           rounded="t-8 desktop:8"
-          data-modal fixed bottom-0 z-200 h-max max-h-85dvh w-full transform of-y-auto bg-neutral-0 py-32 op-100 outline-none shadow-lg desktop:max-w-512 :data-nested="nested ? '' : undefined"
+          data-modal fixed bottom-0 z-200 h-max max-h-85dvh w-full transform of-y-auto bg-neutral-0 py-32 op-100 shadow-lg outline-none desktop:max-w-512 :data-nested="nested ? '' : undefined"
           @open-auto-focus.prevent
         >
           <DialogTitle mb-8 px-24 text-18 text-neutral font-bold lh-none desktop:px-40 as="h2">

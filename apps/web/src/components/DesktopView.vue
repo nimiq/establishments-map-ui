@@ -24,7 +24,7 @@ const toggleList = useToggle(isListShown)
       <DesktopList :singles="singlesInView" :clusters="clustersInView" :list-is-shown="isListShown" />
     </div>
     <button
-      ring="1.5 neutral/3" pill-sm z-10 mt-12 border-none pill-tertiary flex="~ gap-8"
+      ring="1.5 neutral/3" z-10 mt-12 border-none pill-sm pill-tertiary flex="~ gap-8"
       @click="() => toggleList()"
     >
       <div

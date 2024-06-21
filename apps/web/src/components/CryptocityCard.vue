@@ -5,7 +5,7 @@ defineEmits({ close: () => true })
 
 <template>
   <div
-    class="cursor-default border border-[#e9e9ed] rounded-t-md border-solid bg-white p-6 transition-all duration-300 shadow desktop:max-w-320 desktop:rounded-md"
+    class="cursor-default border border-[#e9e9ed] rounded-t-md border-solid bg-white p-6 shadow transition-all duration-300 desktop:max-w-320 desktop:rounded-md"
     @pointerdown.capture.stop.prevent @dblclick.capture.stop.prevent
   >
     <div class="grid grid-flow-dense grid-cols-[auto_1fr_auto] grid-rows-2 items-center gap-x-2">
@@ -26,7 +26,7 @@ defineEmits({ close: () => true })
     <p v-for="(p, i) in cryptocity.description" :key="i" text="14 neutral-800" :pt="i === 0 ? '12' : '8'">
       {{ p }}
     </p>
-    <button pill-sm mt-2 text-14 pill-blue>
+    <button mt-2 text-14 pill-sm pill-blue>
       {{ cryptocity.url }}
     </button>
   </div>

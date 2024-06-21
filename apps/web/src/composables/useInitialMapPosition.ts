@@ -18,14 +18,14 @@ const FALLBACK_POSITION: MapPosition = { center: { lat: 9.6301892, lng: -84.2541
 const validFloat = (n?: string | string[]) => !!n && typeof n === 'string' && !Number.isNaN(Number(n))
 
 async function useDefaultMapPosition() {
-  const { useGeoIp } = await import('@/composables/useGeoLocation')
+  const { useGeoIp } = await import('@/stores/geo-location')
   const { geolocateIp, ipPosition, ipPositionError } = useGeoIp()
   await geolocateIp()
 
-  if (!ipPositionError.value && ipPosition.value) {
+  if (!ipPositionError.value && ipPosition) {
     // eslint-disable-next-line no-console
     console.log(`Using user's location: ${JSON.stringify(ipPosition.value)}`)
-    useMap().setPosition(ipPosition.value)
+    useMap().setPosition(ipPosition)
   }
   else {
     console.warn(`Error getting user's location: ${ipPositionError.value}. Using fallback position. ${JSON.stringify(FALLBACK_POSITION)}`)

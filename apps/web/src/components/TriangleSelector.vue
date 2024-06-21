@@ -12,7 +12,7 @@ const options = computed(() => props.options.filter(option => option !== selecte
     <SelectPortal>
       <SelectContent
         side="bottom"
-        position="item-aligned" select relative bottom-0 z-200 animate-fade-in animate-duration-100 rounded-6 py-6 text-neutral-0 drop-shadow bg-gradient-neutral shadow
+        position="item-aligned" select relative bottom-0 z-200 animate-fade-in animate-duration-100 rounded-6 py-6 text-neutral-0 shadow drop-shadow bg-gradient-neutral
       >
         <SelectViewport>
           <SelectItem

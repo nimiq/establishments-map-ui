@@ -7,7 +7,7 @@ const { browserPositionIsSupported, browserPosition } = storeToRefs(useGeoIp())
 </script>
 
 <template>
-   <!-- User Position Marker -->
+  <!-- User Position Marker -->
   <CustomMarker
     v-if="browserPositionIsSupported && browserPosition?.accuracy > 0 && browserPosition?.accuracy < 1000"
     :options="{ position: browserPosition.center }" data-custom-marker
@@ -23,7 +23,7 @@ const { browserPositionIsSupported, browserPosition } = storeToRefs(useGeoIp())
     <SingleMarker :location />
   </CustomMarker>
 
-  <ClusterMarkers /> 
+  <ClusterMarkers />
 
   <!-- Looks like you are about to find something interesting... -->
   <template v-if="zoom > 15">
