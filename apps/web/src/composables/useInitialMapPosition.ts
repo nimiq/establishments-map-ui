@@ -24,7 +24,7 @@ async function useDefaultMapPosition() {
 
   if (!ipPositionError.value && ipPosition) {
     // eslint-disable-next-line no-console
-    console.log(`Using user's location: ${JSON.stringify(ipPosition.value)}`)
+    console.log(`Using user's location: ${JSON.stringify(ipPosition)}`)
     useMap().setPosition(ipPosition)
   }
   else {
