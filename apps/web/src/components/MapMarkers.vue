@@ -7,6 +7,14 @@ const { browserPositionIsSupported, browserPosition } = useGeoIp()
 </script>
 
 <template>
+   <!-- User Position Marker -->
+  <CustomMarker
+    v-if="browserPositionIsSupported && browserPosition && browserPosition.accuracy < 1000 && browserPosition.accuracy > 0"
+    :options="{ position: { lng: browserPosition.center.lng, lat: browserPosition.center.lat } }" data-custom-marker
+  >
+    <UserLocationMarker :browser-position />
+  </CustomMarker>
+
   <SingleMarkersDesktop v-if="!isMobile" />
   <CustomMarker
     v-for="location in singles" v-else :key="location.uuid"
@@ -15,15 +23,7 @@ const { browserPositionIsSupported, browserPosition } = useGeoIp()
     <SingleMarker :location />
   </CustomMarker>
 
-  <ClusterMarkers />
-
-  <!-- User Position Marker -->
-  <CustomMarker
-    v-if="browserPositionIsSupported && browserPosition && browserPosition.accuracy < 1000 && browserPosition.accuracy > 0"
-    :options="{ position: { lng: browserPosition.center.lng, lat: browserPosition.center.lat } }" data-custom-marker
-  >
-    <UserLocationMarker :accuracy="browserPosition.accuracy" :zoom />
-  </CustomMarker>
+  <ClusterMarkers /> 
 
   <!-- Looks like you are about to find something interesting... -->
   <template v-if="zoom > 15">
