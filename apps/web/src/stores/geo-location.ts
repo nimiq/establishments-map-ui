@@ -1,5 +1,4 @@
 import type { EstimatedMapPosition } from 'types'
-import { createSharedComposable } from '@vueuse/core'
 
 interface GeoIpResponse {
   location?: {
@@ -12,7 +11,7 @@ interface GeoIpResponse {
   city_names?: { [language: string]: string }
 }
 
-function _useGeoIp() {
+export const useGeoIp = defineStore('geo-ip', () => {
   const ipPositionError = ref()
   const ipPosition = ref<EstimatedMapPosition>()
 
@@ -67,6 +66,28 @@ function _useGeoIp() {
     return browserPosition.value
   }
 
+  const isGeolocationLoading = ref(false)
+
+  async function setBrowserPosition() {
+    isGeolocationLoading.value = true
+    const browserPosition = await geolocateUserViaBrowser()
+    if (errorBrowser.value) {
+      /* eslint-disable-next-line no-alert */
+      alert(`${errorBrowser.value.message}. Moving to closest location`)
+      await geolocateIp()
+      if (!ipPositionError.value && ipPosition.value)
+        useMap().setPosition(ipPosition.value)
+      isGeolocationLoading.value = false
+      return
+    }
+    isGeolocationLoading.value = false
+    if (browserPosition.accuracy)
+      useMap().setPosition(browserPosition)
+    else
+      /* eslint-disable-next-line no-alert */
+      alert('Could not get your location.')
+  }
+
   return {
     // Lazy computed property. Will only be computed when we read it.
     geolocateIp,
@@ -79,7 +100,7 @@ function _useGeoIp() {
     errorBrowser,
     geolocateUserViaBrowser,
     geolocatingUserBrowser,
-  }
-}
 
-export const useGeoIp = createSharedComposable(_useGeoIp)
+    setBrowserPosition,
+  }
+})

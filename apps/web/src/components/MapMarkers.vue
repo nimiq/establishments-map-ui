@@ -3,14 +3,14 @@ const { singles } = storeToRefs(useMarkers())
 const { zoom } = storeToRefs(useMap())
 const SingleMarkersDesktop = defineAsyncComponent(() => import('./SingleMarkersDesktop.vue'))
 
-const { browserPositionIsSupported, browserPosition } = useGeoIp()
+const { browserPositionIsSupported, browserPosition } = storeToRefs(useGeoIp())
 </script>
 
 <template>
    <!-- User Position Marker -->
   <CustomMarker
-    v-if="browserPositionIsSupported && browserPosition && browserPosition.accuracy < 1000 && browserPosition.accuracy > 0"
-    :options="{ position: { lng: browserPosition.center.lng, lat: browserPosition.center.lat } }" data-custom-marker
+    v-if="browserPositionIsSupported && browserPosition.accuracy > 0 && browserPosition?.accuracy < 1000"
+    :options="{ position: browserPosition.center }" data-custom-marker
   >
     <UserLocationMarker :browser-position />
   </CustomMarker>

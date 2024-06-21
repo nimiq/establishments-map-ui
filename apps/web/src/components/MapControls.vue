@@ -1,28 +1,8 @@
 <script setup lang="ts">
 const isDev = import.meta.env.DEV
 
-const isGeolocationLoading = ref(false)
-const { browserPositionIsSupported, ipPosition, ipPositionError, geolocateIp, geolocateUserViaBrowser, geolocatingUserBrowser, errorBrowser } = useGeoIp()
-
-async function setBrowserPosition() {
-  isGeolocationLoading.value = true
-  const browserPosition = await geolocateUserViaBrowser()
-  if (errorBrowser.value) {
-    /* eslint-disable-next-line no-alert */
-    alert(`${errorBrowser.value.message}. Moving to closest location`)
-    await geolocateIp()
-    if (!ipPositionError.value && ipPosition.value)
-      useMap().setPosition(ipPosition.value)
-    isGeolocationLoading.value = false
-    return
-  }
-  isGeolocationLoading.value = false
-  if (browserPosition.accuracy)
-    useMap().setPosition(browserPosition)
-  else
-    /* eslint-disable-next-line no-alert */
-    alert('Could not get your location.')
-}
+const { setBrowserPosition } = useGeoIp()
+const { browserPositionIsSupported, geolocatingUserBrowser } = storeToRefs(useGeoIp())
 
 function clearStorage() {
   if (!import.meta.env.DEV)
