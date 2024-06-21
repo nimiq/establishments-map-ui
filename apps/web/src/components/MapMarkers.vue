@@ -9,7 +9,7 @@ const { browserPositionIsSupported, browserPosition } = storeToRefs(useGeoIp())
 <template>
    <!-- User Position Marker -->
   <CustomMarker
-    v-if="browserPositionIsSupported && browserPosition.accuracy > 0 && browserPosition?.accuracy < 1000"
+    v-if="browserPositionIsSupported && browserPosition?.accuracy > 0 && browserPosition?.accuracy < 1000"
     :options="{ position: browserPosition.center }" data-custom-marker
   >
     <UserLocationMarker :browser-position />
