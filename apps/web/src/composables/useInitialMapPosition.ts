@@ -1,7 +1,7 @@
 import type { LocationQuery, RouteParams } from 'vue-router'
 import type { MapPosition } from 'types'
-import { useWindowSize } from '@vueuse/core'
 import { useMap } from '@/stores/map'
+import { isPointInViewport } from 'geo'
 
 /**
  * When user loads the map:
@@ -19,41 +19,19 @@ const validFloat = (n?: string | string[]) => !!n && typeof n === 'string' && !N
 
 async function useDefaultMapPosition() {
   const { useGeoIp } = await import('@/stores/geo-location')
-  const { geolocateIp, ipPosition, ipPositionError } = useGeoIp()
+  const { geolocateIp } = useGeoIp()
+  const { ipPositionError, ipPosition } = storeToRefs(useGeoIp())
   await geolocateIp()
 
-  if (!ipPositionError.value && ipPosition) {
+  if (!ipPositionError.value && ipPosition.value) {
     // eslint-disable-next-line no-console
     console.log(`Using user's location: ${JSON.stringify(ipPosition)}`)
-    useMap().setPosition(ipPosition)
+    useMap().setPosition(ipPosition.value)
   }
   else {
     console.warn(`Error getting user's location: ${ipPositionError.value}. Using fallback position. ${JSON.stringify(FALLBACK_POSITION)}`)
     useMap().setPosition(FALLBACK_POSITION)
   }
-}
-
-function getPixelCoords(lat: number, lng: number, zoom: number) {
-  const scale = 2 ** zoom
-  const pixelX = (lng + 180) / 360 * 256 * scale
-  const rad = lat * (Math.PI / 180)
-  const sinLatitude = Math.sin(rad)
-  const pixelY = (0.5 - Math.log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * Math.PI)) * 256 * scale
-  return { x: pixelX, y: pixelY }
-}
-
-function isPointInViewport({ center: { lat: mapLat, lng: mapLng }, zoom }: MapPosition, { lat, lng }: MapLocation) {
-  const { height, width } = useWindowSize()
-  const centerCoords = getPixelCoords(mapLat, mapLng, zoom)
-  const pointCoords = getPixelCoords(lat, lng, zoom)
-
-  const halfV = width.value / 2
-  const halfH = height.value / 2
-
-  return pointCoords.x > (centerCoords.x - halfV)
-    && pointCoords.x < (centerCoords.x + halfV)
-    && pointCoords.y > (centerCoords.y - halfH)
-    && pointCoords.y < (centerCoords.y + halfH)
 }
 
 export async function useInitialMapPosition({ lat: latStr, lng: lngStr, zoom: zoomStr }: RouteParams, { uuid: locationUuid }: LocationQuery) {
@@ -68,7 +46,8 @@ export async function useInitialMapPosition({ lat: latStr, lng: lngStr, zoom: zo
 
   if (locationUuid) {
     const location = await (await import('@/stores/locations')).useLocations().getLocationByUuid(locationUuid as string /* UUID already valid. See router.ts */)
-    if (location && !isPointInViewport({ center: { lat, lng }, zoom }, location)) {
+    const { height, width } = useWindowSize()
+    if (location && !isPointInViewport({ center: { lat, lng }, zoom, height: height.value, width: width.value }, location)) {
       lat = location.lat
       lng = location.lng
       zoom = 16

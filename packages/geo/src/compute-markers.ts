@@ -1,6 +1,6 @@
 import Supercluster from 'supercluster'
 import type { Cluster, ClusterArea, Point } from '../../types/src/index.ts'
-import { toPoint } from './geo-utils.ts'
+import { toPoint } from './geo-json.ts'
 
 export const CLUSTERS_MAX_ZOOM = 17
 export const algorithm = (radius: number) => new Supercluster({ radius, maxZoom: CLUSTERS_MAX_ZOOM })
