@@ -42,28 +42,25 @@ onUnmounted(() => router.replace({ query: route.query, q: undefined }))
     <template #description>
       <i18n-t keypath="If you need more details, feel free to reach us on {telegram}" tag="span">
         <template #telegram>
-          <a
-            href="https://t.me/nimiq" target="_blank" rel="noopener noreferrer" text-blue underline arrow
-            text="Telegram"
-          />
+          <a href="https://t.me/nimiq" target="_blank" rel="noopener noreferrer" un-text="bold blue" arrow>
+            Telegram
+          </a>
         </template>
       </i18n-t>
     </template>
     <template #content>
-      <AccordionRoot v-model="questionsOpen" ml--16>
+      <AccordionRoot v-model="questionsOpen">
         <AccordionItem v-for="{ content, title, value } in items" :key="value" :value mt-16>
           <AccordionHeader accordion>
             <AccordionTrigger flex="~ gap-6 items-center" op="80 hocus:90 r-accordion-open:100" transition-opacity>
-              <div
-                text="10 neutral-700"
-                i-nimiq:chevron-right duration-300 delay-250 ease-out r-accordion-open:rotate-90 op="0 r-accordion-hocus:100 r-accordion-open:100"
-              />
-              <h3 text-16 lh-none>
+              <h3 text="16/none">
                 {{ title }}
               </h3>
+              <div text="12 neutral-700" i-nimiq:chevron-right duration-300 delay-250 ease-out
+                r-accordion-open:rotate-90 op="0 r-accordion-hocus:100 r-accordion-open:100" />
             </AccordionTrigger>
           </AccordionHeader>
-          <AccordionContent class="content" mt-4 of-hidden pb-12 pl-16 text-14>
+          <AccordionContent class="content" mt-8 of-hidden pb-12 text="16/24">
             <p>{{ content }}</p>
           </AccordionContent>
         </AccordionItem>

@@ -36,7 +36,7 @@ onUnmounted(() => router.replace({ query: { ...route.query, [queryName]: undefin
       </Transition>
       <Transition :name="nested ? 'nested' : 'modal'">
         <DialogContent :key="name" desktop="top-1/2 left-1/2 translate--1/2" rounded="t-8 desktop:8" data-modal fixed
-          bottom-0 z-200 h-max max-h-85dvh w-full transform of-y-auto shadow-lg outline-none desktop:max-w-440
+          bottom-0 z-200 h-max max-h-85dvh w-full transform of-y-auto shadow-lg outline-none desktop:max-w-500
           :data-nested="nested ? '' : undefined" @open-auto-focus.prevent>
           <div relative py-32 bg-neutral-0 ring="1.5 neutral/3" class="modal-container">
             <DialogTitle mb-12 px-24 text="24 center neutral lh-24" font-bold lh-none desktop:px-40 as="h2">
