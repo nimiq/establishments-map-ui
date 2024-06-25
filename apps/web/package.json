@@ -25,7 +25,7 @@
     "@vueuse/components": "^10.9.0",
     "@vueuse/core": "^10.9.0",
     "@vueuse/router": "^10.9.0",
-    "nimiq-css": "^0.0.103",
+    "nimiq-css": "^0.0.104",
     "pinia": "^2.1.7",
     "radix-vue": "^1.7.4",
     "vue": "^3.4.27",

@@ -301,7 +301,7 @@ msgstr ""
 msgid "Powered by {provider}"
 msgstr ""
 
-#: src/components/CryptoMapModal.vue:23
+#: src/components/CryptoMapModal.vue:25
 #: src/components/TheMapInstance.vue:16
 msgid "Privacy Policy"
 msgstr ""
@@ -404,7 +404,7 @@ msgstr ""
 msgid "Submit Location"
 msgstr ""
 
-#: src/components/CryptoMapModal.vue:28
+#: src/components/CryptoMapModal.vue:30
 #: src/components/TheMapInstance.vue:22
 msgid "Terms of Service"
 msgstr ""
@@ -426,7 +426,7 @@ msgid "There has been a problem on our side. Please try again."
 msgstr ""
 
 #: src/components/CryptoMapModal.vue:19
-msgid "This app is brought to you by Nimiq. It is protected by reCAPTCHA and the Google {privacyPolicy} and {termsOfService} apply."
+msgid "This app is brought to you by {Nimiq}. It is protected by reCAPTCHA and the Google {privacyPolicy} and {termsOfService} apply."
 msgstr ""
 
 #: src/components/LocationCandidate.vue:24

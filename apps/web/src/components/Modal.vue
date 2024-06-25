@@ -35,24 +35,23 @@ onUnmounted(() => router.replace({ query: { ...route.query, [queryName]: undefin
         <DialogOverlay v-if="!nested" fixed inset-0 z-200 bg-darkblue op-60 />
       </Transition>
       <Transition :name="nested ? 'nested' : 'modal'">
-        <DialogContent
-          :key="name" desktop="top-1/2 left-1/2 translate--1/2" ring="1.5 neutral-50"
-          rounded="t-8 desktop:8"
-          data-modal fixed bottom-0 z-200 h-max max-h-85dvh w-full transform of-y-auto bg-neutral-0 py-32 op-100 shadow-lg outline-none desktop:max-w-512 :data-nested="nested ? '' : undefined"
-          @open-auto-focus.prevent
-        >
-          <DialogTitle mb-8 px-24 text-18 text-neutral font-bold lh-none desktop:px-40 as="h2">
-            <slot name="title" />
-          </DialogTitle>
-          <DialogDescription block px-24 text-neutral-800 desktop:px-40>
-            <slot name="description" />
-          </DialogDescription>
+        <DialogContent :key="name" desktop="top-1/2 left-1/2 translate--1/2" rounded="t-8 desktop:8" data-modal fixed
+          bottom-0 z-200 h-max max-h-85dvh w-full transform of-y-auto shadow-lg outline-none desktop:max-w-440
+          :data-nested="nested ? '' : undefined" @open-auto-focus.prevent>
+          <div relative py-32 bg-neutral-0 ring="1.5 neutral/3" class="modal-container">
+            <DialogTitle mb-8 px-24 text-18 text-neutral font-bold lh-none desktop:px-40 as="h2">
+              <slot name="title" />
+            </DialogTitle>
+            <DialogDescription block px-24 text-neutral-800 desktop:px-40>
+              <slot name="description" />
+            </DialogDescription>
 
-          <div px-24 desktop:px-40>
-            <slot name="content" />
+            <div px-24 desktop:px-40>
+              <slot name="content" />
+            </div>
+
+            <DialogClose :aria-label="$t('Close')" absolute right-16 top-16 text-28 close-btn />
           </div>
-
-          <DialogClose :aria-label="$t('Close')" absolute right-16 top-16 text-28 close-btn />
         </DialogContent>
       </Transition>
     </DialogPortal>

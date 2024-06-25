@@ -20,7 +20,7 @@ const { state, submit, reset, isError, isSuccess, isSubmitted } = useForm({ url,
 </script>
 
 <template>
-  <Modal v-model:open="open" :name="ModalName.Candidate" nested pill-sm pill-blue>
+  <Modal v-model:open="open" :name="ModalName.Candidate" nested pill-blue mx-auto>
     <template #trigger>
       {{ $t('Add Crypto location') }}
     </template>
@@ -53,10 +53,8 @@ const { state, submit, reset, isError, isSuccess, isSubmitted } = useForm({ url,
     </template>
     <template #content>
       <div v-if="!isSubmitted" mt-8 flex="~ col">
-        <a
-          href="https://www.google.com/business/" target="_blank" rel="noopener noreferrer" w-max text-blue
-          font-semibold arrow
-        >
+        <a href="https://www.google.com/business/" target="_blank" rel="noopener noreferrer" w-max text-blue
+          font-semibold arrow>
           {{ $t('Create Google Business profile') }}
         </a>
         <form mt-32 @submit.prevent="submit">
