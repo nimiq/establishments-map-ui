@@ -8,7 +8,7 @@ const { zoom } = storeToRefs(useMap())
 const accuracyCircleEl = ref()
 const radius = useCssVar('--radius', accuracyCircleEl, { initialValue: '64px' })
 
-watch([props.browserPosition, zoom], () => {
+watch([() => props.browserPosition, zoom], () => {
   const pixelRadius = metersToPx(props.browserPosition.accuracy, zoom.value, props.browserPosition.center.lat)
   radius.value = `${Math.min(zoom.value < 11 ? 0 : 64, Math.max(24, pixelRadius))}px`
 }, { immediate: true })
