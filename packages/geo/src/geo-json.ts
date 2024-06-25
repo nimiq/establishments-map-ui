@@ -70,20 +70,9 @@ export function getItemsWithinBBox<T extends Point>(items: T[], bbox: BoundingBo
 /**
  * Checks if a bounding box is intersecting another bounding box.
  * Since bounding boxes can cross the antimeridian, we need to check if any of the polygons created by toPolygon
- * is within the othe multipolygon
+ * is within the other multipolygon
  */
 export function bBoxesIntersect(bbox1: BoundingBox, bbox2: BoundingBox) {
   const [polygon1, polygon2] = [bbox1, bbox2].map(toPolygon)
   return polygon1?.some(p1 => polygon2?.some(p2 => intersect(featureCollection([p1, p2])))) || false
-}
-
-export function euclideanDistance({ lat: y1, lng: x1 }: Point, { lat: y2, lng: x2 }: Point) {
-  return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
-}
-
-const earthCircumference = 40075017 // Earth's circumference at the equator in meters
-export function metersToPx(meters: number, zoom: number, lat: number = 45) {
-  const latRad = (lat * Math.PI) / 180 // Convert latitude to radians
-  const metersPerPixel = (earthCircumference * Math.cos(latRad)) / (256 * 2 ** zoom) // Calculate meters per pixel
-  return meters / metersPerPixel // Convert meters to pixels
 }
