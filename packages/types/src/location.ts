@@ -22,7 +22,8 @@ export enum LocationLink {
 }
 
 // The different Banner designs
-export type Banner = Provider.Bluecode | Provider.CryptopaymentLink | Provider.Edenia | Provider.Kurant | Provider.NAKA | Provider.Edenia | 'Nimiq-Pay' | Provider.DefaultAtm | 'None'
+export type SplitBanner = Provider.CryptopaymentLink | Provider.Opago | Provider.Osmo
+export type Banner = Provider.Bluecode | Provider.Edenia | Provider.Kurant | Provider.NAKA | Provider.Edenia | 'Nimiq-Pay' | Provider.DefaultAtm | 'None' | SplitBanner
 
 export interface MapLocation extends RawLocation {
   category_label: string

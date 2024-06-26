@@ -52,13 +52,17 @@ export enum Provider {
   NAKA = 'NAKA',
   Kurant = 'Kurant',
   Bluecode = 'Bluecode',
-  CryptopaymentLink = 'Cryptopayment Link',
   Edenia = 'Edenia',
   BitcoinJungle = 'Bitcoin Jungle',
   Coinmap = 'Coinmap',
   AcceptLightning = 'Accept Lightning',
   Bridge2Bitcoin = 'Bridge2Bitcoin',
   BtcMap = 'BtcMap',
+
+  // Split banner
+  CryptopaymentLink = 'Cryptopayment Link',
+  Osmo = 'Osmo',
+  Opago = 'Opago',
 }
 
 export enum DatabaseUser {
