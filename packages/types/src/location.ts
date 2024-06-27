@@ -26,36 +26,41 @@ export type CardType = Provider.Bluecode | Provider.Edenia | Provider.Kurant | P
 
 export type LocationBanner = {
   type: Exclude<CardType, 'Default'>
-  label: string
+  label: (splitBanner: boolean) => string
+  // If the banner is a split banner, we need to provide the shortLabel
+  shortLabel?: string
   tooltip: string
   tooltipCta?: string
   tooltipLabel?: string
   googlePlay?: string
   appStore?: string
+  icon?: string
+  style?: {
+    // UI Options
+    theme: Theme
+    bg: (splitBanner: boolean) => string
+    isDark: boolean
+  }
 }
 
-export interface LocationStyle {
-  // UI Options
-  theme: Theme
-  bg: [string /* primary color */, string | undefined /* For gradients */]
-
-  // Quick getters
-  isAtm: boolean
-  isDark: boolean
-  isLight: boolean
-}
-
-export interface MapLocation extends RawLocation {
+export type MapLocation = RawLocation & {
   category_label: string
 
   // Given the social media fields, we can generate just one link
   // See parseLocation function for more details.
   linkTo?: LocationLink
   url?: string
-
-  style: LocationStyle
+  cardStyle: {
+    // UI Options
+    theme: Theme
+    bg: [string /* primary color */, string | undefined /* For gradients */]
+    isDark: boolean
+    icon?: string
+  }
+  isAtm: boolean
 
   // The bottom part of the card
+  splitBanner: boolean
   banner?: LocationBanner | [LocationBanner, LocationBanner]
 }
 
