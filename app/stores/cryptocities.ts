@@ -3,7 +3,6 @@ import { multiPolygon } from '@turf/turf'
 import type { BoundingBox, Cryptocity, CryptocityData, CryptocityDatabase } from 'types'
 import { addBBoxToArea, bBoxIsWithinArea, getItemsWithinBBox } from 'geo'
 import { getCryptocities as getDbCryptocities } from 'database'
-import { type ExpiringValue, useExpiringStorage } from '@/composables/useExpiringStorage'
 import { getAnonDatabaseArgs } from '@/shared'
 import { cryptocitiesUi } from '@/assets-dev/cryptocities-assets'
 
@@ -15,11 +14,7 @@ const defaultValue: StoredCryptocities['value'] = { area: multiPolygon([]), data
 export const useCryptocities = defineStore('cryptocities', () => {
   const { boundingBox, map, zoom } = storeToRefs(useMap())
 
-  const { payload: cryptocities } = useExpiringStorage('cryptocities', {
-    expiresIn: 30 * 24 * 60 * 60 * 1000,
-    defaultValue,
-    timestamp: useApp().timestamps?.cryptocities,
-  })
+  const cryptocities = ref(defaultValue)
   const loadedCitiesNames = computed(() => [...Object.keys(cryptocities.value.data)] as Cryptocity[])
   const allCryptocities = computed(() => [...Object.values(cryptocities.value.data)])
   const cryptocitiesInView = computed(() => boundingBox.value ? getItemsWithinBBox(allCryptocities.value, boundingBox.value) : [])
@@ -29,6 +24,7 @@ export const useCryptocities = defineStore('cryptocities', () => {
       return allCryptocities.value
 
     const newCryptocities = await getDbCryptocities(await getAnonDatabaseArgs(), { boundingBox, excludedCities: loadedCitiesNames.value })
+    console.log('newCryptocities', newCryptocities)
     return setCryptocities(boundingBox, newCryptocities)
   }
 

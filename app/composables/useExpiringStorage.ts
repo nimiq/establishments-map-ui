@@ -67,9 +67,12 @@ function shouldUpdateStorage(storedValue: ExpiringValue<any> | undefined, timest
 
 export function useExpiringStorage<T>(_key: string, options: UseExpiringStorageSyncOptions<T> | UseExpiringStorageAsyncOptions<T>) {
   const key = `cryptomap__${_key}`
+  console.log({ key })
   if (import.meta.client)
     localStorage.removeItem(key) // Delete old localStorage key
-  const cookie = useCookie(key, { decode: JSON.parse })
+  console.log({ key })
+  const cookie = useCookie(key, { decode: JSON.parse, encode: JSON.stringify })
+  console.log({ cookie: cookie.value })
 
   const { expiresIn, autoRefresh = true, timestamp: timestampOption } = options
   const timestamp = timestampOption ? new Date(timestampOption).toISOString() : undefined

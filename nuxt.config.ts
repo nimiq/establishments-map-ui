@@ -24,7 +24,7 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@nuxtjs/i18n",
     'vue-recaptcha/nuxt',
-    'radix-vue',
+    'radix-vue/nuxt',
   ],
 
   runtimeConfig: {
@@ -56,6 +56,7 @@ export default defineNuxtConfig({
     ],
     define: {
       __VUE_I18N_FULL_INSTALL__: true,
+      __VUE_I18N_LEGACY_API__: true,
       __INTLIFY_PROD_DEVTOOLS__: false,
     },
   },
@@ -66,5 +67,5 @@ export default defineNuxtConfig({
     config: {
       standalone: false
     }
-  }
+  },
 })

@@ -60,12 +60,11 @@ function _useCaptcha() {
     }
   }
 
-  const { payload: captchaTokenUuid, init } = useExpiringStorage('captcha_token_uuid', { expiresIn: CAPTCHA_TOKEN_VALIDITY, getAsyncValue })
+  const captchaTokenUuid = useCookie('captcha_token_uuid', { default: getAsyncValue, expires: new Date(Date.now() + CAPTCHA_TOKEN_VALIDITY) })
 
   return {
     getCaptchaToken,
     captchaTokenUuid,
-    init,
   }
 }
 

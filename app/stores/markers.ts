@@ -51,13 +51,15 @@ export const useMarkers = defineStore('markers', () => {
     return { key, item, needsToUpdate }
   }
 
-  const { init: initMaxZoom, payload: maxZoomFromServer } = useExpiringStorage('max_zoom_from_server', {
-    expiresIn: 7 * 24 * 60 * 60 * 1000,
-    getAsyncValue: async () => {
-      return await getClusterMaxZoom(await getAnonDatabaseArgs())
-    },
-    timestamp: useApp().timestamps?.markers,
-  })
+  // const { init: initMaxZoom, payload: maxZoomFromServer } = useExpiringStorage('max_zoom_from_server', {
+  //   expiresIn: 7 * 24 * 60 * 60 * 1000,
+  //   getAsyncValue: async () => {
+  //     return await getClusterMaxZoom(await getAnonDatabaseArgs())
+  //   },
+  //   timestamp: useApp().timestamps?.markers,
+  // })
+  const initMaxZoom = async () => getClusterMaxZoom(await getAnonDatabaseArgs())
+  const maxZoomFromServer = ref(14)
 
   async function shouldRunInClient({ zoom }: LocationClusterParams): Promise<boolean> {
     // FIXME Not the best solution, but it works for now

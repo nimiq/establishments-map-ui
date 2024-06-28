@@ -5,7 +5,8 @@ export const languagesLoaded = new Set<string>([DEFAULT_LANGUAGE])
 export default defineI18nConfig(async () => ({
   locale: DEFAULT_LANGUAGE,
   fallbackLocale: DEFAULT_LANGUAGE,
-  globalInjection: true,
+  silentTranslationWarn: true,
+  // globalInjection: true,
   legacy: true,
   messages: DEFAULT_LANGUAGE ? await import(`@/assets/i18n/${DEFAULT_LANGUAGE}.po`).then(module => module.default) : {},
 
