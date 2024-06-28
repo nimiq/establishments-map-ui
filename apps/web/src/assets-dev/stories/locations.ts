@@ -4,7 +4,7 @@ import { getCardConfiguration } from '../banner-assets'
 
 type ExtraFields = Pick<MapLocation, 'provider' | 'category' | 'category_label' | 'sells' | 'url' | 'linkTo' | 'cardStyle' | 'banner' | 'splitBanner'>
 export function getExtra(provider: Provider, sells: Currency[] = [], linkTo: LocationLink = LocationLink.GMaps): ExtraFields {
-  const cardConfiguration = getCardConfiguration(provider)
+  const cardConfiguration = getCardConfiguration({ provider, accepts: [] })
   if (!cardConfiguration)
     throw new Error(`Provider ${provider} not found in providersAssets`)
 

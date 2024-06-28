@@ -1,4 +1,4 @@
-import { Provider, Theme } from 'types'
+import { Currency, Provider, Theme } from 'types'
 import type { CardType, LocationBanner, MapLocation } from 'types'
 
 // @unocss-include
@@ -216,8 +216,9 @@ const cardMap: Record<Provider, CardType | [CardType, CardType]> = {
   [Provider.Osmo]: [Provider.Osmo, 'Nimiq-Pay'],
 } as const
 
-export function getCardConfiguration(provider: Provider): Pick<MapLocation, 'cardStyle' | 'banner' | 'splitBanner'> {
-  const card = cardMap[provider]
+export function getCardConfiguration({ provider: _provider, accepts }: Pick<MapLocation, 'provider' | 'accepts'>): Pick<MapLocation, 'cardStyle' | 'banner' | 'splitBanner'> {
+  // if location accepts LBTC and has no provider yet, then display Nimiq Pay
+  const card = accepts.includes(Currency.LBTC) && [Provider.DefaultShop, Provider.BitcoinJungle].includes(_provider) ? 'Nimiq-Pay' : cardMap[_provider]
 
   if (Array.isArray(card) && card.length === 2) {
     return {

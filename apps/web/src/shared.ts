@@ -51,7 +51,7 @@ export function parseLocation(location: MapLocation) {
   location.linkTo = location.gmaps ? LocationLink.GMaps : location.instagram ? LocationLink.Instagram : location.facebook ? LocationLink.Facebook : undefined
   location.url = location.gmaps || location.instagram || location.facebook
 
-  Object.assign(location, getCardConfiguration(location.provider)) // Assing all the keys from the asset to the location
+  location = { ...location, ...getCardConfiguration(location) }
 
   // Make the translation reactive in case user change language
   Object.defineProperty(location, 'category_label', { get: () => translateCategory(location.category) })
