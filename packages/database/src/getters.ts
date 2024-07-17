@@ -16,8 +16,8 @@ export const CRYPTOCITIES = Object.values(Cryptocity)
 // Maximum number of rows from the database
 const MAX_N_ROWS = 1000
 
-export async function getLocations(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, { neLat, neLng, swLat, swLng }: BoundingBox, parseLocations: (l: MapLocation) => MapLocation = l => l): Promise<MapLocation[]> {
-  const query = new URLSearchParams({ nelat: neLat.toString(), nelng: neLng.toString(), swlat: swLat.toString(), swlng: swLng.toString() })
+export async function getLocations(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, { nelat, nelng, swlat, swlng }: BoundingBox, parseLocations: (l: MapLocation) => MapLocation = l => l): Promise<MapLocation[]> {
+  const query = new URLSearchParams({ nelat: nelat.toString(), nelng: nelng.toString(), swlat: swlat.toString(), swlng: swlng.toString() })
   let page = 1
   const locations: MapLocation[] = []
   do {
@@ -48,10 +48,10 @@ export async function searchLocations(dbArgs: DatabaseAuthArgs | DatabaseAnonArg
 
 export async function getMarkers(
   dbArgs: DatabaseAuthArgs | DatabaseAnonArgs,
-  { boundingBox: { neLat, neLng, swLat, swLng }, zoom }: Args[AnonReadDbFunction.GetMarkers],
+  { boundingBox: { nelat, nelng, swlat, swlng }, zoom }: Args[AnonReadDbFunction.GetMarkers],
   parseLocation: (l: MapLocation) => MapLocation = l => l,
 ): Promise<Returns[AnonReadDbFunction.GetMarkers]> {
-  const query = new URLSearchParams({ nelat: neLat.toString(), nelng: neLng.toString(), swlat: swLat.toString(), swlng: swLng.toString(), zoom_level: zoom.toString() })
+  const query = new URLSearchParams({ nelat: nelat.toString(), nelng: nelng.toString(), swlat: swlat.toString(), swlng: swlng.toString(), zoom_level: zoom.toString() })
   const res = await fetchDb<Returns[AnonReadDbFunction.GetMarkers]>(AnonReadDbFunction.GetMarkers, dbArgs, { query })
   return {
     clusters: res?.clusters ?? [],
@@ -71,8 +71,8 @@ export async function getCryptocityPolygon(dbArgs: DatabaseAuthArgs | DatabaseAn
   return await fetchDb<FeatureCollection>(AnonReadDbFunction.GetCryptocityPolygon, dbArgs, { query: new URLSearchParams({ city }) })
 }
 
-export async function getCryptocities(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, { boundingBox: { neLat, neLng, swLat, swLng }, excludedCities }: Args[AnonReadDbFunction.GetCryptocities]) {
-  const query = new URLSearchParams({ nelat: neLat.toString(), nelng: neLng.toString(), swlat: swLat.toString(), swlng: swLng.toString() })
+export async function getCryptocities(dbArgs: DatabaseAuthArgs | DatabaseAnonArgs, { boundingBox: { nelat, nelng, swlat, swlng }, excludedCities }: Args[AnonReadDbFunction.GetCryptocities]) {
+  const query = new URLSearchParams({ nelat: nelat.toString(), nelng: nelng.toString(), swlat: swlat.toString(), swlng: swlng.toString() })
   excludedCities.forEach(city => query.append('excluded_cities', city))
   query.append('excluded_cities', `{${excludedCities.join(',')}}`)
   return await fetchDb<Returns[AnonReadDbFunction.GetCryptocities]>(AnonReadDbFunction.GetCryptocities, dbArgs, { query })

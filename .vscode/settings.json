@@ -3,7 +3,7 @@
     "grecaptcha"
   ],
   "deno.enable": true,
-  "deno.enablePaths": ["./apps/supabase", "./apps/bot"],
+  "deno.enablePaths": ["./apps/bot"],
   "deno.lint": true,
   "deno.unstable": true,
   "deno.suggest.imports.hosts": {

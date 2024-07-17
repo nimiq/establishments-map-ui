@@ -14,9 +14,9 @@ export const toPoint = <T extends Point>(data: T) => point([data.lng, data.lat],
  * It creates an array of polygons. This is just in case the bounding box crosses the antimeridian,
  * which will result in two polygons.
  */
-const _toPolygon = ({ swLat, neLat, neLng, swLng }: BoundingBox) => bboxPolygon([swLng, swLat, neLng, neLat])
+const _toPolygon = ({ swlat, nelat, nelng, swlng }: BoundingBox) => bboxPolygon([swlng, swlat, nelng, nelat])
 function toPolygon(bbox: BoundingBox) {
-  return bbox.swLng > bbox.neLng ? [_toPolygon({ ...bbox, neLng: 180 }), _toPolygon({ ...bbox, swLng: -180 })] : [_toPolygon(bbox)]
+  return bbox.swlng > bbox.nelng ? [_toPolygon({ ...bbox, nelng: 180 }), _toPolygon({ ...bbox, swlng: -180 })] : [_toPolygon(bbox)]
 }
 
 /**

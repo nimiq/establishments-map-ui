@@ -30,9 +30,9 @@ export const useMap = defineStore('map', () => {
   const clusterDebouncer = useDebounceFn(() => useMarkers().cluster(), 300, { maxWait: 2000 })
 
   function boundsToBox(bounds: google.maps.LatLngBounds) {
-    const { lat: swLat, lng: swLng } = bounds.getSouthWest().toJSON()
-    const { lat: neLat, lng: neLng } = bounds.getNorthEast().toJSON()
-    return { swLat, swLng, neLat, neLng }
+    const { lat: swlat, lng: swlng } = bounds.getSouthWest().toJSON()
+    const { lat: nelat, lng: nelng } = bounds.getNorthEast().toJSON()
+    return { swlat, swlng, nelat, nelng }
   }
 
   function onBoundsChanged() {
@@ -40,8 +40,8 @@ export const useMap = defineStore('map', () => {
     if (!bounds)
       return
 
-    const { neLat, neLng, swLat, swLng } = boundsToBox(bounds)
-    boundingBox.value = { neLat, neLng, swLat, swLng }
+    const { nelat, nelng, swlat, swlng } = boundsToBox(bounds)
+    boundingBox.value = { nelat, nelng, swlat, swlng }
 
     updateRouteDebouncer()
 

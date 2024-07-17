@@ -1,6 +1,5 @@
 import { authenticateAnonUser } from 'database'
 import { createSharedComposable } from '@vueuse/core'
-import { useRecaptchaProvider } from 'vue-recaptcha'
 
 const CAPTCHA_TOKEN_VALIDITY = 10 * 60 * 1000 // 10 minutes for the captcha token
 
@@ -10,8 +9,9 @@ function _useCaptcha() {
   const lock = ref(Promise.resolve()) // Lock to prevent multiple requests
 
   async function getCaptchaToken() {
-    useRecaptchaProvider()
-    token.value = await useChallengeV3('idle').execute()
+    // useRecaptchaProvider()
+    // token.value = await useChallengeV3('idle').execute()
+    token.value = '1234567890'
 
     setTimeout(() => token.value = undefined, 60 * 1000)
 

@@ -10,7 +10,7 @@ export function computeMarkers<T extends Point>(algorithm: Supercluster, markers
   const clusters: Cluster[] = []
 
   algorithm.load(markers.map(toPoint) as GeoJSON.Feature<GeoJSON.Point, T>[])
-  for (const c of algorithm.getClusters([bbox.swLng, bbox.swLat, bbox.neLng, bbox.neLat], zoom)) {
+  for (const c of algorithm.getClusters([bbox.swlng, bbox.swlat, bbox.nelng, bbox.nelat], zoom)) {
     const count = c.properties.point_count || 1
 
     if (count > 1) {
@@ -20,6 +20,7 @@ export function computeMarkers<T extends Point>(algorithm: Supercluster, markers
         lng: c.geometry.coordinates[0] as number,
         lat: c.geometry.coordinates[1] as number,
         count,
+        zoom,
         cryptocities: [],
         diameter: Math.max(24, Math.min(48, 0.24 * count + 24)), // TODO Check if this is necessary
 

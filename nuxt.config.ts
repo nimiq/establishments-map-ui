@@ -1,42 +1,54 @@
 // @ts-expect-error webpack-i18n-tools does currently not expose types
-import poLoader from 'webpack-i18n-tools/loader/rollup'
+// import poLoader from 'webpack-i18n-tools/loader/rollup'
 
 // @ts-expect-error webpack-i18n-tools does currently not expose types
-import poOptimizer from 'webpack-i18n-tools/optimizer/rollup'
+// import poOptimizer from 'webpack-i18n-tools/optimizer/rollup'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   future: {
-    compatibilityVersion: 4
+    compatibilityVersion: 4,
   },
 
   experimental: {
     typedPages: true,
   },
 
-  build: { transpile: [/unplugin-vue-router\/runtime/] },
+  build: {
+    transpile: [/unplugin-vue-router\/runtime/]
+  },
 
   devtools: { enabled: true },
+
   modules: [
     "@pinia/nuxt",
     "@vueuse/nuxt",
     "@unocss/nuxt",
     "@nuxt/eslint",
-    "@nuxtjs/i18n",
-    'vue-recaptcha/nuxt',
+    // "@nuxtjs/i18n",
     'radix-vue/nuxt',
+    '@nuxtjs/supabase',
   ],
 
+  supabase: {
+    redirect: false
+  },
+
   runtimeConfig: {
+    supabaseUrl: process.env.SUPABASE_URL,
+    supabaseKey: process.env.SUPABASE_KEY,
+    supabaseAdminEmail: process.env.SUPABASE_ADMIN_EMAIL,
+    supabaseAdminPassword: process.env.SUPABASE_ADMIN_PASSWORD,
+  
     public: {
       googleMapKey: process.env.NUXT_GOOGLE_MAP_KEY,
       databaseUrl: process.env.NUXT_DATABASE_URL,
       databaseKey: process.env.NUXT_DATABASE_KEY,
       slackNewCandidateUrl: process.env.NUXT_SLACK_NEW_CANDIDATE_URL,
       slackReportUrl: process.env.NUXT_SLACK_REPORT_URL,
-      recaptcha: {
-        v3SiteKey: process.env.NUXT_RECAPTCHA_SITE_KEY,
-      }
+      // recaptcha: {
+      //   v3SiteKey: process.env.NUXT_RECAPTCHA_SITE_KEY,
+      // }
     }
   },
 
@@ -51,8 +63,8 @@ export default defineNuxtConfig({
 
   vite: {
     plugins: [
-      poLoader(),
-      poOptimizer(),
+      // poLoader(),
+      // poOptimizer(),
     ],
     define: {
       __VUE_I18N_FULL_INSTALL__: true,
@@ -68,4 +80,6 @@ export default defineNuxtConfig({
       standalone: false
     }
   },
+
+  compatibilityDate: '2024-07-17',
 })

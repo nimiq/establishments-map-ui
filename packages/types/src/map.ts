@@ -3,10 +3,10 @@ import type { MapLocation } from './location.ts'
 import type { Cryptocity } from './cryptocity.ts'
 
 export interface BoundingBox {
-  swLat: number
-  swLng: number
-  neLat: number
-  neLng: number
+  swlat: number
+  swlng: number
+  nelat: number
+  nelng: number
 }
 
 export interface Point {
@@ -27,6 +27,7 @@ export interface MapPosition {
 export interface Cluster {
   id: number // Used for optimization in the rendering process
   lng: number
+  zoom: number
   lat: number
   expansionZoom: number // The new zoom when the cluster is expanded
   count: number
