@@ -31,7 +31,10 @@ const cardConfig: Record<CardType, CardConfig> = {
   [Provider.DefaultAtm]: {
     cardStyle: {
       theme: Theme.Dark,
-      bg: ['radial-gradient(100% 100% at 100% 100%, #4D4C96 0%, #5F4B8B 100%)', 'radial-gradient(100% 100% at 100% 100%, hsl(241, 33%, 41%) 0%, hsl(259, 30%, 39%) 100%)'],
+      bg: [
+        'radial-gradient(100% 100% at 100% 100%, #4D4C96 0%, #5F4B8B 100%)',
+        'radial-gradient(100% 100% at 100% 100%, hsl(241, 33%, 41%) 0%, hsl(259, 30%, 39%) 100%)',
+      ],
       isDark: true,
     },
   },
@@ -45,14 +48,16 @@ const cardConfig: Record<CardType, CardConfig> = {
         return i18n.t('Pay with {provider}')
       },
       get tooltip() {
-        return i18n.t('Nimiq Pay enables self-custodial payments with NIM wherever BTC Lightning is accepted.')
+        return i18n.t(
+          'Nimiq Pay enables self-custodial payments with NIM wherever BTC Lightning is accepted.',
+        )
       },
       googlePlay: 'https://play.google.com/store/apps/details?id=com.nimiq.pay',
       appStore: 'https://apps.apple.com/app/id6471844738',
       icon: 'i-nimiq:logos-nimiq-pay-vertical',
       style: {
         theme: Theme.Dark,
-        bg: splitBanner => splitBanner ? '#265DD7' : 'rgb(var(--nq-gold))',
+        bg: splitBanner => (splitBanner ? '#265DD7' : 'rgb(var(--nq-gold))'),
         isDark: true,
       },
     },
@@ -66,7 +71,9 @@ const cardConfig: Record<CardType, CardConfig> = {
         return i18n.t('Powered by {provider}')
       },
       get tooltip() {
-        return i18n.t('NAKA is a global payment network that enables merchants to accept crypto payments.')
+        return i18n.t(
+          'NAKA is a global payment network that enables merchants to accept crypto payments.',
+        )
       },
       tooltipCta: 'https://naka.com',
       icon: 'i-providers:naka',
@@ -90,7 +97,9 @@ const cardConfig: Record<CardType, CardConfig> = {
         return i18n.t('Register with {provider}')
       },
       get tooltip() {
-        return i18n.t('Kurant enables users to easily purchase cryptocurrencies through a network of ATMs.')
+        return i18n.t(
+          'Kurant enables users to easily purchase cryptocurrencies through a network of ATMs.',
+        )
       },
       tooltipCta: 'https://kurant.net',
       icon: 'i-providers:kurant',
@@ -105,7 +114,9 @@ const cardConfig: Record<CardType, CardConfig> = {
         return i18n.t('Powered by {provider}')
       },
       get tooltip() {
-        return i18n.t('Bluecode is a payment method that allows secure transactions directly through the smartphone.')
+        return i18n.t(
+          'Bluecode is a payment method that allows secure transactions directly through the smartphone.',
+        )
       },
       get tooltipLabel() {
         const i18n = i18nKeyPassThrough
@@ -130,7 +141,9 @@ const cardConfig: Record<CardType, CardConfig> = {
       },
       shortLabel: 'CPL',
       get tooltip() {
-        return i18n.t('With CryptoPayment Link, you can quickly and easily receive cryptocurrency payments from your customers.')
+        return i18n.t(
+          'With CryptoPayment Link, you can quickly and easily receive cryptocurrency payments from your customers.',
+        )
       },
       tooltipCta: 'https://cplink.com',
       icon: 'i-providers:cpl',
@@ -156,7 +169,9 @@ const cardConfig: Record<CardType, CardConfig> = {
       },
       get tooltip() {
         const i18n = i18nKeyPassThrough
-        return i18n.t('Edenia enables users to easily purchase cryptocurrencies through a network of ATMs')
+        return i18n.t(
+          'Edenia enables users to easily purchase cryptocurrencies through a network of ATMs',
+        )
       },
       tooltipCta: 'https://edenia.com/',
     },
@@ -168,7 +183,9 @@ const cardConfig: Record<CardType, CardConfig> = {
       shortLabel: Provider.Opago,
       get tooltip() {
         const i18n = i18nKeyPassThrough
-        return i18n.t('Opago offers fast and easy payments with Bitcoin via the Lightning Network')
+        return i18n.t(
+          'Opago offers fast and easy payments with Bitcoin via the Lightning Network',
+        )
       },
       tooltipCta: 'https://opago-pay.com/',
       icon: 'i-providers:opago',
@@ -186,7 +203,9 @@ const cardConfig: Record<CardType, CardConfig> = {
       shortLabel: Provider.Osmo,
       get tooltip() {
         const i18n = i18nKeyPassThrough
-        return i18n.t('Osmo is a payment company powered by Bitcoin. Osmo helps you move money at the speed of light, anywhere in the world.')
+        return i18n.t(
+          'Osmo is a payment company powered by Bitcoin. Osmo helps you move money at the speed of light, anywhere in the world.',
+        )
       },
       tooltipCta: 'https://en.osmowallet.com/',
       icon: 'i-providers:osmo',
@@ -212,12 +231,19 @@ const cardMap: Record<Provider, CardType> = {
   [Provider.Coinmap]: 'Default',
   [Provider.DefaultShop]: 'Default',
   [Provider.BitcoinJungle]: 'Default',
+  [Provider.TheGambia]: 'Nimiq-Pay',
   [Provider.Opago]: Provider.Opago,
   [Provider.Osmo]: Provider.Osmo,
 } as const
 
-export function getCardConfiguration({ provider: _provider, accepts }: Pick<MapLocation, 'provider' | 'accepts'>): Pick<MapLocation, 'cardStyle' | 'banner' | 'splitBanner'> {
-  let card = cardMap[_provider]
+export function getCardConfiguration({
+  provider: _provider,
+  accepts,
+}: Pick<MapLocation, 'provider' | 'accepts'>): Pick<
+  MapLocation,
+  'cardStyle' | 'banner' | 'splitBanner'
+> {
+  const card = cardMap[_provider]
 
   if (card === 'Default' && accepts.includes(Currency.LBTC))
     return { ...cardConfig['Nimiq-Pay'], splitBanner: false }
@@ -226,7 +252,10 @@ export function getCardConfiguration({ provider: _provider, accepts }: Pick<MapL
     const { cardStyle, banner } = cardConfig[card]
     return {
       cardStyle,
-      banner: [banner!, cardConfig['Nimiq-Pay'].banner!] as [LocationBanner, LocationBanner],
+      banner: [banner!, cardConfig['Nimiq-Pay'].banner!] as [
+        LocationBanner,
+        LocationBanner,
+      ],
       splitBanner: true,
     }
   }

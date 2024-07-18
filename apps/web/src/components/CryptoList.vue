@@ -25,7 +25,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{ cryptosToDispla
       bg-neutral-0 p-4 ring="~ 1.5 neutral/15"
     >
       <li v-for="c in cryptosToDisplay " :key="c">
-        <div v-if="c !== Currency.BINANCE_PAY" text-24 :class="getCurrencyIcon(c)" :title="c" />
+        <div v-if="c !== Currency.BINANCE_PAY" text-24 :class="getCurrencyIcon(c)" :title="translateCurrency(c)" />
         <PopoverRoot v-else>
           <PopoverTrigger aria-label="Binance Pay" flex>
             <div i-cryptocurrency-color:btc relative text-24>

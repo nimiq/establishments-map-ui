@@ -58,6 +58,7 @@ export enum Provider {
   AcceptLightning = 'Accept Lightning',
   Bridge2Bitcoin = 'Bridge2Bitcoin',
   BtcMap = 'BtcMap',
+  TheGambia = 'TheGambia',
 
   // Split banner
   CryptopaymentLink = 'Cryptopayment Link',
@@ -114,8 +115,14 @@ export enum AnonWriteDbFunction {
   AuthAnonUser = 'auth_anon_user',
 }
 
-export type AnonDbFunction = typeof AnonReadDbFunction | typeof AnonWriteDbFunction
-export const anonDbFunctions: AnonDbFunction = Object.assign({}, AnonReadDbFunction, AnonWriteDbFunction)
+export type AnonDbFunction =
+  | typeof AnonReadDbFunction
+  | typeof AnonWriteDbFunction
+export const anonDbFunctions: AnonDbFunction = Object.assign(
+  {},
+  AnonReadDbFunction,
+  AnonWriteDbFunction,
+)
 
 // Functions that only auth users can call. These functions require an authToken.
 export enum AuthWriteDbFunction {
@@ -130,32 +137,89 @@ export enum AuthReadDbFunction {
   GetStats = 'get_stats', // TODO Add check in backend
 }
 
-export type AuthDbFunction = typeof AuthReadDbFunction | typeof AuthWriteDbFunction
-export const authDbFunctions: AuthDbFunction = Object.assign({}, AuthReadDbFunction, AuthWriteDbFunction)
+export type AuthDbFunction =
+  | typeof AuthReadDbFunction
+  | typeof AuthWriteDbFunction
+export const authDbFunctions: AuthDbFunction = Object.assign(
+  {},
+  AuthReadDbFunction,
+  AuthWriteDbFunction,
+)
 
 export enum AnyUserReadDbFunction {
   GetTimestamps = 'get_timestamps',
 }
 
 export type AnyUserDbFunction = typeof AnyUserReadDbFunction
-export const anyUserDbFunctions: AnyUserDbFunction = Object.assign({}, AnyUserReadDbFunction)
+export const anyUserDbFunctions: AnyUserDbFunction = Object.assign(
+  {},
+  AnyUserReadDbFunction,
+)
 
 export interface Args {
   [AnonReadDbFunction.GetMarkers]: { zoom: number, boundingBox: BoundingBox }
-  [AnonReadDbFunction.GetCryptocities]: { boundingBox: BoundingBox, excludedCities: Cryptocity[] }
-  [AuthWriteDbFunction.UpsertLocationsWithGMaps]: (Partial<RawLocation> & { accepts: RawLocation['accepts'], place_id?: string })[]
-  [AuthWriteDbFunction.InsertMarkers]: { zoom_level: number, items: (InsertMarkersSingle | InsertMarkersSingleCryptocity | InsertMarkersCluster)[] }
+  [AnonReadDbFunction.GetCryptocities]: {
+    boundingBox: BoundingBox
+    excludedCities: Cryptocity[]
+  }
+  [AuthWriteDbFunction.UpsertLocationsWithGMaps]: (Partial<RawLocation> & {
+    accepts: RawLocation['accepts']
+    place_id?: string
+  })[]
+  [AuthWriteDbFunction.InsertMarkers]: {
+    zoom_level: number
+    items: (
+      | InsertMarkersSingle
+      | InsertMarkersSingleCryptocity
+      | InsertMarkersCluster
+    )[]
+  }
 }
 
 export interface Returns {
   [AnonReadDbFunction.GetCryptocities]: CryptocityDatabase[]
   [AnonReadDbFunction.GetMarkers]: Markers
-  [AnyUserReadDbFunction.GetTimestamps]: { markers: string, locations: string, cryptocities: string }
-  [AuthReadDbFunction.GetStats]: { cryptos: number, locations: number, providers: number, providers_count: Record<Provider, number>, crypto_sells_combinations: Record<string, number>, crypto_accepts_combinations: Record<string, number> }
-  [AuthWriteDbFunction.UpsertLocationsWithGMaps]: { added: RawLocation[], multiples: object[][], errors: { input: Args[AuthWriteDbFunction.UpsertLocationsWithGMaps], error: string, apiUrl: string }[] }
+  [AnyUserReadDbFunction.GetTimestamps]: {
+    markers: string
+    locations: string
+    cryptocities: string
+  }
+  [AuthReadDbFunction.GetStats]: {
+    cryptos: number
+    locations: number
+    providers: number
+    providers_count: Record<Provider, number>
+    crypto_sells_combinations: Record<string, number>
+    crypto_accepts_combinations: Record<string, number>
+  }
+  [AuthWriteDbFunction.UpsertLocationsWithGMaps]: {
+    added: RawLocation[]
+    multiples: object[][]
+    errors: {
+      input: Args[AuthWriteDbFunction.UpsertLocationsWithGMaps]
+      error: string
+      apiUrl: string
+    }[]
+  }
   [AnonWriteDbFunction.AuthAnonUser]: { uuid: string, max_age: number }
 }
 
-export interface InsertMarkersSingle { lat: number, lng: number, count: 1, locationUuid?: string }
-export interface InsertMarkersSingleCryptocity { lat: number, lng: number, count: 1, cryptocities: Cryptocity[] }
-export interface InsertMarkersCluster { lat: number, lng: number, count: number, expansionZoom: number, cryptocities: Cryptocity[] }
+export interface InsertMarkersSingle {
+  lat: number
+  lng: number
+  count: 1
+  locationUuid?: string
+}
+export interface InsertMarkersSingleCryptocity {
+  lat: number
+  lng: number
+  count: 1
+  cryptocities: Cryptocity[]
+}
+export interface InsertMarkersCluster {
+  lat: number
+  lng: number
+  count: number
+  expansionZoom: number
+  cryptocities: Cryptocity[]
+}

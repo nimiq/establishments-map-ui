@@ -18,7 +18,7 @@ export async function getAnonDatabaseArgs(): Promise<DatabaseAnonArgs> {
 }
 
 function getProvider({ provider, isAtm }: MapLocation) {
-  const providerRoot = provider.split('/').at(0) as Provider // Some providers have a root and a subprovider. We don't care at the moment about the subprovider
+  const providerRoot = provider?.split('/').at(0) as Provider // Some providers have a root and a subprovider. We don't care at the moment about the subprovider
   const isInvalidProvider = !providerRoot || !PROVIDERS.includes(providerRoot)
   if (isInvalidProvider) {
     const newProvider = isAtm ? Provider.DefaultAtm : Provider.DefaultShop
