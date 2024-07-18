@@ -1,15 +1,38 @@
 import { CATEGORIES } from 'database'
-import { Category, Currency, LocationLink, type MapLocation, Provider } from 'types'
+import {
+  Category,
+  Currency,
+  LocationLink,
+  type MapLocation,
+  Provider,
+} from 'types'
 import { getCardConfiguration } from '../banner-assets'
 
-type ExtraFields = Pick<MapLocation, 'provider' | 'category' | 'category_label' | 'sells' | 'url' | 'linkTo' | 'cardStyle' | 'banner' | 'splitBanner'>
-export function getExtra(provider: Provider, sells: Currency[] = [], linkTo: LocationLink = LocationLink.GMaps): ExtraFields {
+type ExtraFields = Pick<
+  MapLocation,
+  | 'provider'
+  | 'category'
+  | 'category_label'
+  | 'sells'
+  | 'url'
+  | 'linkTo'
+  | 'cardStyle'
+  | 'banner'
+  | 'splitBanner'
+>
+export function getExtra(
+  provider: Provider,
+  sells: Currency[] = [],
+  linkTo: LocationLink = LocationLink.GMaps,
+): ExtraFields {
   const cardConfiguration = getCardConfiguration({ provider, accepts: [] })
   if (!cardConfiguration)
     throw new Error(`Provider ${provider} not found in providersAssets`)
 
   const isAtm = sells.length > 0
-  const category = isAtm ? Category.CarsBikes : CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)]
+  const category = isAtm
+    ? Category.CarsBikes
+    : CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)]
 
   let url
 
@@ -41,7 +64,8 @@ export const locations: Record<Provider, MapLocation> = {
     lat: 1,
     lng: 1,
     rating: 4,
-    photo: 'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
+    photo:
+      'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
     cryptocity: 'San Jose',
     isAtm: false,
     ...getExtra(Provider.Coinmap),
@@ -56,7 +80,8 @@ export const locations: Record<Provider, MapLocation> = {
     lng: 1,
     rating: 4,
     isAtm: false,
-    photo: 'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
+    photo:
+      'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
     cryptocity: 'San Jose',
     ...getExtra(Provider.BtcMap),
   },
@@ -70,7 +95,8 @@ export const locations: Record<Provider, MapLocation> = {
     lng: 1,
     rating: 4,
     isAtm: false,
-    photo: 'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
+    photo:
+      'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
     cryptocity: 'San Jose',
     ...getExtra(Provider.BtcMap),
   },
@@ -84,7 +110,8 @@ export const locations: Record<Provider, MapLocation> = {
     lng: 1,
     rating: 4,
     isAtm: false,
-    photo: 'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
+    photo:
+      'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
     cryptocity: 'San Jose',
     ...getExtra(Provider.Bridge2Bitcoin),
   },
@@ -98,7 +125,8 @@ export const locations: Record<Provider, MapLocation> = {
     lng: 1,
     rating: 4,
     isAtm: false,
-    photo: 'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
+    photo:
+      'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
     cryptocity: 'San Jose',
     ...getExtra(Provider.NAKA),
   },
@@ -112,7 +140,8 @@ export const locations: Record<Provider, MapLocation> = {
     lng: 1,
     rating: 4,
     isAtm: false,
-    photo: 'https://images.unsplash.com/photo-1543007631-283050bb3e8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
+    photo:
+      'https://images.unsplash.com/photo-1543007631-283050bb3e8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
     cryptocity: 'San Jose',
     ...getExtra(Provider.Bluecode),
   },
@@ -126,7 +155,8 @@ export const locations: Record<Provider, MapLocation> = {
     lng: 1,
     rating: 4,
     isAtm: false,
-    photo: 'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
+    photo:
+      'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
     cryptocity: 'San Jose',
     ...getExtra(Provider.CryptopaymentLink),
   },
@@ -134,14 +164,26 @@ export const locations: Record<Provider, MapLocation> = {
     uuid: 'DefaultATM',
     name: 'ATM',
     address: 'Kreuzbergstrasse 28, 10247, Berlin',
-    accepts: [Currency.NIM, Currency.BTC, Currency.ETH, Currency.DASH, Currency.XLM],
+    accepts: [
+      Currency.NIM,
+      Currency.BTC,
+      Currency.ETH,
+      Currency.DASH,
+      Currency.XLM,
+    ],
     gmaps_types: ['bank'],
     lat: 1,
     lng: 1,
     rating: 4,
     isAtm: false,
     cryptocity: 'San Jose',
-    ...getExtra(Provider.DefaultAtm, [Currency.NIM, Currency.BTC, Currency.ETH, Currency.DASH, Currency.XLM]),
+    ...getExtra(Provider.DefaultAtm, [
+      Currency.NIM,
+      Currency.BTC,
+      Currency.ETH,
+      Currency.DASH,
+      Currency.XLM,
+    ]),
   },
   [Provider.Kurant]: {
     uuid: 'Kurant',
@@ -168,7 +210,11 @@ export const locations: Record<Provider, MapLocation> = {
     rating: 4,
     cryptocity: 'San Jose',
     isAtm: true,
-    ...getExtra(Provider.Edenia, [Currency.NIM, Currency.BTC, Currency.USDC_on_POLYGON], LocationLink.Facebook),
+    ...getExtra(
+      Provider.Edenia,
+      [Currency.NIM, Currency.BTC, Currency.USDC_on_POLYGON],
+      LocationLink.Facebook,
+    ),
   },
   [Provider.DefaultShop]: {
     uuid: 'DefaultShop',
@@ -180,7 +226,8 @@ export const locations: Record<Provider, MapLocation> = {
     lng: 1,
     rating: 4,
     isAtm: false,
-    photo: 'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
+    photo:
+      'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
     cryptocity: 'San Jose',
     ...getExtra(Provider.DefaultShop, [], LocationLink.Instagram),
   },
@@ -194,7 +241,8 @@ export const locations: Record<Provider, MapLocation> = {
     lng: 1,
     rating: 4,
     isAtm: false,
-    photo: 'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
+    photo:
+      'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
     cryptocity: 'San Jose',
     ...getExtra(Provider.BitcoinJungle),
   },
@@ -208,7 +256,8 @@ export const locations: Record<Provider, MapLocation> = {
     lng: 1,
     rating: 4,
     isAtm: false,
-    photo: 'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
+    photo:
+      'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
     cryptocity: 'San Jose',
     ...getExtra(Provider.Osmo),
   },
@@ -222,8 +271,24 @@ export const locations: Record<Provider, MapLocation> = {
     lng: 1,
     rating: 4,
     isAtm: false,
-    photo: 'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
+    photo:
+      'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
     cryptocity: 'San Jose',
     ...getExtra(Provider.Opago),
+  },
+  [Provider.TheGambia]: {
+    uuid: 'TheGambia',
+    name: 'Mercedes-Benz Arena',
+    address: 'Kreuzbergstrasse 28, 10247, Berlin',
+    accepts: [Currency.NIM, Currency.BTC],
+    gmaps_types: ['stadium'],
+    lat: 1,
+    lng: 1,
+    rating: 4,
+    isAtm: false,
+    photo:
+      'https://images.unsplash.com/photo-1646491946169-76e0668b8b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
+    cryptocity: 'San Jose',
+    ...getExtra(Provider.TheGambia),
   },
 }

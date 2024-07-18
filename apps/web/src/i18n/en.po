@@ -45,7 +45,7 @@ msgid ""
 "                establishments supporting Binance Pay."
 msgstr ""
 
-#: src/assets-dev/banner-assets.ts:108
+#: src/assets-dev/banner-assets.ts:117
 msgid "Bluecode is a payment method that allows secure transactions directly through the smartphone."
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: src/assets-dev/banner-assets.ts:112
+#: src/assets-dev/banner-assets.ts:123
 msgid "Coming soon"
 msgstr ""
 
@@ -138,7 +138,7 @@ msgstr ""
 msgid "Download on Play Store"
 msgstr ""
 
-#: src/assets-dev/banner-assets.ts:159
+#: src/assets-dev/banner-assets.ts:172
 msgid "Edenia enables users to easily purchase cryptocurrencies through a network of ATMs"
 msgstr ""
 
@@ -217,7 +217,7 @@ msgstr ""
 msgid "Kryptostadt Mannheim is part of the global Cryptocity Initiative led by Nimiq and its partners."
 msgstr ""
 
-#: src/assets-dev/banner-assets.ts:93
+#: src/assets-dev/banner-assets.ts:100
 msgid "Kurant enables users to easily purchase cryptocurrencies through a network of ATMs."
 msgstr ""
 
@@ -250,7 +250,7 @@ msgstr ""
 msgid "Miscellaneous"
 msgstr ""
 
-#: src/assets-dev/banner-assets.ts:69
+#: src/assets-dev/banner-assets.ts:74
 msgid "NAKA is a global payment network that enables merchants to accept crypto payments."
 msgstr ""
 
@@ -258,7 +258,7 @@ msgstr ""
 msgid "NAKA supports Binance Pay"
 msgstr ""
 
-#: src/assets-dev/banner-assets.ts:48
+#: src/assets-dev/banner-assets.ts:51
 msgid "Nimiq Pay enables self-custodial payments with NIM wherever BTC Lightning is accepted."
 msgstr ""
 
@@ -283,11 +283,11 @@ msgstr ""
 msgid "Oops, no businesses around here."
 msgstr ""
 
-#: src/assets-dev/banner-assets.ts:171
+#: src/assets-dev/banner-assets.ts:186
 msgid "Opago offers fast and easy payments with Bitcoin via the Lightning Network"
 msgstr ""
 
-#: src/assets-dev/banner-assets.ts:189
+#: src/assets-dev/banner-assets.ts:206
 msgid "Osmo is a payment company powered by Bitcoin. Osmo helps you move money at the speed of light, anywhere in the world."
 msgstr ""
 
@@ -299,7 +299,7 @@ msgstr ""
 msgid "Our data is gathered from various sources and processed to align with locations using the Google Maps Place API. Although we strive for accuracy, automated collection can sometimes result in errors."
 msgstr ""
 
-#: src/assets-dev/banner-assets.ts:45
+#: src/assets-dev/banner-assets.ts:48
 msgid "Pay with {provider}"
 msgstr ""
 
@@ -307,9 +307,9 @@ msgstr ""
 msgid "Picture of {name}"
 msgstr ""
 
-#: src/assets-dev/banner-assets.ts:105
-#: src/assets-dev/banner-assets.ts:129
-#: src/assets-dev/banner-assets.ts:66
+#: src/assets-dev/banner-assets.ts:114
+#: src/assets-dev/banner-assets.ts:140
+#: src/assets-dev/banner-assets.ts:71
 msgid "Powered by {provider}"
 msgstr ""
 
@@ -318,8 +318,8 @@ msgstr ""
 msgid "Privacy Policy"
 msgstr ""
 
-#: src/assets-dev/banner-assets.ts:155
-#: src/assets-dev/banner-assets.ts:90
+#: src/assets-dev/banner-assets.ts:168
+#: src/assets-dev/banner-assets.ts:97
 msgid "Register with {provider}"
 msgstr ""
 
@@ -466,7 +466,7 @@ msgstr ""
 msgid "We are strategically working with local businesses to stimulate the regional economy through the innovative use of cryptocurrency."
 msgstr ""
 
-#: src/assets-dev/banner-assets.ts:133
+#: src/assets-dev/banner-assets.ts:144
 msgid "With CryptoPayment Link, you can quickly and easily receive cryptocurrency payments from your customers."
 msgstr ""
 
