@@ -6,7 +6,7 @@ const query = ref('')
 
 <template>
   <ComboboxRoot v-model="selected" v-model:search-term="query" :multiple relative>
-    <ComboboxAnchor group input-box relative p-0>
+    <ComboboxAnchor group nq-input-box relative p-0>
       <ComboboxInput
         :placeholder="$t('Select an option')" w-full
         rounded-6 bg-neutral-0 px-14 py-4.5 text="14 group-hocus:placeholder:blue" @keydown.enter.prevent
