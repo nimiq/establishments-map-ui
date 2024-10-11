@@ -10,7 +10,7 @@
     "postinstall": "nuxi prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "supabase:types": "npx supabase gen types --lang=typescript --project-id \"mycbdmurjytbdahjljoh\" --schema public > types/supabase.ts"
+    "supabase:types": "npx --yes supabase gen types -y --lang=typescript --project-id \"mycbdmurjytbdahjljoh\" --schema public > types/supabase.ts"
   },
   "dependencies": {
     "@turf/turf": "^7.0.0",

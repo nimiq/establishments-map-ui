@@ -1,0 +1,51 @@
+name: Update database types
+
+on:
+  schedule:
+    # Runs every Monday at 09:00 UTC
+    - cron: '0 9 * * 1'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: nuxt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - run: pnpm install
+
+      - run: pnpm run supabase:types
+
+      - name: Check for file changes
+        id: git_status
+        run: |
+          echo "status=$(git status --porcelain)" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        if: ${{ steps.git_status.outputs.status != '' }}
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: Update database types
+          title: Update database types
+          body: |
+            The types from Supabase have been updated in the last week.
+
+            @onmax
+          branch: update-database-types
+          add-paths: types/supabase.types.ts
+          base: nuxt
+          delete-branch: true
