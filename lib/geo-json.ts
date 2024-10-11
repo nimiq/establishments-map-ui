@@ -34,7 +34,7 @@ function toPolygon(bbox: BoundingBox) {
 /**
  * Converts a bounding box to a GeoJSON MultiPolygon
  */
-export const toMultiPolygon = (bbox: BoundingBox) => multiPolygon(toPolygon(bbox).map((p => p.geometry.coordinates))) as Feature<MultiPolygon>
+export const toMultiPolygon = (bbox: BoundingBox) => multiPolygon(toPolygon(bbox).map(p => p.geometry.coordinates)) as Feature<MultiPolygon>
 
 /**
  * Checks if a bounding box is within a multipolygon.

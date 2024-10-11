@@ -14,7 +14,8 @@ export default defineConfig({
       utilities: true,
       typography: true,
       reset: 'tailwind',
-      icons: false,
+      attributifyUtilities: true,
+      fonts: false,
     }),
     presetIcons({
       collections: {
@@ -25,9 +26,6 @@ export default defineConfig({
           'bluecode': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><path fill="#1961AC" d="m6.558 7.289 7.765 4.483 4.634-2.673a1.039 1.039 0 0 0 0-1.8L6.557.139A1.037 1.037 0 0 0 5 1.039V8.19a1.038 1.038 0 0 1 1.557-.9l.001-.001Zm12.399 7.156-4.634-2.67-7.766 4.48a1.038 1.038 0 0 1-1.557-.9v7.152a1.04 1.04 0 0 0 1.557.9l12.4-7.16a1.038 1.038 0 0 0 0-1.8v-.002Z"/><path fill="#004899" d="m6.558 16.255 7.765-4.483-7.766-4.483a1.036 1.036 0 0 0-1.557.9v7.167a1.038 1.038 0 0 0 1.557.9l.001-.001Z"/></svg>',
           'cpl': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 23"><path fill="#5C6CFF" d="m19.884 7.687-1.528-5.579C18.036.951 16.83.271 15.648.571l-5.68 1.496a3.441 3.441 0 0 0-2.082 1.565L1.012 15.307a2.151 2.151 0 0 0 .806 2.966l7.832 4.436c1.055.598 2.416.245 3.013-.79l6.874-11.674a3.31 3.31 0 0 0 .347-2.558Zm-5.458 5.429-1.763 3.007a.74.74 0 0 1-.611.354H8.51a.709.709 0 0 1-.611-.354l-1.778-3.007a.689.689 0 0 1 0-.694L7.9 9.415a.74.74 0 0 1 .61-.354h3.542a.71.71 0 0 1 .61.354l1.764 3.007a.689.689 0 0 1 0 .694Zm1.403-7.92a1.346 1.346 0 0 1-1.639-.924c-.194-.694.236-1.416.945-1.606a1.346 1.346 0 0 1 1.638.925c.195.694-.236 1.415-.944 1.606Z"/></svg>',
           'naka': '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" fill="none"><path fill="#293FFF" d="M183.304 66.667H72.001v266.666h55.651V76.111l89.044 257.222h111.303V66.667h-55.652v257.221z"/></svg>',
-        },
-        nimiq: async () => {
-          return await fetch('https://raw.githubusercontent.com/onmax/nimiq-ui/main/packages/nimiq-icons/dist/icons.json').then(res => res.json() as any)
         },
         ring: {
           atm: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 118 118"><circle cx="59" cy="59" r="32" stroke="#fff" opacity=".2"/><path stroke="url(#a)" d="M43.992 2.99C13.06 11.28-5.298 43.074 2.99 74.008c8.289 30.933 40.084 49.29 71.018 41.002 30.933-8.289 49.29-40.084 41.002-71.018C106.721 13.06 74.926-5.298 43.992 2.99Z" opacity=".2"/><defs><linearGradient id="a" x1="29.896" x2="70.898" y1="99.159" y2="28.141" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs></svg>',

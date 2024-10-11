@@ -1,6 +1,5 @@
 import { getTimestamps } from 'database'
 import type { AnyUserReadDbFunction, Returns } from 'types'
-import { useRouteQuery } from '@vueuse/router'
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 

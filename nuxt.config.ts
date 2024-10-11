@@ -23,6 +23,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     'radix-vue/nuxt',
     '@nuxtjs/supabase',
+    '@nuxt/fonts',
   ],
 
   supabase: {
@@ -50,7 +51,11 @@ export default defineNuxtConfig({
   imports: {
     dirs: [],
     imports: [
-      ...['MapLocation', 'Cluster', 'Cryptocity', 'CryptocityData', 'Currency', 'Provider'].map(name => ({ name, from: 'types', type: true })),
+      // ...['Cluster', 'Cryptocity', 'CryptocityData'].map(name => ({ name, from: 'types', type: true })),
+      ...['Currency', 'Provider'].map(name => ({ name, from: '~~/types/database.ts' })),
+      ...['CurrencyType', 'ProviderType'].map(name => ({ name, from: '~~/types/database.ts', type: true })),
+      ...['LocationLink', 'Theme', 'LocationType'].map(name => ({ name, from: '~~/types/location.ts' })),
+      ...['MapLocation', 'Banner', 'CardType'].map(name => ({ name, from: '~~/types/location.ts', type: true })),
     ],
   },
 

@@ -93,3 +93,10 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 - [ ] Use NuxImg and NuxtLink
 - [ ] Make sure to use `nq-` for the utitilies and remove `space`
 - [ ] Remove withDefaults and `props.`
+- [ ] Move cryptocities to enum
+- [ ] Use Category enum
+- [ ] Use Provider enum
+- [ ] Use Currency enum
+- [X] Use NuxtFonts
+- [ ] Remove reCaptcha
+- [ ] Move icons to folder instead of unocss
