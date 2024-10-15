@@ -1,10 +1,7 @@
 import { consola } from 'consola'
+import type { Result } from '~~/types/util'
 
 export const cryptocityRegex = /^[A-Z][a-z]*(?:_[A-Z][a-z]*)*$/
-
-type Result<T> =
-  | { data: T, error: undefined }
-  | { data: undefined, error: string }
 
 interface GetOsmDetailsOptions {
   city: string
@@ -17,7 +14,7 @@ interface GetOsmDetailsResult {
   osmType: string
 }
 
-export async function getOsmDetails({ city, countryCode }: GetOsmDetailsOptions): Promise<Result<Required<GetOsmDetailsResult>>> {
+export async function getOsmDetails({ city, countryCode }: GetOsmDetailsOptions): Result<Required<GetOsmDetailsResult>> {
   const urlPlace = new URL('http://nominatim.openstreetmap.org/search')
   urlPlace.searchParams.append('city', city.replaceAll('_', ' '))
   urlPlace.searchParams.append('countrycodes', countryCode.toLocaleLowerCase())
