@@ -43,7 +43,8 @@ export default defineEventHandler(async (event) => {
     else if (blob) {
       // Store the fetched image in blob storage
       await blob.put(key, image.blob, { contentType: image.contentType })
-      data.photo = `/images/${key}`
+      // Use the baseUrl when setting the photo URL
+      data.photo = `https://${getRequestHost(event)}/images/${key}`
     }
   }
 
