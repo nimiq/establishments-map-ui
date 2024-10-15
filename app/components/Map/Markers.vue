@@ -22,7 +22,7 @@ const { browserPositionIsSupported, browserPosition } = storeToRefs(useGeoIp())
     v-for="location in singles" v-else :key="location.uuid"
     :options="{ position: { lng: location.lng, lat: location.lat } }" data-custom-marker
   >
-    <SingleMarker :location />
+    <MapSingleMarker :location />
   </CustomMarker>
 
   <MapClusterMarkers />

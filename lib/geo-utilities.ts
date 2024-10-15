@@ -1,4 +1,5 @@
-import type { MapLocation, MapPosition, Point } from 'types'
+import type { MapPosition, Point } from '../types/map.js'
+import type { MapLocation } from '../types/location.js'
 
 export function euclideanDistance({ lat: y1, lng: x1 }: Point, { lat: y2, lng: x2 }: Point) {
   return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)

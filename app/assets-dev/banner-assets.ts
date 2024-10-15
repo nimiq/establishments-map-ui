@@ -25,7 +25,7 @@ const defaultCardStyle: MapLocation['cardStyle'] = {
 
 const cardConfig: Record<CardType, CardConfig> = {
   'Default': { cardStyle: defaultCardStyle },
-  [Provider.DefaultAtm]: {
+  'DefaultAtm': {
     cardStyle: {
       theme: Theme.Dark,
       bg: [
@@ -60,10 +60,10 @@ const cardConfig: Record<CardType, CardConfig> = {
       },
     },
   },
-  [Provider.NAKA]: {
+  'NAKA': {
     cardStyle: defaultCardStyle,
     banner: {
-      type: Provider.NAKA,
+      type: 'NAKA',
       get label() {
         const i18n = i18nKeyPassThrough
         return i18n.t('Powered by {provider}')
@@ -83,14 +83,14 @@ const cardConfig: Record<CardType, CardConfig> = {
       },
     },
   },
-  [Provider.Kurant]: {
+  'Kurant': {
     cardStyle: {
       theme: Theme.Dark,
       bg: ['#A92E19', 'hsl(9, 74%, 35%)'],
       isDark: true,
     },
     banner: {
-      type: Provider.Kurant,
+      type: 'Kurant',
       get label() {
         const i18n = i18nKeyPassThrough
         return i18n.t('Register with {provider}')
@@ -105,10 +105,10 @@ const cardConfig: Record<CardType, CardConfig> = {
       icon: 'i-providers:kurant',
     },
   },
-  [Provider.Bluecode]: {
+  'Bluecode': {
     cardStyle: defaultCardStyle,
     banner: {
-      type: Provider.Bluecode,
+      type: 'Bluecode',
       get label() {
         const i18n = i18nKeyPassThrough
         return i18n.t('Powered by {provider}')
@@ -132,10 +132,10 @@ const cardConfig: Record<CardType, CardConfig> = {
       icon: 'i-providers:bluecode',
     },
   },
-  [Provider.CryptopaymentLink]: {
+  'Cryptopayment Link': {
     cardStyle: defaultCardStyle,
     banner: {
-      type: Provider.CryptopaymentLink,
+      type: 'Cryptopayment Link',
       get label() {
         const i18n = i18nKeyPassThrough
         return i18n.t('Powered by {provider}')
@@ -156,7 +156,7 @@ const cardConfig: Record<CardType, CardConfig> = {
       },
     },
   },
-  [Provider.Edenia]: {
+  'Edenia': {
     cardStyle: {
       bg: ['#00B2B0', 'hsl(179, 100%, 32%)'],
       theme: Theme.Dark,
@@ -164,7 +164,7 @@ const cardConfig: Record<CardType, CardConfig> = {
       icon: 'i-providers:edenia',
     },
     banner: {
-      type: Provider.Edenia,
+      type: 'Edenia',
       get label() {
         const i18n = i18nKeyPassThrough
         return i18n.t('Register with {provider}')
@@ -178,10 +178,10 @@ const cardConfig: Record<CardType, CardConfig> = {
       tooltipCta: 'https://edenia.com/',
     },
   },
-  [Provider.Opago]: {
+  'Opago': {
     cardStyle: defaultCardStyle,
     banner: {
-      type: Provider.Opago,
+      type: 'Opago',
       shortLabel: Provider.Opago,
       get tooltip() {
         const i18n = i18nKeyPassThrough
@@ -198,10 +198,10 @@ const cardConfig: Record<CardType, CardConfig> = {
       },
     },
   },
-  [Provider.Osmo]: {
+  'Osmo': {
     cardStyle: defaultCardStyle,
     banner: {
-      type: Provider.Osmo,
+      type: 'Osmo',
       shortLabel: Provider.Osmo,
       get tooltip() {
         const i18n = i18nKeyPassThrough
@@ -220,32 +220,30 @@ const cardConfig: Record<CardType, CardConfig> = {
   },
 }
 
+//  Extract<ProviderType, 'Bluecode' | 'Edenia' | 'Kurant' | 'NAKA' | 'Edenia' | 'Cryptopayment Link' | 'Opago' | 'Osmo'> | 'Nimiq-Pay' | 'Default' | 'DefaultAtm'
 const cardMap: Record<ProviderType, CardType> = {
-  [Provider.NAKA]: Provider.NAKA,
-  [Provider.Kurant]: Provider.Kurant,
-  [Provider.Bluecode]: Provider.Bluecode,
-  [Provider.CryptopaymentLink]: Provider.CryptopaymentLink,
-  [Provider.Edenia]: Provider.Edenia,
-  [Provider.DefaultAtm]: Provider.DefaultAtm,
-  [Provider.AcceptLightning]: 'Default',
-  [Provider.BtcMap]: 'Default',
-  [Provider.Bridge2Bitcoin]: 'Default',
-  [Provider.Coinmap]: 'Default',
-  [Provider.DefaultShop]: 'Default',
-  [Provider.BitcoinJungle]: 'Default',
-  [Provider.TheGambia]: 'Nimiq-Pay',
-  [Provider.Opago]: Provider.Opago,
-  [Provider.Osmo]: Provider.Osmo,
-} as const
+  'Cryptopayment Link': 'Cryptopayment Link',
+  'Edenia': 'Edenia',
+  'Bluecode': 'Bluecode',
+  'Kurant': 'Kurant',
+  'NAKA': 'NAKA',
+  'Opago': 'Opago',
+  'DefaultAtm': 'DefaultAtm',
+  'Osmo': 'Osmo',
+  'Accept Lightning': 'Default',
+  'Bitcoin Jungle': 'Default',
+  'Bridge2Bitcoin': 'Default',
+  'BtcMap': 'Default',
+  'Coinmap': 'Default',
+  'DefaultShop': 'Default',
+  'TheGambia': 'Nimiq-Pay',
+}
 
-export function getCardConfiguration({
-  provider: _provider,
-  accepts,
-}: Pick<MapLocation, 'provider' | 'accepts'>): Pick<
-    MapLocation,
+export function getCardConfiguration({ provider, accepts }: Pick<MapLocation, 'provider' | 'accepts'>): Pick<
+  MapLocation,
   'cardStyle' | 'banner' | 'splitBanner'
-  > {
-  const card = cardMap[_provider]
+> {
+  const card = cardMap[provider!]
 
   if (card === 'Default' && accepts.includes(Currency.LBTC))
     return { ...cardConfig['Nimiq-Pay'], splitBanner: false }

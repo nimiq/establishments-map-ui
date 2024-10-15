@@ -1,6 +1,6 @@
 import type { FeatureCollection, MultiPolygon } from 'geojson'
 
-// TODO Move this to an enum
+// TODO Move this to an enum from postgres
 export enum Cryptocity {
   SanJose = 'San_Jose',
   Ljubljana = 'Ljubljana',
@@ -14,6 +14,8 @@ export enum Cryptocity {
   MexicoCity = 'Mexico_City',
   GuatemalaCity = 'Guatemala_City',
 }
+
+export type CryptocityType = typeof Cryptocity[keyof typeof Cryptocity]
 
 // Information that we get from the database
 export interface CryptocityDatabase {

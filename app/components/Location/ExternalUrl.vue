@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { LocationLink } from 'types'
-
 withDefaults(defineProps<{ location: MapLocation, showName?: boolean }>(), { showName: false })
 </script>
 

@@ -1,8 +1,9 @@
 import type { Feature, MultiPolygon } from 'geojson'
 import { multiPolygon } from '@turf/turf'
 import { cryptocitiesUi } from '@/assets-dev/cryptocities-assets'
+import type { Database } from '~~/types/supabase'
 
-type StoredCryptocities = ExpiringValue<{ area: Feature<MultiPolygon>, data: Partial<Record<Cryptocity, CryptocityData>> }>
+type StoredCryptocities = ExpiringValue<{ area: Feature<MultiPolygon>, data: Partial<Record<CryptocityType, CryptocityData>> }>
 
 // Initial value of the cryptocities data structure
 const defaultValue: StoredCryptocities['value'] = { area: multiPolygon([]), data: {} }
@@ -11,7 +12,7 @@ export const useCryptocities = defineStore('cryptocities', () => {
   const { boundingBox, map, zoom } = storeToRefs(useMap())
 
   const cryptocities = ref(defaultValue)
-  const loadedCitiesNames = computed(() => [...Object.keys(cryptocities.value.data)] as Cryptocity[])
+  const loadedCitiesNames = computed(() => [...Object.keys(cryptocities.value.data)] as CryptocityType[])
   const allCryptocities = computed(() => [...Object.values(cryptocities.value.data)])
   const cryptocitiesInView = computed(() => boundingBox.value ? getItemsWithinBBox(allCryptocities.value, boundingBox.value) : [])
 
@@ -19,8 +20,22 @@ export const useCryptocities = defineStore('cryptocities', () => {
     if (bBoxIsWithinArea(boundingBox, cryptocities.value.area))
       return allCryptocities.value
 
-    const newCryptocities = await getDbCryptocities(await getAnonDatabaseArgs(), { boundingBox, excludedCities: loadedCitiesNames.value })
-    return setCryptocities(boundingBox, newCryptocities)
+    const supabase = useSupabaseClient<Database>()
+    const { data: newCryptocities, error } = await supabase.rpc('get_cryptocities', { ...boundingBox, excluded_cities: loadedCitiesNames.value })
+    if (error)
+      throw error
+    const parsed = newCryptocities.map((c) => {
+      return {
+        city: c.city as CryptocityType,
+        lat: c.lat,
+        lng: c.lng,
+        locationsCount: c.locations_count,
+        shape: c.shape as unknown as CryptocityDatabase['shape'],
+        showCardAtZoom: c.show_card_at_zoom,
+        url: c.url,
+      } satisfies CryptocityDatabase
+    })
+    return setCryptocities(boundingBox, parsed)
   }
 
   function setCryptocities(boundingBox: BoundingBox, newCryptocities: CryptocityDatabase[] = []) {
@@ -30,7 +45,7 @@ export const useCryptocities = defineStore('cryptocities', () => {
   }
 
   // Cryptocities that have not been attached to any cluster
-  const attachedCryptocities = ref<Cryptocity[]>([])
+  const attachedCryptocities = ref<CryptocityType[]>([])
 
   // Cryptocities no in attachedCryptocities
   const cryptocitiesSingles = computed(() => allCryptocities.value.filter(cryptocity => !attachedCryptocities.value.includes(cryptocity.city)))
@@ -49,7 +64,7 @@ export const useCryptocities = defineStore('cryptocities', () => {
     return m * x + b
   }
 
-  const addedShapes = ref<Cryptocity[]>([])
+  const addedShapes = ref<CryptocityType[]>([])
   watchDebounced([allCryptocities, boundingBox], () => {
     if (!map.value)
       return

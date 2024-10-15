@@ -83,10 +83,12 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 - [ ] Image fallback blob via Cloudflare
 - [ ] Move the map from vue to nuxt
 - [ ] Update nimiq-css and nimiq icons
+- [ ] Move cryptocitiies enum
 - [ ] Implement new design for cryptocities
 - [ ] Fix Cryptocities search
 - [ ] Make sure USDT works
 - [ ] Locations OG Image
+- [ ] Replace group-data-[active]
 - [ ] Add African locations
 - [ ] Change map: change to layers?
 - [ ] Remove database and use supabase
@@ -98,5 +100,6 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 - [ ] Use Provider enum
 - [ ] Use Currency enum
 - [X] Use NuxtFonts
+- [ ] Fix URL navigation
 - [ ] Remove reCaptcha
 - [ ] Move icons to folder instead of unocss

@@ -3,6 +3,7 @@ Since the UI is quite flexible, better to define all cases using types, and we d
  */
 
 import type { ProviderType } from './database.ts'
+import type { Cryptocity } from './cryptocity.js'
 import type { Tables } from './supabase.js'
 
 export enum LocationType {
@@ -22,8 +23,10 @@ export enum LocationLink {
   Facebook = 'facebook',
 }
 
+export type LocationLinkType = typeof LocationLink[keyof typeof LocationLink]
+
 // The different Banner designs
-export type CardType = Extract<ProviderType, 'Bluecode' | 'Edenia' | 'Kurant' | 'NAKA' | 'Edenia' | 'CryptopaymentLink' | 'Opago' | 'Osmo'> | 'Nimiq-Pay' | 'Default'
+export type CardType = Extract<ProviderType, 'Bluecode' | 'Edenia' | 'Kurant' | 'NAKA' | 'Edenia' | 'Cryptopayment Link' | 'Opago' | 'Osmo'> | 'Nimiq-Pay' | 'Default' | 'DefaultAtm'
 
 export interface LocationBanner {
   type: Exclude<CardType, 'Default'>
@@ -46,9 +49,11 @@ export interface LocationBanner {
   }
 }
 
-export type MapLocation = Tables<'locations'> & {
+export type MapLocation = Omit<Tables<'locations'>, 'lat' | 'lng' | 'provider' | 'cryptocity'> & {
   lng: number
   lat: number
+  provider: ProviderType
+  cryptocity: Cryptocity
 
   category_label: string
 

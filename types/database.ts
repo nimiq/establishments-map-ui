@@ -23,6 +23,7 @@ export const Category: Record<ToPascalCase<Enums<'category_enum'>>, Enums<'categ
 }
 
 export type CategoryType = typeof Category[keyof typeof Category]
+export const Categories = Object.values(Category) as CategoryType[]
 
 export const Currency: Record<Enums<'currency_enum'>, Enums<'currency_enum'>> = {
   NIM: 'NIM',
@@ -42,10 +43,11 @@ export const Currency: Record<Enums<'currency_enum'>, Enums<'currency_enum'>> = 
 export type CurrencyType = typeof Currency[keyof typeof Currency]
 export type CurrencyTypeNoBNC = Exclude<CurrencyType, 'BINANCE_PAY'>
 
-type OmitKeysWithSlash<T> = {
-  [K in keyof T as K extends `${string}/${string}` ? never : K]: T[K];
-}
-export const Provider: OmitKeysWithSlash<Record<ToPascalCase<Enums<'provider_type'>>, Enums<'provider_type'>>> = {
+// Exclude GoCrypto as we consider it as legacy
+// Exclude Coinmap/* as we consider it as just Coinmap
+
+type ProviderEnums = Exclude<Enums<'provider_type'>, 'GoCrypto' | `Coinmap/${string}`>
+export const Provider: Record<ToPascalCase<ProviderEnums>, ProviderEnums> = {
   DefaultShop: 'DefaultShop',
   DefaultAtm: 'DefaultAtm',
   NAKA: 'NAKA',
@@ -63,8 +65,8 @@ export const Provider: OmitKeysWithSlash<Record<ToPascalCase<Enums<'provider_typ
   CryptopaymentLink: 'Cryptopayment Link',
   Osmo: 'Osmo',
   Opago: 'Opago',
-
-  GoCrypto: 'GoCrypto',
 }
+
+export const Providers = Object.values(Provider) as ProviderType[]
 
 export type ProviderType = typeof Provider[keyof typeof Provider]

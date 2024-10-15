@@ -39,14 +39,14 @@ const { fillMarker, showLocationName } = useUIParams()
 
 <style scoped>
 .marker {
-  --uno: ring-1.5 ring-neutral/3 group-data-[active]:ring-blue/6 group-hocus:ring-blue/6;
-  --uno: bg-neutral group-data-[active]:bg-blue group-hocus:bg-blue-1100;
+  --uno: 'ring-1.5 ring-neutral/3 group-data-[active]:ring-blue/6 group-hocus:ring-blue/6';
+  --uno: 'bg-neutral group-data-[active]:bg-blue group-hocus:bg-blue-1100';
   --uno: transition-colors rounded-full shadow text-neutral-0;
 }
 
 .text {
   --uno: flex-1 relative select-none;
-  --uno: text-16 text-left text-neutral font-bold group-data-[active]:text-blue group-hocus:text-blue-1100 lh-none;
+  --uno: 'text-16 text-left text-neutral font-bold group-data-[active]:text-blue group-hocus:text-blue-1100 lh-none';
   -webkit-text-stroke: 3px rgb(var(--nq-neutral-0));
   transition: -webkit-text-stroke 0.3s, color 0.3s;
 

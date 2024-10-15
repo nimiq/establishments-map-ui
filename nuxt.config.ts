@@ -37,11 +37,9 @@ export default defineNuxtConfig({
     supabaseAdminPassword: env.SUPABASE_ADMIN_PASSWORD,
 
     public: {
-      googleMapKey: env.NUXT_GOOGLE_MAP_KEY,
-      databaseUrl: env.NUXT_DATABASE_URL,
-      databaseKey: env.NUXT_DATABASE_KEY,
-      slackNewCandidateUrl: env.NUXT_SLACK_NEW_CANDIDATE_URL,
-      slackReportUrl: env.NUXT_SLACK_REPORT_URL,
+      googleMapKey: env.NUXT_PUBLIC_GOOGLE_MAP_KEY,
+      slackNewCandidateUrl: env.NUXT_PUBLIC_SLACK_NEW_CANDIDATE_URL,
+      slackReportUrl: env.NUXT_PUBLIC_SLACK_REPORT_URL,
       // recaptcha: {
       //   v3SiteKey: process.env.NUXT_RECAPTCHA_SITE_KEY,
       // }
@@ -49,14 +47,15 @@ export default defineNuxtConfig({
   },
 
   imports: {
-    dirs: ['~~/lib/geo-json.ts', '~~/types'],
     imports: [
-      ...['Currency', 'Provider', 'Category'].map(name => ({ name, from: '~~/types/database.ts' })),
+      ...['Currency', 'Provider', 'Providers', 'Category', 'Categories'].map(name => ({ name, from: '~~/types/database.ts' })),
+      ...['bBoxIsWithinArea', 'getItemsWithinBBox', 'addBBoxToArea'].map(name => ({ name, from: '~~/lib/geo-json.ts' })),
       ...['Issue'].map(name => ({ name, from: '~~/types/issue.ts', declarationType: true })),
       ...['CurrencyType', 'CurrencyTypeNoBNC', 'ProviderType', 'CategoryType'].map(name => ({ name, from: '~~/types/database.ts', type: true })),
       ...['LocationLink', 'Theme', 'LocationType'].map(name => ({ name, from: '~~/types/location.ts' })),
-      ...['MapLocation', 'LocationBanner', 'CardType'].map(name => ({ name, from: '~~/types/location.ts', type: true })),
-      ...['Cryptocity', 'CryptocityData'].map(name => ({ name, from: '~~/types/cryptocity.ts', type: true })),
+      ...['MapLocation', 'LocationBanner', 'CardType', 'LocationLinkType'].map(name => ({ name, from: '~~/types/location.ts', type: true })),
+      ...['Cryptocity'].map(name => ({ name, from: '~~/types/cryptocity.ts' })),
+      ...['CryptocityData', 'CryptocityType', 'CryptocityDatabase', 'CryptocityUI'].map(name => ({ name, from: '~~/types/cryptocity.ts', type: true })),
       ...['BoundingBox', 'Cluster', 'MapPosition', 'ClusterArea', 'Point', 'LocationClusterParams', 'EstimatedMapPosition'].map(name => ({ name, from: '~~/types/map.ts', type: true })),
     ],
   },

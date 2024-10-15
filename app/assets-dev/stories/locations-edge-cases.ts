@@ -1,7 +1,6 @@
-import { Currency, type MapLocation, Provider } from 'types'
 import { getExtra } from './locations'
 
-export const locations: Partial<Record<Provider, MapLocation>> = {
+export const locations: Partial<Record<ProviderType, MapLocation>> = {
   [Provider.DefaultAtm]: {
     uuid: '1',
     name: 'ATM with no rating',

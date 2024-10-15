@@ -1,9 +1,8 @@
-import { PROVIDERS } from 'database'
 import { getCardConfiguration } from './assets-dev/banner-assets'
 
 function getProvider({ provider, isAtm }: MapLocation) {
   const providerRoot = provider?.split('/').at(0) as ProviderType // Some providers have a root and a subprovider. We don't care at the moment about the subprovider
-  const isInvalidProvider = !providerRoot || !PROVIDERS.includes(providerRoot)
+  const isInvalidProvider = !providerRoot || !Providers.includes(providerRoot)
   if (isInvalidProvider) {
     const newProvider = isAtm ? Provider.DefaultAtm : Provider.DefaultShop
     console.warn(`Invalid provider: '${provider}'. Setting ${newProvider} provider. MapLocation: ${JSON.stringify(location)}`)
@@ -39,6 +38,6 @@ export function parseLocation(location: MapLocation) {
 
   location = { ...location, ...getCardConfiguration(location) }
 
-  location.category_label = useTranslations().translateCategory(location.category)
+  location.category_label = translateCategory(location.category)
   return location
 }

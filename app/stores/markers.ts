@@ -1,5 +1,6 @@
-import { parseLocation } from '@/shared'
-import type { MemoizedMarkers } from '~~/types/map'
+import { CLUSTERS_MAX_ZOOM, algorithm, computeMarkers } from '~~/lib/compute-markers'
+import type { Markers, MemoizedMarkers } from '~~/types/map'
+import type { Database } from '~~/types/supabase'
 
 export const useMarkers = defineStore('markers', () => {
   const { setLocations, getLocations } = useLocations()
@@ -17,7 +18,7 @@ export const useMarkers = defineStore('markers', () => {
   const { payload: memoized } = useExpiringStorage('memoized_markers', {
     defaultValue: [] as { key: LocationClusterParams, value: MemoizedMarkers }[],
     expiresIn: 7 * 24 * 60 * 60 * 1000,
-    timestamp: useApp().timestamps?.markers,
+    // timestamp: useApp().timestamps?.markers,
   })
 
   /**
@@ -29,8 +30,10 @@ export const useMarkers = defineStore('markers', () => {
   const singles = shallowRef<MapLocation[]>([])
   const singlesInView = computed(() => boundingBox.value ? getItemsWithinBBox(singles.value, boundingBox.value) : [])
 
-  function getIndex({ zoom, categories, currencies }: LocationClusterParams) {
-    return memoized.value.findIndex(m => m.key.zoom === zoom && m.key.categories === categories && m.key.currencies === currencies)
+  // function getIndex({ zoom, categories, currencies }: LocationClusterParams) {
+  function getIndex(_a: LocationClusterParams) {
+    // return memoized.value?.findIndex?.(m => m.key.zoom === zoom && m.key.categories === categories && m.key.currencies === currencies)
+    return -1
   }
 
   function getMemoized() {
@@ -49,14 +52,7 @@ export const useMarkers = defineStore('markers', () => {
     return { key, item, needsToUpdate }
   }
 
-  // const { init: initMaxZoom, payload: maxZoomFromServer } = useExpiringStorage('max_zoom_from_server', {
-  //   expiresIn: 7 * 24 * 60 * 60 * 1000,
-  //   getAsyncValue: async () => {
-  //     return await getClusterMaxZoom(await getAnonDatabaseArgs())
-  //   },
-  //   timestamp: useApp().timestamps?.markers,
-  // })
-  const initMaxZoom = async () => getClusterMaxZoom(await getAnonDatabaseArgs())
+  const supabase = useSupabaseClient<Database>()
   const maxZoomFromServer = ref(14)
 
   async function shouldRunInClient({ zoom }: LocationClusterParams): Promise<boolean> {
@@ -66,7 +62,7 @@ export const useMarkers = defineStore('markers', () => {
     // if (currencies || categories)
     //   return true
 
-    await initMaxZoom() // Get the value from the server if it doesn't exist
+    // await initMaxZoom() // Get the value from the server if it doesn't exist
     return zoom > maxZoomFromServer.value
   }
 
@@ -79,12 +75,16 @@ export const useMarkers = defineStore('markers', () => {
   }
 
   async function getMarkersFromDatabase(): Promise<Markers> {
-    const res = await getMarkers(await getAnonDatabaseArgs(), { boundingBox: boundingBox.value!, zoom: zoom.value }, parseLocation)
+    // const res = await getMarkers(await getAnonDatabaseArgs(), { boundingBox: boundingBox.value!, zoom: zoom.value }, parseLocation)
+    const { data, error } = await supabase.rpc('get_markers', { ...boundingBox.value!, zoom_level: zoom.value })
+    if (error)
+      throw error
+
     const cryptocities = await getCryptocities(boundingBox.value!)
-    setLocations(res.singles)
-    setCryptocities(boundingBox.value!, cryptocities)
-    res.clusters.forEach(c => c.diameter = Math.max(24, Math.min(48, 0.24 * c.count + 24)))
-    return res
+    setLocations((data as unknown as Markers).singles)
+    setCryptocities(boundingBox.value!, cryptocities);
+    (data as unknown as Markers).clusters.forEach(c => c.diameter = Math.max(24, Math.min(48, 0.24 * c.count + 24)))
+    return data as unknown as Markers
   }
 
   function setMarkers(newSingles: MapLocation[], newClusters: Cluster[]) {
@@ -116,14 +116,14 @@ export const useMarkers = defineStore('markers', () => {
       item.singles.push(...newSingles.filter(s => item.singles.every(i => i.uuid !== s.uuid)))
     }
     else {
-      memoized.value.push({
-        key,
-        value: {
-          area: toMultiPolygon(boundingBox.value!),
-          clusters: newClusters,
-          singles: newSingles,
-        },
-      })
+      // memoized.value.push({
+      //   key,
+      //   value: {
+      //     area: toMultiPolygon(boundingBox.value!),
+      //     clusters: newClusters,
+      //     singles: newSingles,
+      //   },
+      // })
     }
 
     setMarkers(newSingles, newClusters)

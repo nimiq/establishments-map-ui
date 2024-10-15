@@ -2,10 +2,13 @@ import type { Feature, MultiPolygon } from 'geojson'
 // import { getLocations as getDbLocations, getLocation } from 'database'
 import { useRouteQuery } from '@vueuse/router'
 import type { Database } from '~~/types/supabase'
+import { parseLocation } from '~/shared'
 
 export const useLocations = defineStore('locations', () => {
   // Reduce redundant database fetches by reusing fetched locations by tracking the areas explored by the user
   const visitedAreas = ref<Feature<MultiPolygon>>()
+
+  const supabase = useSupabaseClient<Database>()
 
   // const { payload: locationsMap } = useExpiringStorage('locations', {
   //   defaultValue: {} as Record<string, MapLocation>,
@@ -25,10 +28,10 @@ export const useLocations = defineStore('locations', () => {
       return getItemsWithinBBox(locations.value, boundingBox) // Filter locations by bounding box
     }
 
-    const { data: _newLocations, error } = await useSupabaseClient<Database>().rpc('get_locations', { ...boundingBox })
+    const { data: _newLocations, error } = await supabase.rpc('get_locations', { ...boundingBox })
     if (error)
       throw error
-    const newLocations = _newLocations.map(parseLocation)
+    const newLocations = (_newLocations as unknown as MapLocation[]).map(parseLocation)
     setLocations(newLocations)
     visitedAreas.value = addBBoxToArea(boundingBox, visitedAreas.value)
     return newLocations
@@ -37,7 +40,10 @@ export const useLocations = defineStore('locations', () => {
   async function getLocationByUuid(uuid: string) {
     if (uuid in locationsMap.value)
       return locationsMap.value[uuid]
-    const location = await getLocation(await getAnonDatabaseArgs(), uuid, parseLocation)
+    const { data: _location, error } = await supabase.rpc('get_location_by_uuid', { location_uuid: uuid })
+    if (error)
+      throw error
+    const location = parseLocation(_location as unknown as MapLocation)
     if (!location)
       return
     locationsMap.value[uuid] = location

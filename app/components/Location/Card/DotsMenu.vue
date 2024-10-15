@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { MapLocation } from 'types'
-import { ModalName } from './Modal.vue'
+import { ModalName } from '../../Modal.vue'
 
 const props = defineProps<{ location: MapLocation }>()
 
