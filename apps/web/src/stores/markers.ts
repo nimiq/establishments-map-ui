@@ -1,4 +1,4 @@
-import { getClusterMaxZoom, getMarkers } from 'database'
+import { getClusterMaxZoom } from 'database'
 import { CLUSTERS_MAX_ZOOM, addBBoxToArea, algorithm, bBoxIsWithinArea, computeMarkers, getItemsWithinBBox, toMultiPolygon } from 'geo'
 import type { Cluster, LocationClusterParams, MapLocation, Markers, MemoizedMarkers } from 'types'
 import { getAnonDatabaseArgs, parseLocation } from '@/shared'
@@ -39,7 +39,7 @@ export const useMarkers = defineStore('markers', () => {
     const key = { zoom: zoom.value }
 
     const index = getIndex(key)
-    const item = index !== -1 ? memoized.value[index].value : undefined
+    const item = index !== -1 ? memoized?.value[index]?.value : undefined
 
     // If the item exists and the bounding box is within the memoized area, we can reuse the memoized item and there is no need to re-cluster
     const needsToUpdate = !item || !boundingBox.value || !bBoxIsWithinArea(boundingBox.value, item.area)
@@ -79,12 +79,22 @@ export const useMarkers = defineStore('markers', () => {
   }
 
   async function getMarkersFromDatabase(): Promise<Markers> {
-    const res = await getMarkers(await getAnonDatabaseArgs(), { boundingBox: boundingBox.value!, zoom: zoom.value }, parseLocation)
+    const url = new URL('https://crypto-map.nuxt.dev/api/markers/')
+    url.searchParams.append('nelat', boundingBox.value!.neLat.toString())
+    url.searchParams.append('nelng', boundingBox.value!.neLng.toString())
+    url.searchParams.append('swlat', boundingBox.value!.swLat.toString())
+    url.searchParams.append('swlng', boundingBox.value!.swLng.toString())
+    url.searchParams.append('zoom_level', zoom.value.toString())
+    const res = await fetch(url)
+    const json = await res.json() as Markers
+    const { singles, clusters } = json
+    const locations = singles.map(parseLocation)
+
     const cryptocities = await getCryptocities(boundingBox.value!)
-    setLocations(res.singles)
+    setLocations(locations)
     setCryptocities(boundingBox.value!, cryptocities)
-    res.clusters.forEach(c => c.diameter = Math.max(24, Math.min(48, 0.24 * c.count + 24)))
-    return res
+    clusters.forEach(c => c.diameter = Math.max(24, Math.min(48, 0.24 * c.count + 24)))
+    return json
   }
 
   function setMarkers(newSingles: MapLocation[], newClusters: Cluster[]) {
