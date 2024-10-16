@@ -94,7 +94,7 @@ export const useMarkers = defineStore('markers', () => {
     setLocations(locations)
     setCryptocities(boundingBox.value!, cryptocities)
     clusters.forEach(c => c.diameter = Math.max(24, Math.min(48, 0.24 * c.count + 24)))
-    return json
+    return { clusters, singles: locations }
   }
 
   function setMarkers(newSingles: MapLocation[], newClusters: Cluster[]) {
