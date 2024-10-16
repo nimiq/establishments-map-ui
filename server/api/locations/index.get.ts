@@ -18,5 +18,5 @@ export default defineEventHandler(async (event) => {
     return createError({ statusCode: 404, message: `Locations not found` })
 
   await Promise.all(locations.map(l => cacheLocation(event, l)))
-  return location
+  return locations
 })
