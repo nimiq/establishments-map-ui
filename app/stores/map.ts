@@ -1,4 +1,6 @@
 import type { GoogleMap } from 'vue3-google-map'
+import { safeParse, union, undefined as vUndefined } from 'valibot'
+import { LatSchema, LngSchema, UuidSchema, ZoomSchema } from '~~/lib/schemas'
 
 export const useMap = defineStore('map', () => {
   const mapInstance = shallowRef<typeof GoogleMap>()
@@ -18,9 +20,7 @@ export const useMap = defineStore('map', () => {
 
     router.push({
       params: {
-        lat: center.value.lat.toString(),
-        lng: center.value.lng.toString(),
-        zoom: zoom.value.toString(),
+        coords: `@${center.value.lat},${center.value.lng},${zoom.value}z`,
       },
       query: { ...route.query, uuid: useLocations().selectedUuid || undefined },
       replace: true,
@@ -50,9 +50,56 @@ export const useMap = defineStore('map', () => {
   // The bounds event is fired a lot, so we debounce it
   const onBoundsChangedDebouncer = useDebounceFn(onBoundsChanged, 30)
 
-  const unwatch = watch(map, (map) => {
+  function getParams() {
+    const parts = route.path.slice(2 /* remove '/@' from the beginning */, -1 /* Remove 'z' from the back */)?.split(',')
+    if (parts.length !== 3)
+      return
+    const { output: lat, success: latSuccess } = safeParse(LatSchema, parts[0])
+    const { output: lng, success: lngSuccess } = safeParse(LngSchema, parts[1])
+    const { output: zoom, success: zoomSuccess } = safeParse(ZoomSchema, parts[2])
+    if (!latSuccess || !lngSuccess || !zoomSuccess)
+      return
+    const { output: uuid, success: uuidSuccess } = safeParse(union([UuidSchema, vUndefined()]), route.query.uuid)
+    if (!uuidSuccess)
+      return { lat, lng, zoom }
+    return { lat, lng, zoom, uuid }
+  }
+
+  // Costa Rica
+  const FALLBACK_POSITION: MapPosition = { center: { lat: 9.6301892, lng: -84.2541844 }, zoom: 9 }
+
+  const { geolocateIp } = useGeoIp()
+  const { ipPositionError, ipPosition } = storeToRefs(useGeoIp())
+  const { selectedUuid } = storeToRefs(useLocations())
+
+  const unwatch = watch(map, async (map) => {
     if (!map)
       return
+
+    const params = getParams()
+    if (!params) {
+      await geolocateIp()
+
+      if (!ipPositionError.value && ipPosition.value) {
+        // eslint-disable-next-line no-console
+        console.log(`Using user's location: ${JSON.stringify(ipPosition.value)}`)
+        setPosition(ipPosition.value)
+      }
+      else {
+        console.warn(`Error getting user's location: ${ipPositionError.value}. Using fallback position. ${JSON.stringify(FALLBACK_POSITION)}`)
+        setPosition(FALLBACK_POSITION)
+      }
+    }
+    else {
+      const { lat, lng, zoom, uuid } = params
+      // const { center, zoom: mapZoom } = storeToRefs(useMap())
+      // center.value = { lat, lng }
+      // mapZoom.value = zoom
+      setPosition({ center: { lat, lng }, zoom })
+      if (uuid)
+        selectedUuid.value = uuid
+    }
+    // setPosition({ center: { lat: params.lat, lng: params.lng }, zoom: params.zoom }, { clearMarkers: true })
     map.addListener('center_changed', () => {
       center.value = map.getCenter()?.toJSON() as Point | undefined
     })

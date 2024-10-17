@@ -1,10 +1,10 @@
-export enum Autocomplete {
+export const enum Autocomplete {
   GoogleBussines = 'establishment',
   GoogleRegions = '(regions)',
   CryptoMapLocation = 'crypto-map-location',
 }
 
-export enum AutocompleteStatus {
+export const enum AutocompleteStatus {
   Initial = 'initial',
   Loading = 'loading',
   WithResults = 'with-results',

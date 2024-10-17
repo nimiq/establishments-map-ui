@@ -1,5 +1,5 @@
 <script lang="ts">
-export enum ModalName {
+export const enum ModalName {
   CryptoMap = 'crypto-map',
   Report = 'report',
   FAQ = 'faq',

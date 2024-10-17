@@ -2,12 +2,12 @@ import { safeParse } from 'valibot'
 import type { Database } from '~~/types/supabase'
 import { serverSupabaseClient } from '#supabase/server'
 import type { MapLocation } from '~~/types/location'
-import { UuidSchema } from '~~/server/utils/schemas'
+import { UuidObjectSchema } from '~~/lib/schemas'
 import { cacheLocation, getLocationKey } from '~~/server/utils/cache-location'
 
 export default defineEventHandler(async (event) => {
   // Validate the route parameters
-  const { output: query, issues, success } = await getValidatedRouterParams(event, query => safeParse(UuidSchema, query))
+  const { output: query, issues, success } = await getValidatedRouterParams(event, query => safeParse(UuidObjectSchema, query))
   if (!success || !query)
     throw createError({ statusCode: 400, message: 'Invalid path parameters', cause: JSON.stringify(issues) })
 

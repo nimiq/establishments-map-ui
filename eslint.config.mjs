@@ -5,4 +5,7 @@ export default withNuxt(antfu({
   unocss: true,
   vue: true,
   ignores: ['types/supabase.ts'],
+  rules: {
+    'no-restricted-syntax': 'off',
+  },
 }))

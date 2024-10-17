@@ -1,4 +1,4 @@
-export enum FormState {
+export const enum FormState {
   Initial = 'initial',
   Loading = 'loading',
   Success = 'success',

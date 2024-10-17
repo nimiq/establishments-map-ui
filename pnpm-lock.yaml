@@ -45,6 +45,9 @@ importers:
       '@nuxthub/core':
         specifier: ^0.7.32
         version: 0.7.32(ioredis@5.4.1)(magicast@0.3.5)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))(webpack-sources@3.2.3)
+      '@nuxtjs/color-mode':
+        specifier: ^3.5.1
+        version: 3.5.1(magicast@0.3.5)(rollup@4.24.0)(webpack-sources@3.2.3)
       '@nuxtjs/supabase':
         specifier: ^1.3.5
         version: 1.4.1
@@ -65,7 +68,7 @@ importers:
         version: 0.61.9(eslint@9.12.0(jiti@2.3.3))(typescript@5.6.3)
       '@unocss/nuxt':
         specifier: ^0.61.5
-        version: 0.61.9(magicast@0.3.5)(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))(webpack-sources@3.2.3)(webpack@5.93.0(esbuild@0.23.1))
+        version: 0.61.9(magicast@0.3.5)(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))(webpack-sources@3.2.3)(webpack@5.93.0(esbuild@0.17.19))
       '@unocss/preset-rem-to-px':
         specifier: ^0.61.5
         version: 0.61.9
@@ -92,7 +95,7 @@ importers:
         version: 15.2.10
       nimiq-css:
         specifier: ^0.0.107
-        version: 0.0.107(typescript@5.6.3)(unocss@0.63.4(@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.23.1)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1)))(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
+        version: 0.0.107(typescript@5.6.3)(unocss@0.63.4(@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.17.19)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1)))(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
       nuxt:
         specifier: ^3.12.3
         version: 3.13.2(@parcel/watcher@2.4.1)(@types/node@22.7.5)(encoding@0.1.13)(eslint@9.12.0(jiti@2.3.3))(ioredis@5.4.1)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.24.0)(terser@5.34.1)(typescript@5.6.3)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))(webpack-sources@3.2.3)
@@ -107,7 +110,7 @@ importers:
         version: 5.6.3
       unocss:
         specifier: ^0.63.4
-        version: 0.63.4(@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.23.1)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
+        version: 0.63.4(@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.17.19)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
       unplugin-vue-router:
         specifier: ^0.10.0
         version: 0.10.8(rollup@4.24.0)(vue-router@4.4.5(vue@3.5.12(typescript@5.6.3)))(vue@3.5.12(typescript@5.6.3))(webpack-sources@3.2.3)
@@ -1382,6 +1385,9 @@ packages:
 
   '@nuxthub/core@0.7.32':
     resolution: {integrity: sha512-r5fTXqtVKjLGPp9g/pTgNtpnb4V5XACrcQI7KPOeYOf9fnuQkCe6XHDGf0ywWmg86sBimQzTtBCYffNrgfk5Ag==}
+
+  '@nuxtjs/color-mode@3.5.1':
+    resolution: {integrity: sha512-GRHF3WUwX6fXIiRVlngNq1nVDwrVuP6dWX1DRmox3QolzX0eH1oJEcFr/lAm1nkT71JVGb8mszho9w+yHJbePw==}
 
   '@nuxtjs/supabase@1.4.1':
     resolution: {integrity: sha512-i3sm+3UGiTM+Jvvo5VxwyZ0kNP13kczywy4CFZ6bi7QrBV3NtrFwz6/vddyQ7UAN0nsnVNr7ozfDhDIf5f6J5w==}
@@ -3177,6 +3183,10 @@ packages:
     resolution: {integrity: sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
 
+  changelogen@0.5.7:
+    resolution: {integrity: sha512-cTZXBcJMl3pudE40WENOakXkcVtrbBpbkmSkM20NdRiUqa4+VYRdXdEsgQ0BNQ6JBE2YymTNWtPKVF7UCTN5+g==}
+    hasBin: true
+
   character-entities-legacy@1.1.4:
     resolution: {integrity: sha512-3Xnr+7ZFS1uxeiUDvV02wQ+QDbc55o97tIV5zHScSPJpcLm/r0DFPcoY3tYRp+VZukxuMeKgXYmsXQHO05zQeA==}
 
@@ -3303,6 +3313,9 @@ packages:
 
   console-control-strings@1.1.0:
     resolution: {integrity: sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==}
+
+  convert-gitmoji@0.1.5:
+    resolution: {integrity: sha512-4wqOafJdk2tqZC++cjcbGcaJ13BZ3kwldf06PTiAQRAB76Z1KJwZNL1SaRZMi2w1FM9RYTgZ6QErS8NUl/GBmQ==}
 
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
@@ -7764,6 +7777,19 @@ snapshots:
       - vite
       - webpack-sources
 
+  '@nuxtjs/color-mode@3.5.1(magicast@0.3.5)(rollup@4.24.0)(webpack-sources@3.2.3)':
+    dependencies:
+      '@nuxt/kit': 3.13.2(magicast@0.3.5)(rollup@4.24.0)(webpack-sources@3.2.3)
+      changelogen: 0.5.7(magicast@0.3.5)
+      pathe: 1.1.2
+      pkg-types: 1.2.1
+      semver: 7.6.3
+    transitivePeerDependencies:
+      - magicast
+      - rollup
+      - supports-color
+      - webpack-sources
+
   '@nuxtjs/supabase@1.4.1':
     dependencies:
       '@supabase/ssr': 0.5.1(@supabase/supabase-js@2.45.4)
@@ -10480,7 +10506,7 @@ snapshots:
       gzip-size: 6.0.0
       sirv: 2.0.4
 
-  '@unocss/nuxt@0.61.9(magicast@0.3.5)(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))(webpack-sources@3.2.3)(webpack@5.93.0(esbuild@0.23.1))':
+  '@unocss/nuxt@0.61.9(magicast@0.3.5)(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))(webpack-sources@3.2.3)(webpack@5.93.0(esbuild@0.17.19))':
     dependencies:
       '@nuxt/kit': 3.13.2(magicast@0.3.5)(rollup@4.24.0)(webpack-sources@3.2.3)
       '@unocss/config': 0.61.9
@@ -10494,8 +10520,8 @@ snapshots:
       '@unocss/preset-wind': 0.61.9
       '@unocss/reset': 0.61.9
       '@unocss/vite': 0.61.9(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
-      '@unocss/webpack': 0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.23.1))
-      unocss: 0.61.9(@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.23.1)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
+      '@unocss/webpack': 0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.17.19))
+      unocss: 0.61.9(@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.17.19)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
     transitivePeerDependencies:
       - magicast
       - postcss
@@ -10717,7 +10743,7 @@ snapshots:
       - rollup
       - supports-color
 
-  '@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.23.1))':
+  '@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.17.19))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@rollup/pluginutils': 5.1.2(rollup@4.24.0)
@@ -10727,7 +10753,7 @@ snapshots:
       fast-glob: 3.3.2
       magic-string: 0.30.12
       unplugin: 1.14.1(webpack-sources@3.2.3)
-      webpack: 5.93.0(esbuild@0.23.1)
+      webpack: 5.93.0(esbuild@0.17.19)
       webpack-sources: 3.2.3
     transitivePeerDependencies:
       - rollup
@@ -11303,6 +11329,25 @@ snapshots:
 
   chalk@5.3.0: {}
 
+  changelogen@0.5.7(magicast@0.3.5):
+    dependencies:
+      c12: 1.11.2(magicast@0.3.5)
+      colorette: 2.0.20
+      consola: 3.2.3
+      convert-gitmoji: 0.1.5
+      mri: 1.2.0
+      node-fetch-native: 1.6.4
+      ofetch: 1.4.1
+      open: 10.1.0
+      pathe: 1.1.2
+      pkg-types: 1.2.1
+      scule: 1.3.0
+      semver: 7.6.3
+      std-env: 3.7.0
+      yaml: 2.5.1
+    transitivePeerDependencies:
+      - magicast
+
   character-entities-legacy@1.1.4: {}
 
   character-entities@1.2.4: {}
@@ -11416,6 +11461,8 @@ snapshots:
   consola@3.2.3: {}
 
   console-control-strings@1.1.0: {}
+
+  convert-gitmoji@0.1.5: {}
 
   convert-source-map@2.0.0: {}
 
@@ -13201,12 +13248,12 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  nimiq-css@0.0.107(typescript@5.6.3)(unocss@0.63.4(@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.23.1)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1)))(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1)):
+  nimiq-css@0.0.107(typescript@5.6.3)(unocss@0.63.4(@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.17.19)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1)))(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1)):
     dependencies:
       '@unocss/reset': 0.59.0-beta.1
       ts-cssjson: 3.0.1
       typescript: 5.6.3
-      unocss: 0.63.4(@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.23.1)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
+      unocss: 0.63.4(@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.17.19)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
       vite: 5.4.8(@types/node@22.7.5)(terser@5.34.1)
 
   nitro-cloudflare-dev@0.2.0:
@@ -14403,16 +14450,16 @@ snapshots:
       mkdirp: 1.0.4
       yallist: 4.0.0
 
-  terser-webpack-plugin@5.3.10(esbuild@0.23.1)(webpack@5.93.0(esbuild@0.23.1)):
+  terser-webpack-plugin@5.3.10(esbuild@0.17.19)(webpack@5.93.0(esbuild@0.17.19)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
       schema-utils: 3.3.0
       serialize-javascript: 6.0.2
       terser: 5.34.1
-      webpack: 5.93.0(esbuild@0.23.1)
+      webpack: 5.93.0(esbuild@0.17.19)
     optionalDependencies:
-      esbuild: 0.23.1
+      esbuild: 0.17.19
 
   terser@5.34.1:
     dependencies:
@@ -14599,7 +14646,7 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  unocss@0.61.9(@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.23.1)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1)):
+  unocss@0.61.9(@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.17.19)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1)):
     dependencies:
       '@unocss/astro': 0.61.9(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
       '@unocss/cli': 0.61.9(rollup@4.24.0)
@@ -14622,14 +14669,14 @@ snapshots:
       '@unocss/transformer-variant-group': 0.61.9
       '@unocss/vite': 0.61.9(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
     optionalDependencies:
-      '@unocss/webpack': 0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.23.1))
+      '@unocss/webpack': 0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.17.19))
       vite: 5.4.8(@types/node@22.7.5)(terser@5.34.1)
     transitivePeerDependencies:
       - postcss
       - rollup
       - supports-color
 
-  unocss@0.63.4(@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.23.1)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1)):
+  unocss@0.63.4(@unocss/webpack@0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.17.19)))(postcss@8.4.47)(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1)):
     dependencies:
       '@unocss/astro': 0.63.4(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
       '@unocss/cli': 0.63.4(rollup@4.24.0)
@@ -14649,7 +14696,7 @@ snapshots:
       '@unocss/transformer-variant-group': 0.63.4
       '@unocss/vite': 0.63.4(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
     optionalDependencies:
-      '@unocss/webpack': 0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.23.1))
+      '@unocss/webpack': 0.61.9(rollup@4.24.0)(webpack@5.93.0(esbuild@0.17.19))
       vite: 5.4.8(@types/node@22.7.5)(terser@5.34.1)
     transitivePeerDependencies:
       - postcss
@@ -14937,7 +14984,7 @@ snapshots:
 
   webpack-virtual-modules@0.6.2: {}
 
-  webpack@5.93.0(esbuild@0.23.1):
+  webpack@5.93.0(esbuild@0.17.19):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.6
@@ -14960,7 +15007,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(esbuild@0.23.1)(webpack@5.93.0(esbuild@0.23.1))
+      terser-webpack-plugin: 5.3.10(esbuild@0.17.19)(webpack@5.93.0(esbuild@0.17.19))
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     transitivePeerDependencies:

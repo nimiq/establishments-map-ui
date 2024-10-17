@@ -1,14 +1,11 @@
 import type { Feature, MultiPolygon } from 'geojson'
 // import { getLocations as getDbLocations, getLocation } from 'database'
 import { useRouteQuery } from '@vueuse/router'
-import type { Database } from '~~/types/supabase'
 import { parseLocation } from '~/shared'
 
 export const useLocations = defineStore('locations', () => {
   // Reduce redundant database fetches by reusing fetched locations by tracking the areas explored by the user
   const visitedAreas = ref<Feature<MultiPolygon>>()
-
-  const supabase = useSupabaseClient<Database>()
 
   // const { payload: locationsMap } = useExpiringStorage('locations', {
   //   defaultValue: {} as Record<string, MapLocation>,
@@ -28,26 +25,23 @@ export const useLocations = defineStore('locations', () => {
       return getItemsWithinBBox(locations.value, boundingBox) // Filter locations by bounding box
     }
 
-    const { data: _newLocations, error } = await supabase.rpc('get_locations', { ...boundingBox })
-    if (error)
+    const { data: newLocations, error } = await useFetch('/api/locations', { query: boundingBox, transform: (r: MapLocation[]) => r.map(parseLocation) })
+    if (error.value || !newLocations.value)
       throw error
-    const newLocations = (_newLocations as unknown as MapLocation[]).map(parseLocation)
-    setLocations(newLocations)
+    setLocations(newLocations.value)
     visitedAreas.value = addBBoxToArea(boundingBox, visitedAreas.value)
-    return newLocations
+    return newLocations.value
   }
 
-  async function getLocationByUuid(uuid: string) {
+  async function getLocationByUuid(uuid: string): Promise<MapLocation> {
     if (uuid in locationsMap.value)
-      return locationsMap.value[uuid]
-    const { data: _location, error } = await supabase.rpc('get_location_by_uuid', { location_uuid: uuid })
-    if (error)
+      return locationsMap.value[uuid]!
+
+    const { data: location, error } = await useFetch(`/api/locations/${uuid}`, { transform: parseLocation })
+    if (error.value || !location.value)
       throw error
-    const location = parseLocation(_location as unknown as MapLocation)
-    if (!location)
-      return
-    locationsMap.value[uuid] = location
-    return location
+    locationsMap.value[uuid] = location.value
+    return location.value
   }
 
   const selectedUuid = useRouteQuery<string | undefined>('uuid') // No need to check for string[]. UUID checked in router.ts

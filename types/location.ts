@@ -6,18 +6,18 @@ import type { ProviderType } from './database.ts'
 import type { Cryptocity } from './cryptocity.js'
 import type { Tables } from './supabase.js'
 
-export enum LocationType {
+export const enum LocationType {
   Shop = 'shop',
   Atm = 'atm',
 }
 
 // The theme is used to choose the right font color
-export enum Theme {
+export const enum Theme {
   Dark = 'dark',
   Light = 'light',
 }
 
-export enum LocationLink {
+export const enum LocationLink {
   GMaps = 'gmaps',
   Instagram = 'instagram',
   Facebook = 'facebook',

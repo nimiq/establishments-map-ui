@@ -1,6 +1,6 @@
+import { parseLocation } from '~/shared'
 import { CLUSTERS_MAX_ZOOM, algorithm, computeMarkers } from '~~/lib/compute-markers'
 import type { Markers, MemoizedMarkers } from '~~/types/map'
-import type { Database } from '~~/types/supabase'
 
 export const useMarkers = defineStore('markers', () => {
   const { setLocations, getLocations } = useLocations()
@@ -52,7 +52,6 @@ export const useMarkers = defineStore('markers', () => {
     return { key, item, needsToUpdate }
   }
 
-  const supabase = useSupabaseClient<Database>()
   const maxZoomFromServer = ref(14)
 
   async function shouldRunInClient({ zoom }: LocationClusterParams): Promise<boolean> {
@@ -75,16 +74,21 @@ export const useMarkers = defineStore('markers', () => {
   }
 
   async function getMarkersFromDatabase(): Promise<Markers> {
-    // const res = await getMarkers(await getAnonDatabaseArgs(), { boundingBox: boundingBox.value!, zoom: zoom.value }, parseLocation)
-    const { data, error } = await supabase.rpc('get_markers', { ...boundingBox.value!, zoom_level: zoom.value })
-    if (error)
+    const { data: markers, error } = await useFetch<Markers>(`/api/markers`, {
+      query: { ...boundingBox.value!, zoom_level: zoom.value },
+      transform: (r: Markers) => {
+        r.singles.map(parseLocation)
+        return r
+      },
+    })
+    if (error.value || !markers.value)
       throw error
 
     const cryptocities = await getCryptocities(boundingBox.value!)
-    setLocations((data as unknown as Markers).singles)
-    setCryptocities(boundingBox.value!, cryptocities);
-    (data as unknown as Markers).clusters.forEach(c => c.diameter = Math.max(24, Math.min(48, 0.24 * c.count + 24)))
-    return data as unknown as Markers
+    setLocations(markers.value.singles)
+    setCryptocities(boundingBox.value!, cryptocities)
+    markers.value.clusters.forEach(c => c.diameter = Math.max(24, Math.min(48, 0.24 * c.count + 24)))
+    return markers.value
   }
 
   function setMarkers(newSingles: MapLocation[], newClusters: Cluster[]) {

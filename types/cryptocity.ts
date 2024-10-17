@@ -1,7 +1,7 @@
 import type { FeatureCollection, MultiPolygon } from 'geojson'
 
 // TODO Move this to an enum from postgres
-export enum Cryptocity {
+export const enum Cryptocity {
   SanJose = 'San_Jose',
   Ljubljana = 'Ljubljana',
   Mannheim = 'Mannheim',

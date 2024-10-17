@@ -8,6 +8,7 @@ export default defineNuxtConfig({
 
   experimental: {
     typedPages: true,
+    inlineRouteRules: true,
   },
 
   build: {
@@ -16,16 +17,7 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
-  modules: [
-    '@pinia/nuxt',
-    '@vueuse/nuxt',
-    '@unocss/nuxt',
-    '@nuxt/eslint',
-    'radix-vue/nuxt',
-    '@nuxtjs/supabase',
-    '@nuxthub/core',
-    '@nuxt/fonts',
-  ],
+  modules: ['@pinia/nuxt', '@vueuse/nuxt', '@unocss/nuxt', '@nuxt/eslint', 'radix-vue/nuxt', '@nuxtjs/supabase', '@nuxthub/core', '@nuxt/fonts'],
 
   hub: {
     kv: true,

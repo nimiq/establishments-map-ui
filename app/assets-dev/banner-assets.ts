@@ -36,7 +36,7 @@ const cardConfig: Record<CardType, CardConfig> = {
     },
   },
   'Nimiq-Pay': {
-    cardStyle: defaultCardStyle,
+    cardStyle: { ...defaultCardStyle },
     banner: {
       type: 'Nimiq-Pay',
       shortLabel: 'Nimiq Pay',
@@ -252,10 +252,7 @@ export function getCardConfiguration({ provider, accepts }: Pick<MapLocation, 'p
     const { cardStyle, banner } = cardConfig[card]
     return {
       cardStyle,
-      banner: [banner!, cardConfig['Nimiq-Pay'].banner!] as [
-        LocationBanner,
-        LocationBanner,
-      ],
+      banner: [banner!, cardConfig['Nimiq-Pay'].banner!] as [LocationBanner, LocationBanner],
       splitBanner: true,
     }
   }

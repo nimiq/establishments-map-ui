@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { GoogleMap } from 'vue3-google-map'
 
-const apiKey = useRuntimeConfig().public.googleMapKey
+const apiKey = useRuntimeConfig().public.googleMapsApiKey
 const { language } = useNavigatorLanguage()
 
 const { params: initialParams } = useRoute()
 const { showSplashScreen } = storeToRefs(useApp())
-const { mapLoaded } = storeToRefs(useMap())
+const { mapLoaded, zoom, center } = storeToRefs(useMap())
 
 const mapStore = useMap()
 const { mapInstance } = storeToRefs(mapStore)
@@ -41,7 +41,7 @@ const mapGestureBehaviour
   <GoogleMap
     ref="mapInstance" v-bind="$attrs" :api-key :language disable-default-ui
     :gesture-handling="mapGestureBehaviour" :keyboard-shortcuts="false" :styles="googleMapStyles" :max-zoom="21"
-    :min-zoom="3" :restriction="restriction" :clickable-icons="false"
+    :min-zoom="3" :restriction="restriction" :clickable-icons="false" :zoom :center
     :libraries="['places', 'maps'] as unknown as ['places']"
     @idle.once="() => mapLoaded = true"
   >

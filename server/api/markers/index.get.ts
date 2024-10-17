@@ -5,6 +5,7 @@ import { BoundingBoxSchema, ZoomSchema } from '~~/server/utils/schemas'
 import type { Markers } from '~~/types/map'
 import { cacheLocation } from '~~/server/utils/cache-location'
 
+// TODO Rename zoom_level
 const Schema = intersect([BoundingBoxSchema, object({ zoom_level: ZoomSchema })])
 
 export default defineEventHandler(async (event) => {
