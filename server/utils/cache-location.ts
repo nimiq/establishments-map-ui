@@ -21,13 +21,10 @@ export async function cacheLocation(event: H3Event, location: MapLocation) {
     const { data: image, error } = await fetchPhotoFromGoogle(placeId)
     if (error || !image) {
       consola.warn(error)
-      location.photo = ``
     }
     else if (blob) {
       // Store the fetched image in blob storage
       await blob.put(key, image.blob, { contentType: image.contentType })
-      // Use the baseUrl when setting the photo URL
-      location.photo = `https://${getRequestHost(event)}/images/${key}`
     }
   }
 
