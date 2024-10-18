@@ -15,8 +15,10 @@
   },
   "dependencies": {
     "@turf/turf": "^7.1.0",
+    "@vueuse/integrations": "^11.1.0",
     "@vueuse/router": "^11.1.0",
     "consola": "^3.2.3",
+    "idb-keyval": "^6",
     "supercluster": "^8.0.1",
     "valibot": "^0.42.1",
     "vue": "^3.5.12",

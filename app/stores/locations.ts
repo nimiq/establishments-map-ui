@@ -7,12 +7,12 @@ export const useLocations = defineStore('locations', () => {
   // Reduce redundant database fetches by reusing fetched locations by tracking the areas explored by the user
   const visitedAreas = ref<Feature<MultiPolygon>>()
 
-  // const { payload: locationsMap } = useExpiringStorage('locations', {
-  //   defaultValue: {} as Record<string, MapLocation>,
-  //   expiresIn: 7 * 24 * 60 * 60 * 1000,
-  //   timestamp: useApp().timestamps?.locations,
-  // })
-  const locationsMap = ref({} as Record<string, MapLocation>)
+  const { payload: locationsMap } = useExpiringStorage('locations', {
+    defaultValue: {} as Record<string, MapLocation>,
+    expiresIn: 7 * 24 * 60 * 60 * 1000,
+    timestamp: useApp().timestamps?.locations,
+  })
+  // const locationsMap = ref({} as Record<string, MapLocation>)
   const locations = computed(() => Object.values(locationsMap.value))
 
   function setLocations(locations: MapLocation[]) {

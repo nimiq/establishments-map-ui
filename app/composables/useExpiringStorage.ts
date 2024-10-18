@@ -1,8 +1,9 @@
 import type { Ref } from 'vue'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 export interface ExpiringValue<T> {
-  value: T
-  expires: string
+  value: T | null
+  expires: string | null
   timestamp?: string
 }
 
@@ -57,8 +58,8 @@ const hasExpired = (expiryDate: string) => new Date(expiryDate).getTime() <= Dat
  * @param timestamp - An optional timestamp to compare with the stored value's timestamp.
  * @returns True if storage is either not present, has expired, or if the provided timestamp is newer than the stored timestamp.
  */
-function shouldUpdateStorage(storedValue: ExpiringValue<any> | undefined, timestamp?: string): boolean {
-  if (!storedValue || hasExpired(storedValue.expires) || !storedValue.value)
+function shouldUpdateStorage<T>(storedValue: ExpiringValue<T>, timestamp?: string): boolean {
+  if (!storedValue || !storedValue.expires || hasExpired(storedValue.expires) || !storedValue.value)
     return true
   if (timestamp && storedValue.timestamp && new Date(storedValue.timestamp).getTime() < new Date(timestamp).getTime())
     return true
@@ -67,9 +68,7 @@ function shouldUpdateStorage(storedValue: ExpiringValue<any> | undefined, timest
 
 export function useExpiringStorage<T>(_key: string, options: UseExpiringStorageSyncOptions<T> | UseExpiringStorageAsyncOptions<T>) {
   const key = `cryptomap__${_key}`
-  if (import.meta.client)
-    localStorage.removeItem(key) // Delete old localStorage key
-  const cookie = useCookie(key, { decode: JSON.parse, encode: JSON.stringify })
+  const { data: storedObject } = useIDBKeyval(key, { value: null, expires: null, timestamp: undefined } as ExpiringValue<T>)
 
   const { expiresIn, autoRefresh = true, timestamp: timestampOption } = options
   const timestamp = timestampOption ? new Date(timestampOption).toISOString() : undefined
@@ -82,14 +81,14 @@ export function useExpiringStorage<T>(_key: string, options: UseExpiringStorageS
   if (!getValue)
     throw new Error('Either getValue or getAsyncValue must be provided')
 
-  const shouldUpdate = shouldUpdateStorage(cookie.value, timestamp)
+  const shouldUpdate = shouldUpdateStorage<T>(storedObject.value, timestamp)
 
-  const initialValue = shouldUpdate && !isAsync ? getValue() : cookie?.value
+  const initialValue = shouldUpdate && !isAsync ? getValue() : storedObject?.value
   const stored = ref(initialValue) as Ref<T>
 
   // Write the value to the storage
   watch(stored, (newValue) => {
-    cookie.value = { value: newValue, expires: new Date(Date.now() + expiresIn).toISOString(), timestamp }
+    storedObject.value = { value: newValue, expires: new Date(Date.now() + expiresIn).toISOString(), timestamp }
   }, { immediate: true, deep: true })
 
   const refreshData = async (remainingTime: number) => {
@@ -106,13 +105,13 @@ export function useExpiringStorage<T>(_key: string, options: UseExpiringStorageS
       stored.value = await getValue()
   }
 
-  const remainingTime = cookie.value.expires ? new Date(cookie.value.expires).getTime() - Date.now() : expiresIn
+  const remainingTime = storedObject.value.expires ? new Date(storedObject.value.expires).getTime() - Date.now() : expiresIn
 
   refreshData(remainingTime)
 
   return {
     payload: computed(() => stored.value),
     init,
-    clean: () => cookie.value = undefined,
+    clean: () => storedObject.value = null,
   }
 }
