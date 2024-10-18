@@ -3,7 +3,6 @@ import type { Database } from '~~/types/supabase'
 import type { H3Event } from 'h3'
 import type { InferInput } from 'valibot'
 import { serverSupabaseClient } from '#supabase/server'
-import { cacheLocation } from '~~/server/utils/cache-location'
 import { safeParse } from 'valibot'
 import { BoundingBoxSchema } from '../../../lib/schemas'
 
@@ -19,6 +18,5 @@ export default defineEventHandler(async (event: H3Event<{ query: InferInput<type
   if (error || !locations)
     return createError({ statusCode: 404, message: `Locations not found` })
 
-  await Promise.all(locations.map(cacheLocation))
   return locations
 })

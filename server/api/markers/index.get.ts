@@ -19,7 +19,5 @@ export default defineEventHandler(async (event) => {
   if (error || !data)
     return createError({ statusCode: 404, message: `No markers found` })
 
-  // event.waitUntil(Promise.all(data.singles.map(l => cacheLocation(event, l))))
-
   return data
 })
