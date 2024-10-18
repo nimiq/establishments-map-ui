@@ -19,6 +19,6 @@ export default defineEventHandler(async (event: H3Event<{ query: InferInput<type
   if (error || !locations)
     return createError({ statusCode: 404, message: `Locations not found` })
 
-  await Promise.all(locations.map(l => cacheLocation(event, l)))
+  await Promise.all(locations.map(cacheLocation))
   return locations
 })

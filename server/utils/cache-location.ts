@@ -1,13 +1,15 @@
 import type { MapLocation } from '~~/types/location'
+import type { Database } from '~~/types/supabase'
 import type { Result } from '~~/types/util'
 import type { H3Event } from 'h3'
+import { serverSupabaseClient } from '#supabase/server'
 import consola from 'consola'
 
 export function getLocationKey(uuid: string) {
   return `location:${uuid}`
 }
 
-export async function cacheLocation(event: H3Event, location: MapLocation) {
+export async function cacheLocation(location: MapLocation) {
   const kv = hubKV()
   const key = getLocationKey(location.uuid)
 
@@ -55,4 +57,22 @@ async function fetchPhotoFromGoogle(placeId: string): Result<{ contentType: stri
   catch (error) {
     return { data: undefined, error: `Failed to download and store image: ${error}` }
   }
+}
+
+export async function getLocation(event: H3Event, key: string) {
+  const kv = hubKV()
+
+  // Check if the location data is already cached in KV store
+  if (await kv.has(key))
+    return await kv.get(key) as MapLocation
+
+  // If not in cache, fetch the location data from Supabase
+  const supabase = await serverSupabaseClient<Database>(event)
+  const { data: location, error } = await supabase.rpc('get_location_by_uuid', { location_uuid: uuid }) as unknown as { data: MapLocation, error: any }
+  if (error || !location)
+    throw createError({ statusCode: 404, message: `Location with UUID ${uuid} not found` })
+
+  event.waitUntil(cacheLocation(location))
+
+  return location
 }
