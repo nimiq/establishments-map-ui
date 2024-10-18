@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { CustomMarker } from 'vue3-google-map'
+import { isMobile } from '#imports'
 import { OnClickOutside } from '@vueuse/components'
+import { CustomMarker } from 'vue3-google-map'
 
 const { setPosition } = useMap()
 const { zoom } = storeToRefs(useMap())
@@ -26,7 +27,7 @@ function onClusterClick({ expansionZoom, lat, lng }: Cluster) {
 }
 
 function onPointer({ type }: PointerEvent, c: Cluster) {
-  if (isMobile || c.cryptocities.length === 0)
+  if (isMobile.value || c.cryptocities.length === 0)
     return
 
   setExpansionCluster(c.id, type === 'pointerover' ? '1' : '0')
@@ -52,7 +53,7 @@ const { cryptocities } = storeToRefs(useCryptocities())
 const router = useRouter()
 const route = useRoute()
 
-function onCryptocityClick(cryptocityName: Cryptocity) {
+function onCryptocityClick(cryptocityName: CryptocityType) {
   const { lat, lng, name, showCardAtZoom } = cryptocities.value.data[cryptocityName]!
   setPosition({ center: { lat, lng }, zoom: showCardAtZoom }, { clearMarkers: true })
   router.push({ query: { ...route.query, cryptocity: name }, replace: true })
@@ -73,7 +74,7 @@ function onCryptocityClick(cryptocityName: Cryptocity) {
         <li relative z-10>
           <button
             text="14 neutral-0 dark:white/80" bg="neutral dark:blue hover:neutral-900" ring="1.5 neutral/10"
-            centered aspect-square cursor-pointer rounded-full font-bold transition-colors shadow
+            centered aspect-square cursor-pointer rounded-full font-bold shadow transition-colors
             :style="`width: ${c.diameter}px; font-size: clamp(14px, ${0.14 * c.count + 4}px, 18px)`"
             @pointerdown="e => onPointerDown(e, c)"
           >

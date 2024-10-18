@@ -12,7 +12,7 @@ const options = computed(() => [selected.value!].concat(props.options.filter(opt
     <SelectPortal>
       <SelectContent
         side="top" position="item-aligned"
-        select relative bottom-0 z-200 animate-fade-in animate-duration-100 rounded-6 py-6 text-neutral-0 drop-shadow bg-gradient-neutral shadow
+        select relative bottom-0 z-200 animate-fade-in animate-duration-100 rounded-6 py-6 text-neutral-0 shadow drop-shadow bg-gradient-neutral
       >
         <SelectViewport>
           <SelectItem
@@ -20,7 +20,7 @@ const options = computed(() => [selected.value!].concat(props.options.filter(opt
             outline="none hocus:none"
           >
             <SelectItemText
-              text="14 neutral-600/80 group-hocus:neutral-0" transition-colors label
+              text="14 neutral-600/80 group-hocus:neutral-0" label transition-colors
               flex="~ items-center justify-between gap-8"
             >
               {{ option }}

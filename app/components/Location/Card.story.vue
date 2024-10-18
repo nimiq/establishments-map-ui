@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { locations } from '@/assets-dev/stories/locations'
 import { computed, ref } from 'vue'
 import LocationCard from './Card/index.vue'
-import { locations } from '@/assets-dev/stories/locations'
 
 const progressState = ref < 'expanded' | 'not-expanded' | 'loop' | 'custom' > ('expanded')
 const customProgress = ref(0)

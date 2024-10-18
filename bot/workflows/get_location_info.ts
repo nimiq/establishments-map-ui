@@ -2,8 +2,8 @@ import {
   DefineWorkflow,
   Schema,
 } from 'https://deno.land/x/deno_slack_sdk@2.7.0/mod.ts'
-import { SendContext } from '../functions/send_context.ts'
 import { GetLocation } from '../functions/get_location.ts'
+import { SendContext } from '../functions/send_context.ts'
 
 const GetLocationInfoWorkflow = DefineWorkflow({
   callback_id: 'get_location_info_wf',

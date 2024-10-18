@@ -2,9 +2,9 @@ import {
   DefineWorkflow,
   Schema,
 } from 'https://deno.land/x/deno_slack_sdk@2.7.0/mod.ts'
+import { Currency, Provider } from '../../../packages/types/src/index.ts'
 import { CreateRawLocation } from '../functions/create_raw_location.ts'
 import { SendContext } from '../functions/send_context.ts'
-import { Currency, Provider } from '../../../packages/types/src/index.ts'
 
 const CreateAddLocationRawWorkflow = DefineWorkflow({
   callback_id: 'add_location_wf',

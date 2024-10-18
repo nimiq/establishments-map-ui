@@ -1,7 +1,7 @@
-import type { Feature, MultiPolygon } from 'geojson'
-import { multiPolygon } from '@turf/turf'
-import { cryptocitiesUi } from '@/assets-dev/cryptocities-assets'
 import type { Database } from '~~/types/supabase'
+import type { Feature, MultiPolygon } from 'geojson'
+import { cryptocitiesUi } from '@/assets-dev/cryptocities-assets'
+import { multiPolygon } from '@turf/turf'
 
 type StoredCryptocities = ExpiringValue<{ area: Feature<MultiPolygon>, data: Partial<Record<CryptocityType, CryptocityData>> }>
 

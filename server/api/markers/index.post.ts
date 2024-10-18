@@ -1,10 +1,10 @@
-import { createConsola } from 'consola/core'
-import { serverSupabaseClient } from '#supabase/server'
-import { euclideanDistance } from '~~/lib/geo-utilities'
-import { algorithm, computeMarkers } from '~~/lib/compute-markers'
-import type { Database, Json } from '~~/types/supabase'
-import type { BoundingBox } from '~~/types/map'
 import type { CryptocityType } from '~~/types/cryptocity'
+import type { BoundingBox } from '~~/types/map'
+import type { Database, Json } from '~~/types/supabase'
+import { serverSupabaseClient } from '#supabase/server'
+import { algorithm, computeMarkers } from '~~/lib/compute-markers'
+import { euclideanDistance } from '~~/lib/geo-utilities'
+import { createConsola } from 'consola/core'
 
 // TODO Figure out how to invoke this
 

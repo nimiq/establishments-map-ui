@@ -25,11 +25,11 @@ function reset() {
         <!-- :placeholder="$t('Search Map')" -->
         <ComboboxInput
           placeholder="Search Map"
-          input-box auto-focus order-2 w-full rounded-0 py-16 pr-48 text-14 font-semibold shadow-none outline-none
+          auto-focus order-2 w-full rounded-0 py-16 pr-48 text-14 font-semibold shadow-none outline-none nq-input-box
         />
         <!-- :aria-label="$t('Go back')" -->
         <ComboboxTrigger
-          aria-label="Go back" pl-16 arrow-back text="16  neutral-700 group-focus-within:blue/80"
+          aria-label="Go back" pl-16 nq-arrow-back text="16  neutral-700 group-focus-within:blue/80"
           @click="open = false"
         />
         <ComboboxCancel

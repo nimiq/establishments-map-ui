@@ -1,5 +1,5 @@
-import { consola } from 'consola'
 import type { Result } from '~~/types/util'
+import { consola } from 'consola'
 
 export const cryptocityRegex = /^[A-Z][a-z]*(?:_[A-Z][a-z]*)*$/
 

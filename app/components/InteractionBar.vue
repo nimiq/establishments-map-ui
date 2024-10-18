@@ -43,7 +43,7 @@ const { cryptocityBanner, showSearchBoxHint } = useUIParams()
                     The initiative for crypto-friendly cities.
                   </p>
                   <a
-                    :href="cryptocityBanner.url" target="_blank" pill-sm mt-12 transition-colors
+                    :href="cryptocityBanner.url" target="_blank" nq-pill-sm mt-12 transition-colors
                     bg-image="$nq-blue-on-dark-gradient hocus:$nq-blue-on-light-gradient-darkened"
                   >
                     <!-- {{ $t(Learn more) }} -->

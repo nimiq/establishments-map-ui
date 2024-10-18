@@ -46,7 +46,7 @@ function clearStorage() {
     </div>
 
     <div v-if="isDev" class="position absolute bottom-0 right-48 flex">
-      <button bg-gradient-red pill @click="clearStorage">
+      <button bg-gradient-red nq-pill-lg @click="clearStorage">
         Delete Storage
       </button>
     </div>

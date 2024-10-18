@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ModalName } from './Modal.vue'
 import type { Issue } from '#imports'
+import { ModalName } from './Modal.vue'
 
 defineProps<{ location: MapLocation }>()
 
@@ -60,7 +60,7 @@ const { submit, reset, isError, isSuccess, isSubmitted } = useForm({ url, body }
       <template v-if="!isSubmitted">
         <div flex="~ gap-8 items-center justify-center" relative mb-24 w-full>
           <LocationExternalUrl :location show-name flex-basis-auto />
-          <CryptoList :location flex-1 pill pill-tertiary :max="2" />
+          <CryptoList :location pill flex-1 nq-pill-tertiary :max="2" />
         </div>
         <FAQ nested :questions="['q-1']" w-full>
           <template #trigger>
@@ -89,22 +89,22 @@ const { submit, reset, isError, isSuccess, isSubmitted } = useForm({ url, body }
           <!-- :placeholder="$t('Write your problem here')" -->
           <textarea
             v-model="description" placeholder="Write your problem here" text="14 neutral"
-            nq-input-box resize-none
+            resize-none nq-input-box
           />
 
           <div flex="~ gap-16 justify-end" mt-24>
             <!-- :aria-label="$t('Cancel')" -->
-            <DialogClose aria-label="Cancel" pill-sm pill-tertiary>
+            <DialogClose aria-label="Cancel" nq-pill-sm nq-pill-tertiary>
               Cancel
             </DialogClose>
-            <button type="submit" :disabled="disabled" pill-sm pill-blue>
+            <button type="submit" :disabled="disabled" nq-pill-sm nq-pill-blue>
               <!-- {{ $t('Report Location') }} -->
               Report Location
             </button>
           </div>
         </form>
       </template>
-      <button v-else pill-sm mt-32 pill-blue @click="isError ? reset() : (open = false)">
+      <button v-else nq-pill-sm mt-32 nq-pill-blue @click="isError ? reset() : (open = false)">
         <!-- {{ isError ? $t('Try again') : $t('Back to the Map') }} -->
         {{ isError ? 'Try again' : 'Back to the Map' }}
       </button>

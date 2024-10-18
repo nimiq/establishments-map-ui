@@ -15,7 +15,7 @@ watch(selectedUuid, (uuid) => {
   <div flex="~ col" h="screen 100dvh">
     <InteractionBar>
       <template #search>
-        <button flex="~ justify-between items-center" group input-box flex-1 rounded-full @click="searchOpen = true">
+        <button flex="~ justify-between items-center" group flex-1 rounded-full nq-input-box @click="searchOpen = true">
           <span text="neutral-700 group-hocus:$color">
             <!-- {{ $t('Search Map') }} -->
             Search Map

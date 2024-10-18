@@ -1,114 +1,49 @@
 import type { GoogleMap } from 'vue3-google-map'
-import { safeParse, union, undefined as vUndefined } from 'valibot'
-import { LatSchema, LngSchema, UuidSchema, ZoomSchema } from '~~/lib/schemas'
 
 export const useMap = defineStore('map', () => {
   const mapInstance = shallowRef<typeof GoogleMap>()
   const map = computed(() => mapInstance.value?.map as google.maps.Map | undefined)
-  const center = ref(map.value?.getCenter()?.toJSON() as Point | undefined)
-  const zoom = ref(map.value?.getZoom() ?? 3)
   const mapLoaded = ref(false)
   const boundingBox = ref<BoundingBox>()
+
+  const lat = useRouteParams('lat', '', { transform: Number, mode: 'replace' })
+  const lng = useRouteParams('lng', '', { transform: Number })
+  const zoom = useRouteParams('zoom', '', { transform: Number })
+  const center = computed(() => lat.value && lng.value ? { lat: lat.value, lng: lng.value } : undefined)
 
   const router = useRouter()
   const route = useRoute()
 
-  // Update the route
-  const updateRouteDebouncer = useDebounceFn(() => {
-    if (!center.value)
-      return
-
-    router.push({
-      params: {
-        coords: `@${center.value.lat},${center.value.lng},${zoom.value}z`,
-      },
-      query: { ...route.query, uuid: useLocations().selectedUuid || undefined },
-      replace: true,
-    })
-  }, 300, { maxWait: 2000 })
-  const clusterDebouncer = useDebounceFn(() => useMarkers().cluster(), 300, { maxWait: 2000 })
-
-  function boundsToBox(bounds: google.maps.LatLngBounds) {
-    const { lat: swlat, lng: swlng } = bounds.getSouthWest().toJSON()
-    const { lat: nelat, lng: nelng } = bounds.getNorthEast().toJSON()
-    return { swlat, swlng, nelat, nelng }
-  }
-
-  function onBoundsChanged() {
-    const bounds = map.value?.getBounds()
-    if (!bounds)
-      return
-
-    const { nelat, nelng, swlat, swlng } = boundsToBox(bounds)
-    boundingBox.value = { nelat, nelng, swlat, swlng }
-
-    updateRouteDebouncer()
-
-    clusterDebouncer()
-  }
-
+  watchDebounced(
+    boundingBox,
+    () => {
+      router.push({
+        name: '@lat,lng,zoomz',
+        params: { lat: lat.value.toString(), lng: lng.value.toString(), zoom: zoom.value.toString() },
+        query: { ...route.query, uuid: useLocations().selectedUuid || undefined },
+        replace: true,
+      })
+    },
+    { debounce: 500, maxWait: 1000 },
+  )
   // The bounds event is fired a lot, so we debounce it
-  const onBoundsChangedDebouncer = useDebounceFn(onBoundsChanged, 30)
 
-  function getParams() {
-    const parts = route.path.slice(2 /* remove '/@' from the beginning */, -1 /* Remove 'z' from the back */)?.split(',')
-    if (parts.length !== 3)
-      return
-    const { output: lat, success: latSuccess } = safeParse(LatSchema, parts[0])
-    const { output: lng, success: lngSuccess } = safeParse(LngSchema, parts[1])
-    const { output: zoom, success: zoomSuccess } = safeParse(ZoomSchema, parts[2])
-    if (!latSuccess || !lngSuccess || !zoomSuccess)
-      return
-    const { output: uuid, success: uuidSuccess } = safeParse(union([UuidSchema, vUndefined()]), route.query.uuid)
-    if (!uuidSuccess)
-      return { lat, lng, zoom }
-    return { lat, lng, zoom, uuid }
-  }
+  // const unwatch = watch(map, async (map) => {
+  //   if (!map)
+  //     return
 
-  // Costa Rica
-  const FALLBACK_POSITION: MapPosition = { center: { lat: 9.6301892, lng: -84.2541844 }, zoom: 9 }
-
-  const { geolocateIp } = useGeoIp()
-  const { ipPositionError, ipPosition } = storeToRefs(useGeoIp())
-  const { selectedUuid } = storeToRefs(useLocations())
-
-  const unwatch = watch(map, async (map) => {
-    if (!map)
-      return
-
-    const params = getParams()
-    if (!params) {
-      await geolocateIp()
-
-      if (!ipPositionError.value && ipPosition.value) {
-        // eslint-disable-next-line no-console
-        console.log(`Using user's location: ${JSON.stringify(ipPosition.value)}`)
-        setPosition(ipPosition.value)
-      }
-      else {
-        console.warn(`Error getting user's location: ${ipPositionError.value}. Using fallback position. ${JSON.stringify(FALLBACK_POSITION)}`)
-        setPosition(FALLBACK_POSITION)
-      }
-    }
-    else {
-      const { lat, lng, zoom, uuid } = params
-      // const { center, zoom: mapZoom } = storeToRefs(useMap())
-      // center.value = { lat, lng }
-      // mapZoom.value = zoom
-      setPosition({ center: { lat, lng }, zoom })
-      if (uuid)
-        selectedUuid.value = uuid
-    }
-    // setPosition({ center: { lat: params.lat, lng: params.lng }, zoom: params.zoom }, { clearMarkers: true })
-    map.addListener('center_changed', () => {
-      center.value = map.getCenter()?.toJSON() as Point | undefined
-    })
-    map.addListener('zoom_changed', () => {
-      zoom.value = map.getZoom()!
-    })
-    map.addListener('bounds_changed', onBoundsChangedDebouncer)
-    unwatch()
-  })
+  //   // setPosition({ center: { lat: params.lat, lng: params.lng }, zoom: params.zoom }, { clearMarkers: true })
+  //   // map.addListener('center_changed', () => {
+  //   //   const { lat: newLat, lng: newLng } = map.getCenter()?.toJSON() as Point
+  //   //   lat.value = newLat
+  //   //   lng.value = newLng
+  //   // })
+  //   // map.addListener('zoom_changed', () => {
+  //   //   zoom.value = map.getZoom()!
+  //   // })
+  //   // map.addListener('bounds_changed', onBoundsChanged)
+  //   unwatch()
+  // })
 
   const increaseZoom = () => map.value?.setZoom(zoom.value + 1)
   const decreaseZoom = () => map.value?.setZoom(zoom.value - 1)
@@ -170,6 +105,8 @@ export const useMap = defineStore('map', () => {
     map,
     mapInstance,
     mapLoaded,
+    lat,
+    lng,
 
     setPosition,
 

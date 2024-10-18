@@ -1,11 +1,11 @@
-import type { InferInput } from 'valibot'
-import { safeParse } from 'valibot'
-import type { H3Event } from 'h3'
-import { BoundingBoxSchema } from '../../../lib/schemas'
-import type { Database } from '~~/types/supabase'
-import { serverSupabaseClient } from '#supabase/server'
 import type { MapLocation } from '~~/types/location'
+import type { Database } from '~~/types/supabase'
+import type { H3Event } from 'h3'
+import type { InferInput } from 'valibot'
+import { serverSupabaseClient } from '#supabase/server'
 import { cacheLocation } from '~~/server/utils/cache-location'
+import { safeParse } from 'valibot'
+import { BoundingBoxSchema } from '../../../lib/schemas'
 
 export default defineEventHandler(async (event: H3Event<{ query: InferInput<typeof BoundingBoxSchema> }>) => {
   // Validate the route parameters

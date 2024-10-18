@@ -1,6 +1,6 @@
 import type { Feature, MultiPolygon } from 'geojson'
-import type { MapLocation } from './location.ts'
 import type { Cryptocity } from './cryptocity.ts'
+import type { MapLocation } from './location.ts'
 
 export interface BoundingBox {
   swlat: number

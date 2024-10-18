@@ -1,7 +1,7 @@
-import consola from 'consola'
-import type { H3Event } from 'h3'
 import type { MapLocation } from '~~/types/location'
 import type { Result } from '~~/types/util'
+import type { H3Event } from 'h3'
+import consola from 'consola'
 
 export function getLocationKey(uuid: string) {
   return `location:${uuid}`

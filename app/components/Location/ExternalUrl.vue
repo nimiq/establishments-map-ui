@@ -5,7 +5,7 @@ withDefaults(defineProps<{ location: MapLocation, showName?: boolean }>(), { sho
 <template>
   <transition name="scale">
     <a
-      v-if="location.linkTo" :href="location.url" bg-neutral-0 px-8 py-5 arrow pill-tertiary border="neutral/15" after:ml-3 after:text-13
+      v-if="location.linkTo" :href="location.url" border="neutral/15" nq-nq-pill-tertiary bg-neutral-0 px-8 py-5 nq-arrow after:ml-3 after:text-13
       flex="~ gap-8" un-text="14 neutral-800" target="_blank" rel="noopener noreferrer"
     >
       <div v-if="location.linkTo === LocationLink.GMaps" i-logos:google-maps />

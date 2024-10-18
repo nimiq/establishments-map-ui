@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 
+import type { RawLocation } from '../../../packages/types/src/index.ts'
 import {
   DefineFunction,
   Schema,
   SlackFunction,
 } from 'https://deno.land/x/deno_slack_sdk@2.7.0/mod.ts'
-import { getMessageString } from '../util/message_location.ts'
 import { LocationType } from '../types/location.ts'
-import type { RawLocation } from '../../../packages/types/src/index.ts'
+import { getMessageString } from '../util/message_location.ts'
 
 export const SendContext = DefineFunction({
   callback_id: 'send_context',

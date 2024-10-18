@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { AutocompleteStatus } from '@/composables/useAutocomplete'
 import type { GoogleSuggestion, LocationSuggestion } from '@/composables/useAutocomplete'
+import { AutocompleteStatus } from '@/composables/useAutocomplete'
 
 defineProps<{ status: AutocompleteStatus, googleSuggestions: GoogleSuggestion[], locationSuggestions: LocationSuggestion[] }>()
 </script>
@@ -27,7 +27,7 @@ defineProps<{ status: AutocompleteStatus, googleSuggestions: GoogleSuggestion[],
     </div>
     <template v-else>
       <ComboboxGroup flex="~ col">
-        <ComboboxLabel text="12 neutral-700" px-16 py-8 label>
+        <ComboboxLabel text="12 neutral-700" label px-16 py-8>
           <!-- {{ $t(Crypto Locations) }} -->
           Crypto Locations
         </ComboboxLabel>
@@ -43,7 +43,7 @@ defineProps<{ status: AutocompleteStatus, googleSuggestions: GoogleSuggestion[],
       <ComboboxSeparator v-if="locationSuggestions.length > 0" my-12 h-2 bg-neutral-100 />
 
       <ComboboxGroup>
-        <ComboboxLabel text="12 neutral-700" px-16 py-8 label>
+        <ComboboxLabel text="12 neutral-700" label px-16 py-8>
           <!-- {{ $t(Results from Google) }} -->
           Results from Google
         </ComboboxLabel>

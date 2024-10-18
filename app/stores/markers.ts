@@ -1,6 +1,6 @@
-import { parseLocation } from '~/shared'
-import { CLUSTERS_MAX_ZOOM, algorithm, computeMarkers } from '~~/lib/compute-markers'
 import type { Markers, MemoizedMarkers } from '~~/types/map'
+import { algorithm, CLUSTERS_MAX_ZOOM, computeMarkers } from '~~/lib/compute-markers'
+import { parseLocation } from '~/shared'
 
 export const useMarkers = defineStore('markers', () => {
   const { setLocations, getLocations } = useLocations()
@@ -74,21 +74,14 @@ export const useMarkers = defineStore('markers', () => {
   }
 
   async function getMarkersFromDatabase(): Promise<Markers> {
-    const { data: markers, error } = await useFetch<Markers>(`/api/markers`, {
-      query: { ...boundingBox.value!, zoom_level: zoom.value },
-      transform: (r: Markers) => {
-        r.singles.map(parseLocation)
-        return r
-      },
-    })
-    if (error.value || !markers.value)
-      throw error
+    const markers = await $fetch<Markers>('/api/markers', { query: { ...boundingBox.value!, zoom_level: zoom.value } })
+    markers.singles.map(parseLocation)
 
     const cryptocities = await getCryptocities(boundingBox.value!)
-    setLocations(markers.value.singles)
+    setLocations(markers.singles)
     setCryptocities(boundingBox.value!, cryptocities)
-    markers.value.clusters.forEach(c => c.diameter = Math.max(24, Math.min(48, 0.24 * c.count + 24)))
-    return markers.value
+    markers.clusters.forEach(c => c.diameter = Math.max(24, Math.min(48, 0.24 * c.count + 24)))
+    return markers
   }
 
   function setMarkers(newSingles: MapLocation[], newClusters: Cluster[]) {
@@ -132,6 +125,8 @@ export const useMarkers = defineStore('markers', () => {
 
     setMarkers(newSingles, newClusters)
   }
+
+  watchDebounced(boundingBox, cluster, { debounce: 300, maxWait: 2000 })
 
   return {
     memoized,

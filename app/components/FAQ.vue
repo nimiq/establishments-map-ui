@@ -46,13 +46,13 @@ const questionsOpen = ref<string[]>(props.questions)
     </template>
     <template #description>
       <span>
-        If you need more details, feel free to reach us on <a href="https://t.me/nimiq" target="_blank" rel="noopener noreferrer" un-text="bold blue" arrow>
+        If you need more details, feel free to reach us on <a href="https://t.me/nimiq" target="_blank" rel="noopener noreferrer" un-text="bold blue" nq-arrow>
           Telegram
         </a>
       </span>
       <!-- <i18n-t keypath="If you need more details, feel free to reach us on {telegram}" tag="span">
         <template #telegram>
-          <a href="https://t.me/nimiq" target="_blank" rel="noopener noreferrer" un-text="bold blue" arrow>
+          <a href="https://t.me/nimiq" target="_blank" rel="noopener noreferrer" un-text="bold blue" nq-arrow>
             Telegram
           </a>
         </template>

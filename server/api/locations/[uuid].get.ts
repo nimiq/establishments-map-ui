@@ -1,9 +1,9 @@
-import { safeParse } from 'valibot'
+import type { MapLocation } from '~~/types/location'
 import type { Database } from '~~/types/supabase'
 import { serverSupabaseClient } from '#supabase/server'
-import type { MapLocation } from '~~/types/location'
 import { UuidObjectSchema } from '~~/lib/schemas'
 import { cacheLocation, getLocationKey } from '~~/server/utils/cache-location'
+import { safeParse } from 'valibot'
 
 export default defineEventHandler(async (event) => {
   // Validate the route parameters
@@ -25,6 +25,6 @@ export default defineEventHandler(async (event) => {
   if (error || !location)
     return createError({ statusCode: 404, message: `Location with UUID ${query.uuid} not found` })
 
-  await cacheLocation(event, location)
+  event.waitUntil(cacheLocation(event, location))
   return location
 })

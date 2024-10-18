@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 
+import type { Category, Currency } from '../../../packages/types/src/database.ts'
 import {
   DefineFunction,
   Schema,
   SlackFunction,
 } from 'https://deno.land/x/deno_slack_sdk@2.7.0/mod.ts'
 import { addLocation } from '../../../packages/database/src/index.ts'
-import { LocationType } from '../types/location.ts'
 import { Provider } from '../../../packages/types/src/database.ts'
-import type { Category, Currency } from '../../../packages/types/src/database.ts'
+import { LocationType } from '../types/location.ts'
 import { getDbAuthUserArgs } from '../util/db-args.ts'
 
 export const CreateRawLocation = DefineFunction({

@@ -2,8 +2,8 @@
 Since the UI is quite flexible, better to define all cases using types, and we develop the UI from these types.
  */
 
-import type { ProviderType } from './database.ts'
 import type { Cryptocity } from './cryptocity.js'
+import type { ProviderType } from './database.ts'
 import type { Tables } from './supabase.js'
 
 export const enum LocationType {

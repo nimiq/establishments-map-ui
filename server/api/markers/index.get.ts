@@ -1,9 +1,8 @@
-import { intersect, object, safeParse } from 'valibot'
+import type { Markers } from '~~/types/map'
 import type { Database } from '~~/types/supabase'
 import { serverSupabaseClient } from '#supabase/server'
-import { BoundingBoxSchema, ZoomSchema } from '~~/server/utils/schemas'
-import type { Markers } from '~~/types/map'
-import { cacheLocation } from '~~/server/utils/cache-location'
+import { BoundingBoxSchema, ZoomSchema } from '~~/lib/schemas'
+import { intersect, object, safeParse } from 'valibot'
 
 // TODO Rename zoom_level
 const Schema = intersect([BoundingBoxSchema, object({ zoom_level: ZoomSchema })])
@@ -20,7 +19,7 @@ export default defineEventHandler(async (event) => {
   if (error || !data)
     return createError({ statusCode: 404, message: `No markers found` })
 
-  await Promise.all(data.singles.map(l => cacheLocation(event, l)))
+  // event.waitUntil(Promise.all(data.singles.map(l => cacheLocation(event, l))))
 
   return data
 })

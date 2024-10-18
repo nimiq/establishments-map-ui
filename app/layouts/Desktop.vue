@@ -7,7 +7,9 @@ const toggleList = useToggle(isListShown)
 
 <template>
   <!-- eslint-disable vue/no-multiple-template-root -->
-  <TheMapInstance h-screen w-screen />
+  <keep-alive>
+    <TheMapInstance size-screen />
+  </keep-alive>
   <!-- Shadow -->
   <div id="shadow-left" pointer-events-none absolute inset-0 max-w-368 from-neutral to-transparent bg-gradient-to-r />
   <aside pointer-events-none absolute inset-24 right-initial h-max max-w-384 children:pointer-events-auto flex="~ col">
@@ -25,7 +27,7 @@ const toggleList = useToggle(isListShown)
       <DesktopList :singles="singlesInView" :clusters="clustersInView" :list-is-shown="isListShown" />
     </div>
     <button
-      ring="1.5 neutral/3" pill-sm z-10 mt-12 border-none pill-tertiary flex="~ gap-8"
+      ring="1.5 neutral/3" nq-pill-sm z-10 mt-12 border-none nq-pill-tertiary flex="~ gap-8"
       @click="() => toggleList()"
     >
       <div
@@ -37,7 +39,7 @@ const toggleList = useToggle(isListShown)
     </button>
   </aside>
   <MapControls absolute bottom-24 right-24 />
-  <FAQ name="faq" absolute bottom-6 left-78 rounded-4 bg-neutral-200 px-4 py-1 text-12 text-neutral font-bold ghost-btn>
+  <FAQ name="faq" ghost-btn absolute bottom-6 left-78 rounded-4 bg-neutral-200 px-4 py-1 text-12 text-neutral font-bold>
     <template #trigger>
       FAQ
     </template>

@@ -41,14 +41,14 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{ banner: Locatio
             <PopoverPortal>
               <Transition name="slide-left">
                 <PopoverContent as-child :side-offset="4" :collision-padding="8" :side="isMobile ? 'top' : 'right'">
-                  <div z-100 max-w-320 rounded-6 p-16 text-neutral-0 bg-gradient-neutral shadow>
+                  <div z-100 max-w-320 rounded-6 p-16 text-neutral-0 shadow bg-gradient-neutral>
                     <header flex="~ items-center justify-start gap-8">
                       <div :class="banner.icon" shrink-0 text-24 />
 
                       <h4 truncate text-16 text-neutral-400 font-semibold lh-20>
                         {{ handleProviderPlaceholder(location, banner) }}
                       </h4>
-                      <div v-if="banner.tooltipLabel" ml-auto text="10 neutral-600" whitespace-nowrap label>
+                      <div v-if="banner.tooltipLabel" text="10 neutral-600" label ml-auto whitespace-nowrap>
                         {{ banner.tooltipLabel }}
                       </div>
                     </header>
@@ -59,7 +59,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{ banner: Locatio
 
                     <a
                       v-if="banner.tooltipCta" :href="banner.tooltipCta" target="_blank" rel="noopener noreferrer"
-                      un-text="14 neutral-600" mt-12 block arrow before:op-80 flex="~ items-center"
+                      un-text="14 neutral-600" mt-12 block nq-arrow before:op-80 flex="~ items-center"
                     >
                       <!-- {{ $t('Learn more') }} -->
                       Learn more

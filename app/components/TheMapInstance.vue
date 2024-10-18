@@ -4,18 +4,19 @@ import { GoogleMap } from 'vue3-google-map'
 const apiKey = useRuntimeConfig().public.googleMapsApiKey
 const { language } = useNavigatorLanguage()
 
-const { params: initialParams } = useRoute()
 const { showSplashScreen } = storeToRefs(useApp())
-const { mapLoaded, zoom, center } = storeToRefs(useMap())
+const { mapLoaded, zoom, map, lat, lng, boundingBox } = storeToRefs(useMap())
+const initialZoom = useMap().zoom
+const initialCenter = useMap().center
 
 const mapStore = useMap()
 const { mapInstance } = storeToRefs(mapStore)
 
 const isDark = useDark()
-const googleMapStyles = ref<(typeof GoogleMap.map.MapTypeStyle)[]>()
+const styles = ref<(typeof GoogleMap.map.MapTypeStyle)[]>()
 watch(isDark, async () => {
   const module = isDark.value ? await import('@/assets/map-styles/dark') : await import('@/assets/map-styles/light')
-  googleMapStyles.value = module.default as (typeof GoogleMap.map.MapTypeStyle)[]
+  styles.value = module.default as (typeof GoogleMap.map.MapTypeStyle)[]
 }, { immediate: true })
 
 const restriction = {
@@ -23,14 +24,25 @@ const restriction = {
   strictBounds: true,
 }
 
-const validGestureBehaviours = ['cooperative', 'greedy', 'none', 'auto'] as const
-type GestureBehaviour = typeof validGestureBehaviours[number]
+type GestureBehaviour = 'cooperative' | 'greedy' | 'none' | 'auto'
+const mapGestureBehaviour = useRouteQuery<GestureBehaviour>('gestureBehaviour', 'greedy')
 
-const gestureBehaviourParam = initialParams.gestureBehaviour
-const mapGestureBehaviour
-  = typeof gestureBehaviourParam === 'string' && validGestureBehaviours.includes(gestureBehaviourParam)
-    ? gestureBehaviourParam as GestureBehaviour
-    : 'greedy'
+function updateCenter() {
+  const { lat: newLat, lng: newLng } = map.value!.getCenter()?.toJSON() as Point
+  lat.value = newLat
+  lng.value = newLng
+}
+
+function updateZoom() {
+  zoom.value = map.value!.getZoom() as number
+}
+
+function onBoundsChanged() {
+  const bounds = map.value?.getBounds()
+  const { lat: swlat, lng: swlng } = bounds!.getSouthWest().toJSON()
+  const { lat: nelat, lng: nelng } = bounds!.getNorthEast().toJSON()
+  boundingBox.value = { nelat, nelng, swlat, swlng }
+}
 </script>
 
 <template>
@@ -40,9 +52,10 @@ const mapGestureBehaviour
 
   <GoogleMap
     ref="mapInstance" v-bind="$attrs" :api-key :language disable-default-ui
-    :gesture-handling="mapGestureBehaviour" :keyboard-shortcuts="false" :styles="googleMapStyles" :max-zoom="21"
-    :min-zoom="3" :restriction="restriction" :clickable-icons="false" :zoom :center
+    :gesture-handling="mapGestureBehaviour" :keyboard-shortcuts="false" :styles :max-zoom="21"
+    :min-zoom="3" :restriction="restriction" :clickable-icons="false" :zoom="initialZoom" :center="initialCenter"
     :libraries="['places', 'maps'] as unknown as ['places']"
+    @center_changed="updateCenter" @zoom_changed="updateZoom" @bounds_changed="onBoundsChanged"
     @idle.once="() => mapLoaded = true"
   >
     <MapMarkers />

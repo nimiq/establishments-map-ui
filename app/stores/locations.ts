@@ -25,23 +25,21 @@ export const useLocations = defineStore('locations', () => {
       return getItemsWithinBBox(locations.value, boundingBox) // Filter locations by bounding box
     }
 
-    const { data: newLocations, error } = await useFetch('/api/locations', { query: boundingBox, transform: (r: MapLocation[]) => r.map(parseLocation) })
-    if (error.value || !newLocations.value)
-      throw error
-    setLocations(newLocations.value)
+    const data = await $fetch<MapLocation[]>('/api/locations', { query: boundingBox })
+    const newLocations = data.map(parseLocation)
+    setLocations(newLocations)
     visitedAreas.value = addBBoxToArea(boundingBox, visitedAreas.value)
-    return newLocations.value
+    return newLocations
   }
 
   async function getLocationByUuid(uuid: string): Promise<MapLocation> {
     if (uuid in locationsMap.value)
       return locationsMap.value[uuid]!
 
-    const { data: location, error } = await useFetch(`/api/locations/${uuid}`, { transform: parseLocation })
-    if (error.value || !location.value)
-      throw error
-    locationsMap.value[uuid] = location.value
-    return location.value
+    const data = await $fetch<MapLocation>(`/api/locations/${uuid}`)
+    const location = parseLocation(data)
+    locationsMap.value[uuid] = location
+    return location
   }
 
   const selectedUuid = useRouteQuery<string | undefined>('uuid') // No need to check for string[]. UUID checked in router.ts

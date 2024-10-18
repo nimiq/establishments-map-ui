@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ModalName } from '../Modal.vue'
 import type { GoogleSuggestion } from '@/composables/useAutocomplete'
+import { ModalName } from '../Modal.vue'
 
 const selectedPlace = ref<GoogleSuggestion>()
 const selectedCryptos = ref<CurrencyType[]>([])
@@ -19,7 +19,7 @@ const { state, submit, reset, isError, isSuccess, isSubmitted } = useForm({ url,
 </script>
 
 <template>
-  <Modal v-model:open="open" :name="ModalName.Candidate" nested mx-auto pill-blue>
+  <Modal v-model:open="open" :name="ModalName.Candidate" nested mx-auto nq-pill-blue>
     <template #trigger>
       <!-- {{ $t(Add Crypto location) }} -->
       Add Crypto location
@@ -58,7 +58,7 @@ const { state, submit, reset, isError, isSuccess, isSubmitted } = useForm({ url,
       <div v-if="!isSubmitted" mt-8 flex="~ col">
         <a
           href="https://www.google.com/business/" target="_blank" rel="noopener noreferrer" un-text="blue center"
-          font-bold lh-20 arrow
+          font-bold lh-20 nq-arrow
         >
           <!-- {{ $t(Create Google Business profile) }} -->
           Create Google Business profile
@@ -78,18 +78,18 @@ const { state, submit, reset, isError, isSuccess, isSubmitted } = useForm({ url,
 
           <div flex="~ gap-16 justify-between">
             <!-- :aria-label="$t('Cancel')" -->
-            <DialogClose aria-label="Cancel" pill-sm pill-secondary>
+            <DialogClose aria-label="Cancel" nq-pill-sm nq-pill-secondary>
               <!-- $t('Cancel') -->
               Cancel
             </DialogClose>
-            <button type="submit" :disabled :loading="state === FormState.Loading" pill-sm pill-blue>
+            <button type="submit" :disabled :loading="state === FormState.Loading" nq-pill-sm nq-pill-blue>
               <!-- {{ $t(Submit Location) }} -->
               Submit Location
             </button>
           </div>
         </form>
       </div>
-      <button v-else pill-sm mt-32 pill-blue @click="isError ? reset() : (open = false)">
+      <button v-else nq-pill-sm mt-32 nq-pill-blue @click="isError ? reset() : (open = false)">
         <!-- {{ isError ? $t('Try again') : $t('Back to the Map') }} -->
         {{ isError ? 'Try again' : 'Back to the Map' }}
       </button>
