@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.8.0",
-    "@iconify-json/nimiq": "https://pkg.pr.new/onmax/nimiq-ui/nimiq-icons@814b6a1",
+    "@iconify-json/nimiq": "https://pkg.pr.new/onmax/nimiq-ui/nimiq-icons@8095254",
     "@nuxt/eslint": "^0.6.0",
     "@nuxt/fonts": "^0.10.0",
     "@nuxthub/core": "^0.7.33",
