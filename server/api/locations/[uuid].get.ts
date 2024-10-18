@@ -2,7 +2,7 @@ import type { MapLocation } from '~~/types/location'
 import type { Database } from '~~/types/supabase'
 import { serverSupabaseClient } from '#supabase/server'
 import { UuidObjectSchema } from '~~/lib/schemas'
-import { getLocationKey } from '~~/server/utils/cache-location'
+import { getLocationKey } from '~~/server/utils/cache'
 import { safeParse } from 'valibot'
 
 export default defineEventHandler(async (event) => {
