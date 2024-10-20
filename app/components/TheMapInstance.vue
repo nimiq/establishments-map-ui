@@ -12,7 +12,7 @@ watch(isDark, async () => {
   styles.value = module.default
 }, { immediate: true })
 
-const format = new (inject('ol-format')).GeoJSON()
+const format = new (inject('ol-format')).MVT()
 
 const url = '/tiles/{z}/{x}/{y}'
 </script>

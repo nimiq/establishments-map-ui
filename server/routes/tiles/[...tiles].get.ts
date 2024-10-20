@@ -7,10 +7,10 @@ import { Buffer } from 'node:buffer'
 import { serverSupabaseClient } from '#supabase/server'
 import { tileToBBOX } from '@mapbox/tilebelt'
 import { feature, geometry } from '@turf/turf'
-import geobuf from 'geobuf'
+import geojsonvt from 'geojson-vt'
 import { createError } from 'h3'
-import Pbf from 'pbf'
 import { object, pipe, rawTransform, safeParse, string } from 'valibot'
+import vtpbf from 'vt-pbf'
 
 const PathSchema = object({
   tiles: pipe(
@@ -33,24 +33,33 @@ export default defineEventHandler(async (event) => {
 
   const { x, y, z } = coords.tiles!
 
-  const key = `tile:${z}:${x}:${y}` as const
-  const kv = hubKV()
+  // const key = `tile:${z}:${x}:${y}` as const
+  // const kv = hubKV()
 
-  let pbfBuffer: Buffer
+  const [nelng, nelat, swlng, swlat] = tileToBBOX([x, y, z])
+  const featureCollection = await fetchLayerData(event, { boundingBox: { nelat, nelng, swlat, swlng }, zoom: z })
+  const tileIndex = geojsonvt(featureCollection)
+  const tile = tileIndex.getTile(z, x, y)
 
-  if (await kv.has(key) && false) {
-    const base64String = await kv.get(key) as string
-    pbfBuffer = Buffer.from(base64String, 'base64')
-  }
-  else {
-    const [nelng, nelat, swlng, swlat] = tileToBBOX([x, y, z])
-    const featureCollection = await fetchLayerData(event, { boundingBox: { nelat, nelng, swlat, swlng }, zoom: z })
-    pbfBuffer = Buffer.from(geobuf.encode(featureCollection, new (Pbf as any)()))
-    await kv.set(key, pbfBuffer.toString('base64'))
-  }
+  const buffer = Buffer.from(vtpbf.fromGeojsonVt({ geojsonLayer: tile }))
+  setHeader(event, 'Content-Type', 'application/protobuf')
+  return buffer
 
-  setHeader(event, 'Content-Type', 'application/x-protobuf')
-  return pbfBuffer
+  // let pbfBuffer: Buffer
+
+  // if (await kv.has(key) && false) {
+  //   const base64String = await kv.get(key) as string
+  //   pbfBuffer = Buffer.from(base64String, 'base64')
+  // }
+  // else {
+  //   const [nelng, nelat, swlng, swlat] = tileToBBOX([x, y, z])
+  //   const featureCollection = await fetchLayerData(event, { boundingBox: { nelat, nelng, swlat, swlng }, zoom: z })
+  //   pbfBuffer = Buffer.from(geobuf.encode(featureCollection, new (Pbf as any)()))
+  //   await kv.set(key, pbfBuffer.toString('base64'))
+  // }
+
+  // setHeader(event, 'Content-Type', 'application/x-protobuf')
+  // return pbfBuffer
 })
 
 // function tileToBBox(x: number, y: number, z: number) {
