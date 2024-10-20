@@ -14,12 +14,14 @@
     "supabase:types": "npx --yes supabase gen types -y --lang=typescript --project-id \"mycbdmurjytbdahjljoh\" --schema public > types/supabase.ts"
   },
   "dependencies": {
+    "@mapbox/tilebelt": "^2.0.0",
     "@turf/turf": "^7.1.0",
     "@vueuse/integrations": "^11.1.0",
     "@vueuse/router": "^11.1.0",
     "consola": "^3.2.3",
     "geobuf": "^3.0.2",
     "idb-keyval": "^6.2.1",
+    "install": "^0.13.0",
     "ol": "^10.2.1",
     "ol-contextmenu": "^5.5.0",
     "ol-ext": "^4.0.24",

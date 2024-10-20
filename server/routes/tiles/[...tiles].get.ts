@@ -5,6 +5,7 @@ import type { Point } from 'geojson'
 import type { H3Event } from 'h3'
 import { Buffer } from 'node:buffer'
 import { serverSupabaseClient } from '#supabase/server'
+import { tileToBBOX } from '@mapbox/tilebelt'
 import { feature, geometry } from '@turf/turf'
 import geobuf from 'geobuf'
 import { createError } from 'h3'
@@ -23,6 +24,8 @@ const PathSchema = object({
   ),
 })
 
+// http://localhost:3000/tiles/7/66/43
+
 export default defineEventHandler(async (event) => {
   const { output: coords, issues, success } = await getValidatedRouterParams(event, query => safeParse(PathSchema, query))
   if (!success || !coords)
@@ -35,32 +38,28 @@ export default defineEventHandler(async (event) => {
 
   let pbfBuffer: Buffer
 
-  if (await kv.has(key)) {
+  if (await kv.has(key) && false) {
     const base64String = await kv.get(key) as string
     pbfBuffer = Buffer.from(base64String, 'base64')
   }
   else {
-    const [nelng, swlat, swlng, nelat] = tileToBBox(x, y, z)
+    const [nelng, nelat, swlng, swlat] = tileToBBOX([x, y, z])
     const featureCollection = await fetchLayerData(event, { boundingBox: { nelat, nelng, swlat, swlng }, zoom: z })
     pbfBuffer = Buffer.from(geobuf.encode(featureCollection, new (Pbf as any)()))
     await kv.set(key, pbfBuffer.toString('base64'))
   }
 
-  console.log('------------')
-  console.log(pbfBuffer.toString('base64'))
-  console.log('------------')
   setHeader(event, 'Content-Type', 'application/x-protobuf')
   return pbfBuffer
 })
 
-function tileToBBox(x: number, y: number, z: number): [number, number, number, number] {
-  const n = Math.PI - 2 * Math.PI * y / 2 ** z
-  const west = x / 2 ** z * 360 - 180
-  const north = (180 / Math.PI * Math.atan(0.5 * (Math.exp(n) - Math.exp(-n))))
-  const east = (x + 1) / 2 ** z * 360 - 180
-  const south = (180 / Math.PI * Math.atan(0.5 * (Math.exp(n - 2 * Math.PI / 2 ** z) - Math.exp(-n + 2 * Math.PI / 2 ** z))))
-  return [west, south, east, north]
-}
+// function tileToBBox(x: number, y: number, z: number) {
+//   const sinh = (arg: number) => (Math.exp(arg) - Math.exp(-arg)) / 2
+//   const lng = x * 360 / 2 ** z - 180
+//   const lat = Math.atan(Math.sinh(Math.PI - y * 2 * Math.PI / 2 ** z)) * (180 / Math.PI)
+
+//   return { nelat, nelng, swlat, swlng }
+// }
 
 async function fetchLayerData(event: H3Event, { boundingBox, zoom }: MapViewport): Promise<LayerFeature> {
   // Get the markers from the database
