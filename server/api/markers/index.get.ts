@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
   // Validate the route parameters
   const { output: query, issues, success } = await getValidatedQuery(event, query => safeParse(Schema, query))
   if (!success || !query)
-    throw createError({ statusCode: 400, message: 'Invalid query parameters', cause: JSON.stringify(issues) })
+    throw createError({ statusCode: 400, message: `Invalid query parameters ${JSON.stringify(issues)}` })
 
   // Fetch the pre-computed markers from Supabase
   const supabase = await serverSupabaseClient<Database>(event)
