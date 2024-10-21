@@ -15,7 +15,7 @@ export const BoundingBoxStrSchema = pipe(string(), rawTransform(({ dataset: str,
 }))
 
 export const ZoomSchema = pipe(
-  number(),
+  unknown(), transform(Number),
   minValue(0, 'Zoom level must be greater than or equal to 0'),
   maxValue(21, 'Zoom level must be less than or equal to 21'),
 )
