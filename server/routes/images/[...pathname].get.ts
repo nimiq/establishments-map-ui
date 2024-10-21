@@ -1,3 +1,4 @@
+import type { MapLocation } from '~~/types/location'
 import type { Database } from '~~/types/supabase'
 import type { Result } from '~~/types/util'
 import { serverSupabaseClient } from '#supabase/server'
@@ -15,11 +16,11 @@ export default eventHandler(async (event) => {
 
       const uuid = pathname.replace('location:', '')
       const supabase = await serverSupabaseClient<Database>(event)
-      const { data, error } = await supabase.from('locations').select('gmaps_place_id').eq('uuid', uuid).single()
-      if (error || !data?.gmaps_place_id)
+      const { data: location, error } = await supabase.from('locations').select('gmaps_place_id').eq('uuid', uuid).single()
+      if (error || !location?.gmaps_place_id)
         return createError({ statusCode: 404, message: `Location ${uuid} not found` })
 
-      await cacheLocation(pathname, data.gmaps_place_id)
+      await cacheLocation(pathname, location.gmaps_place_id)
       consola.info(`Location ${pathname} cached`)
     }
   }
@@ -28,8 +29,6 @@ export default eventHandler(async (event) => {
 })
 
 export async function cacheLocation(key: string, placeId: string) {
-  const kv = hubKV()
-
   // Check if the location image exists in blob storage
   const blob = hubBlob()
   const existingImage = await blob.head(key).catch(() => false)
@@ -45,9 +44,6 @@ export async function cacheLocation(key: string, placeId: string) {
       await blob.put(key, image)
     }
   }
-
-  // Cache the location data in KV store for future quick access
-  await kv.set(key, location)
 }
 
 // Function to fetch a photo from Google Maps API
