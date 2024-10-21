@@ -75,7 +75,7 @@ const { submit, reset, isError, isSuccess, isSubmitted } = useForm({ url, body }
           <label for="name" text="14 neutral-900" mb-4 mt-24 block font-200>{{ $t('Describe the issue') }}</label>
           <textarea
             v-model="description" :placeholder="$t('Write your problem here')" text="14 neutral"
-            nq-input-box min-h-64 resize-none style="field-sizing: content"
+            input-box min-h-64 resize-none style="field-sizing: content"
           />
 
           <div flex="~ gap-16 justify-end" mt-24>

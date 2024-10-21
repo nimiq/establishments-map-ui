@@ -22,7 +22,7 @@ const { fillMarker, showLocationName } = useUIParams()
     </div>
 
     <!-- Markers when the user zooms in and it is not an ATM -->
-    <div v-else class="marker" centered size-32 text-20>
+    <div v-else class="marker" centered size-32 shrink-0 text-20>
       <div :class="getCategoryIcon(location.category)" />
     </div>
 

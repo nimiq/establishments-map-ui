@@ -5,7 +5,7 @@ const selected = defineModel<T>('selected')
 
 <template>
   <SelectRoot v-model="selected" relative>
-    <SelectTrigger nq-input-box flex="~ gap-8 items-center">
+    <SelectTrigger flex="~ gap-8 items-center" ring="1.5 neutral/15" input-box w-full rounded-4 px-16 py-4>
       <SelectValue
         :placeholder="i18n.t('Select issue')" text-14
         :class="{ 'text-neutral': !!selected, 'text-neutral-700': !selected }"
