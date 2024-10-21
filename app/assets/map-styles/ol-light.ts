@@ -1,7 +1,4 @@
-import CircleStyle from 'ol/style/Circle'
-import Fill from 'ol/style/Fill'
-import Stroke from 'ol/style/Stroke'
-import Style from 'ol/style/Style'
+import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style.js'
 import Text from 'ol/style/Text'
 
 // Style for map features like roads
@@ -20,16 +17,14 @@ export const mapStyle = new Style({
   }),
 })
 
-// Style for layer points (PBF layer)
-export const layerStyle = new Style({
-  image: new CircleStyle({
-    radius: 5,
-    fill: new Fill({
-      color: '#ff0000', // Red for points
-    }),
-    stroke: new Stroke({
-      color: '#fff', // White border around points
-      width: 2,
-    }),
-  }),
+const image = new CircleStyle({
+  radius: 5,
+  fill: new Fill({ color: 'blue' }),
+  stroke: new Stroke({ color: 'red', width: 1 }),
 })
+
+export const layerStyle = {
+  Point: new Style({
+    image,
+  }),
+}

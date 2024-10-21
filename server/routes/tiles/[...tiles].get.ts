@@ -3,14 +3,11 @@ import type { MapViewport, Markers } from '~~/types/map'
 import type { Database } from '~~/types/supabase'
 import type { Point } from 'geojson'
 import type { H3Event } from 'h3'
-import { Buffer } from 'node:buffer'
 import { serverSupabaseClient } from '#supabase/server'
 import { tileToBBOX } from '@mapbox/tilebelt'
 import { feature, geometry } from '@turf/turf'
-import geojsonvt from 'geojson-vt'
 import { createError } from 'h3'
 import { object, pipe, rawTransform, safeParse, string } from 'valibot'
-import vtpbf from 'vt-pbf'
 
 const PathSchema = object({
   tiles: pipe(
@@ -33,30 +30,31 @@ export default defineEventHandler(async (event) => {
 
   const { x, y, z } = coords.tiles!
 
-  // const key = `tile:${z}:${x}:${y}` as const
-  // const kv = hubKV()
+  // const [nelng, nelat, swlng, swlat] = tileToBBOX([x, y, z])
+  // const featureCollection = await fetchLayerData(event, { boundingBox: { nelat, nelng, swlat, swlng }, zoom: z })
+  // const tileIndex = geojsonvt(featureCollection)
+  // const tile = tileIndex.getTile(z, x, y)
+
+  // const buffer = Buffer.from(vtpbf.fromGeojsonVt({ geojsonLayer: tile }))
+  // setHeader(event, 'Content-Type', 'application/protobuf')
+  // return buffer
+
+  const key = `tile:${z}:${x}:${y}` as const
+  const kv = hubKV()
 
   const [nelng, nelat, swlng, swlat] = tileToBBOX([x, y, z])
   const featureCollection = await fetchLayerData(event, { boundingBox: { nelat, nelng, swlat, swlng }, zoom: z })
-  const tileIndex = geojsonvt(featureCollection)
-  const tile = tileIndex.getTile(z, x, y)
-
-  const buffer = Buffer.from(vtpbf.fromGeojsonVt({ geojsonLayer: tile }))
-  setHeader(event, 'Content-Type', 'application/protobuf')
-  return buffer
-
+  return featureCollection
   // let pbfBuffer: Buffer
 
-  // if (await kv.has(key) && false) {
-  //   const base64String = await kv.get(key) as string
-  //   pbfBuffer = Buffer.from(base64String, 'base64')
-  // }
-  // else {
-  //   const [nelng, nelat, swlng, swlat] = tileToBBOX([x, y, z])
-  //   const featureCollection = await fetchLayerData(event, { boundingBox: { nelat, nelng, swlat, swlng }, zoom: z })
-  //   pbfBuffer = Buffer.from(geobuf.encode(featureCollection, new (Pbf as any)()))
-  //   await kv.set(key, pbfBuffer.toString('base64'))
-  // }
+  if (await kv.has(key) && false) {
+    // const base64String = await kv.get(key) as string
+    // pbfBuffer = Buffer.from(base64String, 'base64')
+  }
+  else {
+    // pbfBuffer = Buffer.from(geobuf.encode(featureCollection, new (Pbf as any)()))
+    // await kv.set(key, pbfBuffer.toString('base64'))
+  }
 
   // setHeader(event, 'Content-Type', 'application/x-protobuf')
   // return pbfBuffer
@@ -80,5 +78,11 @@ async function fetchLayerData(event: H3Event, { boundingBox, zoom }: MapViewport
   // Convert the markers to GeoJSON features
   const singlesFeatures = markers.singles.map(({ lat, lng, name }) => feature(geometry('Point', [lng, lat]) as Point, { kind: 'single', name } as const))
   const clustersFeatures = markers.clusters.map(({ lat, lng, ...properties }) => feature(geometry('Point', [lng, lat]) as Point, { kind: 'cluster', ...properties } as const))
-  return { type: 'FeatureCollection', features: [...singlesFeatures, ...clustersFeatures] }
+  const crs = {
+    type: 'name',
+    properties: {
+      name: 'EPSG:3857',
+    },
+  }
+  return { type: 'FeatureCollection', features: [...singlesFeatures, ...clustersFeatures], crs }
 }
