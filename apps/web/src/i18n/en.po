@@ -39,7 +39,7 @@ msgstr ""
 msgid "Back to the Map"
 msgstr ""
 
-#: src/i18n/translations.ts:41
+#: src/i18n/translations.ts:40
 msgid "Binance Pay"
 msgstr ""
 
@@ -456,7 +456,7 @@ msgstr ""
 msgid "Try again"
 msgstr ""
 
-#: src/i18n/translations.ts:40
+#: src/i18n/translations.ts:39
 msgid "USDC on POLYGON"
 msgstr ""
 

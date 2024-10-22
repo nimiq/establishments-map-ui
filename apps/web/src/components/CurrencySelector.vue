@@ -8,7 +8,7 @@ const options = Object.values(Currency).filter(c => c !== Currency.BINANCE_PAY)
 <template>
   <MultiSelector v-model:selected="selected" :options multiple>
     <template #option="{ option }">
-      <div :class="getCurrencyIcon(option)" text-18 />
+      <div :class="getCurrencyIcon(option)" text-18 scale-100="!" mr-0="!" />
       <span>{{ translateCurrency(option) }}</span>
     </template>
   </MultiSelector>
