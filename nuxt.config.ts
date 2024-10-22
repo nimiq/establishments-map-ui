@@ -46,6 +46,12 @@ export default defineNuxtConfig({
     },
   },
 
+  nitro: {
+    experimental: {
+      tasks: true,
+    },
+  },
+
   plugins: [{ src: '~~/plugins/ol-map.client.ts' }],
 
   imports: {

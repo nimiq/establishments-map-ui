@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@mapbox/tilebelt": "^2.0.0",
+    "@supabase/supabase-js": "^2.45.6",
     "@turf/turf": "^7.1.0",
     "@vueuse/integrations": "^11.1.0",
     "@vueuse/router": "^11.1.0",

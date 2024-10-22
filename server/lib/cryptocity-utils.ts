@@ -31,6 +31,7 @@ export async function getOsmDetails({ city, countryCode }: GetOsmDetailsOptions)
     return { error: 'No GeoJSON found for this city', data: undefined }
 
   const place = dataPlace[0]
+  consola.info(`Found OSM details: ${JSON.stringify(place)}`)
   const osmId = place.osm_id
   const osmType = place.osm_type
   const osmClass = place.class
@@ -45,9 +46,10 @@ export type GetGeoGeoJsonOptions = GetOsmDetailsResult
 
 export async function getGeoJson({ osmId, osmClass, osmType }: GetGeoGeoJsonOptions) {
   const urlGeoJson = new URL('http://nominatim.openstreetmap.org/details')
-  urlGeoJson.searchParams.append('osmid', osmId.trim())
-  urlGeoJson.searchParams.append('osmtype', osmType.trim())
-  urlGeoJson.searchParams.append('class', osmClass.trim())
+  urlGeoJson.searchParams.append('osmid', osmId)
+  urlGeoJson.searchParams.append('osmtype', osmType.charAt(0).toUpperCase())
+  urlGeoJson.searchParams.append('class', osmClass)
+  consola.info(`Fetching GeoJSON ${urlGeoJson.href}`)
 
   urlGeoJson.searchParams.append('format', 'json')
   urlGeoJson.searchParams.append('polygon_geojson', '1')

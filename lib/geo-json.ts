@@ -1,5 +1,5 @@
+import type { BoundingBox, Point } from '~~/types/map.js'
 import type { Feature, Point as GeoJSONPoint, MultiPolygon, Polygon } from 'geojson'
-import type { BoundingBox, Point } from '../../types/src/index.ts'
 import { bboxPolygon, booleanWithin, feature, featureCollection, geojsonType, intersect, multiPolygon, point, pointsWithinPolygon, union } from '@turf/turf'
 
 /**
@@ -91,13 +91,13 @@ export function isValidPolygon(data: any): data is GeoJSON.Feature<GeoJSON.Polyg
     isOk = true
   }
   // eslint-disable-next-line unused-imports/no-unused-vars
-  catch (e) {}
+  catch (e) { }
 
   try {
     geojsonType(data, 'MultiPolygon', 'isPolygon')
     isOk = true
   }
   // eslint-disable-next-line unused-imports/no-unused-vars
-  catch (e) {}
+  catch (e) { }
   return isOk
 }
