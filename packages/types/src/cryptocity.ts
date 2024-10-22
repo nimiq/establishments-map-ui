@@ -12,6 +12,9 @@ export enum Cryptocity {
   Zurich = 'Zurich',
   MexicoCity = 'Mexico_City',
   GuatemalaCity = 'Guatemala_City',
+  SaoPaulo = 'Sao_Paulo',
+  RioDeJaneiro = 'Rio_de_Janeiro',
+  PortoAlegre = 'Porto_Alegre',
 }
 
 // Information that we get from the database

@@ -24,7 +24,7 @@ export interface CryptocitySuggestion {
   matchedSubstrings: PredictionSubstring[]
   lat: number
   lng: number
-  zoomLevel: number
+  zoom: number
 }
 export interface GoogleSuggestion { label: string, placeId: string, matchedSubstrings: PredictionSubstring[] }
 

@@ -29,7 +29,7 @@ const cryptoIconCategory: Partial<Record<Currency, string>> = {
   [Currency.DASH]: 'i-cryptocurrency-color:dash',
   [Currency.LTC]: 'i-cryptocurrency-color:ltc',
   [Currency.BCH]: 'i-cryptocurrency-color:bch',
-  [Currency.LBTC]: 'i-nimiq:logos-lbtc',
+  [Currency.LBTC]: 'i-nimiq:logos-lightning-bitcoin scale-128 mr-2',
   [Currency.USDC_on_POLYGON]: 'i-cryptocurrency-color:usdc',
   [Currency.XLM]: 'i-cryptocurrency-color:xlm',
   [Currency.XRP]: 'i-cryptocurrency-color:xrp',

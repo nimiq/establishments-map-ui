@@ -73,4 +73,17 @@ export const cryptocitiesUi: Record<Cryptocity, CryptocityUI> = {
       ]
     },
   },
+
+  [Cryptocity.SaoPaulo]: {
+    name: 'Criptocidade São Paulo',
+    get description() { return defaultCryptocityDescription('Criptocidade São Paulo') },
+  },
+  [Cryptocity.PortoAlegre]: {
+    name: 'Criptocidade Porto Alegre',
+    get description() { return defaultCryptocityDescription('Criptocidade Porto Algre') },
+  },
+  [Cryptocity.RioDeJaneiro]: {
+    name: 'Criptocidade Rio De Janeiro',
+    get description() { return defaultCryptocityDescription('Criptocidade Rio de Janeiro') },
+  },
 }

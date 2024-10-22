@@ -6,6 +6,10 @@ msgstr ""
 msgid "{count} locations"
 msgstr ""
 
+#: src/assets-dev/cryptocities-assets.ts:7
+msgid "{cryptocityName} is part of the global Cryptocity Initiative led by Nimiq and its partners."
+msgstr ""
+
 #: src/components/DesktopList.vue:26
 msgid "+ {count} grouped"
 msgstr ""
@@ -98,16 +102,16 @@ msgstr ""
 msgid "Create Google Business profile"
 msgstr ""
 
-#: src/assets-dev/cryptocities-assets.ts:12
-msgid "Criptociudad San José is part of the global Cryptocity Initiative led by Nimiq and its partners."
-msgstr ""
-
-#: src/components/SearchSuggestions.vue:20
+#: src/components/SearchSuggestions.vue:36
 msgid "Crypto Locations"
 msgstr ""
 
 #: src/components/CryptoMapModal.vue:15
 msgid "Crypto Map"
+msgstr ""
+
+#: src/components/SearchSuggestions.vue:21
+msgid "Cryptocities"
 msgstr ""
 
 #: src/components/InteractionBar.vue:58
@@ -130,11 +134,11 @@ msgstr ""
 msgid "Decrease zoom"
 msgstr ""
 
-#: src/components/Banner.vue:51
+#: src/components/Banner.vue:58
 msgid "Download on App Store"
 msgstr ""
 
-#: src/components/Banner.vue:53
+#: src/components/Banner.vue:62
 msgid "Download on Play Store"
 msgstr ""
 
@@ -213,22 +217,17 @@ msgstr ""
 msgid "Increase zoom"
 msgstr ""
 
-#: src/assets-dev/cryptocities-assets.ts:25
-msgid "Kryptostadt Mannheim is part of the global Cryptocity Initiative led by Nimiq and its partners."
-msgstr ""
-
 #: src/assets-dev/banner-assets.ts:100
 msgid "Kurant enables users to easily purchase cryptocurrencies through a network of ATMs."
 msgstr ""
 
-#: src/components/Banner.vue:45
+#: src/components/Banner.vue:51
 #: src/components/InteractionBar.vue:44
 msgid "Learn more"
 msgstr ""
 
-#: src/assets-dev/cryptocities-assets.ts:14
-#: src/assets-dev/cryptocities-assets.ts:27
-#: src/assets-dev/cryptocities-assets.ts:40
+#: src/assets-dev/cryptocities-assets.ts:72
+#: src/assets-dev/cryptocities-assets.ts:9
 msgid "Learn more at"
 msgstr ""
 
@@ -331,7 +330,7 @@ msgstr ""
 msgid "Restaurant & Bar"
 msgstr ""
 
-#: src/components/SearchSuggestions.vue:35
+#: src/components/SearchSuggestions.vue:51
 msgid "Results from Google"
 msgstr ""
 
@@ -425,7 +424,7 @@ msgstr ""
 msgid "Thank you!"
 msgstr ""
 
-#: src/assets-dev/cryptocities-assets.ts:38
+#: src/assets-dev/cryptocities-assets.ts:70
 msgid "Thanks to GoCrypto, Slovenia's capital, Ljubljana, has become a top destination for crypto enthusiasts."
 msgstr ""
 
@@ -461,8 +460,7 @@ msgstr ""
 msgid "USDC on POLYGON"
 msgstr ""
 
-#: src/assets-dev/cryptocities-assets.ts:13
-#: src/assets-dev/cryptocities-assets.ts:26
+#: src/assets-dev/cryptocities-assets.ts:8
 msgid "We are strategically working with local businesses to stimulate the regional economy through the innovative use of cryptocurrency."
 msgstr ""
 
@@ -470,7 +468,7 @@ msgstr ""
 msgid "With CryptoPayment Link, you can quickly and easily receive cryptocurrency payments from your customers."
 msgstr ""
 
-#: src/assets-dev/cryptocities-assets.ts:39
+#: src/assets-dev/cryptocities-assets.ts:71
 msgid "With over 600 acceptance locations, Ljubljana not only stands as the most crypto-friendly city in Europe but also secures a prominent position in international rankings."
 msgstr ""
 
