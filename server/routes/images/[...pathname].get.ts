@@ -14,7 +14,8 @@ export default eventHandler(async (event) => {
     if (!await hubKV().has(pathname)) {
       consola.info(`Location ${pathname} not cached, fetching from KV store`)
 
-      const uuid = pathname.replace('location/', '')
+      // Remove the 'location/' prefix and the file extension to get the location UUID
+      const uuid = pathname.replace('location/', '').replace(/\.[^/.]+$/, '')
       const supabase = await serverSupabaseClient<Database>(event)
       const { data: location, error } = await supabase.from('locations').select('gmaps_place_id').eq('uuid', uuid).single()
       if (error || !location?.gmaps_place_id)
