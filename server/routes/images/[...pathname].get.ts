@@ -18,11 +18,13 @@ export default eventHandler(async (event) => {
       const uuid = pathname.replace('location/', '').replace(/\.[^/.]+$/, '')
       const supabase = await serverSupabaseClient<Database>(event)
       const { data: location, error } = await supabase.from('locations').select('gmaps_place_id').eq('uuid', uuid).single()
-      if (error || !location?.gmaps_place_id)
+      if (error)
         return createError({ statusCode: 404, message: `Location ${uuid} not found` })
 
-      await cacheLocation(pathname, location.gmaps_place_id)
-      consola.info(`Location ${pathname} cached`)
+      if (location.gmaps_place_id) {
+        await cacheLocation(pathname, location.gmaps_place_id)
+        consola.info(`Location ${pathname} cached`)
+      }
     }
   }
 
