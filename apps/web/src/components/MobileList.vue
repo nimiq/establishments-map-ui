@@ -162,7 +162,7 @@ function close() {
     enter-active-class="transition duration-300" leave-active-class="transition duration-300"
   >
     <ul
-      v-if="locations.length > 0 && isListShown" ref="scrollRoot" absolute bottom-0 w-full flex="~ items-end gap-x-3"
+      v-if="locations.length > 0 && isListShown" ref="scrollRoot" absolute bottom-0 w-full flex="~ items-end gap-x-12"
       of-x-auto snap="x mandatory"
       bg="gradient-to-t gradient-from-neutral/20 gradient-to-neutral/0 bottom no-repeat [size:100%_184px]" :class="{
         'pointer-events-none': !isIOs,
